@@ -13,6 +13,9 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const current_locale = document.createElement('template');
+    current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
     templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
 
@@ -112,10 +115,23 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
+
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
+    this.$currentLocaleButton = this._shadowRoot.querySelector('#current_locale');
+    this.$currentLocaleButton.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          type: 'info'
+        });
+      }
+    });
+
     this.$paragraph = this._shadowRoot.querySelector('p');
+
     this.$button = this._shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {

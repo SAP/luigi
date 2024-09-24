@@ -51,7 +51,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### locale
 
-The locale to be passed to the compound micro frontend
+The locale to be passed to the compound micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
