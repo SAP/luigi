@@ -3,6 +3,7 @@
     tag: null,
     shadow: 'none',
     props: {
+      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
       clientPermissions: {
         type: 'Object',
@@ -27,6 +28,7 @@
         reflect: false,
         attribute: 'search-params',
       },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: {
         type: 'Object',
         reflect: false,
@@ -64,6 +66,7 @@
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
 
+  export let activeFeatureToggleList: string[];
   export let anchor: string;
   export let clientPermissions: any;
   export let compoundConfig: any;
@@ -76,6 +79,7 @@
   export let nodeParams: any;
   export let pathParams: any;
   export let searchParams: any;
+  export let theme: string;
   export let userSettings: any;
   export let viewurl: string;
   export let webcomponent: any;
@@ -90,6 +94,7 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
+      activeFeatureToggleList &&
       anchor &&
       clientPermissions &&
       dirtyStatus &&
@@ -99,6 +104,7 @@
       nodeParams &&
       pathParams &&
       searchParams &&
+      theme &&
       userSettings
     );
   };
