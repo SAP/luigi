@@ -53,6 +53,7 @@ settings: {
     hideAutomatically: true
   },
   thirdPartyCookieCheck = {
+    //disabled: true,
     //thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieErrorHandling: () => {
       const alert = {
@@ -298,7 +299,7 @@ This function is called with the following parameters:
 
 ## Third-party cookies support check
 
-You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and an optional **thirdPartyCookiesScriptLocation** parameter. When **thirdPartyCookiesScriptLocation** is set, the Luigi Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the Luigi Core application checks third-party cookie support whenever a micro frontend is loaded.
+You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and optional **disabled** and **thirdPartyCookiesScriptLocation** parameters. When **thirdPartyCookiesScriptLocation** is set, the Luigi Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the Luigi Core application checks third-party cookie support whenever a micro frontend is loaded.
 
 To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/main/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookieScriptLocation** to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
 
@@ -306,7 +307,11 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 #### thirdPartyCookieCheck
 - **type**: object
-- **description**: object defined in the general settings part of the Luigi configuration file, containing the **thirdPartyCookieErrorHandling** function and an optional **thirdPartyCookiesScriptLocation** parameter.
+- **description**: object defined in the general settings part of the Luigi configuration file, containing the **thirdPartyCookieErrorHandling** function and optional **disabled** and **thirdPartyCookiesScriptLocation** parameters.
+
+#### disabled
+- **type**: boolean
+- **description**: if set to true **thirdPartyCookieCheck** is ignored.
 
 #### thirdPartyCookieErrorHandling
 - **type**: function
