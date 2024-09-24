@@ -273,7 +273,7 @@ startE2eTestrunner() {
     echo "Running compatibility tests with recording"
     echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
     # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-    npm run cypress-headless -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
+    npm run e2e:run:angular -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
   else
     echo "Running tests without recording"
     npm run e2e:run:angular
