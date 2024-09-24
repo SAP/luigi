@@ -38,6 +38,7 @@ const pkgJsonPaths = {
   core: path.resolve(base, 'core', 'public', 'package.json'),
   core_public_root: path.resolve(base, 'core', 'public_root', 'package.json'),
   client: path.resolve(base, 'client', 'public', 'package.json'),
+  container: path.resolve(base, 'container', 'public', 'package.json'),
   authOAuth2: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oauth2', 'package.json'),
   authOIDC: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc', 'package.json'),
   client_support_angular: path.resolve(
@@ -63,6 +64,7 @@ const pkgJsonPaths = {
 const installPaths = {
   core: path.resolve(base, 'core'),
   client: path.resolve(base, 'client'),
+  container: path.resolve(base, 'container'),
   plugins: path.resolve(base, 'plugins'),
   client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')

@@ -37,6 +37,7 @@ const base = path.resolve(__dirname, '..', '..');
 const packagePaths = {
   core: ['core'],
   client: ['client'],
+  container: ['container'],
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular'],
@@ -45,6 +46,7 @@ const packagePaths = {
 const publishPaths = {
   core: ['core', 'public'],
   client: ['client', 'public'],
+  container: ['container', 'public'],
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular', 'dist', 'client-support-angular'],
