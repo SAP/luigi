@@ -117,7 +117,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
 
-
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
     this.$currentLocaleButton = this._shadowRoot.querySelector('#current_locale');
