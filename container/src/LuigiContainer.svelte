@@ -20,6 +20,7 @@
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' },
       searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      skipCookieCheck: { type: 'Boolean', reflect: false, attribute: 'skip-cookie-check' },
       skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
@@ -79,6 +80,7 @@
   export let pathParams: any;
   export let sandboxRules: string[];
   export let searchParams: any;
+  export let skipCookieCheck: boolean;
   export let skipInitCheck: boolean;
   export let theme: string;
   export let userSettings: any;
@@ -113,6 +115,7 @@
       pathParams &&
       sandboxRules &&
       searchParams &&
+      skipCookieCheck &&
       skipInitCheck &&
       theme &&
       userSettings

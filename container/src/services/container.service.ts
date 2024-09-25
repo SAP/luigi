@@ -106,7 +106,11 @@ export class ContainerService {
                   {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
                     context: targetCnt.context || {},
-                    internal: {},
+                    internal: {
+                      thirdPartyCookieCheck: {
+                        disabled: targetCnt.getAttribute('skip-cookie-check') === 'true'
+                      }
+                    },
                     authData: targetCnt.authData || {}
                   },
                   '*'

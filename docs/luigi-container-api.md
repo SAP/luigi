@@ -121,6 +121,16 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 *   **since**: 1.0.0
 
+### skipCookieCheck
+
+If set to true, skips third party cookie check
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### skipInitCheck
 
 If set to true, skips handshake and ready event is fired immediately

@@ -72,6 +72,12 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
+   * If set to true, skips third party cookie check
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  skipCookieCheck: boolean;
+
+  /**
    * If set to true, skips handshake and ready event is fired immediately
    * @since 1.0.0
    */
