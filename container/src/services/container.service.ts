@@ -108,7 +108,7 @@ export class ContainerService {
                     context: targetCnt.context || {},
                     internal: {
                       thirdPartyCookieCheck: {
-                        disabled: targetCnt.getAttribute('skip-cookie-check') === 'true'
+                        disabled: !!(targetCnt.getAttribute && targetCnt.getAttribute('skip-cookie-check') === 'true')
                       }
                     },
                     authData: targetCnt.authData || {}
