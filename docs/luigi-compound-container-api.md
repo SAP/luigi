@@ -188,7 +188,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: 1.0.0
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### activeFeatureToggleList
 
