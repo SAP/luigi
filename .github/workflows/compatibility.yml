@@ -5,6 +5,7 @@ on:
 name: Backwards Compatibility Check
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  CYPRESS_DASHBOARD_RECORD_KEY: ${{ secrets.CYPRESS_DASHBOARD }}
   GH_TOKEN: ${{ github.token }}
 
 jobs:
