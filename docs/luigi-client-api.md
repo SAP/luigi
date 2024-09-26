@@ -39,7 +39,7 @@ Use the functions and parameters to define the Lifecycle of listeners, navigatio
 
 Publish an event that can be listened to from the container host.
 
-Similar to  [sendCustomMessage](luigi-client-api.md#sendCustomMessage) but for WebComponent based microfrontends only.
+Similar to [sendCustomMessage](luigi-client-api.md#sendCustomMessage) but for WebComponent based microfrontends only.
 
 ##### Parameters
 
@@ -59,11 +59,10 @@ myContainer.addEventListener('custom-message', event => {
   console.log('My custom message from microfrontend', event.detail.data);
 }
 
-
 ** Compound Container Scenario **
 
-// Sending a message from child compound microfrontend (secondChild.js) to its parent (main.html) and siblings (firstChild.js) through the event bus
-
+// Sending a message from child compound microfrontend (secondChild.js) to its parent (main.html)
+// and siblings (firstChild.js) through the event bus
 
 // secondChild.js
 // Set the custom event name = sendInput
