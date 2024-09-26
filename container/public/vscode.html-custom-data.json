@@ -150,6 +150,22 @@
             {
                 "name": "document-title",
                 "description": "The document title value to be passed to the compound micro frontend."
+            },
+            {
+                "name": "skip-init-check",
+                "description": "If set to true, skips handshake and ready event is fired immediately."
+            },
+            {
+                "name": "locale",
+                "description": "The locale to be passed to the compound micro frontend."
+            },
+            {
+                "name": "active-feature-toggle-list",
+                "description": "The list of active feature toggles to be passed to the compound microfrontend."
+            },
+            {
+                "name": "theme",
+                "description": "The theme to be passed to the compound microfrontend."
             }
             ]
         }
