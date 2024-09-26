@@ -2,7 +2,7 @@
  * <!-- label-success: Web Component API -->
  * Publish an event that can be listened to from the container host.
  *
- * Similar to  {@link luigi-client-api.md#sendCustomMessage sendCustomMessage} but for WebComponent based microfrontends only.
+ * Similar to {@link luigi-client-api.md#sendCustomMessage sendCustomMessage} but for WebComponent based microfrontends only.
  *
  * @param {CustomEvent} event Custom event to be published
  * @memberof Lifecycle
@@ -19,11 +19,10 @@
  *   console.log('My custom message from microfrontend', event.detail.data);
  * }
  *
- *
  * ** Compound Container Scenario **
  *
- * // Sending a message from child compound microfrontend (secondChild.js) to its parent (main.html) and siblings (firstChild.js) through the event bus
- *
+ * // Sending a message from child compound microfrontend (secondChild.js) to its parent (main.html)
+ * // and siblings (firstChild.js) through the event bus
  *
  * // secondChild.js
  * // Set the custom event name = sendInput
