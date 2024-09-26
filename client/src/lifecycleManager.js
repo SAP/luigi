@@ -140,7 +140,6 @@ class LifecycleManager extends LuigiClientBase {
 
   _tpcCheck() {
     if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled) {
-      window.parent.postMessage('luigi.tpcDisabled', '*');
       return;
     }
     let tpc = 'enabled';

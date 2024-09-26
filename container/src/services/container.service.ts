@@ -108,7 +108,7 @@ export class ContainerService {
                     context: targetCnt.context || {},
                     internal: {
                       thirdPartyCookieCheck: {
-                        disabled: !!(targetCnt.getAttribute && targetCnt.getAttribute('skip-cookie-check') === 'true')
+                        disabled: this.handleCookieCheck(targetCnt)
                       }
                     },
                     authData: targetCnt.authData || {}
@@ -195,6 +195,20 @@ export class ContainerService {
    */
   registerContainer(thisComponent: HTMLElement): void {
     this.getContainerManager().container.push(thisComponent);
+  }
+
+  private handleCookieCheck(targetCnt): boolean {
+    let skipCookieCheck = false;
+
+    if (targetCnt.getAttribute) {
+      if (typeof targetCnt.getAttribute('skip-cookie-check') === 'string') {
+        skipCookieCheck = targetCnt.getAttribute('skip-cookie-check') === 'true';
+      } else if (typeof targetCnt.skipCookieCheck !== 'undefined') {
+        skipCookieCheck = targetCnt.skipCookieCheck;
+      }
+    }
+
+    return skipCookieCheck;
   }
 }
 
