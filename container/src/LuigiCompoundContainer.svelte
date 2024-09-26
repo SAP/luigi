@@ -28,7 +28,6 @@
         reflect: false,
         attribute: 'search-params',
       },
-      skipCookieCheck: { type: 'Boolean', reflect: false, attribute: 'skip-cookie-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: {
         type: 'Object',
@@ -80,7 +79,6 @@
   export let nodeParams: any;
   export let pathParams: any;
   export let searchParams: any;
-  export let skipCookieCheck: boolean;
   export let theme: string;
   export let userSettings: any;
   export let viewurl: string;
@@ -106,7 +104,6 @@
       nodeParams &&
       pathParams &&
       searchParams &&
-      skipCookieCheck &&
       theme &&
       userSettings
     );

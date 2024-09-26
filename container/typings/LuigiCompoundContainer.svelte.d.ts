@@ -110,12 +110,6 @@ export default class LuigiCompoundContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
-   * If set to true, skips third party cookie check
-   * @since NEXT_RELEASE_CONTAINER
-   */
-  skipCookieCheck: boolean;
-
-  /**
    * The theme to be passed to the compound microfrontend.
    * @since NEXT_RELEASE_CONTAINER
    */
