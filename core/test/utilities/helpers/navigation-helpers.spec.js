@@ -781,7 +781,7 @@ describe('Navigation-helpers', () => {
 
   describe('load and store expanded categories', () => {
     let localStorageSpy;
-    
+
     beforeEach(() => {
       const storageMock = {
         getItem: sinon.stub(),
@@ -948,7 +948,7 @@ describe('Navigation-helpers', () => {
         preloadUrl: 'ananas.html'
       });
     });
-    
+
     it('no view group found in viewgroup settings', () => {
       assert.deepEqual(NavigationHelpers.getViewGroupSettings(''), {});
       assert.deepEqual(NavigationHelpers.getViewGroupSettings('somethingElse'), {});
@@ -1203,7 +1203,7 @@ describe('Navigation-helpers', () => {
     beforeEach(() => {
       getItemSpy = jest.spyOn(Storage.prototype, 'getItem');
       setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
-    })
+    });
 
     afterAll(() => {
       jest.restoreAllMocks();
@@ -1212,40 +1212,43 @@ describe('Navigation-helpers', () => {
     describe('when key exists in the localStorage', () => {
       beforeEach(() => {
         getItemSpy.mockReturnValueOnce(JSON.stringify(['category1', 'category2']));
-      })
+      });
 
       it('when value is false: should not update the list', () => {
         NavigationHelpers.storeCollapsedSuperCategoriesState('category2', false);
         expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
-        expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(['category1', 'category2']));
-      })
+        expect(setItemSpy).toHaveBeenCalledWith(
+          COLLAPSED_SUPER_CATEGORIES_KEY,
+          JSON.stringify(['category1', 'category2'])
+        );
+      });
 
       it('when value is true: should: should remove key from the list ', () => {
         NavigationHelpers.storeCollapsedSuperCategoriesState('category2', true);
         expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
         expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(['category1']));
-      })
-    })
+      });
+    });
 
     describe('when key does not exists in the localStorage', () => {
       beforeEach(() => {
         getItemSpy.mockReturnValueOnce(JSON.stringify([]));
-      })
+      });
 
       it('when value is false: should add key to the list', () => {
         NavigationHelpers.storeCollapsedSuperCategoriesState('category2', false);
         expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
         expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(['category2']));
-      })
+      });
 
       it('when value is true: should not update the list', () => {
         NavigationHelpers.storeCollapsedSuperCategoriesState('category2', true);
         expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
         expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify([]));
-      })
-    })
-  })
-  
+      });
+    });
+  });
+
   describe('isCollapsedSuperCategory', () => {
     let getItemSpy;
 
@@ -1261,12 +1264,12 @@ describe('Navigation-helpers', () => {
       getItemSpy.mockReturnValueOnce(JSON.stringify(['category1', 'category2']));
       const result = NavigationHelpers.isCollapsedSuperCategory('category2');
       expect(result).toBe(true);
-    })
+    });
 
     it('when category key is not in the localStorage, should return false ', () => {
       getItemSpy.mockReturnValueOnce(JSON.stringify(['category1']));
       const result = NavigationHelpers.isCollapsedSuperCategory('category2');
       expect(result).toBe(false);
-    })
-  })
+    });
+  });
 });
