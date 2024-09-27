@@ -25,6 +25,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.16.0] (2024-09-27)
+
+#### :rocket: Added
+* [#3938](https://github.com/SAP/luigi/pull/3938) LeftNav in btpLayout: make 'expanded' the default state for nav item groups ([@amilewskaa](https://github.com/amilewskaa))
+* [#3915](https://github.com/SAP/luigi/pull/3915) Adds optional renderer for navHeader ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3902](https://github.com/SAP/luigi/pull/3902) Fixes wrong drawer position ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
 ## [v2.15.0] (2024-08-28)
 
 #### :rocket: Added
@@ -1854,3 +1866,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.14.2]: https://github.com/SAP/luigi/compare/v2.14.1...v2.14.2
 [v2.14.3]: https://github.com/SAP/luigi/compare/v2.14.2...v2.14.3
 [v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
+[v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
