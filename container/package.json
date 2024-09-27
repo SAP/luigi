@@ -62,6 +62,9 @@
     "cli-color": "^2.0.4",
     "github-api": "^3.4.0"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
+  },
   "engines": {
     "node": ">=18.19.1"
   }
