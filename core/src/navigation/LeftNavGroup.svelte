@@ -7,6 +7,9 @@
   function toggleExpanded() {
     expanded = !expanded;
     NavigationHelpers.storeExpandedState(navGroup.uid, expanded);
+    if (!navGroup.isSingleEntry) {
+      NavigationHelpers.storeCollapsedSuperCategoriesState(navGroup.uid, expanded)
+    }
   }
 </script>
 
