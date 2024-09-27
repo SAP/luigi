@@ -92,6 +92,22 @@ function getNextVersion() {
   return semver.inc(getVersion('core'), 'patch');
 }
 
+function getVersionSuffix() {
+  const padLeft = (str, inp) => {
+    return str.substring(0, str.length - inp.toString().length) + inp.toString();
+  };
+  const currentDatetime = new Date();
+  const formattedDate = `${currentDatetime.getFullYear()}${padLeft(
+    '00',
+    currentDatetime.getMonth() + 1
+  )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
+    '00',
+    currentDatetime.getMinutes()
+  )}`;
+
+  return '-dev.' + formattedDate;
+}
+
 function writeVersion(packagePath, version) {
   const pkgjson = require(packagePath);
   pkgjson.version = version;
@@ -137,18 +153,8 @@ function addToChangelog(versionText, changelog, lastline) {
       logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
       prompts.inject([process.env.NIGHTLY_VERSION, false]);
     } else {
-      const padLeft = (str, inp) => {
-        return str.substring(0, str.length - inp.toString().length) + inp.toString();
-      };
-      const currentDatetime = new Date();
-      let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
-        '00',
-        currentDatetime.getMonth() + 1
-      )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
-        '00',
-        currentDatetime.getMinutes()
-      )}`;
-      prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+      const versionSuffix = getVersionSuffix();
+      prompts.inject([nextVersion + versionSuffix, false]);
     }
   }
 
@@ -180,7 +186,16 @@ function addToChangelog(versionText, changelog, lastline) {
    * PACKAGE VERSIONS
    */
   for (const name of Object.keys(pkgJsonPaths)) {
-    writeVersion(pkgJsonPaths[name], input.version);
+    let inputVersion = input.version;
+
+    if (name === 'container' && process.env.NIGHTLY === 'true') {
+      const containerNightlyVersion = getVersion('container');
+      const versionSuffix = getVersionSuffix();
+
+      inputVersion = containerNightlyVersion + versionSuffix;
+    }
+
+    writeVersion(pkgJsonPaths[name], inputVersion);
   }
   logHeadline('\nPackages updated to v' + input.version + ':');
   logStep(Object.keys(pkgJsonPaths).join(', '));
