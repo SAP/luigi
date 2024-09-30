@@ -22,8 +22,8 @@
  * // case 2: publish an event from a compound microfrontend
  *
  * // secondChild.js
- * // Set the custom event name = sendInput and
- * // send a message to its parent (main.html) and siblings
+ * // Set the custom event name = 'sendInput' and
+ * // send a message to its parent (main.html) and sibling (firstChild.js)
  * this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own message' }));
  *
  * // main.html
@@ -31,8 +31,8 @@
  *   console.log('My custom message from microfrontend', event.detail.data);
  * }
  *
- * // *Note:* eventListeners.name must match CustomEvent name above
- * // eventListeners.source = input1 = id of sibling.js, which is where the message being sent from
+ * // Note: eventListeners.name must match CustomEvent name above
+ * // eventListeners.source = input1 = id of secondChild.js, which is where the message being sent from
  * compoundConfig = {
  *  ...
  *  children: [

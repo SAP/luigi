@@ -48,24 +48,22 @@ Similar to [sendCustomMessage](luigi-client-api.md#sendCustomMessage) but for We
 ##### Examples
 
 ```javascript
-** WC Container Scenario **
-Sending a message from a WC based microfrontend to parent host
+// case 1: publish an event from a WC based microfrontend
 
 // wcComponent.js
+// sending a message to parent host
 this.LuigiClient.publishEvent(new CustomEvent('sendSomeMsg', { detail: 'My own message' }));
 
 // host.html
 myContainer.addEventListener('custom-message', event => {
-  console.log('My custom message from microfrontend', event.detail.data);
+  console.log('My custom message from the microfrontend', event.detail.data);
 }
 
-** Compound Container Scenario **
-
-// Sending a message from child compound microfrontend (secondChild.js) to its parent (main.html)
-// and siblings (firstChild.js) through the event bus
+// case 2: publish an event from a compound microfrontend
 
 // secondChild.js
-// Set the custom event name = sendInput
+// Set the custom event name = 'sendInput' and
+// send a message to its parent (main.html) and sibling (firstChild.js)
 this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own message' }));
 
 // main.html
@@ -73,8 +71,8 @@ myContainer.addEventListener('custom-message', event => {
   console.log('My custom message from microfrontend', event.detail.data);
 }
 
-// *Note:* eventListeners.name must match CustomEvent name above
-// eventListeners.source = input1 = id of sibling.js, which is where the message being sent from
+// Note: eventListeners.name must match CustomEvent name above
+// eventListeners.source = input1 = id of secondChild.js, which is where the message being sent from
 compoundConfig = {
  ...
  children: [
