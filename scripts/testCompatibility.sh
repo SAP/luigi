@@ -269,7 +269,15 @@ startE2eTestrunner() {
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
 
-  npm run e2e:run:angular
+  if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+    echo "Running compatibility tests with recording"
+    echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
+    # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
+    npm run e2e:run:angular -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
+  else
+    echo "Running tests without recording"
+    npm run e2e:run:angular
+  fi
 
   # Check and kill webservers again
   killWebServers
