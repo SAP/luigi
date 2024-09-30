@@ -1,31 +1,28 @@
 ---
 title: Luigi v2.14  
-seoMetaDescription: Release notes for Luigi v2.13
+seoMetaDescription: Release notes for Luigi v2.14
 author:
   - Mahati Shankar
 layout: blog
 ---
 
-You can read about the new features in Luigi v2.13 in the release notes below.
+You can read about the new features in Luigi v2.14 in the release notes below.
 
 <!-- Excerpt -->
 
 
 #### E2E Tests With Nightwatch, WebdriverIO and Puppeteer
 
-You can now use frameworks instead of Cypress which has been deprecated.
+The testing-utilities library now additionally supports Nightwatch, WebdriverIO and Puppeteer. You can now use these testing frameworks for your e2e tests.
 
 #### getCurrentRoute Has Been Added
 
-getCurrentRoute has been added to the Luigi core API which as the name suggests returns the current Luigi route.
+[getCurrentRoute](https://docs.luigi-project.io/docs/luigi-core-api?section=getcurrentroute) has been added to the Luigi core API which as the name suggests returns the current Luigi route.
 
 #### getCurrentTheme in WC Client
 
-The method is now part of the core API so you can now use it in the WebComponent client too.
+The method [getCurrentTheme](https://docs.luigi-project.io/docs/luigi-core-api?section=getcurrenttheme) is now part of the core API so you can now use it in the WebComponent client too.
 
-#### Fiddle Theming Example
-
-To see the example in action, open [Luigi Fiddle](https://fiddle.luigi-project.io/) then choose the user icon at the top right and finally select `Settings` from the popover.
 
 #### Fix Top Nav Children Not Rendered
 
