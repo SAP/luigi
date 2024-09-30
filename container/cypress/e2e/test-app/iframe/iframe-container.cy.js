@@ -10,14 +10,13 @@ describe('Iframe Container Test', () => {
   it('should sent third party cookies request', () => {
     cy.on('window:alert', stub);
 
-    cy.get(containerSelector)
-      .should('not.have.attr', 'skip-cookie-check');
+    cy.get(containerSelector).should('not.have.attr', 'skip-cookie-check');
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(() => {
         cy.wrap(stub).should('have.been.calledWith', 'set-third-party-cookies-request');
-        cy.getCookie('luigiCookie').should('exist')
+        cy.getCookie('luigiCookie').should('exist');
       });
   });
 
@@ -38,13 +37,12 @@ describe('Iframe Container Test', () => {
   });
 
   it('sendCustomMessage', () => {
-    cy.get('#btn-1')
-      .click()
+    cy.get('#btn-1').click();
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
-        const $body = iframe.contents().find('body')
+        const $body = iframe.contents().find('body');
         cy.wrap($body)
           .find('#content')
           .should('have.text', 'Received Custom Message: some data');
