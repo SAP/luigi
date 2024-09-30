@@ -20,7 +20,7 @@
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' },
       searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
-      skipCookieCheck: { type: 'Boolean', reflect: false, attribute: 'skip-cookie-check' },
+      skipCookieCheck: { type: 'String', reflect: false, attribute: 'skip-cookie-check' },
       skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },

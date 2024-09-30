@@ -125,7 +125,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 If set to true, skips third party cookie check
 
-Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+Type: (`"false"` | `"true"`)
 
 **Meta**
 

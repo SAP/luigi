@@ -7,6 +7,20 @@ describe('Iframe Container Test', () => {
     stub = cy.stub();
   });
 
+  it('should sent third party cookies request', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .should('not.have.attr', 'skip-cookie-check');
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then(() => {
+        cy.wrap(stub).should('have.been.calledWith', 'set-third-party-cookies-request');
+        cy.getCookie('luigiCookie').should('exist')
+      });
+  });
+
   it('navigation sent', () => {
     cy.get(containerSelector)
       .shadow()
