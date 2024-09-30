@@ -21,7 +21,7 @@ You can now use frameworks instead of Cypress which has been deprecated.
 
 #### getCurrentTheme in WC Client
 
-The method is now part of the core API so you can now use it in the WebComponent client too.
+The method [getCurrentTheme](https://docs.luigi-project.io/docs/luigi-core-api?section=getcurrenttheme) is now part of the core API so you can now use it in the WebComponent client too.
 
 #### Fiddle Theming Example
 
