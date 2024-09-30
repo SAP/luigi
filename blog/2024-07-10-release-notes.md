@@ -13,7 +13,7 @@ You can read about the new features in Luigi v2.14 in the release notes below.
 
 #### E2E Tests With Nightwatch, WebdriverIO and Puppeteer
 
-You can now use frameworks instead of Cypress which has been deprecated.
+The testing-utilities library now additionally supports Nightwatch, WebdriverIO and Puppeteer. You can now use these testing frameworks for your e2e tests.
 
 #### getCurrentRoute Has Been Added
 
