@@ -78,7 +78,7 @@ export default class LuigiContainer extends HTMLElement {
   skipInitCheck: boolean;
 
   /**
-   * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+   * The parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
   nodeParams: Object;

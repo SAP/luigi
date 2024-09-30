@@ -25,6 +25,36 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.16.0] (2024-09-27)
+
+#### :rocket: Added
+* [#3938](https://github.com/SAP/luigi/pull/3938) LeftNav in btpLayout: make 'expanded' the default state for nav item groups ([@amilewskaa](https://github.com/amilewskaa))
+* [#3915](https://github.com/SAP/luigi/pull/3915) Adds optional renderer for navHeader ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3902](https://github.com/SAP/luigi/pull/3902) Fixes wrong drawer position ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+## [v2.15.0] (2024-08-28)
+
+#### :rocket: Added
+* [#3870](https://github.com/SAP/luigi/pull/3870) Angular 18 support for client-support-angular library ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+
+## [v2.14.3] (2024-08-22)
+
+#### :bug: Fixed
+* [#3841](https://github.com/SAP/luigi/pull/3841) Fix css issues for btptool layout ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
 ## [v2.14.2] (2024-08-01)
 
 #### :bug: Fixed
@@ -1834,3 +1864,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.14.0]: https://github.com/SAP/luigi/compare/v2.13.0...v2.14.0
 [v2.14.1]: https://github.com/SAP/luigi/compare/v2.14.0...v2.14.1
 [v2.14.2]: https://github.com/SAP/luigi/compare/v2.14.1...v2.14.2
+[v2.14.3]: https://github.com/SAP/luigi/compare/v2.14.2...v2.14.3
+[v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
+[v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
