@@ -117,17 +117,17 @@ class IframeClass {
      * check if luigi responded
      * if not, callback again to replace the iframe
      */
-    this.timeoutHandle = setTimeout(async () => {
-      if (config.navigateOk) {
-        config.navigateOk = undefined;
-      } else {
-        IframeHelpers.removeIframe(config.iframe, node);
-        config.iframe = undefined;
-        config.isFallbackFrame = true;
-        console.info('navigate: luigi-client did not respond, using fallback by replacing iframe');
-        await this.navigateIframe(config, component, node);
-      }
-    }, this.iframeNavFallbackTimeout);
+      this.timeoutHandle = setTimeout(async () => {
+        if (config.navigateOk) {
+          config.navigateOk = undefined;
+        } else {
+          IframeHelpers.removeIframe(config.iframe, node);
+          config.iframe = undefined;
+          config.isFallbackFrame = true;
+          console.info('navigate: luigi-client did not respond, using fallback by replacing iframe');
+          await this.navigateIframe(config, component, node);
+        }
+      }, this.iframeNavFallbackTimeout);
   }
 
   checkIframe(errorHandlerNode, componentNode, viewUrlPath, config, node) {
