@@ -7,10 +7,6 @@
     <meta name="description" content="" />
     <meta name="keywords" content="logout" />
     <script type="text/javascript">
-      function login() {
-        window.location.href = window.location.origin;
-      }
-
       function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -76,7 +72,7 @@
               </div>
             </div>
             <p class="fd-has-text-align-center">
-              <button class="fd-button fd-button--emphasized" onclick="login()">
+              <button class="fd-button fd-button--emphasized" onclick="window.location.href = window.location.origin">
                 Re-Login
               </button>
             </p>
