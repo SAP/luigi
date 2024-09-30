@@ -1,7 +1,7 @@
 import { IframeHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig, LuigiElements } from '../../src/core-api';
 import { AuthLayerSvc } from '../../src/services';
-import { EventListenerHelpers } from '../../src/utilities/helpers'; 
+import { EventListenerHelpers } from '../../src/utilities/helpers';
 const sinon = require('sinon');
 const chai = require('chai');
 const assert = chai.assert;
@@ -109,10 +109,10 @@ describe('updateContextValues', () => {
     });
     let authUnloadStub = sinon.stub(AuthLayerSvc, 'unload');
     let removeAllListenersStub = sinon.stub(EventListenerHelpers, 'removeAllEventListeners');
-  
+
     LuigiConfig.unload();
     sinon.assert.called(containerStub.returnValues[0].removeChild);
-    sinon.assert.calledOnce(containerStub.returnValues[0].removeChild); 
+    sinon.assert.calledOnce(containerStub.returnValues[0].removeChild);
     sinon.assert.calledOnce(window.Luigi._store.clear);
     sinon.assert.calledOnce(authUnloadStub);
     sinon.assert.calledOnce(removeAllListenersStub);
@@ -122,5 +122,3 @@ describe('updateContextValues', () => {
     containerStub.restore();
   });
 });
-
-
