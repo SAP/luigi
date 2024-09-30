@@ -24,7 +24,6 @@ SOURCES=(
   "core/src"
   "client/src"
   "client/luigi-client.d.ts"
-  "container/src"
   "plugins/auth/src"
 )
 

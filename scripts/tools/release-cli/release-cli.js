@@ -38,7 +38,6 @@ const pkgJsonPaths = {
   core: path.resolve(base, 'core', 'public', 'package.json'),
   core_public_root: path.resolve(base, 'core', 'public_root', 'package.json'),
   client: path.resolve(base, 'client', 'public', 'package.json'),
-  container: path.resolve(base, 'container', 'public', 'package.json'),
   authOAuth2: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oauth2', 'package.json'),
   authOIDC: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc', 'package.json'),
   client_support_angular: path.resolve(
@@ -60,15 +59,18 @@ const pkgJsonPaths = {
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json'),
   testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json')
 };
-
 const installPaths = {
   core: path.resolve(base, 'core'),
   client: path.resolve(base, 'client'),
-  container: path.resolve(base, 'container'),
   plugins: path.resolve(base, 'plugins'),
   client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
+
+if (process.env.NIGHTLY === true) {
+  pkgJsonPaths.container = path.resolve(base, 'container', 'public', 'package.json');
+  installPaths.container = path.resolve(base, 'container');
+}
 
 /**
  * FNS
@@ -92,6 +94,10 @@ function getNextVersion() {
   return semver.inc(getVersion('core'), 'patch');
 }
 
+/**
+ * getVersionSuffix generates version suffix to make it unique
+ * @returns {string} Unique version suffix
+ */
 function getVersionSuffix() {
   const padLeft = (str, inp) => {
     return str.substring(0, str.length - inp.toString().length) + inp.toString();
@@ -148,7 +154,7 @@ function addToChangelog(versionText, changelog, lastline) {
   const nextVersion = getNextVersion();
 
   // NIGHTLY BUILD
-  if (process.env.NIGHTLY === 'true') {
+  if (process.env.NIGHTLY === true) {
     if (process.env.NIGHTLY_VERSION && process.env.NIGHTLY_VERSION.indexOf('-rc') > 0) {
       logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
       prompts.inject([process.env.NIGHTLY_VERSION, false]);
@@ -188,7 +194,8 @@ function addToChangelog(versionText, changelog, lastline) {
   for (const name of Object.keys(pkgJsonPaths)) {
     let inputVersion = input.version;
 
-    if (name === 'container' && process.env.NIGHTLY === 'true') {
+    // handle custom container version for nightly release
+    if (name === 'container' && process.env.NIGHTLY === true) {
       const containerNightlyVersion = getVersion('container');
       const versionSuffix = getVersionSuffix();
 
