@@ -16,7 +16,7 @@ meta -->
 
 # Luigi Compound Container API
 
-This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
+This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container. The properties can be set as HTML attributes or through the Container object's property in JS.
 
 ## API Reference
 
@@ -28,6 +28,14 @@ The URL used for the renderer.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+```js
+myContainer.viewUrl = "/index.html"
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+```
+
 ### compoundConfig
 
 The configuration for the compound microfrontend
@@ -38,6 +46,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
+TODO: better example
+```js
+myContainer.compoundConfig = {foo: bar}
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" compoundConfig='{foo: bar}'></luigi-container>
+```
 
 ### deferInit
 
@@ -49,6 +65,14 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 *   **since**: 1.0.0
 
+```js
+myContainer.deferInit = true
+```
+TODO: is it preferred to assign true or declare it to indicate it's set
+```HTML
+<luigi-container viewUrl="/index.html" deferInit="true"></luigi-container>
+```
+
 ### nodeParams
 
 The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
@@ -58,6 +82,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
+
+```js
+myContainer.nodeParams = {foo: bar}
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" nodeParams='{foo: bar}'></luigi-container>
+```
 
 ### noShadow
 
@@ -69,6 +101,14 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 *   **since**: 1.2.0
 
+```js
+myContainer.noShadow = true
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" noShadow='true'></luigi-container>
+```
+
 ### searchParams
 
 The search parameters to be passed to the compound micro frontend.
@@ -78,6 +118,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
+
+```js
+myContainer.searchParams = {foo: bar}
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" searchParams='{foo: bar}'></luigi-container>
+```
 
 ### pathParams
 
@@ -89,6 +137,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 *   **since**: 1.0.0
 
+```js
+myContainer.pathParams = {foo: bar}
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" pathParams='{foo: bar}'></luigi-container>
+```
+
 ### context
 
 The stringified context to be passed to the compound microfrontend
@@ -98,6 +154,14 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
+TODO: is it better to use JSON.stringify({foo: bar}) for the value
+```js
+myContainer.context = '{foo: bar}'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" context='{foo: bar}'></luigi-container>
+```
 
 ### clientPermissions
 
@@ -109,6 +173,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 *   **since**: 1.0.0
 
+```js
+myContainer.clientPermissions = '{foo: bar}'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" clientPermissions='{foo: bar}'></luigi-container>
+```
+
 ### userSettings
 
 The user settings to be passed to the compound micro frontend
@@ -118,6 +190,14 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
+
+```js
+myContainer.userSettings = '{foo: bar}'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" userSettings='{foo: bar}'></luigi-container>
+```
 
 ### anchor
 
@@ -129,6 +209,14 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 *   **since**: 1.0.0
 
+```js
+myContainer.anchor = '#foo'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" anchor='#foo'></luigi-container>
+```
+
 ### documentTitle
 
 The document title value to be passed to the compound micro frontend.
@@ -138,6 +226,14 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.2.0
+
+```js
+myContainer.documentTitle = 'Luigi App'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" documentTitle='Luigi App'></luigi-container>
+```
 
 ### hasBack
 
@@ -150,6 +246,14 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 *   **since**: 1.2.0
 
+```js
+myContainer.hasBack = '/detailsPage'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" hasBack='/detailsPage'></luigi-container>
+```
+
 ### dirtyStatus
 
 The dirty status value to be passed to the compound micro frontend.
@@ -160,6 +264,14 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 **Meta**
 
 *   **since**: 1.2.0
+
+```js
+myContainer.dirtyStatus = true
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" dirtyStatus='true'></luigi-container>
+```
 
 ### webcomponent
 
@@ -180,6 +292,14 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 *   **since**: 1.0.0
 
+```js
+myContainer.webcomponent = { webComponentSettings: {type: 'foo', selfRegistered: true, tagName: '#wcMountpoint'}}
+```
+#TODO: this is probably wrong/not the best way, maybe there is a custom element?
+```HTML
+<luigi-container webcomponent="{ webComponentSettings: {type: 'foo', selfRegistered: true, tagName: '#wcMountpoint'}}"></luigi-container>
+```
+
 ### activeFeatureToggleList
 
 The list of active feature toggles to be passed to the compound microfrontend.
@@ -190,6 +310,14 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 *   **since**: NEXT_RELEASE_CONTAINER
 
+```js
+myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" activeFeatureToggleList='["enable-foo", "allow-bar"]'></luigi-container>
+```
+
 ### theme
 
 The theme to be passed to the compound microfrontend.
@@ -199,6 +327,14 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: NEXT_RELEASE_CONTAINER
+
+```js
+myContainer.theme = 'SAP-Horizon'
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" theme='SAP-Horizon'></luigi-container>
+```
 
 ### updateContext
 
@@ -229,3 +365,15 @@ Returns **void**
 **Meta**
 
 *   **since**: 1.0.0
+#TODO: made up example
+```js
+ ...
+  myContainer.deferInit = true
+}
+#or HTML: <luigi-container deferInit="true"></luigi-container> js: the handler
+
+eventHandlerFn{
+  ...
+  myContainer.init()
+}
+```
