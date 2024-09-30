@@ -67,7 +67,7 @@ const installPaths = {
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
 
-if (process.env.NIGHTLY === true) {
+if (process.env.NIGHTLY === 'true') {
   pkgJsonPaths.container = path.resolve(base, 'container', 'public', 'package.json');
   installPaths.container = path.resolve(base, 'container');
 }
@@ -154,7 +154,7 @@ function addToChangelog(versionText, changelog, lastline) {
   const nextVersion = getNextVersion();
 
   // NIGHTLY BUILD
-  if (process.env.NIGHTLY === true) {
+  if (process.env.NIGHTLY === 'true') {
     if (process.env.NIGHTLY_VERSION && process.env.NIGHTLY_VERSION.indexOf('-rc') > 0) {
       logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
       prompts.inject([process.env.NIGHTLY_VERSION, false]);
@@ -195,7 +195,7 @@ function addToChangelog(versionText, changelog, lastline) {
     let inputVersion = input.version;
 
     // handle custom container version for nightly release
-    if (name === 'container' && process.env.NIGHTLY === true) {
+    if (name === 'container' && process.env.NIGHTLY === 'true') {
       const containerNightlyVersion = getVersion('container');
       const versionSuffix = getVersionSuffix();
 
@@ -248,7 +248,7 @@ function addToChangelog(versionText, changelog, lastline) {
    * UPDATE PACKAGE-LOCKS
    * Skip when running in ci for nightly.
    */
-  if (process.env.NIGHTLY !== true) {
+  if (process.env.NIGHTLY !== 'true') {
     logHeadline('\nInstalling packages to update package-lock.json');
     for (const key in installPaths) {
       logStep(`Installing ${key}`);
@@ -259,7 +259,7 @@ function addToChangelog(versionText, changelog, lastline) {
 
   logHeadline('\nRelease prepared!');
 
-  if (process.env.NIGHTLY === true) {
+  if (process.env.NIGHTLY === 'true') {
     console.log(color.bold(`\nNow execute: npm run release:nightly`));
   } else {
     console.log(
