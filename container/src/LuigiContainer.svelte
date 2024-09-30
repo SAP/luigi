@@ -80,7 +80,7 @@
   export let pathParams: any;
   export let sandboxRules: string[];
   export let searchParams: any;
-  export let skipCookieCheck: boolean;
+  export let skipCookieCheck: 'false' | 'true';
   export let skipInitCheck: boolean;
   export let theme: string;
   export let userSettings: any;
