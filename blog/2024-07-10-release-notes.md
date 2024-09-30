@@ -23,9 +23,6 @@ You can now use frameworks instead of Cypress which has been deprecated.
 
 The method [getCurrentTheme](https://docs.luigi-project.io/docs/luigi-core-api?section=getcurrenttheme) is now part of the core API so you can now use it in the WebComponent client too.
 
-#### Fiddle Theming Example
-
-To see the example in action, open [Luigi Fiddle](https://fiddle.luigi-project.io/) then choose the user icon at the top right and finally select `Settings` from the popover.
 
 #### Fix Top Nav Children Not Rendered
 
