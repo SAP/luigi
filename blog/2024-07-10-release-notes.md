@@ -17,7 +17,7 @@ You can now use frameworks instead of Cypress which has been deprecated.
 
 #### getCurrentRoute Has Been Added
 
-getCurrentRoute has been added to the Luigi core API which as the name suggests returns the current Luigi route.
+[getCurrentRoute](https://docs.luigi-project.io/docs/luigi-core-api?section=getcurrentroute) has been added to the Luigi core API which as the name suggests returns the current Luigi route.
 
 #### getCurrentTheme in WC Client
 
