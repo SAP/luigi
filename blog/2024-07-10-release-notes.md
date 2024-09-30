@@ -6,7 +6,7 @@ author:
 layout: blog
 ---
 
-You can read about the new features in Luigi v2.13 in the release notes below.
+You can read about the new features in Luigi v2.14 in the release notes below.
 
 <!-- Excerpt -->
 
