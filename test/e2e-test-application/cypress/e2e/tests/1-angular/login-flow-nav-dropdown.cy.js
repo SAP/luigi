@@ -78,7 +78,7 @@ describe('Login Flow', () => {
 
     //login again
     cy.contains('Re-Login').click();
-    cy.expectPathToBe('/assets/auth-mock/login-mock.html', 5000);
+    cy.expectPathToBe('/assets/auth-mock/login-mock.html');
     cy.get('body').should('contain', 'Login to Luigi sample app');
     cy.login('tets@email.com', 'tets');
   });
