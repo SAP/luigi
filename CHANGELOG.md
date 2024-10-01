@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.17.0] (2024-10-01)
+
+#### :rocket: Added
+* [#3922](https://github.com/SAP/luigi/pull/3922) Adds node property for hiding global search ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3964](https://github.com/SAP/luigi/pull/3964) Clean Luigi store ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.16.0] (2024-09-27)
 
 #### :rocket: Added
@@ -1867,3 +1880,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.14.3]: https://github.com/SAP/luigi/compare/v2.14.2...v2.14.3
 [v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
 [v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
+[v2.17.0]: https://github.com/SAP/luigi/compare/v2.16.0...v2.17.0
