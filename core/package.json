@@ -19,6 +19,7 @@
     "lodash.template": "^4.5.0",
     "mock-local-storage": "^1.1.23",
     "node-fetch": "2.6.7",
+    "rollup": "^3.29.5",
     "sass": "^1.54.0",
     "sinon": "^14.0.0",
     "svelte": "3.54.0",
