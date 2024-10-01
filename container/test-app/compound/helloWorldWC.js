@@ -13,6 +13,9 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const current_locale = document.createElement('template');
+    current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
     templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
 
@@ -42,6 +45,12 @@ export default class extends HTMLElement {
 
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
+
+    const getFeatureToggleListBtn = document.createElement('template');
+    getFeatureToggleListBtn.innerHTML = '<button id="getFeatureToggleList">getFeatureToggleList</button>';
+
+    const getThemeBtn = document.createElement('template');
+    getThemeBtn.innerHTML = '<button id="getTheme">getTheme</button>';
 
     const setViewGroupDataBtn = document.createElement('template');
     setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
@@ -97,6 +106,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
@@ -104,10 +115,22 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
+    this.$currentLocaleButton = this._shadowRoot.querySelector('#current_locale');
+    this.$currentLocaleButton.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          type: 'info'
+        });
+      }
+    });
+
     this.$paragraph = this._shadowRoot.querySelector('p');
+
     this.$button = this._shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -188,11 +211,32 @@ export default class extends HTMLElement {
         });
       }
     });
+
     this.$getAnchorBtn = this._shadowRoot.querySelector('#getAnchor');
     this.$getAnchorBtn.addEventListener('click', () => {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getFeatureToggleListBtn = this._shadowRoot.querySelector('#getFeatureToggleList');
+    this.$getFeatureToggleListBtn.addEventListener('click', () => {
+      const activeFeatureToggleList = this.LuigiClient.getActiveFeatureToggles();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getActiveFeatureToggles()=' + JSON.stringify(activeFeatureToggleList),
+        type: 'info'
+      });
+    });
+
+    this.$getThemeBtn = this._shadowRoot.querySelector('#getTheme');
+    this.$getThemeBtn.addEventListener('click', () => {
+      const currentTheme = this.LuigiClient.uxManager().getCurrentTheme();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getCurrentTheme()=' + JSON.stringify(currentTheme),
         type: 'info'
       });
     });

@@ -32,6 +32,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - getCurrentLocale', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getCurrentLocale')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentLocale()=en');
+        });
+    });
+
     it('LuigiClient API - getDirtyStatus', () => {
       cy.on('window:alert', stub);
 
@@ -102,6 +114,36 @@ describe('Compound Container Tests', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        });
+    });
+
+    it('LuigiClient API - getSkipInitCheck', () => {
+      cy.get(containerSelector)
+        .invoke('attr', 'skip-init-check')
+        .should('eq', 'true');
+    });
+
+    it('LuigiClient API - getActiveFeatureToggles', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getFeatureToggleList')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getActiveFeatureToggles()=["ft1","ft2"]');
+        });
+    });
+
+    it('LuigiClient API - getCurrentTheme', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getTheme')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentTheme()="sap_fiori_3"');
         });
     });
 
