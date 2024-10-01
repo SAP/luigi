@@ -4,8 +4,6 @@ jobs:
   trigger_scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Checkmarx One CLI Action
         uses: checkmarx/ast-github-action@main #Github Action version
         with:
@@ -15,3 +13,6 @@ jobs:
           base_auth_uri: https://checkmarx.tools.sap
           cx_client_id: ${{ secrets.CXONE_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CXONE_CLIENT_SECRET }}
+          branch: main
+          additional_params: "--async --scan-types sast -s https://github.com/SAP/luigi.git"
+          
