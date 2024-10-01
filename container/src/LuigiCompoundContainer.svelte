@@ -29,6 +29,7 @@
         reflect: false,
         attribute: 'search-params',
       },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: {
         type: 'Object',
@@ -81,6 +82,7 @@
   export let nodeParams: any;
   export let pathParams: any;
   export let searchParams: any;
+  export let skipInitCheck: boolean;
   export let theme: string;
   export let userSettings: any;
   export let viewurl: string;
@@ -107,6 +109,7 @@
       nodeParams &&
       pathParams &&
       searchParams &&
+      skipInitCheck &&
       theme &&
       userSettings
     );
@@ -147,7 +150,7 @@
     }
     webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;
-      if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+      if (skipInitCheck || !node.viewUrl) {
         thisComponent.initialized = true;
         setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
