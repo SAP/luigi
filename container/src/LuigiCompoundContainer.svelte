@@ -20,6 +20,7 @@
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
       documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
       hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
       noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
@@ -76,6 +77,7 @@
   export let dirtyStatus: boolean;
   export let documentTitle: string;
   export let hasBack: boolean;
+  export let locale: string;
   export let noShadow: boolean;
   export let nodeParams: any;
   export let pathParams: any;
@@ -102,6 +104,7 @@
       dirtyStatus &&
       documentTitle &&
       hasBack &&
+      locale &&
       noShadow &&
       nodeParams &&
       pathParams &&
