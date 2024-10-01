@@ -2042,6 +2042,7 @@
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
     --luigi__horizontal-nav--height: 2.75rem;
+    --fdToolLayout_Background: var(--sapBackgroundColor) !important;
   }
 
   :global(html) {
