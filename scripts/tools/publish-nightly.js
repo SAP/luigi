@@ -37,7 +37,6 @@ const base = path.resolve(__dirname, '..', '..');
 const packagePaths = {
   core: ['core'],
   client: ['client'],
-  container: ['container'],
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular'],
@@ -46,12 +45,16 @@ const packagePaths = {
 const publishPaths = {
   core: ['core', 'public'],
   client: ['client', 'public'],
-  container: ['container', 'public'],
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular', 'dist', 'client-support-angular'],
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
+
+if (process.env.NIGHTLY === 'true' && !process.env.NIGHTLY_VERSION) {
+  packagePaths.container = ['container'];
+  publishPaths.container = ['container', 'public'];
+}
 
 function execTrim(cmd) {
   return require('child_process')

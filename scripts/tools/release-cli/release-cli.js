@@ -67,7 +67,7 @@ const installPaths = {
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
 
-if (process.env.NIGHTLY === 'true') {
+if (process.env.NIGHTLY === 'true' && !process.env.NIGHTLY_VERSION) {
   pkgJsonPaths.container = path.resolve(base, 'container', 'public', 'package.json');
   installPaths.container = path.resolve(base, 'container');
 }
