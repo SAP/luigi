@@ -26,6 +26,7 @@
       <luigi-compound-container
         data-test-id="luigi-client-api-test-compound-01"
         id="dashboard"
+        active-feature-toggle-list='["ft1", "ft2"]'
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
         search-params='{"test":"searchParam1"}'
@@ -34,7 +35,10 @@
         user-settings='{"language":"it", "date":""}'
         anchor="testAnchorCompound"
         defer-init="false"
+        skip-init-check="true"
         webcomponent="true"
+        theme="sap_fiori_3"
+        locale="en"
       ></luigi-compound-container>
     </div>
 
