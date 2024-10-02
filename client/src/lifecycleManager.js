@@ -91,6 +91,7 @@ class LifecycleManager extends LuigiClientBase {
       helpers.setLuigiCoreDomain(e.origin);
       this.luigiInitialized = true;
       this._notifyInit(e.origin);
+      this._tpcCheck();
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
     });
 
@@ -135,10 +136,12 @@ class LifecycleManager extends LuigiClientBase {
       },
       '*'
     );
-    this._tpcCheck();
   }
 
   _tpcCheck() {
+    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled) {
+      return;
+    }
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
