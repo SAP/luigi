@@ -52,7 +52,7 @@ const publishPaths = {
 };
 
 if (!process.env.NIGHTLY_VERSION) {
-  logHeadline('Added container to nightly release');
+  logHeadline('Added container path to publish nightly release steps');
   packagePaths.container = ['container'];
   publishPaths.container = ['container', 'public'];
 }
