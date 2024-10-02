@@ -51,7 +51,8 @@ const publishPaths = {
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
 
-if (process.env.NIGHTLY === 'true' && !process.env.NIGHTLY_VERSION) {
+if (!process.env.NIGHTLY_VERSION) {
+  logHeadline('Added container to nightly release');
   packagePaths.container = ['container'];
   publishPaths.container = ['container', 'public'];
 }

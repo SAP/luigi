@@ -200,6 +200,7 @@ function addToChangelog(versionText, changelog, lastline) {
       const versionSuffix = getVersionSuffix();
 
       inputVersion = containerNightlyVersion + versionSuffix;
+      logHeadline('\Container updated to v' + inputVersion + ':');
     }
 
     writeVersion(pkgJsonPaths[name], inputVersion);
