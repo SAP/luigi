@@ -264,6 +264,7 @@
           navigationPath,
           context,
           pathParams,
+          hideGlobalSearch,
           hideSideNav,
           isolateView,
           pageErrorHandler,
@@ -301,6 +302,8 @@
               context = obj.context;
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
+            } else if (prop === 'hideGlobalSearch') {
+              hideGlobalSearch = obj.hideGlobalSearch;
             } else if (prop === 'hideSideNav') {
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
@@ -656,6 +659,7 @@
   /// RESIZING
 
   let hideNav;
+  let hideGlobalSearch;
   let hideSideNav;
   let noAnimation;
   let previousWindowWidth;
@@ -1869,6 +1873,7 @@
           <div class="fd-tool-layout__header-container">
             {#if !isHeaderDisabled}
               <TopNav
+                hideSearchComponent={hideGlobalSearch}
                 pathData={navigationPath}
                 {pathParams}
                 on:handleClick={handleNavClick}
@@ -1992,6 +1997,7 @@
     {/if}
     {#if !isHeaderDisabled}
       <TopNav
+        hideSearchComponent={hideGlobalSearch}
         pathData={navigationPath}
         {pathParams}
         on:handleClick={handleNavClick}

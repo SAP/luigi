@@ -689,6 +689,33 @@ class RoutingHelpersClass {
     }
     return historyState;
   }
+
+  /**
+   * Deals with undefined inherited property
+   * @param {Object} node the data of node
+   * @param {string} property name of affected property
+   * @param {() => void} callback optional method to be called
+   * @returns {(boolean|undefined)} true if the given props are present in node, falsy otherwise
+   */
+  handleInheritedProperty(node, property, callback) {
+    let inheritedProperty;
+
+    if (node) {
+      if (node.tabNav && node[property] === true) {
+        inheritedProperty = true;
+      }
+
+      if (node[property] === false) {
+        inheritedProperty = false;
+      }
+
+      if (callback && typeof callback === 'function') {
+        callback();
+      }
+    }
+
+    return inheritedProperty;
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();
