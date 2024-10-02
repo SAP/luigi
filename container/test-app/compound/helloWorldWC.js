@@ -334,12 +334,14 @@ export default class extends HTMLElement {
         buttonDismiss: 'No'
       };
 
-      this.LuigiClient.uxManager().showConfirmationModal(settings).then(() => {
-        this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.uxManager().showConfirmationModal()',
-          type: 'info'
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'LuigiClient.uxManager().showConfirmationModal()',
+            type: 'info'
+          });
         });
-      });
     });
   }
 

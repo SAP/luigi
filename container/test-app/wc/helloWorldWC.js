@@ -316,11 +316,11 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', (event) => {
-      console.log('custom message received: ', event.detail)
+    this.addEventListener('custom-message-id', event => {
+      console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;
-      customMessageDiv.style = "color: red;";
+      customMessageDiv.style = 'color: red;';
     });
 
     this.$confirmationModalBtn = this._shadowRoot.querySelector('#confirmationModal');
@@ -333,12 +333,14 @@ export default class extends HTMLElement {
         buttonDismiss: 'No'
       };
 
-      this.LuigiClient.uxManager().showConfirmationModal(settings).then(() => {
-        this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.uxManager().showConfirmationModal()',
-          type: 'info'
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'LuigiClient.uxManager().showConfirmationModal()',
+            type: 'info'
+          });
         });
-      });
     });
   }
 

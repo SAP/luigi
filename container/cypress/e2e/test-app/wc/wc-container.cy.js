@@ -138,8 +138,7 @@ describe('Web Container Test', () => {
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: ');
 
-      cy.get('#sendCustomMessageBtn')
-        .click()
+      cy.get('#sendCustomMessageBtn').click();
       cy.get(containerSelector)
         .shadow()
         .find('#customMessageDiv')
@@ -154,7 +153,9 @@ describe('Web Container Test', () => {
         .get('#linkManagerUpdateTopPathExistsBack')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
+          );
         });
     });
 
@@ -166,7 +167,7 @@ describe('Web Container Test', () => {
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.on('window:confirm', (str) => {
+          cy.on('window:confirm', str => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');

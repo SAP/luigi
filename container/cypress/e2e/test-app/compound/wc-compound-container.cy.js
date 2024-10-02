@@ -174,7 +174,9 @@ describe('Compound Container Tests', () => {
         .get('#linkManagerUpdateTopPathExistsBack')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
+          );
         });
     });
 
@@ -186,7 +188,7 @@ describe('Compound Container Tests', () => {
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.on('window:confirm', (str) => {
+          cy.on('window:confirm', str => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
