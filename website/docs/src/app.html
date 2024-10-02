@@ -15,13 +15,17 @@
     <div style="display: contents">%sveltekit.body%</div>
 
     <script type="text/javascript">
+      const sanitizeString = function(input) {
+        return input ? input.replace(/[^a-z0-9-]/gim, '').toLowerCase() : '';
+      };
+
       // Import LuigiClient into each microfrontend
       let script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = '/luigi-client/luigi-client.js';
       document.getElementsByTagName('body')[0].appendChild(script);
       document.body.classList.add(
-        'page-' + location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+        'page-' + sanitizeString(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))
       );
 
       // Modify WC API docu labels manually for added clarity through title attribute
