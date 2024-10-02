@@ -147,7 +147,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API updateContext', () => {
+    it('LuigiClient API - updateContext', () => {
       cy.on('window:alert', stub);
 
       cy.wait(500);
@@ -163,6 +163,33 @@ describe('Compound Container Tests', () => {
                 'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
               );
             });
+        });
+    });
+
+    it('LuigiClient API - pathExists', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerUpdateTopPathExistsBack')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false');
+        });
+    });
+
+    it('LuigiClient API - showConfirmationModal', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('showConfirmationModal')
+        .click()
+        .then(() => {
+          cy.on('window:confirm', (str) => {
+            expect(str).to.equal('Are you sure you want to do this?');
+          });
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
         });
     });
 

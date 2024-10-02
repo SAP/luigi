@@ -106,7 +106,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API navigateToIntent for LuigiContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get('[data-test-id="luigi-client-api-test-01"]')
+      cy.get(containerSelector)
         .shadow()
         .contains('navigateToIntent')
         .click()
@@ -131,6 +131,7 @@ describe('Web Container Test', () => {
             });
         });
     });
+
     it('sendCustomMessage', () => {
       cy.get(containerSelector)
         .shadow()
@@ -143,6 +144,33 @@ describe('Web Container Test', () => {
         .shadow()
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: cool custom Message');
+    });
+
+    it('pathExists', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerUpdateTopPathExistsBack')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false');
         });
+    });
+
+    it('showConfirmationModal', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('showConfirmationModal')
+        .click()
+        .then(() => {
+          cy.on('window:confirm', (str) => {
+            expect(str).to.equal('Are you sure you want to do this?');
+          });
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
+        });
+    });
   });
 });

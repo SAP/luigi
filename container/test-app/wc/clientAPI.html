@@ -49,7 +49,7 @@
           defer-init="true"
         ></luigi-container>
       </div>
-      
+
       <!-- Used for testing dynamic compound container creation -->
       <div class="content"></div>
 
@@ -88,11 +88,14 @@
         luigiContainer.addEventListener(
           MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
           event => {
-            console.log(event.detail);
-            const val = confirm(event.detail.body);
+            const data = event.detail;
+            console.log(data);
+            const val = confirm(data.body);
             // send back to mf alert.answer with data
             window.postMessage('alert.answer', data);
-            event.luigiCallback(val);
+            if (event.callback) {
+              event.callback(val);
+            }
           }
         );
         luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
