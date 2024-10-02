@@ -25,7 +25,10 @@
       script.src = '/luigi-client/luigi-client.js';
       document.getElementsByTagName('body')[0].appendChild(script);
       document.body.classList.add(
-        'page-' + sanitizeString(location.pathname.substring(location.pathname.lastIndexOf('/') + 1))
+        'page-' +
+          sanitizeString(
+            location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+          )
       );
 
       // Modify WC API docu labels manually for added clarity through title attribute
