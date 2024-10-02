@@ -2045,6 +2045,10 @@
     --luigi__horizontal-nav--height: 2.75rem;
   }
 
+  .fd-tool-layout {
+    --fdToolLayout_Background: var(--sapBackgroundColor);
+  }
+
   :global(html) {
     box-sizing: border-box;
     position: fixed;
