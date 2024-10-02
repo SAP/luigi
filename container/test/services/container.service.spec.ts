@@ -68,7 +68,7 @@ describe('getContainerManager messageListener', () => {
     gtcSpy.mockRestore();
   });
 
-  it('test get context message', () => {    
+  it('test get context message', () => {
     const event = {
       source: cw,
       data: {
@@ -87,7 +87,16 @@ describe('getContainerManager messageListener', () => {
      cw.postMessage = postMessageMock;
 
     // Define the message to send and target Origin
-    const message = {"context": {}, "internal": {}, "msg": "luigi.init", "authData":{}};
+    const message = {
+      "authData":{},
+      "context": {},
+      "internal": {
+        "thirdPartyCookieCheck": {
+          "disabled": false
+        }
+      },
+      "msg": "luigi.init"
+    };
     const targetOrigin = "*";
 
     // Call the method that should trigger postMessage
