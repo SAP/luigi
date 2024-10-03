@@ -138,8 +138,7 @@ describe('Web Container Test', () => {
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: ');
 
-      cy.get('#sendCustomMessageBtn')
-        .click()
+      cy.get('#sendCustomMessageBtn').click();
       cy.get(containerSelector)
         .shadow()
         .find('#customMessageDiv')
@@ -154,10 +153,8 @@ describe('Web Container Test', () => {
         .get('#linkManagerChainRequests')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith(
-            'LuigiClient.linkManager().navigate()'
-          );
-          cy.hash().should('eq', '#hello-world-wc')
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
         });
     });
   });

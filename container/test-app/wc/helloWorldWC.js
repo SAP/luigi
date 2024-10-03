@@ -261,8 +261,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager()
         .withParams('my-params')
         .navigate(path);
-      this.LuigiClient.linkManager()
-        .navigate(path);
+      this.LuigiClient.linkManager().navigate(path);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.linkManager().navigate()',
         type: 'info'
@@ -324,11 +323,11 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', (event) => {
-      console.log('custom message received: ', event.detail)
+    this.addEventListener('custom-message-id', event => {
+      console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;
-      customMessageDiv.style = "color: red;";
+      customMessageDiv.style = 'color: red;';
     });
   }
 

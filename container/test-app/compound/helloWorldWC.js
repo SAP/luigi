@@ -293,8 +293,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager()
         .withParams('my-params')
         .navigate(path);
-      this.LuigiClient.linkManager()
-        .navigate(path);
+      this.LuigiClient.linkManager().navigate(path);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.linkManager().navigate()',
         type: 'info'

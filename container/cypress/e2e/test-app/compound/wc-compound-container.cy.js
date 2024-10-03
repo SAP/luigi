@@ -183,10 +183,8 @@ describe('Compound Container Tests', () => {
         .get('#linkManagerChainRequests')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith(
-            'LuigiClient.linkManager().navigate()'
-          );
-          cy.hash().should('eq', '#hello-world-wc')
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
         });
     });
   });
