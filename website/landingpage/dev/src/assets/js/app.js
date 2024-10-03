@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import DOMPurify from 'dompurify';
 import 'what-input';
 
 // Foundation JS relies on a global varaible. In ES6, all imports are hoisted
@@ -167,12 +168,12 @@ loadMoreBlogsBtn.on('click', function() {
   }).then(response => {
     if (response.ok) {
       response.text().then(response => {
-        $('#blog-chunk').append(response);
+        $('#blog-chunk').append(DOMPurify.sanitize(response));
         chunkCounter = chunkCounter + chunksMinBlogLoadAmount;
         let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + chunkCounter + ')');
-        
+
         //ids for a smooth scroll to particular new div
-        chunksWrapperDIV.attr('id', 'chunk-number' + chunkCounter); 
+        chunksWrapperDIV.attr('id', 'chunk-number' + chunkCounter);
         loadMoreBlogsBtn.attr('href', '#chunk-number' + chunkCounter);
 
         let currentVisibleBlogs = chunkCounter + chunksMinBlogLoadAmount;
@@ -197,5 +198,5 @@ if (backToBlog.length && document.referrer.indexOf('/blog/overview') !== -1 && w
     e.preventDefault();
     e.stopPropagation();
     history.back();
-});
+  });
 }
