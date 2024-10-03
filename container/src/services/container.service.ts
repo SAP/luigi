@@ -11,11 +11,7 @@ export class ContainerService {
    * @returns {boolean} Returns true if the element is visible, otherwise false.
    */
   isVisible(component: HTMLElement): boolean {
-    return !!(
-      component.offsetWidth ||
-      component.offsetHeight ||
-      component.getClientRects().length
-    );
+    return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
   /**
@@ -30,14 +26,8 @@ export class ContainerService {
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
       messageName === 'custom'
-        ? iframeHandle.iframe.contentWindow.postMessage(
-            { msg: messageName, data: msg },
-            iframeUrl.origin
-          )
-        : iframeHandle.iframe.contentWindow.postMessage(
-            { msg: messageName, ...msg },
-            iframeUrl.origin
-          );
+        ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin)
+        : iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin);
     } else {
       console.error('Message target could not be resolved');
     }
@@ -51,20 +41,10 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(
-    msg: string,
-    targetCnt: HTMLElement,
-    data: any,
-    callback?: Function,
-    callbackName?: string
-  ): void {
+  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
 
-    if (
-      callback &&
-      GenericHelperFunctions.isFunction(callback) &&
-      callbackName
-    ) {
+    if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       (customEvent as any)[callbackName] = data => {
         callback(data);
       };
@@ -83,10 +63,7 @@ export class ContainerService {
     let cnt;
 
     globalThis.__luigi_container_manager.container.forEach(element => {
-      if (
-        element.iframeHandle?.iframe &&
-        element.iframeHandle.iframe.contentWindow === event.source
-      ) {
+      if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
         cnt = element;
       }
     });
@@ -144,11 +121,7 @@ export class ContainerService {
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
-                this.dispatch(
-                  Events.NAVIGATION_REQUEST,
-                  targetCnt,
-                  event.data.params
-                );
+                this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
               case LuigiInternalMessageID.ALERT_REQUEST:
                 this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
@@ -169,103 +142,52 @@ export class ContainerService {
                 });
                 break;
               case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
-                this.dispatch(
-                  Events.SHOW_CONFIRMATION_MODAL_REQUEST,
-                  targetCnt,
-                  event.data.data
-                );
+                this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
-                this.dispatch(
-                  Events.SHOW_LOADING_INDICATOR_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.HIDE_LOADING_INDICATOR_REQUEST:
-                this.dispatch(
-                  Events.HIDE_LOADING_INDICATOR_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST:
-                this.dispatch(
-                  Events.SET_CURRENT_LOCALE_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
-                this.dispatch(
-                  Events.LOCAL_STORAGE_SET_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
-                this.dispatch(
-                  Events.RUNTIME_ERROR_HANDLING_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
                 this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
-                this.dispatch(
-                  Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
                 this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
-                this.dispatch(
-                  Events.GET_CURRENT_ROUTE_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
-                this.dispatch(
-                  Events.NAVIGATION_COMPLETED_REPORT,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
                 break;
               case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
-                this.dispatch(
-                  Events.UPDATE_MODAL_PATH_DATA_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
-                this.dispatch(
-                  Events.CHECK_PATH_EXISTS_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
-                this.dispatch(
-                  Events.SET_DIRTY_STATUS_REQUEST,
-                  targetCnt,
-                  event
-                );
+                this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
                 break;
             }
           }
         }
       };
-      window.addEventListener(
-        'message',
-        globalThis.__luigi_container_manager.messageListener
-      );
+      window.addEventListener('message', globalThis.__luigi_container_manager.messageListener);
     }
 
     return globalThis.__luigi_container_manager;
