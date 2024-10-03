@@ -131,6 +131,7 @@ describe('Web Container Test', () => {
             });
         });
     });
+
     it('sendCustomMessage', () => {
       cy.get(containerSelector)
         .shadow()
@@ -143,6 +144,21 @@ describe('Web Container Test', () => {
         .shadow()
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: cool custom Message');
+    });
+
+    it('linkManagerChainRequests for navigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerChainRequests')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().navigate()'
+          );
+          cy.hash().should('eq', '#hello-world-wc')
         });
+    });
   });
 });

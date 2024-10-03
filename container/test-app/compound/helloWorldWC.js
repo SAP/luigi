@@ -275,18 +275,30 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
+      const path = 'hello-world-wc';
+      const ctx = { ctx: 123 };
+
       this.LuigiClient.linkManager()
-        .fromContext({ ctx: 123 })
-        .navigate('hello-world-wc');
+        .fromContext(ctx)
+        .navigate();
       this.LuigiClient.linkManager()
         .fromClosestContext()
-        .navigate('hello-world-wc');
+        .navigate(path);
       this.LuigiClient.linkManager()
         .fromVirtualTreeRoot()
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager()
+        .fromParent(ctx)
+        .navigate(path);
       this.LuigiClient.linkManager()
         .withParams('my-params')
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager()
+        .navigate(path);
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.linkManager().navigate()',
+        type: 'info'
+      });
     });
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
