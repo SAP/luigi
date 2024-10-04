@@ -9,14 +9,14 @@ describe('getContainerManager messageListener', () => {
   let cm ;
   let dispatchedEvent;
   service = new ContainerService();
-  cm = service.getContainerManager();    
+  cm = service.getContainerManager();
 
   beforeEach(() => {
     // only get context scenario relies on postMessage, so we need special case handling for it
     const testName = expect.getState().currentTestName;
     if (testName === 'test get context message'){
-      cw = {  postMessage: () => {}}
-    }   
+      cw = {postMessage: () => {}}
+    }
 
     gtcSpy = jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
       return {
@@ -36,7 +36,7 @@ describe('getContainerManager messageListener', () => {
     jest.resetAllMocks();
   });
 
-  it('test alert request', () => {    
+  it('test alert request', () => {
     const event = {
       source: cw,
       data: {
@@ -49,9 +49,9 @@ describe('getContainerManager messageListener', () => {
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.ALERT_REQUEST);
     expect(dispatchedEvent.detail).toEqual({data: {data: {id: "navRequest"}, msg: "luigi.ux.alert.show"}, source: {}});
-   });
+  });
 
-  it('test custom message', () => {    
+  it('test custom message', () => {
     const event = {
       source: cw,
       data: {
@@ -84,7 +84,8 @@ describe('getContainerManager messageListener', () => {
     const postMessageMock = jest.fn();
 
     // Replace the real postMessage with the mock
-     cw.postMessage = postMessageMock;
+    cw.postMessage = postMessageMock;
+    cw.origin = 'null';
 
     // Define the message to send and target Origin
     const message = {
@@ -106,9 +107,9 @@ describe('getContainerManager messageListener', () => {
     expect(postMessageMock).toHaveBeenCalledWith(message, targetOrigin);
 
     // Clean up by restoring the original postMessage function
-    cw.postMessage = () => {}
+    cw.postMessage = () => {};
+    cw.origin = undefined;
   });
-
 
   it('test initialized request', () => {
     const event = {
@@ -344,7 +345,6 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
   });
 
-
   it('test default', () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
     const event = {
@@ -356,14 +356,12 @@ describe('getContainerManager messageListener', () => {
     cm.messageListener(event);
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
-
 });
-
 
 describe('isVisible', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   afterEach(()=>{
     jest.resetAllMocks();
   });
@@ -409,11 +407,10 @@ describe('isVisible', () => {
   });
 });
 
-
 describe('sendCustomMessageToIframe', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   afterEach(()=>{
     jest.resetAllMocks();
   });
@@ -429,7 +426,7 @@ describe('sendCustomMessageToIframe', () => {
       },
     };
     const message = { key: 'value' };
-    
+
     // Act
     service.sendCustomMessageToIframe(iframeHandle, message);
 
@@ -451,7 +448,7 @@ describe('sendCustomMessageToIframe', () => {
       },
     };
     const message = { key: 'value' };
-    
+
     // Act
     service.sendCustomMessageToIframe(iframeHandle, message, 'namedMessage');
 
@@ -468,7 +465,7 @@ describe('sendCustomMessageToIframe', () => {
       iframe: {},
     };
     const message = { key: 'value' };
-    
+
     // Spy on console.error to capture the log message
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -486,7 +483,7 @@ describe('sendCustomMessageToIframe', () => {
 describe('dispatch', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   afterEach(()=>{
     jest.resetAllMocks();
   });
@@ -520,7 +517,7 @@ describe('dispatch', () => {
 
     // Act
     service. dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
-  
+
     // Assert
     globalThis.CustomEvent = jest.fn().mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
 
@@ -532,7 +529,7 @@ describe('dispatch', () => {
 describe('getTargetContainer', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   afterEach(()=>{
     jest.resetAllMocks();
   });
@@ -605,7 +602,7 @@ describe('getTargetContainer', () => {
 describe('getContainerManager branch', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   beforeEach(() => {
     globalThis.__luigi_container_manager = undefined;
     jest.resetAllMocks();
@@ -651,7 +648,7 @@ describe('getContainerManager branch', () => {
 describe('registerContainer', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -670,6 +667,5 @@ describe('registerContainer', () => {
     // Assert
     expect(containerManager.container).toContain(container);
     expect(service.getContainerManager).toHaveBeenCalled();
-
   });
 });
