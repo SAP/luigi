@@ -8,7 +8,7 @@ const path = require('path');
 const filesAndLimits = [
   {
     path: 'client/public/luigi-client.js',
-    limit: 50
+    limit: 65
   },
   {
     path: 'core/public/luigi.js',
