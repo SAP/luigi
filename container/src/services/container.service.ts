@@ -117,7 +117,7 @@ export class ContainerService {
                     },
                     authData: targetCnt.authData || {}
                   },
-                  target.origin || '*'
+                  target.origin !== 'null' ? target.origin : '*'
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
