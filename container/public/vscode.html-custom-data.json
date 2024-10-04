@@ -1,0 +1,173 @@
+{
+    "version": 1.0,
+    "tags": [
+        {
+            "name": "luigi-container",
+            "description": "### Overview\n\nThe `luigi-container` provides the possibility to display a micro frontend in webcomponent.",
+            "attributes": [
+            {
+                "name": "viewurl",
+                "description": "The URL of the microfrontend to be rendered."
+            },
+            {
+                "name": "defer-init",
+                "description": "If set to true defers from initializing the microfronted automatically. In that case init() can be used."
+            },
+            {
+                "name": "no-shadow",
+                "description": "If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering."
+            },
+            {
+                "name": "context",
+                "description": "The stringified context object to be passed to the microfrontend."
+            },
+            {
+                "name": "label",
+                "description": "Label information for the microfrontend"
+            },
+            {
+                "name": "webcomponent",
+                "description": "Predicate that sets whether the microfrontend is to be rendered in a web component or not. Either a stringified boolean or json valid object."
+            },
+            {
+                "name": "locale",
+                "description": "The locale to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "theme",
+                "description": "The theme to be passed to the  web-component-based micro frontend."
+            },
+            {
+                "name": "active-feature-toggle-list",
+                "description": "The list of active feature toggles to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "skip-init-check",
+                "description": "If set to true, skips handshake and ready event is fired immediately."
+            },
+            {
+                "name": "node-params",
+                "description": "The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children."
+            },
+            {
+                "name": "user-settings",
+                "description": "The user settings to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "anchor",
+                "description": "The anchor value to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "search-params",
+                "description": "The search parameters to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "path-params",
+                "description": "The path parameters to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "client-permissions",
+                "description": "The clientPermissions to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "dirty-status",
+                "description": "The dirty status value to be passed to the web-component-based micro frontend. It's used to indicate that there are unsaved changes when navigating away."
+            },
+            {
+                "name": "has-back",
+                "description": "The hasBack value to be passed to the web-component-based micro frontend. It indicates that there is one or more preserved views. Useful when you need to show a back button."
+            },
+            {
+                "name": "document-title",
+                "description": "The document title value to be passed to the web-component-based micro frontend."
+            },
+            {
+                "name": "allow-rules",
+                "description": "The list of rules for the content in the iframe, managed by the HTML `allow` attribute. You can use one or more rules by adding them to the array, for example allow-rules='[\"microphone\", \"camera\"]'"
+            },
+            {
+                "name": "sandbox-rules",
+                "description": "The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute. You can use one or more rules by adding them to the array, for example sandbox-rules='[\"allow-scripts\", \"allow-same-origin\"]'"
+            },
+            {
+                "name": "auth-data",
+                "description": "The authData value to be passed to the iframe-based micro frontend."
+            }
+            ]
+        },
+        {
+            "name": "luigi-compound-container",
+            "description": "### Overview\n\nThe `luigi-compound-container` provides the possibility to insert multiple webcomponent-based microfrontends in one container.",
+            "attributes": [
+            {
+                "name": "viewurl",
+                "description": "The URL used for the renderer."
+            },
+            {
+                "name": "defer-init",
+                "description": "If set to true defers from initializing the microfronted automatically. In that case init() can be used."
+            },
+            {
+                "name": "context",
+                "description": "The stringified context to be passed to the compound microfrontend."
+            },
+            {
+                "name": "no-shadow",
+                "description": "If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering."
+            },
+            {
+                "name": "compound-config",
+                "description": "The configuration for the compound microfrontend. Take a look at the <a href='https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound' for details."
+            },
+            {
+                "name": "user-settings",
+                "description": "The user settings to be passed to the compound micro frontend."
+            },
+            {
+                "name": "anchor",
+                "description": "The anchor value to be passed to the compound micro frontend."
+            },
+            {
+                "name": "search-params",
+                "description": "The search parameters to be passed to the compound micro frontend."
+            },
+            {
+                "name": "path-params",
+                "description": "The path parameters to be passed to the compound micro frontend."
+            },
+            {
+                "name": "client-permissions",
+                "description": "The clientPermissions to be passed to the compound micro frontend."
+            },
+            {
+                "name": "dirty-status",
+                "description": "The dirty status value to be passed to the compound micro frontend. It's used to indicate that there are unsaved changes when navigating away."
+            },
+            {
+                "name": "has-back",
+                "description": "The hasBack value to be passed to the compound micro frontend. It indicates that there is one or more preserved views. Useful when you need to show a back button."
+            },
+            {
+                "name": "document-title",
+                "description": "The document title value to be passed to the compound micro frontend."
+            },
+            {
+                "name": "skip-init-check",
+                "description": "If set to true, skips handshake and ready event is fired immediately."
+            },
+            {
+                "name": "locale",
+                "description": "The locale to be passed to the compound micro frontend."
+            },
+            {
+                "name": "active-feature-toggle-list",
+                "description": "The list of active feature toggles to be passed to the compound microfrontend."
+            },
+            {
+                "name": "theme",
+                "description": "The theme to be passed to the compound microfrontend."
+            }
+            ]
+        }
+    ]
+}

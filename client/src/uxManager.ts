@@ -21,7 +21,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.enabled} setting.
    * @memberof uxManager
    */
@@ -30,7 +29,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.hideAutomatically: false} node configuration.
    * @memberof uxManager
    */
@@ -39,7 +37,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Closes the currently opened micro frontend modal.
    * @memberof uxManager
    */
@@ -48,7 +45,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
    * @memberof uxManager
    */
@@ -57,7 +53,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Removes the backdrop.
    * @memberof uxManager
    */
@@ -66,7 +61,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
    * @memberof uxManager
@@ -79,7 +73,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Shows a confirmation modal.
    * @memberof uxManager
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
@@ -141,7 +134,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Shows an alert.
    * @memberof uxManager
    * @param {Object} config the settings for the alert
@@ -228,7 +220,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Gets the current locale.
    * @returns {string} current locale
    * @memberof uxManager
@@ -238,7 +229,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Sets current locale to the specified one.
    *
    * **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See {@link navigation-parameters-reference.md Node parameters}.)
@@ -258,7 +249,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a split view
    * @returns {boolean} indicating if it is loaded inside a split view
    * @memberof uxManager
@@ -269,6 +260,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a modal
    * @returns {boolean} indicating if it is loaded inside a modal
    * @memberof uxManager
@@ -279,7 +271,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a drawer
    * @returns {boolean} indicating if it is loaded inside a drawer
    * @memberof uxManager
@@ -290,7 +282,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Gets the current theme.
    * @returns {*} current themeObj
    * @memberof uxManager
@@ -300,7 +291,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Gets the CSS variables from Luigi Core with their key and value.
    * @returns {Object} CSS variables with their key and value.
    * @memberof uxManager
@@ -312,7 +303,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
    * @memberof uxManager
    * @since 2.3.0
