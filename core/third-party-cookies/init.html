@@ -7,10 +7,11 @@
     let luigiCookieKey;
     const winParent = window.parent;
     const targetOrigin = winParent.origin !== 'null' ? winParent.origin : '*';
-    const getLuigiCookie = storedCookies => storedCookies
-      .split(';')
-      .map(cookie => DOMPurify.sanitize(cookie).trim())
-      .find(cookie => cookie === 'luigiCookie=true');
+    const getLuigiCookie = storedCookies =>
+      storedCookies
+        .split(';')
+        .map(cookie => DOMPurify.sanitize(cookie).trim())
+        .find(cookie => cookie === 'luigiCookie=true');
     const setLuigiCookie = luigiCookie => {
       luigiCookieKey = luigiCookie.split('=')[0];
       document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
