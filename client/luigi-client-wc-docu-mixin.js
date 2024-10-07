@@ -1,5 +1,5 @@
 /**
- * <!-- label-success: Web Component API -->
+ * <!-- label-success: Web Component API only-->
  * Publish an event that can be listened to from the container host.
  *
  * Similar to {@link luigi-client-api.md#sendCustomMessage sendCustomMessage} but for WebComponent based microfrontends only.

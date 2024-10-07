@@ -35,7 +35,7 @@ Use the functions and parameters to define the Lifecycle of listeners, navigatio
 
 #### publishEvent
 
-<!-- label-success: Web Component API -->
+<!-- label-success: Web Component API only-->
 
 Publish an event that can be listened to from the container host.
 
