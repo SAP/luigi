@@ -329,7 +329,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: NEXT_RELEASE_CONTAINER
 
 ```js
-myContainer.theme = 'SAP-Horizon'
+myContainer.theme = 'sap_horizon'
 ```
 
 ```HTML
