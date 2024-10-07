@@ -196,7 +196,7 @@ myContainer.userSettings = '{foo: bar}'
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" userSettings='{foo: bar}'></luigi-container>
+<luigi-container viewUrl="/index.html" userSettings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
 ```
 
 ### anchor
