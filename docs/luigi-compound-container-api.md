@@ -88,7 +88,7 @@ myContainer.nodeParams = {foo: bar}
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" nodeParams='{foo: bar}'></luigi-container>
+<luigi-container viewUrl="/index.html" nodeParams='{"node":"param"}'></luigi-container>
 ```
 
 ### noShadow
