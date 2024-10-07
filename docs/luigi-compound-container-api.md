@@ -160,7 +160,7 @@ myContainer.context = '{foo: bar}'
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" context='{foo: bar}'></luigi-container>
+<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
 ```
 
 ### clientPermissions
