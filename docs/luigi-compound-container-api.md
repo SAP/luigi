@@ -174,7 +174,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: 1.0.0
 
 ```js
-myContainer.clientPermissions = '{foo: bar}'
+myContainer.clientPermissions = {permission: "adminGroup"}
 ```
 
 ```HTML
