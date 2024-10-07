@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
@@ -144,18 +143,31 @@ class LifecycleManager extends LuigiClientBase {
       return;
     }
 
-    let tpc = 'enabled';
-    let cookies = document.cookie;
-    let luigiCookie;
-    let luigiCookieKey;
     const winParent = window.parent;
     const targetOrigin = winParent.origin !== 'null' ? winParent.origin : '*';
     const luigiCookieValue = 'luigiCookie=true';
-    const getLuigiCookie = storedCookies =>
-      storedCookies
+    const sanitizeCookies = cookies => {
+      const charMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        '`': '&grave;',
+        "'": '&#x27;',
+        '/': '&#x2F;'
+      };
+
+      return cookies.replace(/[&<>"`'/]/ig, match => (charMap[match]));
+    };
+    const getLuigiCookie = cookies =>
+      cookies
         .split(';')
-        .map(cookie => DOMPurify.sanitize(cookie).trim())
+        .map(cookie => cookie.trim())
         .find(cookie => cookie === luigiCookieValue);
+    let cookies = sanitizeCookies(document.cookie);
+    let tpc = 'enabled';
+    let luigiCookie;
+    let luigiCookieKey;
 
     if (cookies) {
       luigiCookie = getLuigiCookie(cookies);
@@ -166,7 +178,7 @@ class LifecycleManager extends LuigiClientBase {
     }
 
     document.cookie = luigiCookieValue + '; SameSite=None; Secure';
-    cookies = document.cookie;
+    cookies = sanitizeCookies(document.cookie);
 
     if (cookies) {
       luigiCookie = getLuigiCookie(cookies);
