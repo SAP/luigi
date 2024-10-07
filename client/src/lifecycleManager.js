@@ -146,25 +146,14 @@ class LifecycleManager extends LuigiClientBase {
     const winParent = window.parent;
     const targetOrigin = winParent.origin !== 'null' ? winParent.origin : '*';
     const luigiCookieValue = 'luigiCookie=true';
-    const sanitizeCookies = cookies => {
-      const charMap = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        '`': '&grave;',
-        "'": '&#x27;',
-        '/': '&#x2F;'
-      };
-
-      return cookies.replace(/[&<>"`'/]/gi, match => charMap[match]);
-    };
+    const sanitizeString = input =>
+      input ? input.replace(/[^a-z0-9%._=;]/gim, '') : '';
     const getLuigiCookie = cookies =>
       cookies
         .split(';')
-        .map(cookie => cookie.trim())
+        .map(cookie => sanitizeString(cookie).trim())
         .find(cookie => cookie === luigiCookieValue);
-    let cookies = sanitizeCookies(document.cookie);
+    let cookies = sanitizeString(document.cookie);
     let tpc = 'enabled';
     let luigiCookie;
     let luigiCookieKey;
@@ -178,7 +167,7 @@ class LifecycleManager extends LuigiClientBase {
     }
 
     document.cookie = luigiCookieValue + '; SameSite=None; Secure';
-    cookies = sanitizeCookies(document.cookie);
+    cookies = sanitizeString(document.cookie);
 
     if (cookies) {
       luigiCookie = getLuigiCookie(cookies);
