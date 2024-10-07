@@ -333,7 +333,7 @@ myContainer.theme = 'sap_horizon'
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" theme='SAP-Horizon'></luigi-container>
+<luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>
 ```
 
 ### updateContext
