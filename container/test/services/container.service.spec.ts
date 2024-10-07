@@ -85,7 +85,7 @@ describe('getContainerManager messageListener', () => {
 
     // Replace the real postMessage with the mock
     cw.postMessage = postMessageMock;
-    cw.origin = 'null';
+    cw.origin = '*';
 
     // Define the message to send and target Origin
     const message = {
