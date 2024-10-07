@@ -62,9 +62,11 @@
       import MFEventID from '../bundle.js';
 
       const compoundContainer = document.getElementById('dashboard');
+
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
-        console.log('Publish Event', e.detail);
+        console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
+
       compoundContainer.compoundConfig = {
         renderer: {
           use: 'grid',
@@ -103,6 +105,9 @@
                 name: 'sendInput',
                 action: 'update',
                 dataConverter: data => {
+                  console.log(
+                    'dataConverter(): Received Custom Message from "input1" MF ' + data
+                  );
                   return 'new text: ' + data;
                 }
               }
@@ -168,7 +173,6 @@
         }
       );
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
-        console.log('Custom Event', event);
         if (event.detail.id !== 'timer') {
           alert(event.detail.id);
         }
