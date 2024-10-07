@@ -12,7 +12,7 @@ class LifecycleManager extends LuigiClientBase {
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
+      this.defaultContextKeys.reduce(function (acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -139,7 +139,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck() {
-    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled) {
+    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || document.head.getAttribute('disable-lui-tpc-check')) {
       return;
     }
     let tpc = 'enabled';
@@ -579,6 +579,20 @@ class LifecycleManager extends LuigiClientBase {
       msg: 'luigi.setVGData',
       data
     });
+  }
+
+  /**
+  * Disables the TPC (Third-Party Cookies) check via Luigi Client.
+  * 
+  * This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element 
+  * of the document. It has to be called in the callback function of the addInitListener.
+  * @since NEXTRELEASE
+  * @memberof Lifecycle
+  * @example
+  * LuigiClient.disableTpcCheck();
+  */
+  disableTpcCheck() {
+    document.head.setAttribute('disable-lui-tpc-check', true);
   }
 }
 export const lifecycleManager = new LifecycleManager();

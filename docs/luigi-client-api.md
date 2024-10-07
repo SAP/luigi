@@ -516,6 +516,23 @@ LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
 
 *   **since**: 2.2.0
 
+#### disableTpcCheck
+
+Disables the TPC (Third-Party Cookies) check via Luigi Client.
+
+This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element
+of the document. It has to be called in the callback function of the addInitListener.
+
+##### Examples
+
+```javascript
+LuigiClient.disableTpcCheck();
+```
+
+**Meta**
+
+*   **since**: NEXTRELEASE
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
