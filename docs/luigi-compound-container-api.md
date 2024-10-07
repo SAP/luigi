@@ -48,7 +48,76 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: 1.0.0
 TODO: better example
 ```js
-myContainer.compoundConfig = {foo: bar}
+myContainer.compoundConfig = lcc.compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr 1fr 2fr',
+            /*rows: '150px',*/
+            /*gap: '30px',*/
+            layouts: [
+              {
+                minWidth: 0,
+                maxWidth: 600,
+                columns: '1fr',
+                gap: 0
+              },
+              {
+                minWidth: 600,
+                maxWidth: 1024,
+                columns: '1fr 1fr',
+                gap: '30px'
+              }
+            ]
+          }
+        },
+        children: [
+          {
+            viewUrl: 'http://www.examples.com/header.js',
+            context: {
+              title: 'My Awesome Grid 000',
+              description: 'Really awesome'
+            },
+            layoutConfig: {
+              row: '1',
+              column: '1 / -1'
+            },
+            eventListeners: [
+              {
+                source: 'input1',
+                name: 'sendInput',
+                action: 'update',
+                dataConverter: data => {
+                  return 'new text: ' + data;
+                }
+              }
+            ]
+          },
+          {
+            id: 'input1',
+            viewUrl: '/helloWorldWC.js',
+            context: {
+              title: 'Some input',
+              instant: true
+            }
+          },
+          {
+            viewUrl: 'http://www.examples.com/main.js',
+            context: {
+              label: 'Another web component'
+            }
+          },
+          {
+            viewUrl: '/panelFooter.js',
+            context: {
+              footer: 'This is the end of awesomeness'
+            },
+            layoutConfig: {
+              column: '1 / -1'
+            }
+          }
+        ]
+      };
 ```
 
 ```HTML
