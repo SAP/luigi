@@ -293,7 +293,7 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 *   **since**: 1.0.0
 
 ```js
-myContainer.webcomponent = { webComponentSettings: {type: 'foo', selfRegistered: true, tagName: '#wcMountpoint'}}
+myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}
 ```
 #TODO: this is probably wrong/not the best way, maybe there is a custom element?
 ```HTML
