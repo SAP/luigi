@@ -117,7 +117,7 @@ export class ContainerService {
                     },
                     authData: targetCnt.authData || {}
                   },
-                  target.origin !== 'null' ? target.origin : '*'
+                  this.getTargetOrigin(target)
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
@@ -200,6 +200,14 @@ export class ContainerService {
    */
   registerContainer(thisComponent: HTMLElement): void {
     this.getContainerManager().container.push(thisComponent);
+  }
+
+  /**
+   * Helper function for 'postMessage' method
+   * @returns The origin that recipient window must have in order to receive the event
+   */
+  getTargetOrigin(target: Window): string {
+    return !target?.origin || target?.origin === 'null' ? '*' : target.origin;
   }
 }
 
