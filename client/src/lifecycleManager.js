@@ -157,7 +157,7 @@ class LifecycleManager extends LuigiClientBase {
         '/': '&#x2F;'
       };
 
-      return cookies.replace(/[&<>"`'/]/ig, match => (charMap[match]));
+      return cookies.replace(/[&<>"`'/]/gi, match => charMap[match]);
     };
     const getLuigiCookie = cookies =>
       cookies
