@@ -120,6 +120,7 @@
       isNavigateBack,
       viewStackSize: preservedViews.length,
       clientPermissions: iframeConf.nextViewUrl ? iframeConf.nextClientPermissions : iframeConf.clientPermissions,
+      thirdPartyCookieCheck: await LuigiConfig.getConfigValue('settings.thirdPartyCookieCheck'),
       userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null,
       anchor: LuigiRouting.getAnchor(),
       cssVariables: await LuigiTheming.getCSSVariables()
@@ -2042,6 +2043,10 @@
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
     --luigi__horizontal-nav--height: 2.75rem;
+  }
+
+  .fd-tool-layout {
+    --fdToolLayout_Background: var(--sapBackgroundColor);
   }
 
   :global(html) {
