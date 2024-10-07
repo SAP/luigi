@@ -782,15 +782,15 @@ export function setViewGroupData(value: Object): void;
 export type setViewGroupData = (value: Object) => void;
 
 /**
-  * Disables the TPC (Third-Party Cookies) check via Luigi Client.
-  * 
-  * This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element 
-  * of the document. It has to be called in the callback function of the addInitListener.
-  * @since NEXTRELEASE
-  * @memberof Lifecycle
-  * @example
-  * LuigiClient.disableTpcCheck();
-*/
+ * Disables the TPC (Third-Party Cookies) check via Luigi Client.
+ *
+ * This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element
+ * of the document. It has to be called in the callback function of the addInitListener.
+ * @since NEXTRELEASE
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.disableTpcCheck();
+ */
 export function disableTpcCheck(): void;
 export type disableTpcCheck = () => void;
 
