@@ -51,6 +51,12 @@ const publishPaths = {
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
 
+if (!process.env.NIGHTLY_VERSION) {
+  logHeadline('Added container path to publish nightly release steps');
+  packagePaths.container = ['container'];
+  publishPaths.container = ['container', 'public'];
+}
+
 function execTrim(cmd) {
   return require('child_process')
     .execSync(cmd)
