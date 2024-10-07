@@ -192,7 +192,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: 1.0.0
 
 ```js
-myContainer.userSettings = '{foo: bar}'
+myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
 ```
 
 ```HTML
