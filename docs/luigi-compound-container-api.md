@@ -33,7 +33,7 @@ myContainer.viewUrl = "/index.html"
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+<luigi-container viewUrl="/index.html"></luigi-container>
 ```
 
 ### compoundConfig
