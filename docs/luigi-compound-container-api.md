@@ -156,7 +156,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: 1.0.0
 TODO: is it better to use JSON.stringify({foo: bar}) for the value
 ```js
-myContainer.context = '{foo: bar}'
+myContainer.context = {label: "Dashboard"}
 ```
 
 ```HTML
