@@ -173,5 +173,17 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
         });
     });
+
+    it('receive custom message from WC', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('Publish event')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
+        });
+    });
   });
 });
