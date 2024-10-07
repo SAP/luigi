@@ -297,7 +297,7 @@ myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegister
 ```
 #TODO: this is probably wrong/not the best way, maybe there is a custom element?
 ```HTML
-<luigi-container webcomponent="{ webComponentSettings: {type: 'foo', selfRegistered: true, tagName: '#wcMountpoint'}}"></luigi-container>
+<luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
 ```
 
 ### activeFeatureToggleList
