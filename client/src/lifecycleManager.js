@@ -151,7 +151,7 @@ class LifecycleManager extends LuigiClientBase {
     const getLuigiCookie = cookies =>
       cookies
         .split(';')
-        .map(cookie => cookie.trim())
+        .map(cookie => sanitizeString(cookie))
         .find(cookie => cookie === luigiCookieValue);
     let cookies = sanitizeString(document.cookie);
     let tpc = 'enabled';
@@ -162,24 +162,22 @@ class LifecycleManager extends LuigiClientBase {
       luigiCookie = getLuigiCookie(cookies);
     }
     if (luigiCookie === luigiCookieValue) {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = sanitizeString(luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure');
+      luigiCookieKey = luigiCookieValue.split('=')[0];
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     }
 
-    document.cookie = sanitizeString(luigiCookieValue + '; SameSite=None; Secure');
+    document.cookie = luigiCookieValue + '; SameSite=None; Secure';
     cookies = sanitizeString(document.cookie);
 
     if (cookies) {
       luigiCookie = getLuigiCookie(cookies);
     }
-    if (luigiCookie === luigiCookieValue) {
-      winParent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, targetOrigin);
-      document.cookie = sanitizeString(luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure');
-    } else {
+    if (luigiCookie !== luigiCookieValue) {
       tpc = 'disabled';
-      winParent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, targetOrigin);
       console.warn('Third party cookies are not supported!');
     }
+
+    winParent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, targetOrigin);
   }
 
   /**
