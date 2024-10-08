@@ -588,7 +588,7 @@ class LifecycleManager extends LuigiClientBase {
    * Disables the TPC (Third-Party Cookies) check via Luigi Client.
    *
    * This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element
-   * of the document. It has to be called in the callback function of the addInitListener.
+   * of the document. It has to be called once the DOM is ready.
    * @since NEXTRELEASE
    * @memberof Lifecycle
    * @example
