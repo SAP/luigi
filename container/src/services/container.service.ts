@@ -22,6 +22,7 @@ export class ContainerService {
    */
   sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
     const messageName = msgName || 'custom';
+
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
       messageName === 'custom'
@@ -42,22 +43,25 @@ export class ContainerService {
    */
   dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
+
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       (customEvent as any)[callbackName] = data => {
         callback(data);
       };
     }
+
     targetCnt.dispatchEvent(customEvent);
   }
 
   /**
    * Retrieves the target container based on the event source.
-   * 
+   *
    * @param event The event object representing the source of the container.
-    @returns {Object| undefined} The target container object or undefined if not found.
+   * @returns {Object| undefined} The target container object or undefined if not found.
    */
   getTargetContainer(event) {
     let cnt;
+
     globalThis.__luigi_container_manager.container.forEach(element => {
       if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
         cnt = element;
@@ -113,7 +117,7 @@ export class ContainerService {
                     },
                     authData: targetCnt.authData || {}
                   },
-                  '*'
+                  target.origin
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
@@ -185,6 +189,7 @@ export class ContainerService {
       };
       window.addEventListener('message', globalThis.__luigi_container_manager.messageListener);
     }
+
     return globalThis.__luigi_container_manager;
   }
 
