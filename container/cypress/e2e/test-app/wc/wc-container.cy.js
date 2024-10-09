@@ -193,7 +193,7 @@ describe('Web Container Test', () => {
         'LuigiClient.uxManager().removeBackdrop()',
         'LuigiClient.uxManager().collapseLeftSideNav()',
         'LuigiClient.uxManager().hideAppLoadingIndicator()',
-        'LuigiClient.uxManager().getDocumentTitle()=my-title',
+        'LuigiClient.uxManager().getDocumentTitle()=my-title'
       ];
 
       cy.on('window:alert', stub);
