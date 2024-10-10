@@ -204,6 +204,19 @@ describe('Compound Container Tests', () => {
       cy.get('#defer-init-flag').should('exist');
     });
 
+    it('linkManagerChainRequests for navigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerChainRequests')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
