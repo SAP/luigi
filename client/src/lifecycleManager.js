@@ -9,6 +9,7 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
+    this.disableTpcCheck=false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
@@ -141,7 +142,7 @@ class LifecycleManager extends LuigiClientBase {
   _tpcCheck() {
     if (
       this.currentContext?.internal?.thirdPartyCookieCheck?.disabled ||
-      document.head.getAttribute('disable-lui-tpc-check')
+      this.disableTpcCheck
     ) {
       return;
     }
@@ -229,11 +230,13 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
+   * @param {boolean} disableTpcCheck if set to `true` third party cookie check will be disabled via LuigiClient.
    * @memberof Lifecycle
    * @example
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
-  addInitListener(initFn) {
+  addInitListener(initFn, disableTpcCheck) {
+    this.disableTpcCheck = disableTpcCheck;
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
@@ -582,20 +585,6 @@ class LifecycleManager extends LuigiClientBase {
       msg: 'luigi.setVGData',
       data
     });
-  }
-
-  /**
-   * Disables the TPC (Third-Party Cookies) check via Luigi Client.
-   *
-   * This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element
-   * of the document. It has to be called once the DOM is ready.
-   * @since NEXTRELEASE
-   * @memberof Lifecycle
-   * @example
-   * LuigiClient.disableTpcCheck();
-   */
-  disableTpcCheck() {
-    document.head.setAttribute('disable-lui-tpc-check', true);
   }
 }
 export const lifecycleManager = new LifecycleManager();

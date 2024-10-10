@@ -136,6 +136,7 @@ Registers a listener called with the context object and the Luigi Core domain as
 ##### Parameters
 
 *   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
+*   `disableTpcCheck` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if set to `true` third party cookie check will be disabled via LuigiClient.
 
 ##### Examples
 
@@ -515,23 +516,6 @@ LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
 **Meta**
 
 *   **since**: 2.2.0
-
-#### disableTpcCheck
-
-Disables the TPC (Third-Party Cookies) check via Luigi Client.
-
-This function sets a custom attribute `'disable-lui-tpc-check'` on the `<head>` element
-of the document. It has to be called once the DOM is ready.
-
-##### Examples
-
-```javascript
-LuigiClient.disableTpcCheck();
-```
-
-**Meta**
-
-*   **since**: NEXTRELEASE
 
 ### Lifecycle~initListenerCallback
 
