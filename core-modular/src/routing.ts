@@ -1,8 +1,9 @@
 import { Helpers } from "./helpers";
+import type { Luigi } from "./luigi";
 import { NavigationService } from "./services/navigation.service";
 
 export const Routing = {
-    init: (luigi: any) => {
+    init: (luigi: Luigi) => {
         const navService = new NavigationService(luigi);
         const luigiConfig = luigi.getConfig();
         console.log('Init Routing...', luigiConfig.routing);
@@ -10,12 +11,13 @@ export const Routing = {
             window.addEventListener('hashchange', (ev) => {
                 console.log('HashChange', location.hash);
                 const path = Helpers.normalizePath(location.hash);
-                luigi._connector.renderTopNav(navService.getTopNavData());
-                luigi._connector.renderLeftNav(navService.getLeftNavData(path));
-                luigi._connector.renderContent(navService.getCurrentNode(path));
+                const currentNode = navService.getCurrentNode(path);
+                luigi._connector?.renderTopNav(navService.getTopNavData());
+                luigi._connector?.renderLeftNav(navService.getLeftNavData(path));
+                luigi._ui.updateMainContent(currentNode, luigi);
             });
         } else {
-
+            // TBD
         }
     }
 }

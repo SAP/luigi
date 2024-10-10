@@ -1,4 +1,5 @@
 import { filter, first } from 'rxjs/operators';
+import type { Luigi } from '../luigi';
 export interface TopNavData {
     appTitle: string;
     logo: string;
@@ -31,7 +32,7 @@ export interface NavItem {
 }
 
 export class NavigationService {
-    constructor(private luigi: any) {}
+    constructor(private luigi: Luigi) {}
     
     getPathData(path: string): PathData {        
         const cfg = this.luigi.getConfig();

@@ -2,7 +2,7 @@ import App from "./App.svelte";
 import { Navigation } from "./navigation";
 import { Routing } from "./routing";
 import type { LuigiConnector } from "./types/connector";
-import { UI } from "./ui";
+import { UI } from './ui';
 
 const _init = () => {
     const luigi = (window as any).Luigi;
@@ -14,6 +14,16 @@ export class Luigi {
     config: any;
 
     _connector: LuigiConnector | undefined;
+    _app: App | undefined;
+    _ui = UI;
+
+
+    bootstrap(connector: LuigiConnector): void {
+        this._app = new App({
+            target: document.body
+        });
+        this._connector = connector;
+    }
 
     setConfig(cfg: any) {
         this.config = cfg;
@@ -26,13 +36,6 @@ export class Luigi {
 
     navigation(): any {
         return new Navigation(this);
-    }
-
-    bootstrap(connector: LuigiConnector): void {
-        let app = new App({
-            target: document.body
-        });
-        this._connector = connector;
     }
     // ...
 }

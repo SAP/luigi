@@ -5,5 +5,5 @@ export interface LuigiConnector {
 
     renderLeftNav(data: LeftNavData): void;
 
-    renderContent(node: Node): void;
+    getContainerWrapper(): HTMLElement;
 }
