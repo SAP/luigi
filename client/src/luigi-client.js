@@ -104,9 +104,6 @@ class LuigiClient {
   setViewGroupData(value) {
     return lifecycleManager.setViewGroupData(value);
   }
-  disableTpcCheck() {
-    return lifecycleManager.disableTpcCheck();
-  }
 
   /**
    * @private
