@@ -234,12 +234,12 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
-      this.LuigiClient.uxManager().collapseLeftSideNav();
-      this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().removeBackdrop();
+      this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
+      this.LuigiClient.uxManager().setDocumentTitle('my-title');
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
         type: 'info'

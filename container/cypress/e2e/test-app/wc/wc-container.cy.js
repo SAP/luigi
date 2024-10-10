@@ -185,5 +185,28 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
         });
     });
+
+    it('LuigiClient API uxManagerChainRequests', () => {
+      const alertMessages = [
+        'LuigiClient.uxManager().openUserSettings()',
+        'LuigiClient.uxManager().closeUserSettings()',
+        'LuigiClient.uxManager().removeBackdrop()',
+        'LuigiClient.uxManager().collapseLeftSideNav()',
+        'LuigiClient.uxManager().hideAppLoadingIndicator()',
+        'LuigiClient.uxManager().getDocumentTitle()=my-title'
+      ];
+
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#uxManagerManyRequests')
+        .click()
+        .then(() => {
+          alertMessages.forEach((msg, index) => {
+            expect(stub.getCall(index)).to.be.calledWith(msg);
+          });
+        });
+    });
   });
 });
