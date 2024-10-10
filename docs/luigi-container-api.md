@@ -121,6 +121,16 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 *   **since**: 1.0.0
 
+### skipCookieCheck
+
+If set to true, skips third party cookie check
+
+Type: (`"false"` | `"true"`)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### skipInitCheck
 
 If set to true, skips handshake and ready event is fired immediately
@@ -133,7 +143,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### nodeParams
 
-The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+The parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

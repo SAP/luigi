@@ -72,13 +72,19 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
+   * If set to true, skips third party cookie check
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  skipCookieCheck: 'false' | 'true';
+
+  /**
    * If set to true, skips handshake and ready event is fired immediately
    * @since 1.0.0
    */
   skipInitCheck: boolean;
 
   /**
-   * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+   * The parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
   nodeParams: Object;

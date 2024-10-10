@@ -120,6 +120,7 @@
       isNavigateBack,
       viewStackSize: preservedViews.length,
       clientPermissions: iframeConf.nextViewUrl ? iframeConf.nextClientPermissions : iframeConf.clientPermissions,
+      thirdPartyCookieCheck: await LuigiConfig.getConfigValue('settings.thirdPartyCookieCheck'),
       userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null,
       anchor: LuigiRouting.getAnchor(),
       cssVariables: await LuigiTheming.getCSSVariables()
@@ -263,6 +264,7 @@
           navigationPath,
           context,
           pathParams,
+          hideGlobalSearch,
           hideSideNav,
           isolateView,
           pageErrorHandler,
@@ -300,6 +302,8 @@
               context = obj.context;
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
+            } else if (prop === 'hideGlobalSearch') {
+              hideGlobalSearch = obj.hideGlobalSearch;
             } else if (prop === 'hideSideNav') {
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
@@ -655,6 +659,7 @@
   /// RESIZING
 
   let hideNav;
+  let hideGlobalSearch;
   let hideSideNav;
   let noAnimation;
   let previousWindowWidth;
@@ -1868,6 +1873,7 @@
           <div class="fd-tool-layout__header-container">
             {#if !isHeaderDisabled}
               <TopNav
+                hideSearchComponent={hideGlobalSearch}
                 pathData={navigationPath}
                 {pathParams}
                 on:handleClick={handleNavClick}
@@ -1991,6 +1997,7 @@
     {/if}
     {#if !isHeaderDisabled}
       <TopNav
+        hideSearchComponent={hideGlobalSearch}
         pathData={navigationPath}
         {pathParams}
         on:handleClick={handleNavClick}
@@ -2036,6 +2043,10 @@
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
     --luigi__horizontal-nav--height: 2.75rem;
+  }
+
+  .fd-tool-layout {
+    --fdToolLayout_Background: var(--sapBackgroundColor);
   }
 
   :global(html) {
