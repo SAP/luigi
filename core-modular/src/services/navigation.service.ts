@@ -68,6 +68,14 @@ export class NavigationService {
         return items;
     }
 
+    shouldRedirect(path: string): string | undefined {
+        if (path == '') { // poor mans implementation, full path resolution TBD
+            const pathData = this.getPathData(path);
+            return pathData.rootNodes[0].pathSegment;
+        }
+        return undefined;
+    }
+
     getCurrentNode(path: string): any {
         return this.getPathData(path).selectedNode;
     }

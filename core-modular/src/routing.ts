@@ -11,6 +11,11 @@ export const Routing = {
             window.addEventListener('hashchange', (ev) => {
                 console.log('HashChange', location.hash);
                 const path = Helpers.normalizePath(location.hash);
+                const redirect = navService.shouldRedirect(path);
+                if (redirect) {
+                    luigi.navigation().navigate(redirect);
+                    return;
+                }
                 const currentNode = navService.getCurrentNode(path);
                 luigi._connector?.renderTopNav(navService.getTopNavData());
                 luigi._connector?.renderLeftNav(navService.getLeftNavData(path));

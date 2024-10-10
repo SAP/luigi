@@ -12,9 +12,10 @@ export const UI = {
         console.log('Init UI...');
         const navService = new NavigationService(luigi);
         const path = Helpers.normalizePath(location.hash);
-        if (path == '') {
-            const pathData = navService.getPathData(path);
-            luigi.navigation().navigate(pathData.rootNodes[0].pathSegment);
+        const redirect = navService.shouldRedirect(path);
+        if (redirect) {
+            luigi.navigation().navigate(redirect);
+            return;
         }
         
         luigi._connector?.renderTopNav(navService.getTopNavData());
