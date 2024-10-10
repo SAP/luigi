@@ -598,7 +598,10 @@ export declare interface StorageManager {
  * @memberof Lifecycle
  */
 export function addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck?: boolean): number;
-export type addInitListener = (initFn: (context: Context, origin?: string) => void, disableTpcCheck?: boolean) => number;
+export type addInitListener = (
+  initFn: (context: Context, origin?: string) => void,
+  disableTpcCheck?: boolean
+) => number;
 
 /**
  * Callback of the addInitListener
