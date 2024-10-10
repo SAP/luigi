@@ -59,4 +59,4 @@
  *   }
  *
  */
-export function publishEvent(event) {}
+export function publishEvent(event: CustomEvent): void {}
