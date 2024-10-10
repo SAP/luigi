@@ -597,8 +597,8 @@ export declare interface StorageManager {
  * @param {boolean} disableTpcCheck if set to `true` third party cookie check will be disabled via LuigiClient.
  * @memberof Lifecycle
  */
-export function addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck: boolean): number;
-export type addInitListener = (initFn: (context: Context, origin?: string) => void, disableTpcCheck: boolean) => number;
+export function addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck?: boolean): number;
+export type addInitListener = (initFn: (context: Context, origin?: string) => void, disableTpcCheck?: boolean) => number;
 
 /**
  * Callback of the addInitListener
