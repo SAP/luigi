@@ -1,0 +1,464 @@
+{
+    "schemaVersion": "1.0.0",
+    "readme": "",
+    "modules": [
+        {
+            "kind": "javascript-module",
+            "path": "dist/bundle.js",
+            "declarations": [
+                {
+                    "kind": "class",
+                    "description": "LuigiContainer",
+                    "name": "LuigiContainer",
+                    "tagName": "luigi-container",
+                    "customElement": true,
+                    "members": [
+                        {
+                            "kind":"field",
+                            "name":"activeFeatureToggleList",
+                            "type":{
+                                "text":"Array | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"allowRules",
+                            "type":{
+                                "text":"Array | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"anchor",
+                            "type":{
+                                "text":"string | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"authData",
+                            "type":{
+                                "text":"Object | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"clientPermissions",
+                            "type":{
+                                "text":"Object | undefined"
+                            },
+                            "default":""
+                        },
+                        {
+                            "kind": "field",
+                            "name": "context",
+                            "type": {
+                                "text": "Object | string | undefined"
+                            },
+                            "default": "undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"deferInit",
+                            "type":{
+                                "text":"boolean"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"dirtyStatus",
+                            "type":{
+                                "text":"boolean"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"documentTitle",
+                            "type":{
+                                "text":"string | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"hasBack",
+                            "type":{
+                                "text":"boolean"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"label",
+                            "type":{
+                                "text":"string | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"locale",
+                            "type":{
+                                "text":"string | undefined"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"noShadow",
+                            "type":{
+                                "text":"boolean"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"nodeParams",
+                            "type":{
+                                "text":"Object"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"pathParams",
+                            "type":{
+                                "text":"Object"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"sandboxRules",
+                            "type":{
+                                "text":"array"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"searchParams",
+                            "type":{
+                                "text":"Object"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"skipCookieCheck",
+                            "type":{
+                                "text":"string"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"skipInitCheck",
+                            "type":{
+                                "text":"boolean"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"theme",
+                            "type":{
+                                "text":"string"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind":"field",
+                            "name":"userSettings",
+                            "type":{
+                                "text":"Object"
+                            },
+                            "default":"undefined"
+                        },
+                        {
+                            "kind": "field",
+                            "name": "viewurl",
+                            "type": {
+                                "text": "string"
+                            },
+                            "default": "undefined"
+                        },
+                        {
+                            "kind": "field",
+                            "name": "webcomponent",
+                            "type": {
+                                "text": "boolean | WebComponentSettings | string"
+                            }
+                        },
+                        {
+                            "kind": "method",
+                            "name": "closeAlert"
+                        },
+                        {
+                            "kind": "method",
+                            "name": "sendCustomMessage"
+                        },
+                        {
+                            "kind": "method",
+                            "name": "updateContext"
+                        }
+                    ],
+                    "events": [
+                        {
+                            "name": "initialized",
+                            "type": {
+                                "text": "Event"
+                            }
+                        },
+                        {
+                            "name": "navigation-request",
+                            "type": {
+                                "text": "Event"
+                            }
+                        },
+                        {
+                            "name": "close-alert-request",
+                            "type": {
+                                "text": "Event"
+                            }
+                        }
+                    ],
+                    "attributes": [
+                        {
+                            "description": "The list of active feature toggles to be passed to the web-component-based micro frontend.",
+                            "name": "active-feature-toggle-list",
+                            "default": "undefined",
+                            "fieldName": "activeFeatureToggleList",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The list of rules for the content in the iframe, managed by the HTML `allow` attribute. You can use one or more rules by adding them to the array, for example allowRules: ['microphone', 'camera']",
+                            "name": "allow-rules",
+                            "default": "undefined",
+                            "fieldName": "allowRules",
+                            "type": {
+                                "text": "Array | undefined"
+                            }
+                        },
+                        {
+                            "description": "The anchor value to be passed to the web-component-based micro frontend.",
+                            "name": "anchor",
+                            "default": "undefined",
+                            "fieldName": "anchor",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The authData value to be passed to the iframe-based micro frontend.",
+                            "name": "auth-data",
+                            "default": "undefined",
+                            "fieldName": "authData",
+                            "type": {
+                                "text": "object | undefined"
+                            }
+                        },
+                        {
+                            "description": "The clientPermissions to be passed to the web-component-based micro frontend.",
+                            "name": "client-permissions",
+                            "default": "undefined",
+                            "fieldName": "clientPermissions",
+                            "type": {
+                                "text": "object | undefined"
+                            }
+                        },
+                        {
+                            "description": "Context",
+                            "name": "context",
+                            "default": "undefined",
+                            "fieldName": "context",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "If set to true defers from initializing the microfronted automatically. In that case init() can be used.",
+                            "name": "defer-init",
+                            "default": "undefined",
+                            "fieldName": "deferInit",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The dirty status value to be passed to the web-component-based micro frontend. It's used to indicate that there are unsaved changes when navigating away.",
+                            "name": "dirtyStatus",
+                            "default": "undefined",
+                            "fieldName": "dirty-status",
+                            "type": {
+                                "text": "boolean"
+                            }
+                        },
+                        {
+                            "description": "The document title value to be passed to the web-component-based micro frontend.",
+                            "name": "document-title",
+                            "default": "undefined",
+                            "fieldName": "documentTitle",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The hasBack value to be passed to the web-component-based micro frontend. It indicates that there is one or more preserved views. Useful when you need to show a back button.",
+                            "name": "has-back",
+                            "default": "undefined",
+                            "fieldName": "hasBack",
+                            "type": {
+                                "text": "boolean"
+                            }
+                        },
+                        {
+                            "description": "Label information for the microfrontend.",
+                            "name": "label",
+                            "default": "undefined",
+                            "fieldName": "label",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The locale to be passed to the web-component-based micro frontend.",
+                            "name": "locale",
+                            "default": "undefined",
+                            "fieldName": "locale",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.",
+                            "name": "no-shadow",
+                            "default": "undefined",
+                            "fieldName": "noShadow",
+                            "type": {
+                                "text": "boolean"
+                            }
+                        },
+                        {
+                            "description": "The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.",
+                            "name": "node-params",
+                            "default": "undefined",
+                            "fieldName": "nodeParams",
+                            "type": {
+                                "text": "object | undefined"
+                            }
+                        },
+                        {
+                            "description": "The path parameters to be passed to the web-component-based micro frontend.",
+                            "name": "path-params",
+                            "default": "undefined",
+                            "fieldName": "pathParams",
+                            "type": {
+                                "text": "object | undefined"
+                            }
+                        },
+                        {
+                            "description": "The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute. You can use one or more rules by adding them to the array.",
+                            "name": "sandbox-rules",
+                            "default": "undefined",
+                            "fieldName": "sandboxRules",
+                            "type": {
+                                "text": "Array"
+                            }
+                        },
+                        {
+                            "description": "The search parameters to be passed to the web-component-based micro frontend.",
+                            "name": "search-params",
+                            "default": "undefined",
+                            "fieldName": "searchParams",
+                            "type": {
+                                "text": "object | undefined"
+                            }
+                        },
+                        {
+                            "description": "If set to true, skips third party cookie check.",
+                            "name": "skip-cookie-check",
+                            "default": "undefined",
+                            "fieldName": "skipCookieCheck",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "If set to true, skips handshake and ready event is fired immediately.",
+                            "name": "skip-init-check",
+                            "default": "undefined",
+                            "fieldName": "skipInitCheck",
+                            "type": {
+                                "text": "boolean"
+                            }
+                        },
+                        {
+                            "description": "The theme to be passed to the  web-component-based micro frontend.",
+                            "name": "theme",
+                            "default": "undefined",
+                            "fieldName": "theme",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "The user settings to be passed to the web-component-based micro frontend.",
+                            "name": "user-settings",
+                            "default": "undefined",
+                            "fieldName": "userSettings",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "Url to the microfrontend",
+                            "name": "viewurl",
+                            "default": "undefined",
+                            "fieldName": "viewurl",
+                            "type": {
+                                "text": "string | undefined"
+                            }
+                        },
+                        {
+                            "description": "Webcomponent",
+                            "name": "webcomponent",
+                            "default": "undefined",
+                            "fieldName": "label",
+                            "type": {
+                                "text": "boolean | WebComponentSettings | string"
+                            }
+                        }
+                    ],
+                    "slots": []
+                }
+            ],
+            "exports": [
+                {
+                    "kind": "js",
+                    "name": "LuigiContainer",
+                    "declaration": {
+                        "name": "LuigiContainer",
+                        "module": "LuigiContainer.js"
+                    }
+                },
+                {
+                    "kind": "custom-element-definition",
+                    "name": "luigi-container",
+                    "declaration": {
+                        "name": "LuigiContainer",
+                        "module": "LuigiContainer.js"
+                    }
+                }
+            ]
+        }
+    ]
+}
