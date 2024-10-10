@@ -9,7 +9,7 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-    this.disableTpcCheck=false;
+    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
@@ -140,10 +140,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck() {
-    if (
-      this.currentContext?.internal?.thirdPartyCookieCheck?.disabled ||
-      this.disableTpcCheck
-    ) {
+    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || this.disableTpcCheck) {
       return;
     }
     let tpc = 'enabled';
