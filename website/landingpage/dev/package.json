@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "dompurify": "^3.1.7",
     "feed": "^4.2.2",
     "foundation-sites": "^6.8.1",
     "jquery": "^3.7.1",
@@ -68,7 +69,7 @@
       "marked": "^4.0.10",
       "highlight.js": "^11.0.0"
     },
-    "browser-sync" : {
+    "browser-sync": {
       "localtunnel": {
         "axios": "1.6.0"
       }
