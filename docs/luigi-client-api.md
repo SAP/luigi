@@ -136,6 +136,7 @@ Registers a listener called with the context object and the Luigi Core domain as
 ##### Parameters
 
 *   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
+*   `disableTpcCheck` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if set to `true` third party cookie check will be disabled via LuigiClient.
 
 ##### Examples
 

@@ -145,6 +145,19 @@ describe('Web Container Test', () => {
         .should('have.text', 'Received Custom Message: cool custom Message');
     });
 
+    it('linkManagerChainRequests for navigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerChainRequests')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
     it('pathExists', () => {
       cy.on('window:alert', stub);
 
@@ -183,6 +196,29 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
+        });
+    });
+
+    it('LuigiClient API uxManagerChainRequests', () => {
+      const alertMessages = [
+        'LuigiClient.uxManager().openUserSettings()',
+        'LuigiClient.uxManager().closeUserSettings()',
+        'LuigiClient.uxManager().removeBackdrop()',
+        'LuigiClient.uxManager().collapseLeftSideNav()',
+        'LuigiClient.uxManager().hideAppLoadingIndicator()',
+        'LuigiClient.uxManager().getDocumentTitle()=my-title'
+      ];
+
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#uxManagerManyRequests')
+        .click()
+        .then(() => {
+          alertMessages.forEach((msg, index) => {
+            expect(stub.getCall(index)).to.be.calledWith(msg);
+          });
         });
     });
   });
