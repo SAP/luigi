@@ -106,7 +106,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API navigateToIntent for LuigiContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get('[data-test-id="luigi-client-api-test-01"]')
+      cy.get(containerSelector)
         .shadow()
         .contains('navigateToIntent')
         .click()
@@ -155,6 +155,47 @@ describe('Web Container Test', () => {
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
           cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
+    it('pathExists', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerUpdateTopPathExistsBack')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
+          );
+        });
+    });
+
+    it('showConfirmationModal', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('showConfirmationModal')
+        .click()
+        .then(() => {
+          cy.on('window:confirm', str => {
+            expect(str).to.equal('Are you sure you want to do this?');
+          });
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
+        });
+    });
+
+    it('receive custom message from WC', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('Publish event')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
         });
     });
   });

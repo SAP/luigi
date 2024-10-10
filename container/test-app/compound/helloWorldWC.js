@@ -17,7 +17,7 @@ export default class extends HTMLElement {
     current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
 
     const templateBtn2 = document.createElement('template');
-    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+    templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
@@ -91,6 +91,9 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const confirmationModalBtn = document.createElement('template');
+    confirmationModalBtn.innerHTML = '<button id="confirmationModal">showConfirmationModal</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -115,6 +118,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -151,20 +155,22 @@ export default class extends HTMLElement {
         });
       }
     });
-    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+
+    this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
+    this.$publishEventBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own event data' }));
       }
     });
 
-    this.$button2 = this._shadowRoot.querySelector('#addNodeParams');
-    this.$button2.addEventListener('click', () => {
+    this.$addNodeParamsBtn = this._shadowRoot.querySelector('#addNodeParams');
+    this.$addNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.addNodeParams({ Luigi: 'rocks' }, true);
       }
     });
-    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
-    this.$button3.addEventListener('click', () => {
+    this.$getNodeParamsBtn = this._shadowRoot.querySelector('#getNodeParams');
+    this.$getNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
@@ -329,6 +335,26 @@ export default class extends HTMLElement {
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
+    });
+
+    this.$confirmationModalBtn = this._shadowRoot.querySelector('#confirmationModal');
+    this.$confirmationModalBtn.addEventListener('click', () => {
+      const settings = {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      };
+
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'LuigiClient.uxManager().showConfirmationModal()',
+            type: 'info'
+          });
+        });
     });
   }
 

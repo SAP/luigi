@@ -147,7 +147,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API updateContext', () => {
+    it('LuigiClient API - updateContext', () => {
       cy.on('window:alert', stub);
 
       cy.wait(500);
@@ -163,6 +163,35 @@ describe('Compound Container Tests', () => {
                 'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
               );
             });
+        });
+    });
+
+    it('LuigiClient API - pathExists', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerUpdateTopPathExistsBack')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
+          );
+        });
+    });
+
+    it('LuigiClient API - showConfirmationModal', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('showConfirmationModal')
+        .click()
+        .then(() => {
+          cy.on('window:confirm', str => {
+            expect(str).to.equal('Are you sure you want to do this?');
+          });
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
         });
     });
 
@@ -185,6 +214,27 @@ describe('Compound Container Tests', () => {
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
           cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
+    it('LuigiClient API publishEvent', () => {
+      cy.on('window:alert', stub);
+
+      // Set up a spy on console.log
+      cy.window().then(win => {
+        cy.spy(win.console, 'log').as('consoleLogSpy');
+      });
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('Publish event')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('sendInput');
+          cy.get('@consoleLogSpy').should(
+            'be.calledWith',
+            'dataConverter(): Received Custom Message from "input1" MF My own event data'
+          );
         });
     });
   });
