@@ -384,7 +384,7 @@ myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" activeFeatureToggleList='["enable-foo", "allow-bar"]'></luigi-container>
+<luigi-container viewUrl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
 ```
 
 ### theme
