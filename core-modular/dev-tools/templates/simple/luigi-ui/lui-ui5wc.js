@@ -1,6 +1,27 @@
 /** @typedef {import('../../../src/types/connector').LuigiConnector} LuigiConnector */
 /** @typedef {import('../../../src/luigi').Luigi} Luigi */
 
+function storeExpandedState (uid, expanded) {
+  const stored = localStorage.getItem('luigi.preferences.navigation.expandedCategories');
+  try {
+    const arr = stored ? JSON.parse(stored) : [];
+    arr.push(uid);
+    localStorage.setItem('luigi.preferences.navigation.expandedCategories', JSON.stringify(arr));
+  } catch (e) {
+    // ?
+  }
+}
+
+function readExpandedState (uid) {
+  const stored = localStorage.getItem('luigi.preferences.navigation.expandedCategories');
+  try {
+    return JSON.parse(stored).includes(uid);
+  } catch (e) {
+    // ?
+  }
+  return false;
+}
+
 /** @type {LuigiConnector} */
 const connector = {
   renderTopNav: topNavData => {
@@ -61,7 +82,8 @@ const connector = {
             html += `<ui5-side-navigation-item
                                     text="${item.category.label}"
                                     icon="${item.category.icon}"
-                                    >`;
+                                    category-uid="${leftNavData.basePath + ':' + item.category.id}"
+                                    ${readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''}>`;
 
             item.category.nodes.forEach(item => {
               html += `<ui5-side-navigation-sub-item
@@ -85,6 +107,36 @@ const connector = {
         items.forEach(item => {
           item.addEventListener('click', () => {
             globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
+          });
+        });
+      }
+
+      if (!sidenav._observer) {
+        sidenav._observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            if (mutation.type === 'attributes') {
+              const uid = mutation.target.getAttribute('category-uid');
+              storeExpandedState(uid, mutation.target.hasAttribute('expanded'));
+            }
+          });
+        });
+
+        sidenav._observer.observe(sidenav, {
+          attributes: true,
+          subtree: true,
+          attributeFilter: ['expanded']
+        });
+      }
+      const categories = sidenav.querySelectorAll('[category-uid]');
+      if (categories) {
+        categories.forEach(item => {
+          item.addEventListener('click', (event) => {
+            if (event instanceof CustomEvent) {
+              event.target.toggleAttribute('expanded');
+            }
+            event.stopPropagation();
+            event.preventDefault();
+            return false;
           });
         });
       }

@@ -26,6 +26,7 @@ export interface Node {
 }
 
 export interface Category {
+    id: string;
     label?: string;
     icon?: string;
     nodes?: NavItem[];
@@ -72,9 +73,10 @@ export class NavigationService {
                 if (!catNode) {
                     catNode = { 
                         category: {
+                            id: catId,
                             label: node.category.label || node.category.id || node.category, 
                             icon: node.category.icon,
-                            nodes: [] 
+                            nodes: []
                         } 
                     };
                     catMap[catId] = catNode;
