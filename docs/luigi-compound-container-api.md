@@ -139,7 +139,7 @@ myContainer.deferInit = true
 ```
 TODO: is it preferred to assign true or declare it to indicate it's set
 ```HTML
-<luigi-container viewUrl="/index.html" deferInit="true"></luigi-container>
+<luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
 ```
 
 ### nodeParams
