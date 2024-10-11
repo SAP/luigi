@@ -247,7 +247,7 @@ myContainer.clientPermissions = {permission: "adminGroup"}
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" clientPermissions='{"permission": "adminGroup"}'></luigi-container>
+<luigi-container viewUrl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
 ```
 
 ### userSettings
