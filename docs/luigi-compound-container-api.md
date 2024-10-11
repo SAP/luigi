@@ -339,7 +339,7 @@ myContainer.dirtyStatus = true
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" dirtyStatus='true'></luigi-container>
+<luigi-container viewUrl="/index.html" dirty-status='true'></luigi-container>
 ```
 
 ### webcomponent
