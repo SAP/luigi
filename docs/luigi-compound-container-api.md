@@ -48,7 +48,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 *   **since**: 1.0.0
 TODO: better example
 ```js
-myContainer.compoundConfig = lcc.compoundConfig = {
+myContainer.compoundConfig = {
         renderer: {
           use: 'grid',
           config: {
