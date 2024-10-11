@@ -46,7 +46,6 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
-TODO: better example
 ```js
 myContainer.compoundConfig = {
         renderer: {
@@ -120,10 +119,6 @@ myContainer.compoundConfig = {
       };
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" compound-config='{foo: bar}'></luigi-container>
-```
-
 ### deferInit
 
 If set to true defers from initializing the microfronted automatically. In that case init() can be used
@@ -137,7 +132,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 ```js
 myContainer.deferInit = true
 ```
-TODO: is it preferred to assign true or declare it to indicate it's set
+
 ```HTML
 <luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
 ```
@@ -223,7 +218,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 *   **since**: 1.0.0
-TODO: is it better to use JSON.stringify({foo: bar}) for the value
+
 ```js
 myContainer.context = {label: "Dashboard"}
 ```
@@ -364,7 +359,7 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 ```js
 myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}
 ```
-#TODO: this is probably wrong/not the best way, maybe there is a custom element?
+
 ```HTML
 <luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
 ```
