@@ -1,7 +1,7 @@
 /** @typedef {import('../../../src/types/connector').LuigiConnector} LuigiConnector */
 /** @typedef {import('../../../src/luigi').Luigi} Luigi */
 
-function storeExpandedState (uid, expanded) {
+function storeExpandedState(uid, expanded) {
   const stored = localStorage.getItem('luigi.preferences.navigation.expandedCategories');
   try {
     const arr = stored ? JSON.parse(stored) : [];
@@ -12,7 +12,7 @@ function storeExpandedState (uid, expanded) {
   }
 }
 
-function readExpandedState (uid) {
+function readExpandedState(uid) {
   const stored = localStorage.getItem('luigi.preferences.navigation.expandedCategories');
   try {
     return JSON.parse(stored).includes(uid);
@@ -83,7 +83,9 @@ const connector = {
                                     text="${item.category.label}"
                                     icon="${item.category.icon}"
                                     category-uid="${leftNavData.basePath + ':' + item.category.id}"
-                                    ${readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''}>`;
+                                    ${
+                                      readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''
+                                    }>`;
 
             item.category.nodes.forEach(item => {
               html += `<ui5-side-navigation-sub-item
@@ -112,8 +114,8 @@ const connector = {
       }
 
       if (!sidenav._observer) {
-        sidenav._observer = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
+        sidenav._observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes') {
               const uid = mutation.target.getAttribute('category-uid');
               storeExpandedState(uid, mutation.target.hasAttribute('expanded'));
@@ -130,7 +132,7 @@ const connector = {
       const categories = sidenav.querySelectorAll('[category-uid]');
       if (categories) {
         categories.forEach(item => {
-          item.addEventListener('click', (event) => {
+          item.addEventListener('click', event => {
             if (event instanceof CustomEvent) {
               event.target.toggleAttribute('expanded');
             }
