@@ -10,6 +10,12 @@ const connector = {
           src="${topNavData.logo}"
         />`;
     }
+    if (!shellbar._logoEL) {
+      shellbar._logoEL = () => {
+        globalThis.Luigi.navigation().navigate('/');
+      };
+      shellbar.addEventListener('logo-click', shellbar._logoEL);
+    }
     (topNavData.topNodes || []).forEach(n => {
       html += `<ui5-shellbar-item icon="${n.icon}" text="${n.label}" luigi-route="${n.pathSegment}"></ui5-shellbar-item>`;
     });
@@ -18,11 +24,11 @@ const connector = {
     if (items) {
       items.forEach(item => {
         item.addEventListener('click', () => {
-          Luigi.navigation().navigate(item.getAttribute('luigi-route'));
+          globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
         });
       });
     }
-    //...
+    // ...
   },
   renderLeftNav: leftNavData => {
     const sidenav = document.querySelector('ui5-side-navigation');
@@ -59,20 +65,14 @@ const connector = {
       if (items) {
         items.forEach(item => {
           item.addEventListener('click', () => {
-            Luigi.navigation().navigate(item.getAttribute('luigi-route'));
+            globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
           });
         });
       }
     }
   },
-  renderContent: navNode => {
-    const contentContainer = document.querySelector('.tool-layout > .content');
-    contentContainer.innerHTML = '';
-    const lc = document.createElement('luigi-container');
-    lc.setAttribute('viewUrl', navNode.viewUrl);
-    lc.webcomponent = navNode.webcomponent;
-    lc.context = navNode.context;
-    contentContainer.appendChild(lc);
+  getContainerWrapper: () => {
+    return document.querySelector('.tool-layout > .content');
   }
 };
 
