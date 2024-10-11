@@ -121,7 +121,7 @@ myContainer.compoundConfig = lcc.compoundConfig = {
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" compoundConfig='{foo: bar}'></luigi-container>
+<luigi-container viewUrl="/index.html" compound-config='{foo: bar}'></luigi-container>
 ```
 
 ### deferInit
