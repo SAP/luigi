@@ -265,7 +265,7 @@ myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" userSettings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+<luigi-container viewUrl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
 ```
 
 ### anchor
