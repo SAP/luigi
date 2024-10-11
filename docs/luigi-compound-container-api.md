@@ -175,7 +175,7 @@ myContainer.noShadow = true
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" noShadow='true'></luigi-container>
+<luigi-container viewUrl="/index.html" no-shadow='true'></luigi-container>
 ```
 
 ### searchParams
