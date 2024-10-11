@@ -193,7 +193,7 @@ myContainer.searchParams = {foo: bar}
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" searchParams='{"search":"param"}'></luigi-container>
+<luigi-container viewUrl="/index.html" search-params='{"search":"param"}'></luigi-container>
 ```
 
 ### pathParams
