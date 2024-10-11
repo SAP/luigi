@@ -1,3 +1,7 @@
+/** @typedef {import('../../../src/types/connector').LuigiConnector} LuigiConnector */
+/** @typedef {import('../../../src/luigi').Luigi} Luigi */
+
+/** @type {LuigiConnector} */
 const connector = {
   renderTopNav: topNavData => {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
@@ -44,6 +48,7 @@ const connector = {
       let html = '';
 
       if (leftNavData.items) {
+        console.log(leftNavData);
         leftNavData.items.forEach(item => {
           if (item.node) {
             html += `<ui5-side-navigation-item
@@ -52,8 +57,22 @@ const connector = {
                                     luigi-route="${leftNavData.basePath + '/' + item.node.pathSegment}"
                                     ${item.selected ? 'selected' : ''}
                                     ></ui5-side-navigation-item>`;
-          } else if (item.category) {
-            // tbd
+          } else if (item.category?.nodes?.length > 0) {
+            html += `<ui5-side-navigation-item
+                                    text="${item.category.label}"
+                                    icon="${item.category.icon}"
+                                    >`;
+
+            item.category.nodes.forEach(item => {
+              html += `<ui5-side-navigation-sub-item
+                                    text="${item.node.label}"
+                                    icon="${item.node.icon}"
+                                    luigi-route="${leftNavData.basePath + '/' + item.node.pathSegment}"
+                                    ${item.selected ? 'selected' : ''}
+                                    ></ui5-side-navigation-sub-item>`;
+            });
+
+            html += '</ui5-side-navigation-item>';
           }
         });
       }

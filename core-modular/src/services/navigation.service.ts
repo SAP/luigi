@@ -25,9 +25,15 @@ export interface Node {
     category?: any;
 }
 
+export interface Category {
+    label?: string;
+    icon?: string;
+    nodes?: NavItem[];
+    collabsible?: boolean;
+}
 export interface NavItem {
     node?: Node;
-    category?: any;
+    category?: Category;
     selected?: boolean;
 }
 
@@ -58,9 +64,23 @@ export class NavigationService {
 
     buildNavItems(nodes: Node[], selectedNode?: Node): NavItem[] {
         const items: NavItem[] = [];
+        const catMap: Record<string,NavItem> = {};
         nodes?.forEach(node => {
             if (node.category) {
-                // tbd
+                let catId = node.category.id || node.category.label || node.category;
+                let catNode: NavItem = catMap[catId];
+                if (!catNode) {
+                    catNode = { 
+                        category: {
+                            label: node.category.label || node.category.id || node.category, 
+                            icon: node.category.icon,
+                            nodes: [] 
+                        } 
+                    };
+                    catMap[catId] = catNode;
+                    items.push(catNode);
+                } 
+                catNode.category?.nodes?.push({ node, selected: node === selectedNode });
             } else {
                 items.push({ node, selected: node === selectedNode });
             }
