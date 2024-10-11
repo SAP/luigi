@@ -211,7 +211,7 @@ myContainer.pathParams = {foo: bar}
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" pathParams='{"path":"param"}'></luigi-container>
+<luigi-container viewUrl="/index.html" path-params='{"path":"param"}'></luigi-container>
 ```
 
 ### context
