@@ -33,7 +33,7 @@ myContainer.viewUrl = "/index.html"
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html"></luigi-container>
+<luigi-container viewurl="/index.html"></luigi-container>
 ```
 
 ### compoundConfig
