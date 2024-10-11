@@ -320,7 +320,7 @@ myContainer.hasBack = '/detailsPage'
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" hasBack='/detailsPage'></luigi-container>
+<luigi-container viewUrl="/index.html" has-back='/detailsPage'></luigi-container>
 ```
 
 ### dirtyStatus
