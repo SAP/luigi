@@ -301,7 +301,7 @@ myContainer.documentTitle = 'Luigi App'
 ```
 
 ```HTML
-<luigi-container viewUrl="/index.html" documentTitle='Luigi App'></luigi-container>
+<luigi-container viewUrl="/index.html" document-title='Luigi App'></luigi-container>
 ```
 
 ### hasBack
