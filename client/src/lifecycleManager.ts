@@ -19,6 +19,7 @@ class LifecycleManager extends LuigiClientBase {
   currentContext!: Context;
   private authData: AuthData;
   private defaultContextKeys: string[];
+  private disableTpcCheck: boolean;
   private luigiInitialized: boolean;
   private _onContextUpdatedFns: Record<any, any>;
   private _onInactiveFns: Record<any, any>;
@@ -28,6 +29,7 @@ class LifecycleManager extends LuigiClientBase {
   constructor() {
     super();
 
+    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
 
@@ -170,7 +172,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck(): void {
-    if ((this.currentContext.internal as Record<string, any>)['thirdPartyCookieCheck']?.disabled) {
+    if ((this.currentContext.internal as Record<string, any>)['thirdPartyCookieCheck']?.disabled || this.disableTpcCheck) {
       return;
     }
 
@@ -263,13 +265,15 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
+   * @param {boolean} disableTpcCheck if set to `true` third party cookie check will be disabled via LuigiClient.
    * @memberof lifecycleManager
    * @example
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
-  addInitListener(initFn: (context: Context, origin?: string) => void): number {
+  addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck: boolean): number {
     const id: number = helpers.getRandomId();
 
+    this.disableTpcCheck = disableTpcCheck;
     this._onInitFns[`${id}`] = initFn;
 
     if (this.luigiInitialized && helpers.isFunction(initFn)) {

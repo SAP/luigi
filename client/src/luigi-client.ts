@@ -40,8 +40,8 @@ class LuigiClient {
     }
   }
 
-  addInitListener(initFn: (context: Context, origin?: string) => void): number {
-    return _lifecycleManager.addInitListener(initFn);
+  addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck: boolean): number {
+    return _lifecycleManager.addInitListener(initFn, disableTpcCheck);
   }
 
   removeInitListener(id: string): boolean {
