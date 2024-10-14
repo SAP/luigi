@@ -114,7 +114,7 @@ const connector = {
       }
 
       if (!sidenav._observer) {
-        sidenav._observer = new MutationObserver((mutations) => {
+        sidenav._observer = new MutationObserver(mutations => {
           mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes') {
               const uid = mutation.target.getAttribute('category-uid');
