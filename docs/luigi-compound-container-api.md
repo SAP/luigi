@@ -49,6 +49,26 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 *   **since**: 1.0.0
 
+### locale
+
+The locale to be passed to the compound micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### nodeParams
+
+The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+*   **since**: 1.0.0
+
 ### noShadow
 
 If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
@@ -169,6 +189,36 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 **Meta**
 
 *   **since**: 1.0.0
+
+### skipInitCheck
+
+If set to true, skips handshake and ready event is fired immediately.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### activeFeatureToggleList
+
+The list of active feature toggles to be passed to the compound microfrontend.
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### theme
+
+The theme to be passed to the compound microfrontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### updateContext
 
