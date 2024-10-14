@@ -114,7 +114,7 @@ const connector = {
       }
 
       if (!sidenav._observer) {
-        sidenav._observer = new MutationObserver(function(mutations) {
+        sidenav._observer = new MutationObserver((mutations) => {
           mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes') {
               const uid = mutation.target.getAttribute('category-uid');
@@ -136,9 +136,10 @@ const connector = {
             if (event instanceof CustomEvent) {
               event.target.toggleAttribute('expanded');
             }
+            event.stopImmediatePropagation();
             event.stopPropagation();
             event.preventDefault();
-            return false;
+            return true;
           });
         });
       }
