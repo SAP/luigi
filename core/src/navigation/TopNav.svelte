@@ -25,6 +25,7 @@
   export let authorizationEnabled;
   export let autologinEnabled;
   export let isLoggedIn = false;
+  export let hideSearchComponent;
   export let hideNavComponent;
   export let responsiveNavSetting;
   export let profileTypeSettings;
@@ -294,7 +295,7 @@
         on:handleClick={handleClickExternal}
       />
     </div>
-    {#if globalSearchConfig && isGlobalSearchCentered}
+    {#if globalSearchConfig && isGlobalSearchCentered && !hideSearchComponent}
       <div class="lui-global-search">
         <GlobalSearchCentered
           {globalSearchConfig}
@@ -311,7 +312,7 @@
     {/if}
     <div class="fd-shellbar__group fd-shellbar__group--actions lui-shellbar_group--actions">
       {#if !authorizationEnabled || isLoggedIn}
-        {#if globalSearchConfig && !isGlobalSearchCentered}
+        {#if globalSearchConfig && !isGlobalSearchCentered && !hideSearchComponent}
           <GlobalSearch
             bind:isSearchFieldVisible
             on:toggleSearch
@@ -435,7 +436,7 @@
                 >
                   <nav class="fd-menu">
                     <ul class="fd-menu__list fd-menu__list--no-shadow">
-                      {#if globalSearchConfig && !isGlobalSearchCentered}
+                      {#if globalSearchConfig && !isGlobalSearchCentered && !hideSearchComponent}
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-missing-attribute -->

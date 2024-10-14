@@ -28,14 +28,6 @@ The URL used for the renderer.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-```js
-myContainer.viewUrl = "/index.html"
-```
-
-```HTML
-<luigi-container viewurl="/index.html"></luigi-container>
-```
-
 ### compoundConfig
 
 The configuration for the compound microfrontend
@@ -45,79 +37,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-```js
-myContainer.compoundConfig = {
-        renderer: {
-          use: 'grid',
-          config: {
-            columns: '1fr 1fr 1fr 2fr',
-            /*rows: '150px',*/
-            /*gap: '30px',*/
-            layouts: [
-              {
-                minWidth: 0,
-                maxWidth: 600,
-                columns: '1fr',
-                gap: 0
-              },
-              {
-                minWidth: 600,
-                maxWidth: 1024,
-                columns: '1fr 1fr',
-                gap: '30px'
-              }
-            ]
-          }
-        },
-        children: [
-          {
-            viewUrl: 'http://www.examples.com/header.js',
-            context: {
-              title: 'My Awesome Grid 000',
-              description: 'Really awesome'
-            },
-            layoutConfig: {
-              row: '1',
-              column: '1 / -1'
-            },
-            eventListeners: [
-              {
-                source: 'input1',
-                name: 'sendInput',
-                action: 'update',
-                dataConverter: data => {
-                  return 'new text: ' + data;
-                }
-              }
-            ]
-          },
-          {
-            id: 'input1',
-            viewUrl: '/helloWorldWC.js',
-            context: {
-              title: 'Some input',
-              instant: true
-            }
-          },
-          {
-            viewUrl: 'http://www.examples.com/main.js',
-            context: {
-              label: 'Another web component'
-            }
-          },
-          {
-            viewUrl: '/panelFooter.js',
-            context: {
-              footer: 'This is the end of awesomeness'
-            },
-            layoutConfig: {
-              column: '1 / -1'
-            }
-          }
-        ]
-      };
-```
+-   **since**: 1.0.0
 
 ### deferInit
 
@@ -127,15 +47,17 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: 1.0.0
+-   **since**: 1.0.0
 
-```js
-myContainer.deferInit = true
-```
+### locale
 
-```HTML
-<luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
-```
+The locale to be passed to the compound micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### nodeParams
 
@@ -145,15 +67,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.nodeParams = {foo: bar}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" node-params='{"node":"param"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### noShadow
 
@@ -163,15 +77,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: 1.2.0
-
-```js
-myContainer.noShadow = true
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" no-shadow='true'></luigi-container>
-```
+-   **since**: 1.2.0
 
 ### searchParams
 
@@ -181,15 +87,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.searchParams = {foo: bar}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" search-params='{"search":"param"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### pathParams
 
@@ -199,15 +97,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.pathParams = {foo: bar}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" path-params='{"path":"param"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### context
 
@@ -217,15 +107,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.context = {label: "Dashboard"}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### clientPermissions
 
@@ -235,15 +117,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.clientPermissions = {permission: "adminGroup"}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### userSettings
 
@@ -253,15 +127,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### anchor
 
@@ -271,15 +137,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.0.0
-
-```js
-myContainer.anchor = '#foo'
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" anchor='#foo'></luigi-container>
-```
+-   **since**: 1.0.0
 
 ### documentTitle
 
@@ -289,15 +147,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.2.0
-
-```js
-myContainer.documentTitle = 'Luigi App'
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" document-title='Luigi App'></luigi-container>
-```
+-   **since**: 1.2.0
 
 ### hasBack
 
@@ -308,15 +158,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.2.0
-
-```js
-myContainer.hasBack = '/detailsPage'
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" has-back='/detailsPage'></luigi-container>
-```
+-   **since**: 1.2.0
 
 ### dirtyStatus
 
@@ -327,15 +169,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: 1.2.0
-
-```js
-myContainer.dirtyStatus = true
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" dirty-status='true'></luigi-container>
-```
+-   **since**: 1.2.0
 
 ### webcomponent
 
@@ -345,42 +179,35 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 #### Parameters
 
-*   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
-
-    *   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
-    *   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
-    *   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
-*   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
+-   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
+    -   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
+    -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
+    -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
+-   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
 
 **Meta**
 
-*   **since**: 1.0.0
+-   **since**: 1.0.0
 
-```js
-myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}
-```
+### skipInitCheck
 
-```HTML
-<luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
-```
+If set to true, skips handshake and ready event is fired immediately.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### activeFeatureToggleList
 
 The list of active feature toggles to be passed to the compound microfrontend.
 
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
-
-```js
-myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
-```
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### theme
 
@@ -390,15 +217,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
-
-```js
-myContainer.theme = 'sap_horizon'
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>
-```
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### updateContext
 
@@ -406,7 +225,7 @@ Function that updates the context of the compound microfrontend.
 
 #### Parameters
 
-*   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+-   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
 
 #### Examples
 
@@ -418,7 +237,7 @@ Returns **void**
 
 **Meta**
 
-*   **since**: 1.0.0
+-   **since**: 1.0.0
 
 ### init
 
@@ -428,16 +247,4 @@ Returns **void**
 
 **Meta**
 
-*   **since**: 1.0.0
-#TODO: made up example
-```js
- ...
-  myContainer.deferInit = true
-}
-#or HTML: <luigi-container deferInit="true"></luigi-container> js: the handler
-
-eventHandlerFn{
-  ...
-  myContainer.init()
-}
-```
+-   **since**: 1.0.0

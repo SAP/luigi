@@ -9,6 +9,7 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
+    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
@@ -91,6 +92,7 @@ class LifecycleManager extends LuigiClientBase {
       helpers.setLuigiCoreDomain(e.origin);
       this.luigiInitialized = true;
       this._notifyInit(e.origin);
+      this._tpcCheck();
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
     });
 
@@ -135,10 +137,12 @@ class LifecycleManager extends LuigiClientBase {
       },
       '*'
     );
-    this._tpcCheck();
   }
 
   _tpcCheck() {
+    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || this.disableTpcCheck) {
+      return;
+    }
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
@@ -223,11 +227,13 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
+   * @param {boolean} disableTpcCheck if set to `true` third party cookie check will be disabled via LuigiClient.
    * @memberof Lifecycle
    * @example
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
-  addInitListener(initFn) {
+  addInitListener(initFn, disableTpcCheck) {
+    this.disableTpcCheck = disableTpcCheck;
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {

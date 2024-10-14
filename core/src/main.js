@@ -8,8 +8,12 @@ import { AuthLayerSvc } from './services';
 const createConfigStore = () => {
   const { subscribe, update, reset } = writable({});
   const scopeSubscribers = {};
+  let unSubscriptions = [];
   return {
-    subscribe,
+    subscribe: fn => {
+      //subscribe fn returns unsubscription fn
+      unSubscriptions.push(subscribe(fn));
+    },
     update,
     reset,
     subscribeToScope: (fn, scope) => {
@@ -27,6 +31,12 @@ const createConfigStore = () => {
           fn(data);
         });
       }
+    },
+    clear: () => {
+      unSubscriptions.forEach(sub => {
+        sub();
+      });
+      unSubscriptions = [];
     }
   };
 };

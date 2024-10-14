@@ -277,6 +277,7 @@ export class WebComponentService {
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
+          // compound component use case only
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
         const payload = {

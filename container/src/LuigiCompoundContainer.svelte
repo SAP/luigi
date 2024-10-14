@@ -20,6 +20,7 @@
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
       documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
       hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
       noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
@@ -28,6 +29,7 @@
         reflect: false,
         attribute: 'search-params',
       },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: {
         type: 'Object',
@@ -75,10 +77,12 @@
   export let dirtyStatus: boolean;
   export let documentTitle: string;
   export let hasBack: boolean;
+  export let locale: string;
   export let noShadow: boolean;
   export let nodeParams: any;
   export let pathParams: any;
   export let searchParams: any;
+  export let skipInitCheck: boolean;
   export let theme: string;
   export let userSettings: any;
   export let viewurl: string;
@@ -100,10 +104,12 @@
       dirtyStatus &&
       documentTitle &&
       hasBack &&
+      locale &&
       noShadow &&
       nodeParams &&
       pathParams &&
       searchParams &&
+      skipInitCheck &&
       theme &&
       userSettings
     );
@@ -144,7 +150,7 @@
     }
     webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;
-      if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+      if (skipInitCheck || !node.viewUrl) {
         thisComponent.initialized = true;
         setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});

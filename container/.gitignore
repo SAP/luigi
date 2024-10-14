@@ -9,6 +9,7 @@
 /test-app/bundle.js
 /test-app/bundle.js.map
 /test-app/compound/luigi-element.js
+/test-app/iframe/luigi-client.js
 /public/**/*.ts
 
 /coverage

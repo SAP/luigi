@@ -625,6 +625,11 @@ runTimeErrorHandler: {
 - **type**: boolean
 - **description**: shows or hides a navigation node. You can still navigate to the node but it does not show up in the top or left pane.
 
+### hideGlobalSearch
+- **type**: boolean
+- **description**: if set to `true`, the global search disappears when you click the affected node.
+- **default**: `false`
+
 ### hideSideNav
 - **type**: boolean
 - **description**: if set to `true`, the left navigation disappears when you click the affected node.

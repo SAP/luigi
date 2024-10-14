@@ -404,19 +404,17 @@ class RoutingClass {
       }
 
       let cNode2 = currentNode;
+      let hideGlobalSearchInherited = nodeObject.hideGlobalSearch;
+      if (hideGlobalSearchInherited === undefined) {
+        hideGlobalSearchInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideGlobalSearch', () => {
+          cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
+        });
+      }
       let hideSideNavInherited = nodeObject.hideSideNav;
       if (hideSideNavInherited === undefined) {
-        while (cNode2) {
-          if (cNode2.tabNav && cNode2.hideSideNav === true) {
-            hideSideNavInherited = true;
-            break;
-          }
-          if (cNode2.hideSideNav === false) {
-            hideSideNavInherited = false;
-            break;
-          }
+        hideSideNavInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideSideNav', () => {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
-        }
+        });
       }
 
       const ctx = RoutingHelpers.substituteDynamicParamsInObject(
@@ -434,6 +432,7 @@ class RoutingClass {
         navigationPath: pathData.navigationPath,
         context: ctx,
         pathParams: pathData.pathParams,
+        hideGlobalSearch: hideGlobalSearchInherited || false,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited

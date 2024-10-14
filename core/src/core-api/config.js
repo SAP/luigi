@@ -219,6 +219,7 @@ class LuigiConfig {
    */
   unload() {
     this.initialized = false;
+    window.Luigi._store.clear();
     AuthLayerSvc.unload();
     EventListenerHelpers.removeAllEventListeners();
     const container = LuigiElements.getLuigiContainer();

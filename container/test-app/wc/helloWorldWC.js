@@ -14,7 +14,7 @@ export default class extends HTMLElement {
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
     const templateBtn2 = document.createElement('template');
-    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+    templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
@@ -88,9 +88,11 @@ export default class extends HTMLElement {
     const navigateToIntentBtn = document.createElement('template');
     navigateToIntentBtn.innerHTML = '<button id="navigateToIntent">navigateToIntent</button>';
 
+    const confirmationModalBtn = document.createElement('template');
+    confirmationModalBtn.innerHTML = '<button id="confirmationModal">showConfirmationModal</button>';
+
     const customMessageDiv = document.createElement('template');
     customMessageDiv.innerHTML = '<div id="customMessageDiv">Received Custom Message: </div>';
-    
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -116,6 +118,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateToIntentBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -141,20 +144,21 @@ export default class extends HTMLElement {
         });
       }
     });
-    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+    this._shadowRoot.querySelector('#publishEvent').addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
+        // send a custom event (similar to sendCustomMessage)
+        this.LuigiClient.publishEvent(new CustomEvent('sendMSG', { detail: 'My Custom Message from Microfrontend' }));
       }
     });
 
-    this.$button2 = this._shadowRoot.querySelector('#addNodeParams');
-    this.$button2.addEventListener('click', () => {
+    this.$addNodeParamsBtn = this._shadowRoot.querySelector('#addNodeParams');
+    this.$addNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.addNodeParams({ Luigi: 'rocks' }, true);
       }
     });
-    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
-    this.$button3.addEventListener('click', () => {
+    this.$getNodeParamsBtn = this._shadowRoot.querySelector('#getNodeParams');
+    this.$getNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
@@ -230,12 +234,12 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
-      this.LuigiClient.uxManager().collapseLeftSideNav();
-      this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().removeBackdrop();
+      this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
+      this.LuigiClient.uxManager().setDocumentTitle('my-title');
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
         type: 'info'
@@ -244,18 +248,29 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
+      const path = 'hello-world-wc';
+      const ctx = { ctx: 123 };
+
       this.LuigiClient.linkManager()
-        .fromContext({ ctx: 123 })
-        .navigate('hello-world-wc');
+        .fromContext(ctx)
+        .navigate();
       this.LuigiClient.linkManager()
         .fromClosestContext()
-        .navigate('hello-world-wc');
+        .navigate(path);
       this.LuigiClient.linkManager()
         .fromVirtualTreeRoot()
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager()
+        .fromParent(ctx)
+        .navigate(path);
       this.LuigiClient.linkManager()
         .withParams('my-params')
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager().navigate(path);
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.linkManager().navigate()',
+        type: 'info'
+      });
     });
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
@@ -313,13 +328,32 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', (event) => {
-      console.log('custom message received: ', event.detail)
+    this.addEventListener('custom-message-id', event => {
+      console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;
-      customMessageDiv.style = "color: red;";
-    })
-    
+      customMessageDiv.style = 'color: red;';
+    });
+
+    this.$confirmationModalBtn = this._shadowRoot.querySelector('#confirmationModal');
+    this.$confirmationModalBtn.addEventListener('click', () => {
+      const settings = {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      };
+
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'LuigiClient.uxManager().showConfirmationModal()',
+            type: 'info'
+          });
+        });
+    });
   }
 
   get context() {
