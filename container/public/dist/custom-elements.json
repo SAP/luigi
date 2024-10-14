@@ -198,7 +198,7 @@
                         },
                         {
                             "kind": "method",
-                            "name": "closeAlert__"
+                            "name": "closeAlert"
                         },
                         {
                             "kind": "method",
