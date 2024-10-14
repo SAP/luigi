@@ -1,1 +1,1 @@
-export { Events as default } from "./bundle.js";
+export { Events as default } from './bundle.js';
