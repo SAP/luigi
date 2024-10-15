@@ -219,10 +219,6 @@
                         {
                             "kind": "method",
                             "name": "init"
-                        },
-                        {
-                            "kind": "method",
-                            "name": "addEventListener"
                         }
                     ],
                     "events": [
@@ -859,10 +855,6 @@
                         {
                             "kind": "method",
                             "name": "init"
-                        },
-                        {
-                            "kind": "method",
-                            "name": "addEventListener"
                         }
                     ],
                     "events": [
