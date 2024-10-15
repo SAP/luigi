@@ -146,16 +146,14 @@ class LifecycleManager extends LuigiClientBase {
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
-    let luigiCookieKey;
     if (cookies) {
       luigiCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
     }
     document.cookie = 'luigiCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
@@ -163,11 +161,11 @@ class LifecycleManager extends LuigiClientBase {
       luigiCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
