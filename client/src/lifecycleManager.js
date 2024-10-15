@@ -164,8 +164,8 @@ class LifecycleManager extends LuigiClientBase {
         .find(cookie => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
-      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
       document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
+      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
