@@ -73,6 +73,7 @@ describe('getContainerManager messageListener', () => {
 
   it('test get context message', () => {
     const event = {
+      origin: '*',
       source: cw,
       data: {
         msg: LuigiInternalMessageID.GET_CONTEXT,
@@ -88,7 +89,6 @@ describe('getContainerManager messageListener', () => {
 
     // Replace the real postMessage with the mock
     cw.postMessage = postMessageMock;
-    cw.origin = '*';
 
     // Define the message to send and target Origin
     const message = {
