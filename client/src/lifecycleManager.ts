@@ -176,36 +176,34 @@ class LifecycleManager extends LuigiClientBase {
       return;
     }
 
+    const luigiCookieValue = 'luigiCookie=true';
+    const getLuigiCookie = (cookies: string): string | undefined =>
+      cookies
+        .split(';')
+        .map((cookie: string) => cookie)
+        .find((cookie: string) => cookie === luigiCookieValue);
     let tpc: 'disabled' | 'enabled' = 'enabled';
     let cookies: string = document.cookie;
     let luigiCookie: string | undefined;
-    let luigiCookieKey: string | undefined;
 
     if (cookies) {
-      luigiCookie = cookies
-        .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+      luigiCookie = getLuigiCookie(cookies);
     }
 
-    if (luigiCookie === 'luigiCookie=true') {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
+    if (luigiCookie === luigiCookieValue) {
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
     }
 
-    document.cookie = 'luigiCookie=true; SameSite=None; Secure';
+    document.cookie = luigiCookieValue + '; SameSite=None; Secure';
     cookies = document.cookie;
 
     if (cookies) {
-      luigiCookie = cookies
-        .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+      luigiCookie = getLuigiCookie(cookies);
     }
 
-    if (luigiCookie === 'luigiCookie=true') {
+    if (luigiCookie === luigiCookieValue) {
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');

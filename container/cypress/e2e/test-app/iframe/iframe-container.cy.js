@@ -16,7 +16,7 @@ describe('Iframe Container Test', () => {
       .get('iframe')
       .then(() => {
         cy.wrap(stub).should('have.been.calledWith', 'set-third-party-cookies-request');
-        cy.getCookie('luigiCookie').should('exist');
+        cy.getCookie('luigiCookie').should('not.exist');
       });
   });
 
