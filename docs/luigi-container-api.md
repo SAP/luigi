@@ -16,8 +16,8 @@ meta -->
 
 # Luigi Container API
 
-This document outlines the parameters provided by the Luigi Container.</br>
-In addition you can use standard `addEventListener` function to react on events emmitted by the luigi container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
+This document outlines the parameters provided by the Luigi Container.<br/>
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 ## API Reference
 
