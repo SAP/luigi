@@ -16,7 +16,9 @@ meta -->
 
 # Luigi Compound Container API
 
-This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
+This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container.<br/>
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
+
 
 ## API Reference
 
@@ -44,6 +46,26 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 If set to true defers from initializing the microfronted automatically. In that case init() can be used
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: 1.0.0
+
+### locale
+
+The locale to be passed to the compound micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### nodeParams
+
+The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 **Meta**
 
@@ -169,6 +191,36 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 **Meta**
 
 *   **since**: 1.0.0
+
+### skipInitCheck
+
+If set to true, skips handshake and ready event is fired immediately.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### activeFeatureToggleList
+
+The list of active feature toggles to be passed to the compound microfrontend.
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### theme
+
+The theme to be passed to the compound microfrontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### updateContext
 
