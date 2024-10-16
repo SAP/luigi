@@ -29,7 +29,7 @@
       "svelteAllowShorthand": true,
       "svelteBracketNewLine": true,
       "svelteIndentScriptAndStyle": true,
-      "svelteSortOrder": "scripts-markup-styles",
+      "svelteSortOrder": "options-scripts-markup-styles",
       "svelteStrictMode": false,
       "tabWidth": 2,
       "trailingComma": "none"

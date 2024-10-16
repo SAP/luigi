@@ -402,7 +402,6 @@
             {#each nodes as node, index2}
               {#if !node.hideFromNav}
                 {#if node.label}
-                  <!-- prettier-ignore -->
                   {@const isSelected = node === selectedNodeForTabNav}
                   <span role="presentation" class="fd-icon-tab-bar__item" uid="{index}-{index2}" {isSelected}>
                     <a
@@ -421,13 +420,10 @@
               {/if}
             {/each}
           {:else if isTabItemWithSubItems(nodes)}
-            <!-- prettier-ignore -->
             {@const uid = `${index}-0`}
-            <!-- prettier-ignore -->
             {@const popoverId = `lui-${uid}-popover`}
 
             {#if isMultiClickAreaTabItem(nodes)}
-              <!-- prettier-ignore -->
               {@const nodeToNavigateTo = getNodeToNavigateTo(nodes)}
               <span
                 {uid}
