@@ -5,16 +5,8 @@
     props: {
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      clientPermissions: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'client-permissions',
-      },
-      compoundConfig: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'compound-config',
-      },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
+      compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
       context: { type: 'String', reflect: false, attribute: 'context' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
@@ -24,18 +16,10 @@
       noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params',
-      },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
       skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
-      userSettings: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'user-settings',
-      },
+      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }
     },
     extend: (customElementConstructor) => {
