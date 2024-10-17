@@ -31,8 +31,8 @@
       "git-changed-files": "^1.0.0",
       "husky": "^4.3.5",
       "lerna-changelog": "^2.2.0",
-      "prettier": "^1.19.1",
-      "prettier-plugin-svelte": "^1.4.2",
+      "prettier": "^3.3.3",
+      "prettier-plugin-svelte": "^3.2.7",
       "sirv-cli": "^2.0.0",
       "trim": ">=0.0.3"
    },
