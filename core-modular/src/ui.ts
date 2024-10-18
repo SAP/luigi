@@ -2,8 +2,12 @@ import { Helpers } from "./helpers";
 import type { Luigi } from "./luigi";
 import { NavigationService } from "./services/navigation.service";
 
-const renderContainer = () => {
-
+const createContainer = (node: any): HTMLElement => {
+    const lc: any = document.createElement('luigi-container');
+    lc.setAttribute('viewUrl', node.viewUrl);
+    lc.webcomponent = node.webcomponent;
+    lc.context = node.context;
+    return lc;
 }
 
 export const UI = {
@@ -22,7 +26,6 @@ export const UI = {
         luigi._connector?.renderTopNav(navService.getTopNavData());
         luigi._connector?.renderLeftNav(navService.getLeftNavData(path));
 
-        renderContainer();
         const currentNode = navService.getCurrentNode(path);
         if(currentNode) {
             UI.updateMainContent(currentNode, luigi);
@@ -33,11 +36,11 @@ export const UI = {
         // if viewgroup and preload do some caching/restoring... for now only re-render
         if(currentNode && containerWrapper) {
             containerWrapper.innerHTML = '';
-            const lc: any = document.createElement('luigi-container');
-            lc.setAttribute('viewUrl', currentNode.viewUrl);
-            lc.webcomponent = currentNode.webcomponent;
-            lc.context = currentNode.context;
-            containerWrapper?.appendChild(lc);
+            containerWrapper?.appendChild(createContainer(currentNode));
         }
+    },
+    openModal: (luigi: Luigi, node: any, modalSettings: any /* TODO: type */, onCloseCallback: Function) => {
+        const lc = createContainer(node);
+        const modalHandle = luigi._connector?.renderModal(lc, modalSettings);
     }
 }

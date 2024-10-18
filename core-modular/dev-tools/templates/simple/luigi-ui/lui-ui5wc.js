@@ -161,6 +161,31 @@ const connector = {
   },
   getContainerWrapper: () => {
     return document.querySelector('.tool-layout > .content');
+  },
+  renderModal: (lc, modalSettings) => {
+    const dialog = document.createElement('ui5-dialog');
+    dialog.classList.add('lui-dialog');
+    dialog.setAttribute('header-text', modalSettings?.title);
+    dialog.appendChild(lc);
+
+    const bar = document.createElement('ui5-bar');
+    bar.setAttribute('slot', 'header');
+    bar.innerHTML = `<ui5-title level="H5" slot="startContent">${modalSettings?.title}</ui5-title>`;
+    dialog.appendChild(bar);
+    const btn = document.createElement('ui5-button');
+    btn.innerHTML = 'X';
+    btn.onclick = () => {
+      dialog.open = false;
+    };
+    btn.setAttribute('slot', 'endContent');
+    bar.appendChild(btn);
+
+    document.body.appendChild(dialog);
+    dialog.addEventListener('close', () => {
+      console.log('close');
+      //document.body.removeChild(dialog);
+    });
+    dialog.open = true;
   }
 };
 

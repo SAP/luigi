@@ -2,10 +2,12 @@ import type { LeftNavData, Node, TopNavData } from "../services/navigation.servi
 
 export interface LuigiConnector {
     renderMainLayout(): void;
-    
+
     renderTopNav(data: TopNavData): void;
 
     renderLeftNav(data: LeftNavData): void;
 
     getContainerWrapper(): HTMLElement;
+
+    renderModal(container: HTMLElement, modalSettings: any): any;
 }

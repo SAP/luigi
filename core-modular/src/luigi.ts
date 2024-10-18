@@ -25,17 +25,18 @@ export class Luigi {
         this._connector = connector;
     }
 
-    setConfig(cfg: any) {
+    // NOTE: using arrow style functions to have "code completion" in browser dev tools
+    setConfig = (cfg: any) => {
         this.config = cfg;
         _init();
-    }
+    };
 
-    getConfig(): any {
+    getConfig = (): any => {
         return this.config;
-    }
+    };
 
-    navigation(): any {
+    navigation = (): Navigation => {
         return new Navigation(this);
-    }
+    };
     // ...
 }

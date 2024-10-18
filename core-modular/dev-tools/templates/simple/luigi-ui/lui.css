@@ -51,3 +51,9 @@ ui5-shellbar {
     box-shadow: 0 0 0.125rem 0 color-mix(in srgb, var(--sapContent_ShadowColor) 16%, transparent),
         0 0.5rem 1rem 0 color-mix(in srgb, var(--sapContent_ShadowColor) 16%, transparent);
 }
+
+
+.lui-dialog::part(header),
+.lui-dialog::part(footer) {
+    padding-inline: 0;
+}

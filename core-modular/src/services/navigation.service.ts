@@ -42,7 +42,10 @@ export class NavigationService {
     
     getPathData(path: string): PathData {        
         const cfg = this.luigi.getConfig();
-        const pathSegments = path.split('/');
+        let pathSegments = path.split('/');
+        if (pathSegments?.length > 0 && pathSegments[0]  === '') {
+            pathSegments = pathSegments.slice(1);
+        }
         const rootNodes = cfg.navigation?.nodes || [];
         const pathData: PathData = {
             selectedNodeChildren: rootNodes,
