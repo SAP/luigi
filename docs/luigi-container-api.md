@@ -16,16 +16,8 @@ meta -->
 
 # Luigi Container API
 
-This document outlines the parameters provided by the Luigi Container. They can be set as HTML attributes or through the Container object's property in JS. The properties use pascalCase and the attributes use dashes. For example you can set the sandbox rules in either of these two equivalent ways:
-
-```js
-myContainer.sandboxRules = ["allow-scripts", "allow-same-origin"]
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
-```
-
+This document outlines the parameters provided by the Luigi Container.<br/>
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 ## API Reference
 
@@ -129,6 +121,16 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 **Meta**
 
 *   **since**: 1.0.0
+
+### skipCookieCheck
+
+If set to true, skips third party cookie check
+
+Type: (`"false"` | `"true"`)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### skipInitCheck
 
