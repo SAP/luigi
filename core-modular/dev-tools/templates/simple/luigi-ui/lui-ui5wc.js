@@ -24,7 +24,6 @@ function readExpandedState(uid) {
 
 /** @type {LuigiConnector} */
 const connector = {
-
   renderMainLayout: () => {
     if (!document.getElementById('app')) {
       const appRoot = document.createElement('div');
