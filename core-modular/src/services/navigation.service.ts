@@ -1,4 +1,3 @@
-import { filter, first } from 'rxjs/operators';
 import type { Luigi } from '../luigi';
 export interface TopNavData {
     appTitle: string;

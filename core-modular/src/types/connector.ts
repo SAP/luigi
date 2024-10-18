@@ -1,6 +1,8 @@
 import type { LeftNavData, Node, TopNavData } from "../services/navigation.service";
 
 export interface LuigiConnector {
+    renderMainLayout(): void;
+    
     renderTopNav(data: TopNavData): void;
 
     renderLeftNav(data: LeftNavData): void;

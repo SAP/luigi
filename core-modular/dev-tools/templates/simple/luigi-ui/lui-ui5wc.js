@@ -24,6 +24,21 @@ function readExpandedState(uid) {
 
 /** @type {LuigiConnector} */
 const connector = {
+
+  renderMainLayout: () => {
+    if (!document.getElementById('app')) {
+      const appRoot = document.createElement('div');
+      appRoot.id = 'app';
+      appRoot.classList.add('tool-layout');
+      appRoot.innerHTML = `
+        <ui5-shellbar></ui5-shellbar>
+        <ui5-side-navigation></ui5-side-navigation>
+        <div class="content"></div>
+      `;
+      document.body.appendChild(appRoot);
+    }
+  },
+
   renderTopNav: topNavData => {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
     shellbar.setAttribute('primary-title', topNavData.appTitle);

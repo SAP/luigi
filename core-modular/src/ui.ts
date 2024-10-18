@@ -10,6 +10,7 @@ export const UI = {
     navService : undefined,
     init: (luigi: Luigi) => {        
         console.log('Init UI...');
+        luigi._connector?.renderMainLayout();
         const navService = new NavigationService(luigi);
         const path = Helpers.normalizePath(location.hash);
         const redirect = navService.shouldRedirect(path);
