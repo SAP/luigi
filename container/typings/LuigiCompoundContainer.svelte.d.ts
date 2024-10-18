@@ -25,6 +25,13 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
+   *
+   * The locale to be passed to the compound micro frontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  locale: string;
+
+  /**
    * The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
    * @since 1.0.0
    */
@@ -102,6 +109,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since 1.0.0
    */
   webcomponent: boolean | WebComponentSettings | string;
+
+  /**
+   * If set to true, skips handshake and ready event is fired immediately.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  skipInitCheck: boolean;
 
   /**
    * The list of active feature toggles to be passed to the compound microfrontend.

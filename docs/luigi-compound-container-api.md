@@ -16,7 +16,8 @@ meta -->
 
 # Luigi Compound Container API
 
-This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container. The properties can be set as HTML attributes or through the Container object's property in JS.
+This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container.<br/>
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 ## API Reference
 
@@ -136,6 +137,17 @@ myContainer.deferInit = true
 ```HTML
 <luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
 ```
+
+### locale
+
+The locale to be passed to the compound micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 
 ### nodeParams
 
@@ -363,6 +375,16 @@ myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegister
 ```HTML
 <luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
 ```
+
+### skipInitCheck
+
+If set to true, skips handshake and ready event is fired immediately.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### activeFeatureToggleList
 

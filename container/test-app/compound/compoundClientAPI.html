@@ -35,8 +35,10 @@
         user-settings='{"language":"it", "date":""}'
         anchor="testAnchorCompound"
         defer-init="false"
+        skip-init-check="true"
         webcomponent="true"
         theme="sap_fiori_3"
+        locale="en"
       ></luigi-compound-container>
     </div>
 
@@ -60,9 +62,11 @@
       import MFEventID from '../bundle.js';
 
       const compoundContainer = document.getElementById('dashboard');
+
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
-        console.log('Publish Event', e.detail);
+        console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
+
       compoundContainer.compoundConfig = {
         renderer: {
           use: 'grid',
@@ -101,6 +105,9 @@
                 name: 'sendInput',
                 action: 'update',
                 dataConverter: data => {
+                  console.log(
+                    'dataConverter(): Received Custom Message from "input1" MF ' + data
+                  );
                   return 'new text: ' + data;
                 }
               }
@@ -158,15 +165,17 @@
       compoundContainer.addEventListener(
         MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
         event => {
-          console.log(event.detail);
-          const val = confirm(event.detail.body);
+          const data = event.detail;
+          console.log(data);
+          const val = confirm(data.body);
           // send back to mf alert.answer with data
           window.postMessage('alert.answer', data);
-          event.luigiCallback(val);
+          if (event.callback) {
+            event.callback(val);
+          }
         }
       );
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
-        console.log('Custom Event', event);
         if (event.detail.id !== 'timer') {
           alert(event.detail.id);
         }
@@ -185,35 +194,38 @@
       compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
         console.log('anchor', event.detail);
       });
-
-      // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
-      // setDocumentTitle removeBackdrop hideAppLoadingIndicator
-      compoundContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
-        console.log('Close User Settings Request received', event.detail);
-      });
       compoundContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, event => {
         console.log('Open User Settings Request received', event.detail);
+        alert('LuigiClient.uxManager().openUserSettings()');
       });
-      compoundContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
-        console.log('Collapse Left Side Nav Request received', event.detail);
-      });
-      compoundContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
-        console.log('Set Document Title Request received', event.detail);
+      compoundContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
+        console.log('Close User Settings Request received', event.detail);
+        alert('LuigiClient.uxManager().closeUserSettings()');
       });
       compoundContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
         console.log('Remove Backdrop Request received', event.detail);
+        alert('LuigiClient.uxManager().removeBackdrop()');
+      });
+      compoundContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
+        console.log('Collapse Left Side Nav Request received', event.detail);
+        alert('LuigiClient.uxManager().collapseLeftSideNav()');
+      });
+      compoundContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
+        console.log('Set Document Title Request received', event.detail);
+        compoundContainer.documentTitle = event.detail;
       });
       compoundContainer.addEventListener(
         MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
         event => {
           console.log('Hide Loading Indicator Request received', event.detail);
+          alert('LuigiClient.uxManager().hideAppLoadingIndicator()');
         }
       );
 
       // linkManager listeners:
       // path exists
       compoundContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
-        console.log('Remove Backdrop Request received', event.detail, event);
+        console.log('Path Exists Request received', event.detail, event);
         // send back result with defined 'callback'
         // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
         event.callback(true);
