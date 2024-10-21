@@ -9,6 +9,7 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
+    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
@@ -139,22 +140,20 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck() {
-    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled) {
+    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || this.disableTpcCheck) {
       return;
     }
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
-    let luigiCookieKey;
     if (cookies) {
       luigiCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
     }
     document.cookie = 'luigiCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
@@ -162,11 +161,11 @@ class LifecycleManager extends LuigiClientBase {
       luigiCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
@@ -226,11 +225,13 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
    * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
+   * @param {boolean} disableTpcCheck if set to `true` third party cookie check will be disabled via LuigiClient.
    * @memberof Lifecycle
    * @example
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
-  addInitListener(initFn) {
+  addInitListener(initFn, disableTpcCheck) {
+    this.disableTpcCheck = disableTpcCheck;
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
