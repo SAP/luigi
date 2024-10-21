@@ -8,12 +8,27 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.viewUrl = "/index.html"
+   * ```
+   *
+   * ```HTML
+   * <luigi-container viewurl="/index.html"></luigi-container>
+   * ```
    */
   viewurl: string;
 
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
    * @since 1.0.0
+   * ```js
+myContainer.deferInit = true
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
+```
    */
   deferInit: boolean;
 
