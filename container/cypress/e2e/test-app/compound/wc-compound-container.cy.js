@@ -204,6 +204,19 @@ describe('Compound Container Tests', () => {
       cy.get('#defer-init-flag').should('exist');
     });
 
+    it('linkManagerChainRequests for navigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerChainRequests')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
@@ -222,6 +235,29 @@ describe('Compound Container Tests', () => {
             'be.calledWith',
             'dataConverter(): Received Custom Message from "input1" MF My own event data'
           );
+        });
+    });
+
+    it('LuigiClient API uxManagerChainRequests', () => {
+      const alertMessages = [
+        'LuigiClient.uxManager().openUserSettings()',
+        'LuigiClient.uxManager().closeUserSettings()',
+        'LuigiClient.uxManager().removeBackdrop()',
+        'LuigiClient.uxManager().collapseLeftSideNav()',
+        'LuigiClient.uxManager().hideAppLoadingIndicator()',
+        'LuigiClient.uxManager().getDocumentTitle()=my-title'
+      ];
+
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#uxManagerManyRequests')
+        .click()
+        .then(() => {
+          alertMessages.forEach((msg, index) => {
+            expect(stub.getCall(index)).to.be.calledWith(msg);
+          });
         });
     });
   });
