@@ -57,7 +57,7 @@
                             "kind": "field",
                             "name": "context",
                             "type": {
-                                "text": "Object | string | undefined"
+                                "text": "any"
                             },
                             "default": "undefined"
                         },
@@ -193,7 +193,7 @@
                             "kind": "field",
                             "name": "webcomponent",
                             "type": {
-                                "text": "boolean | WebComponentSettings | string"
+                                "text": "any"
                             }
                         },
                         {
@@ -499,7 +499,7 @@
                             "default": "undefined",
                             "fieldName": "context",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "any"
                             }
                         },
                         {
@@ -652,7 +652,7 @@
                             "default": "undefined",
                             "fieldName": "webcomponent",
                             "type": {
-                                "text": "boolean | WebComponentSettings | string"
+                                "text": "any"
                             }
                         }
                     ],
@@ -725,7 +725,7 @@
                             "kind": "field",
                             "name": "context",
                             "type": {
-                                "text": "Object | string | undefined"
+                                "text": "any"
                             },
                             "default": "undefined"
                         },
@@ -749,7 +749,7 @@
                             "kind":"field",
                             "name":"documentTitle",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -837,7 +837,7 @@
                             "kind": "field",
                             "name": "webcomponent",
                             "type": {
-                                "text": "WebComponentSettings | string"
+                                "text": "any"
                             }
                         },
                         {
@@ -1270,7 +1270,7 @@
                             "default": "undefined",
                             "fieldName": "webcomponent",
                             "type": {
-                                "text": "WebComponentSettings | string"
+                                "text": "any"
                             }
                         }
                     ]
