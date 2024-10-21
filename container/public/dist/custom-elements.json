@@ -193,7 +193,7 @@
                             "kind": "field",
                             "name": "webcomponent",
                             "type": {
-                                "text": "any"
+                                "text": "object | boolean"
                             }
                         },
                         {
@@ -652,7 +652,7 @@
                             "default": "undefined",
                             "fieldName": "webcomponent",
                             "type": {
-                                "text": "any"
+                                "text": "object | boolean"
                             }
                         }
                     ],
