@@ -15,7 +15,7 @@
   </head>
   <body>
     <h3>
-      This page is used to test Compound-Container Luigi CLient API functionalities for
+      This page is used to test Compound-Container Luigi Client API functionalities for
       compound web component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
@@ -42,8 +42,21 @@
       ></luigi-compound-container>
     </div>
 
+
+      <!-- luigi-client-init scenario wc container-->
+    <button id="luigi-client-init-button" style="margin: 25px 0 10px;">
+      this.LuigiClient.luigiClientInit();
+    </button>
+    <div style="border:solid 1px red; height: 100px;">
+      <luigi-compound-container
+        id="luigi-client-init-test"
+        webcomponent="true"
+        context='{"content":" -- luigi-client-init-test --"}'
+        defer-init="false"
+      ></luigi-compound-container>
+  
     <!-- defer-init scenario wc container-->
-    <button id="init-button" style="margin: 25px 0 10px;">
+    <button id="defer-init-button" style="margin: 25px 0 10px;">
       container.init() - click to initialize defered compound wc
     </button>
     <div style="border:solid 1px red; height: 100px;">
@@ -235,8 +248,8 @@
       });
 
       const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
-      initButton.addEventListener('click', function() {
+      const deferInitButton = document.getElementById('defer-init-button');
+      deferInitButton.addEventListener('click', function() {
         deferInitContainer.init();
       });
       deferInitContainer.compoundConfig = {
@@ -257,9 +270,32 @@
         ]
       };
 
+      const luigiClientInitContainer = document.getElementById('luigi-client-init-test');
+      const luigiClientInitButton = document.getElementById('luigi-client-init-button');
+      luigiClientInitButton.addEventListener('click', function() {
+        console.log('luigi-client-init');
+        luigiClientInitContainer.init();
+      });
+
+      luigiClientInitContainer.compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr',
+            gap: '20px'
+          }
+        },
+        children: [
+          {
+            viewUrl: './compound/luigi-client-init-wc/luigi-client-init-wc.js'
+          }
+        ]
+      };
+
       document.querySelector('#luigi-update-context').addEventListener('click', () => {
         compoundContainer.updateContext({ newContextData: 'some data' });
       });
+
     </script>
   </body>
 </html>
