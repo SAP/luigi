@@ -28,6 +28,14 @@ export default class LuigiCompoundContainer extends HTMLElement {
    *
    * The locale to be passed to the compound micro frontend.
    * @since NEXT_RELEASE_CONTAINER
+   * 
+   * ```js
+   * myContainer.locale = locale="en_us"
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container locale="en_us"></luigi-container>
+   * ```
    */
   locale: string;
 
