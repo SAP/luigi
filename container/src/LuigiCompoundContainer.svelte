@@ -9,9 +9,9 @@
       compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
       context: { type: 'String', reflect: false, attribute: 'context' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
-      documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
+      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
       locale: { type: 'String', reflect: false, attribute: 'locale' },
       noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
@@ -25,10 +25,7 @@
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
         return () =>
-          console.warn(
-            name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
-          );
+          console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
@@ -37,11 +34,11 @@
             this.updateContext(JSON.parse(newValue));
           }
         }
-        getNoShadow(){
+        getNoShadow() {
           return this.hasAttribute('no-shadow') || this.noShadow;
         }
       };
-    },
+    }
   }}
 />
 
@@ -111,8 +108,8 @@
       if (compoundChildrenQueryElement) {
         const compoundChildren = compoundChildrenQueryElement.querySelectorAll('[lui_web_component]');
         compoundChildren?.forEach((item) => {
-            const ctx = item.context || {};
-            item.context = Object.assign(ctx, contextObj);
+          const ctx = item.context || {};
+          item.context = Object.assign(ctx, contextObj);
         });
       }
     };
@@ -125,31 +122,36 @@
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     };
     if (!thisComponent.getNoShadow()) {
-      mainComponent.innerHTML=''
-      const shadow = thisComponent.attachShadow({ mode: "open"});
+      mainComponent.innerHTML = '';
+      const shadow = thisComponent.attachShadow({ mode: 'open' });
       shadow.append(mainComponent);
     } else {
       // removing mainComponent
       thisComponent.innerHTML = '';
     }
-    webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
-      eventBusElement = compCnt as HTMLElement;
-      if (skipInitCheck || !node.viewUrl) {
-        thisComponent.initialized = true;
-        setTimeout(() => {
+    webcomponentService
+      .renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx)
+      .then((compCnt) => {
+        eventBusElement = compCnt as HTMLElement;
+        if (skipInitCheck || !node.viewUrl) {
+          thisComponent.initialized = true;
+          setTimeout(() => {
+            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+          });
+        } else if ((eventBusElement as any).LuigiClient && !(eventBusElement as any).deferLuigiClientWCInit) {
+          thisComponent.initialized = true;
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        });
-      } else if ((eventBusElement as any).LuigiClient && !(eventBusElement as any).deferLuigiClientWCInit) {
-        thisComponent.initialized = true;
-        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-      }
-    });
+        }
+      });
     containerInitialized = true;
     thisComponent.containerInitialized = true;
   };
 
   onMount(async () => {
-    const thisComponent: any = mainComponent.getRootNode() === document ? mainComponent.parentNode : (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any =
+      mainComponent.getRootNode() === document
+        ? mainComponent.parentNode
+        : (mainComponent.getRootNode() as ShadowRoot).host;
 
     thisComponent.init = () => {
       initialize(thisComponent);
