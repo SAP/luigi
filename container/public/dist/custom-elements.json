@@ -17,7 +17,12 @@
                             "kind":"field",
                             "name":"activeFeatureToggleList",
                             "type":{
-                                "text":"Array"
+                               "text":"Array<string>",
+                                "references": [
+                                {
+                                  "name": "string"
+                                }
+                              ]
                             },
                             "default":"undefined"
                         },
@@ -25,7 +30,12 @@
                             "kind":"field",
                             "name":"allowRules",
                             "type":{
-                                "text":"Array"
+                                "text":"Array<string>",
+                                "references": [
+                                {
+                                  "name": "string"
+                                }
+                              ]
                             },
                             "default":"undefined"
                         },
@@ -137,7 +147,12 @@
                             "kind":"field",
                             "name":"sandboxRules",
                             "type":{
-                                "text":"array"
+                                "text":"Array<string>",
+                                "references": [
+                                {
+                                  "name": "string"
+                                }
+                              ]
                             },
                             "default":"undefined"
                         },
@@ -454,7 +469,7 @@
                             "default": "undefined",
                             "fieldName": "activeFeatureToggleList",
                             "type": {
-                                "text": "Array"
+                                "text": "any"
                             }
                         },
                         {
@@ -463,7 +478,7 @@
                             "default": "undefined",
                             "fieldName": "allowRules",
                             "type": {
-                                "text": "Array"
+                                "text": "any"
                             }
                         },
                         {
@@ -481,7 +496,7 @@
                             "default": "undefined",
                             "fieldName": "authData",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -490,7 +505,7 @@
                             "default": "undefined",
                             "fieldName": "clientPermissions",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -571,7 +586,7 @@
                             "default": "undefined",
                             "fieldName": "nodeParams",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -580,7 +595,7 @@
                             "default": "undefined",
                             "fieldName": "pathParams",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -589,7 +604,7 @@
                             "default": "undefined",
                             "fieldName": "sandboxRules",
                             "type": {
-                                "text": "Array"
+                                "text": "any"
                             }
                         },
                         {
@@ -598,7 +613,7 @@
                             "default": "undefined",
                             "fieldName": "searchParams",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -634,7 +649,7 @@
                             "default": "undefined",
                             "fieldName": "userSettings",
                             "type": {
-                                "text": "string"
+                                "text": "any"
                             }
                         },
                         {
@@ -693,7 +708,12 @@
                             "kind":"field",
                             "name":"activeFeatureToggleList",
                             "type":{
-                                "text":"Array"
+                               "text":"Array<string>",
+                                "references": [
+                                {
+                                  "name": "string"
+                                }
+                              ]
                             },
                             "default":"undefined"
                         },
@@ -1090,7 +1110,7 @@
                             "default": "undefined",
                             "fieldName": "activeFeatureToggleList",
                             "type": {
-                                "text": "Array"
+                                "text": "any"
                             }
                         },
                         {
@@ -1108,7 +1128,7 @@
                             "default": "undefined",
                             "fieldName": "clientPermissions",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -1117,7 +1137,7 @@
                             "default": "undefined",
                             "fieldName": "compoundConfig",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -1198,7 +1218,7 @@
                             "default": "undefined",
                             "fieldName": "nodeParams",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -1207,7 +1227,7 @@
                             "default": "undefined",
                             "fieldName": "pathParams",
                             "type": {
-                                "text": "object"
+                                "text": "any"
                             }
                         },
                         {
@@ -1252,7 +1272,7 @@
                             "default": "undefined",
                             "fieldName": "userSettings",
                             "type": {
-                                "text": "string"
+                                "text": "any"
                             }
                         },
                         {
