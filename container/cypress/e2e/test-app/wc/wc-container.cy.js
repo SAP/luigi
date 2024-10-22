@@ -86,7 +86,7 @@ describe('Web Container Test', () => {
       // the initialized webcomponent has id="defer-init-flag"
       cy.get('#defer-init-flag').should('not.exist');
       // click button that calls container.init()
-      cy.get('#init-button').click();
+      cy.get('#defer-init-button').click();
 
       cy.get('#defer-init-flag').should('exist');
     });
