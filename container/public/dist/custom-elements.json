@@ -17,7 +17,7 @@
                             "kind":"field",
                             "name":"activeFeatureToggleList",
                             "type":{
-                                "text":"Array | undefined"
+                                "text":"Array"
                             },
                             "default":"undefined"
                         },
@@ -25,7 +25,7 @@
                             "kind":"field",
                             "name":"allowRules",
                             "type":{
-                                "text":"Array | undefined"
+                                "text":"Array"
                             },
                             "default":"undefined"
                         },
@@ -33,7 +33,7 @@
                             "kind":"field",
                             "name":"anchor",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -41,7 +41,7 @@
                             "kind":"field",
                             "name":"authData",
                             "type":{
-                                "text":"Object | undefined"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -49,9 +49,9 @@
                             "kind":"field",
                             "name":"clientPermissions",
                             "type":{
-                                "text":"Object | undefined"
+                                "text":"object"
                             },
-                            "default":""
+                            "default":"undefined"
                         },
                         {
                             "kind": "field",
@@ -81,7 +81,7 @@
                             "kind":"field",
                             "name":"documentTitle",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -97,7 +97,7 @@
                             "kind":"field",
                             "name":"label",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -105,7 +105,7 @@
                             "kind":"field",
                             "name":"locale",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -121,7 +121,7 @@
                             "kind":"field",
                             "name":"nodeParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -129,7 +129,7 @@
                             "kind":"field",
                             "name":"pathParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -145,7 +145,7 @@
                             "kind":"field",
                             "name":"searchParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -177,7 +177,7 @@
                             "kind":"field",
                             "name":"userSettings",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -454,7 +454,7 @@
                             "default": "undefined",
                             "fieldName": "activeFeatureToggleList",
                             "type": {
-                                "text": "Array | undefined"
+                                "text": "Array"
                             }
                         },
                         {
@@ -463,7 +463,7 @@
                             "default": "undefined",
                             "fieldName": "allowRules",
                             "type": {
-                                "text": "Array | undefined"
+                                "text": "Array"
                             }
                         },
                         {
@@ -472,7 +472,7 @@
                             "default": "undefined",
                             "fieldName": "anchor",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -481,7 +481,7 @@
                             "default": "undefined",
                             "fieldName": "authData",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -490,7 +490,7 @@
                             "default": "undefined",
                             "fieldName": "clientPermissions",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -508,7 +508,7 @@
                             "default": "undefined",
                             "fieldName": "deferInit",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -526,7 +526,7 @@
                             "default": "undefined",
                             "fieldName": "documentTitle",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -544,7 +544,7 @@
                             "default": "undefined",
                             "fieldName": "label",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -553,7 +553,7 @@
                             "default": "undefined",
                             "fieldName": "locale",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -571,7 +571,7 @@
                             "default": "undefined",
                             "fieldName": "nodeParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -580,7 +580,7 @@
                             "default": "undefined",
                             "fieldName": "pathParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -598,7 +598,7 @@
                             "default": "undefined",
                             "fieldName": "searchParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -607,7 +607,7 @@
                             "default": "undefined",
                             "fieldName": "skipCookieCheck",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -625,7 +625,7 @@
                             "default": "undefined",
                             "fieldName": "theme",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -634,7 +634,7 @@
                             "default": "undefined",
                             "fieldName": "userSettings",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -643,7 +643,7 @@
                             "default": "undefined",
                             "fieldName": "viewurl",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -693,7 +693,7 @@
                             "kind":"field",
                             "name":"activeFeatureToggleList",
                             "type":{
-                                "text":"Array | undefined"
+                                "text":"Array"
                             },
                             "default":"undefined"
                         },
@@ -701,7 +701,7 @@
                             "kind":"field",
                             "name":"anchor",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -709,7 +709,7 @@
                             "kind":"field",
                             "name":"clientPermissions",
                             "type":{
-                                "text":"Object | undefined"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -717,7 +717,7 @@
                             "kind":"field",
                             "name":"compoundConfig",
                             "type":{
-                                "text":"Object | undefined"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -765,7 +765,7 @@
                             "kind":"field",
                             "name":"locale",
                             "type":{
-                                "text":"string | undefined"
+                                "text":"string"
                             },
                             "default":"undefined"
                         },
@@ -781,7 +781,7 @@
                             "kind":"field",
                             "name":"nodeParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -789,7 +789,7 @@
                             "kind":"field",
                             "name":"pathParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -797,7 +797,7 @@
                             "kind":"field",
                             "name":"searchParams",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -821,7 +821,7 @@
                             "kind":"field",
                             "name":"userSettings",
                             "type":{
-                                "text":"Object"
+                                "text":"object"
                             },
                             "default":"undefined"
                         },
@@ -1090,7 +1090,7 @@
                             "default": "undefined",
                             "fieldName": "activeFeatureToggleList",
                             "type": {
-                                "text": "Array | undefined"
+                                "text": "Array"
                             }
                         },
                         {
@@ -1099,7 +1099,7 @@
                             "default": "undefined",
                             "fieldName": "anchor",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1108,7 +1108,7 @@
                             "default": "undefined",
                             "fieldName": "clientPermissions",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -1117,7 +1117,7 @@
                             "default": "undefined",
                             "fieldName": "compoundConfig",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -1126,7 +1126,7 @@
                             "default": "undefined",
                             "fieldName": "context",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "any"
                             }
                         },
                         {
@@ -1135,7 +1135,7 @@
                             "default": "undefined",
                             "fieldName": "deferInit",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1153,7 +1153,7 @@
                             "default": "undefined",
                             "fieldName": "documentTitle",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1171,7 +1171,7 @@
                             "default": "undefined",
                             "fieldName": "label",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1180,7 +1180,7 @@
                             "default": "undefined",
                             "fieldName": "locale",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1198,7 +1198,7 @@
                             "default": "undefined",
                             "fieldName": "nodeParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -1207,7 +1207,7 @@
                             "default": "undefined",
                             "fieldName": "pathParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -1216,7 +1216,7 @@
                             "default": "undefined",
                             "fieldName": "searchParams",
                             "type": {
-                                "text": "object | undefined"
+                                "text": "object"
                             }
                         },
                         {
@@ -1225,7 +1225,7 @@
                             "default": "undefined",
                             "fieldName": "skipCookieCheck",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1243,7 +1243,7 @@
                             "default": "undefined",
                             "fieldName": "theme",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1252,7 +1252,7 @@
                             "default": "undefined",
                             "fieldName": "userSettings",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
@@ -1261,7 +1261,7 @@
                             "default": "undefined",
                             "fieldName": "viewurl",
                             "type": {
-                                "text": "string | undefined"
+                                "text": "string"
                             }
                         },
                         {
