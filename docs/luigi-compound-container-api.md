@@ -17,8 +17,7 @@ meta -->
 # Luigi Compound Container API
 
 This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container.<br/>
-In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).<br/>
-LuigiCompoundContainer offers a [Custom Elements Manifest](https://github.com/SAP/luigi/tree/main/container/public/dist/custom-elements.json), providing a detailed overview of the LuigiCompoundContainer web component. This manifest serves as a standardized description of LuigiCompoundContainer. It includes essential metadata such as tag names, attributes, properties, methods and events. (This file is currently in experimental mode).
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 
 ## API Reference
