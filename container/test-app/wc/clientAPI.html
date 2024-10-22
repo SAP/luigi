@@ -36,7 +36,7 @@
         ></luigi-container>
       </div>
 
-      <button id="init-button" style="margin: 25px 0 15px">
+      <button id="defer-init-button" style="margin: 25px 0 15px">
         container.init() to initialize defered container
       </button>
       <div style="border: 1px solid red">
@@ -67,8 +67,8 @@
       import '../bundle.js';
       import MFEventID from '../bundle.js';
       const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
-      initButton.addEventListener('click', function() {
+      const deferInitButton = document.getElementById('defer-init-button');
+      deferInitButton.addEventListener('click', function() {
         deferInitContainer.init();
       });
       // document.querySelector('luigi-container');
