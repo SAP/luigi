@@ -155,7 +155,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" node-params='{"node":"param"}'></luigi-container>
+   * <luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
    * ```
    */
   nodeParams: Object;
