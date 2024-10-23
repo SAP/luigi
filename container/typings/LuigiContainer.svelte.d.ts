@@ -169,7 +169,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" no-shadow='true'></luigi-container>
+   * <luigi-container viewurl="/index.html" no-shadow='true'></luigi-container>
    * ```
    */
   noShadow: boolean;
