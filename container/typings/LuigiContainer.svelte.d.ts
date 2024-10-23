@@ -71,7 +71,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
+   * <luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
    * ```
    */
   webcomponent: boolean | WebComponentSettings | string;
