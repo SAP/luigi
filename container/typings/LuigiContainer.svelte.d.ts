@@ -286,7 +286,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" has-back='/detailsPage'></luigi-container>
+   * <luigi-container viewurl="/index.html" has-back></luigi-container>
    * ```
    */
   hasBack: string;
