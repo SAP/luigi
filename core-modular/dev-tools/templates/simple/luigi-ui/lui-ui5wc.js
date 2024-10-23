@@ -53,7 +53,8 @@ const connector = {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
     shellbar.setAttribute('primary-title', topNavData.appTitle);
 
-    if (!shellbar._lastTopNavData) { // initial rendering
+    if (!shellbar._lastTopNavData) {
+      // initial rendering
       let html = '';
       html += '<ui5-button icon="menu" slot="startButton" id="toggle"></ui5-button>';
       if (topNavData.logo) {
@@ -74,7 +75,8 @@ const connector = {
         addShellbarItem(shellbar, item);
       });
       // ...
-    } else { // partial update
+    } else {
+      // partial update
       if (topNavData.logo !== shellbar._lastTopNavData.logo) {
         shellbar.querySelector('img[slot=logo]').setAttribute('src', topNavData.logo);
       }
