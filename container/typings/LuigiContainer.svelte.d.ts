@@ -183,7 +183,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" search-params='{"search":"param"}'></luigi-container>
+   * <luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
    * ```
    */
   searchParams: Object;
@@ -193,11 +193,11 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.0.0
    * 
    * ```js
-   * myContainer.pathParams = {foo: bar}
+   * myContainer.pathParams = {foo: "bar"}
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" path-params='{"path":"param"}'></luigi-container>
+   * <luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
    * ```
    */
   pathParams: Object;
@@ -211,7 +211,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
+   * <luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
    * ```
    */
   clientPermissions: Object;
@@ -225,7 +225,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+   * <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
    * ```
    */
   userSettings: Object;
@@ -239,7 +239,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" anchor='#foo'></luigi-container>
+   * <luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
    * ```
    */
   anchor: string;
@@ -289,7 +289,7 @@ export default class LuigiContainer extends HTMLElement {
    * <luigi-container viewurl="/index.html" has-back></luigi-container>
    * ```
    */
-  hasBack: string;
+  hasBack: boolean;
 
   /**
    * The dirty status value to be passed to the web-component-based micro frontend.
@@ -301,7 +301,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" dirty-status='true'></luigi-container>
+   * <luigi-container viewurl="/index.html" dirty-status='true'></luigi-container>
    * ```
    */
   dirtyStatus: boolean;
