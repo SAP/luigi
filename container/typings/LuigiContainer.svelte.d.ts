@@ -127,7 +127,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" skipCookieCheck></luigi-container>
+   * <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
    * ```
    */
   skipCookieCheck: 'false' | 'true';
