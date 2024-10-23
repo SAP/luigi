@@ -10,7 +10,7 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.0.0
    * 
    * ```js
-   * myContainer.viewUrl = "/index.html"
+   * myContainer.viewurl = "/index.html"
    * ```
    *
    * ```HTML
