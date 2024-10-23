@@ -282,7 +282,7 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.2.0
    * 
    * ```js
-   * myContainer.hasBack = '/detailsPage'
+   * myContainer.hasBack = true
    * ```
    * 
    * ```HTML
