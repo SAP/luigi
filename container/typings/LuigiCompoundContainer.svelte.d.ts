@@ -30,7 +30,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since NEXT_RELEASE_CONTAINER
    * 
    * ```js
-   * myContainer.locale = locale="en_us"
+   * myContainer.locale = "en_us"
    * ```
    * 
    * ```HTML
