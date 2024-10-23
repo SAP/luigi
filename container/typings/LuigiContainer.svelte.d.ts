@@ -81,7 +81,7 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.0.0
    * 
    * ```js
-   * myContainer.locale = locale="en_us"
+   * myContainer.locale = "en_us"
    * ```
    * 
    * ```HTML
