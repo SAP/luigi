@@ -25,7 +25,8 @@
 {/if}
 <!-- end node.icon -->
 {#if !node.icon || node.showLabel}
-  <span>{getNodeLabel(node)}
+  <span
+    >{getNodeLabel(node)}
     <StatusBadge {node} />
   </span>
 {/if}

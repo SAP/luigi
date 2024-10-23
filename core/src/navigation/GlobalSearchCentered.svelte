@@ -110,7 +110,7 @@
         {:else}
           <input
             type="text"
-            on:keyup={event => onKeyUp(event)}
+            on:keyup={(event) => onKeyUp(event)}
             class="fd-input fd-shellbar__search-field-input
         fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input"
@@ -157,8 +157,8 @@
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={event => onSearchResultItemSelected(result, event)}
-                    on:keyup={event => handleKeydown(result, event)}
+                    on:click={(event) => onSearchResultItemSelected(result, event)}
+                    on:keyup={(event) => handleKeydown(result, event)}
                     tabindex="0"
                   >
                     {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
@@ -203,7 +203,9 @@
 {/if}
 {#if isSearchFieldVisible}
   <div
-    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible ? 'lui-global-search-cancel-btn--active' : ''}"
+    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible
+      ? 'lui-global-search-cancel-btn--active'
+      : ''}"
   >
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
