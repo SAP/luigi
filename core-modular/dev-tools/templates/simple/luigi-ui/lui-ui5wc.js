@@ -22,6 +22,17 @@ function readExpandedState(uid) {
   return false;
 }
 
+function addShellbarItem(shellbar, item) {
+  const itemEl = document.createElement('ui5-shellbar-item');
+  itemEl.setAttribute('icon', item.icon);
+  itemEl.setAttribute('text', item.label);
+  itemEl.setAttribute('luigi-route', item.pathSegment);
+  itemEl.addEventListener('click', () => {
+    globalThis.Luigi.navigation().navigate(itemEl.getAttribute('luigi-route'));
+  });
+  shellbar.appendChild(itemEl);
+}
+
 /** @type {LuigiConnector} */
 const connector = {
   renderMainLayout: () => {
@@ -41,33 +52,41 @@ const connector = {
   renderTopNav: topNavData => {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
     shellbar.setAttribute('primary-title', topNavData.appTitle);
-    let html = '';
-    html += '<ui5-button icon="menu" slot="startButton" id="toggle"></ui5-button>';
-    if (topNavData.logo) {
-      html += `<img
-          slot="logo"
-          src="${topNavData.logo}"
-        />`;
-    }
-    if (!shellbar._logoEL) {
-      shellbar._logoEL = () => {
-        globalThis.Luigi.navigation().navigate('/');
-      };
-      shellbar.addEventListener('logo-click', shellbar._logoEL);
-    }
-    (topNavData.topNodes || []).forEach(n => {
-      html += `<ui5-shellbar-item icon="${n.icon}" text="${n.label}" luigi-route="${n.pathSegment}"></ui5-shellbar-item>`;
-    });
-    shellbar.innerHTML = html;
-    const items = shellbar.querySelectorAll('ui5-shellbar-item');
-    if (items) {
-      items.forEach(item => {
-        item.addEventListener('click', () => {
-          globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
-        });
+
+    if (!shellbar._lastTopNavData) { // initial rendering
+      let html = '';
+      html += '<ui5-button icon="menu" slot="startButton" id="toggle"></ui5-button>';
+      if (topNavData.logo) {
+        html += `<img
+            slot="logo"
+            src="${topNavData.logo}"
+          />`;
+      }
+      if (!shellbar._logoEL) {
+        shellbar._logoEL = () => {
+          globalThis.Luigi.navigation().navigate('/');
+        };
+        shellbar.addEventListener('logo-click', shellbar._logoEL);
+      }
+      shellbar.innerHTML = html;
+
+      (topNavData.topNodes || []).forEach(item => {
+        addShellbarItem(shellbar, item);
       });
+      // ...
+    } else { // partial update
+      if (topNavData.logo !== shellbar._lastTopNavData.logo) {
+        shellbar.querySelector('img[slot=logo]').setAttribute('src', topNavData.logo);
+      }
+      if (topNavData.topNodes !== shellbar._lastTopNavData.topNodes) {
+        shellbar.querySelectorAll('ui5-shellbar-item').forEach(item => item.remove());
+        (topNavData.topNodes || []).forEach(item => {
+          addShellbarItem(shellbar, item);
+        });
+      }
     }
-    // ...
+
+    shellbar._lastTopNavData = topNavData;
   },
   renderLeftNav: leftNavData => {
     const sidenav = document.querySelector('ui5-side-navigation');
