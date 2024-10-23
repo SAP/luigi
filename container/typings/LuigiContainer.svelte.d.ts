@@ -271,7 +271,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" document-title='Luigi App'></luigi-container>
+   * <luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
    * ```
    */
   documentTitle: string;
