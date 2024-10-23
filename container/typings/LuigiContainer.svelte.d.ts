@@ -99,7 +99,7 @@ export default class LuigiContainer extends HTMLElement {
    * ```
    * 
    * ```HTML
-   * <luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>
+   * <luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
    * ```
    */
   theme: string;
