@@ -18,6 +18,7 @@
       "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/cypress/e2e/tests report=e2e-test_full_eslint_report.html"
    },
    "devDependencies": {
+      "@prettier/sync": "^0.5.2",
       "@typescript-eslint/eslint-plugin": "^4.9.0",
       "@typescript-eslint/parser": "^4.9.0",
       "ansi_up": "^5.0.0",
