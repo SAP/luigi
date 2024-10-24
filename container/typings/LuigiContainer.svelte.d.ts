@@ -8,12 +8,28 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.viewurl = "/index.html"
+   * ```
+   *
+   * ```HTML
+   * <luigi-container viewurl="/index.html"></luigi-container>
+   * ```
    */
   viewurl: string;
 
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.deferInit = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
+   * ```
    */
   deferInit: boolean;
 
@@ -50,78 +66,181 @@ export default class LuigiContainer extends HTMLElement {
    * The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
    * </br>
    * @since 1.0.0
+   * ```js
+   * myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
+   * ```
    */
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.locale = "en_us"
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container locale="en_us"></luigi-container>
+   * ```
    */
   locale: string;
 
   /**
    * The theme to be passed to the  web-component-based micro frontend
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.theme = 'sap_horizon'
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
+   * ```
    */
   theme: string;
 
   /**
    * The list of active feature toggles to be passed to the web-component-based micro frontend
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
+   * ```
    */
   activeFeatureToggleList: string[];
 
   /**
    * If set to true, skips third party cookie check
    * @since NEXT_RELEASE_CONTAINER
+   * 
+   * ```js
+   * myContainer.skipCookieCheck = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
+   * ```
    */
   skipCookieCheck: 'false' | 'true';
 
   /**
    * If set to true, skips handshake and ready event is fired immediately
    * @since 1.0.0
+   * TODO: https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML says booleans should not use "true"/"false", find a consistent style for our docs.
+   * ```js
+   * myContainer.skipInitCheck = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
+   * ```
    */
   skipInitCheck: boolean;
 
   /**
    * The parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.nodeParams = {foo: bar}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
+   * ```
    */
   nodeParams: Object;
 
   /**
    * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
    * @since 1.2.0
+   * 
+   * ```js
+   * myContainer.noShadow = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" no-shadow='true'></luigi-container>
+   * ```
    */
   noShadow: boolean;
 
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.searchParams = {foo: bar}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
+   * ```
    */
   searchParams: Object;
 
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.pathParams = {foo: "bar"}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
+   * ```
    */
   pathParams: Object;
 
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.clientPermissions = {permission: "adminGroup"}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
+   * ```
    */
   clientPermissions: Object;
 
   /**
    * The user settings to be passed to the web-component-based micro frontend
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+   * ```
    */
   userSettings: Object;
 
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
    * @since 1.0.0
+   * 
+   * ```js
+   * myContainer.anchor = '#foo'
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
+   * ```
    */
   anchor: string;
 
@@ -146,6 +265,14 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The document title value to be passed to the web-component-based micro frontend.
    * @since 1.2.0
+   * 
+   * ```js
+   * myContainer.documentTitle = 'Luigi App'
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
+   * ```
    */
   documentTitle: string;
 
@@ -153,13 +280,29 @@ export default class LuigiContainer extends HTMLElement {
    * The hasBack value to be passed to the web-component-based micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button.
    * @since 1.2.0
+   * 
+   * ```js
+   * myContainer.hasBack = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" has-back></luigi-container>
+   * ```
    */
-  hasBack: string;
+  hasBack: boolean;
 
   /**
    * The dirty status value to be passed to the web-component-based micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
    * @since 1.2.0
+   * 
+   * ```js
+   * myContainer.dirtyStatus = true
+   * ```
+   * 
+   * ```HTML
+   * <luigi-container viewurl="/index.html" dirty-status='true'></luigi-container>
+   * ```
    */
   dirtyStatus: boolean;
 
