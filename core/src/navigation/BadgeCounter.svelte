@@ -7,7 +7,8 @@
     {#if count > 0}
       <span
         class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
-        aria-label={node.badgeCounter.label}>
+        aria-label={node.badgeCounter.label}
+      >
         {count}
       </span>
     {/if}

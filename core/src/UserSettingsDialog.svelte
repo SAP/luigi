@@ -338,10 +338,9 @@
                                 'fd-image--s fd-list__thumbnail'}
                               aria-label={userSettingsGroupProperty[1].altText
                                 ? userSettingsGroupProperty[1].altText
-                                : ''}>
-                              {userSettingsGroupProperty[1].initials
-                                ? userSettingsGroupProperty[1].initials
                                 : ''}
+                            >
+                              {userSettingsGroupProperty[1].initials ? userSettingsGroupProperty[1].initials : ''}
                             </span>
                           {/if}
                         {/if}

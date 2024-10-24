@@ -175,7 +175,8 @@
             aria-label="Username"
             id="username"
             class="lui-username fd-has-type-1"
-            data-testid="luigi-topnav-profile-username">
+            data-testid="luigi-topnav-profile-username"
+          >
             {userInfo.name ? userInfo.name : userInfo.email}
           </span>
         </li>
