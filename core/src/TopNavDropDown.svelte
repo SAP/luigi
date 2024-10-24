@@ -118,7 +118,9 @@
                 <span class="fd-top-nav__icon">
                   {#if node.icon && hasOpenUIicon(node)}
                     <i class="sap-icon {getSapIconStr(node.icon)}" />
-                  {:else}<img class="sap-icon" src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                  {:else}
+                    <img class="sap-icon" src={node.icon} alt={node.altText ? node.altText : ''} />
+                  {/if}
                   <BadgeCounter {node} />
                 </span>
                 <span class="fd-menu__title">{getNodeLabel(node)}</span>

@@ -623,7 +623,7 @@
                     </span>
                   {/if}
                 {/if}
-                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                <span class="fd-nested-list__title">{$getTranslation(navHeader.label)}</span>
                 {#if navHeader.showUpLink}
                   <i
                     class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
@@ -998,7 +998,7 @@
                     </span>
                   {/if}
                 {/if}
-                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                <span class="fd-nested-list__title">{$getTranslation(navHeader.label)}</span>
                 {#if navHeader.showUpLink}
                   <i
                     class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"

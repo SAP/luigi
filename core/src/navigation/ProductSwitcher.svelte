@@ -109,7 +109,9 @@
               {#if hasOpenUIicon(config)}
                 <!-- default: sap-icon--grid -->
                 <i class="sap-icon {getSapIconStr(config.icon)}" />
-              {:else}<img src={config.icon} alt={config.altText ? config.altText : ''} />{/if}
+              {:else}
+                <img src={config.icon} alt={config.altText ? config.altText : ''} />
+              {/if}
             </button>
           </div>
           <div

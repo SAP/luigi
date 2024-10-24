@@ -181,8 +181,9 @@
         {:else}
           <span
             class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
-            aria-label="Avatar">{userInfo.initials ? userInfo.initials : ''}</span
-          >
+            aria-label="Avatar">
+            {userInfo.initials ? userInfo.initials : ''}
+          </span>
         {/if}
       </div>
       <div class="fd-user-menu__subheader">

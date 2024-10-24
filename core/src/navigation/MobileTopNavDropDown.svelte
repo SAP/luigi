@@ -55,7 +55,9 @@
                   <div class="lui-product-switch__icon">
                     {#if hasOpenUIicon(node)}
                       <i class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}" />
-                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                    {:else}
+                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                    {/if}
                     <BadgeCounter {node} />
                   </div>
                   <div class="fd-product-switch__text">

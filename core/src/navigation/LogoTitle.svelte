@@ -199,7 +199,7 @@
         }}
         href="/"
       >
-        <span> {$getTranslation(keepMainTitle ? defaultTitle : title)} </span>
+        <span>{$getTranslation(keepMainTitle ? defaultTitle : title)}</span>
       </a>
     {:else}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -208,7 +208,7 @@
         data-testid="luigi-topnav-title"
         on:click={() => goTo('/')}
       >
-        <span> {$getTranslation(keepMainTitle ? defaultTitle : title)} </span>
+        <span>{$getTranslation(keepMainTitle ? defaultTitle : title)}</span>
       </span>
     {/if}
   {/if}
@@ -219,7 +219,7 @@
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}
             <a href={getRouteLink(appSwitcherItems[0])} class="fd-shellbar__title lui-shellbar-single-app-title">
-              <span> {$getTranslation(appSwitcherItems[0].title)} </span>
+              <span>{$getTranslation(appSwitcherItems[0].title)}</span>
             </a>
           {/if}
           {#if appSwitcherItems && appSwitcherItems.length > 1}

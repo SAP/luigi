@@ -409,10 +409,10 @@
                       aria-selected={isSelected}
                       on:click|preventDefault={() => handleClick(node)}
                     >
-                      <span class="fd-icon-tab-bar__tag"
-                        >{getNodeLabel(node)}
-                        <StatusBadge {node} /></span
-                      >
+                      <span class="fd-icon-tab-bar__tag">
+                        {getNodeLabel(node)}
+                        <StatusBadge {node} />
+                      </span>
                     </a>
                   </span>
                 {/if}
@@ -536,10 +536,10 @@
                                 on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-list__title"
-                                  >{getNodeLabel(node)}
-                                  <StatusBadge {node} /></span
-                                >
+                                <span class="fd-list__title">
+                                  {getNodeLabel(node)}
+                                  <StatusBadge {node} />
+                                </span>
                               </a>
                             </li>
                           {/if}
@@ -582,10 +582,10 @@
                           on:click|preventDefault={() => handleClick(node)}
                           aria-selected={node === selectedNodeForTabNav}
                         >
-                          <span class="fd-nested-list__title"
-                            >{getNodeLabel(node)}
-                            <StatusBadge {node} /></span
-                          >
+                          <span class="fd-nested-list__title">
+                            {getNodeLabel(node)}
+                            <StatusBadge {node} />
+                          </span>
                         </a>
                       </li>
                     {/each}
@@ -634,8 +634,8 @@
                                 on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-nested-list__title"
-                                  >{getNodeLabel(node)}
+                                <span class="fd-nested-list__title">
+                                  {getNodeLabel(node)}
                                   <StatusBadge {node} />
                                 </span>
                               </a>

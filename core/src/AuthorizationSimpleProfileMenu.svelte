@@ -175,8 +175,9 @@
             aria-label="Username"
             id="username"
             class="lui-username fd-has-type-1"
-            data-testid="luigi-topnav-profile-username">{userInfo.name ? userInfo.name : userInfo.email}</span
-          >
+            data-testid="luigi-topnav-profile-username">
+            {userInfo.name ? userInfo.name : userInfo.email}
+          </span>
         </li>
       {/if}
       {#each profileNav.items as profileItem}

@@ -509,7 +509,9 @@
                                           ? getSapIconStr(node.icon)
                                           : ''}"
                                       />
-                                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                                    {:else}
+                                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                                    {/if}
                                     <BadgeCounter {node} />
                                   </span>
                                   <span class="fd-list__title">{getNodeLabel(node)}</span>
