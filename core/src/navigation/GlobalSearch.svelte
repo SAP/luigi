@@ -70,7 +70,7 @@
           <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
-            on:keyup={event => onKeyUp(event)}
+            on:keyup={(event) => onKeyUp(event)}
             class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
             data-testid="luigi-search-input"
             autofocus
@@ -93,8 +93,8 @@
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={event => globalSearchHelper.onSearchResultItemSelected(result, event)}
-                    on:keyup={event => handleKeydown(result, event)}
+                    on:click={(event) => globalSearchHelper.onSearchResultItemSelected(result, event)}
+                    on:keyup={(event) => handleKeydown(result, event)}
                     tabindex="0"
                   >
                     {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
@@ -107,7 +107,11 @@
                         </div>
                       </a>
                     {:else}
-                      {@html globalSearchHelper.renderCustomSearchItem(result, customSearchItemRendererSlotContainer, index)}
+                      {@html globalSearchHelper.renderCustomSearchItem(
+                        result,
+                        customSearchItemRendererSlotContainer,
+                        index
+                      )}
                     {/if}
                   </li>
                 {/each}

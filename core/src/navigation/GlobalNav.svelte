@@ -29,22 +29,18 @@
   };
 
   onMount(() => {
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
-        showGlobalNav =
-          !(
-            LuigiConfig.getConfigValue('settings.btpToolLayout') &&
-            GenericHelpers.requestExperimentalFeature('btpToolLayout', false)
-          ) &&
-          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
-          GenericHelpers.requestExperimentalFeature('globalNav', true);
-        document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
-      },
-      ['navigation']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+      responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+      showGlobalNav =
+        !(
+          LuigiConfig.getConfigValue('settings.btpToolLayout') &&
+          GenericHelpers.requestExperimentalFeature('btpToolLayout', false)
+        ) &&
+        LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+        GenericHelpers.requestExperimentalFeature('globalNav', true);
+      document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
+    }, ['navigation']);
   });
 
   beforeUpdate(() => {
@@ -106,7 +102,7 @@
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
-                    on:click={event => {
+                    on:click={(event) => {
                       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                     }}
                     role="button"

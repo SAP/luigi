@@ -27,7 +27,7 @@
     }
   };
 
-  const clickHandler = element => {
+  const clickHandler = (element) => {
     if (!element.last) {
       handleClick(element.node);
     }
@@ -50,7 +50,7 @@
       showBreadcrumb = !!breadcrumbConfig;
       if (showBreadcrumb) {
         // if enabled in general, check node scope
-        pathData.forEach(node => {
+        pathData.forEach((node) => {
           if (node.showBreadcrumbs === false) {
             showBreadcrumb = false;
           } else if (node.showBreadcrumbs === true) {
@@ -140,7 +140,7 @@
               document.body.classList.remove('lui-breadcrumb');
             }
             previousBreadcrumbs = {};
-            items.map(item => {
+            items.map((item) => {
               previousBreadcrumbs[item.route] = item;
             });
           }

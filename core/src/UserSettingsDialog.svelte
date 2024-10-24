@@ -51,7 +51,7 @@
 
     key = Object.keys(userSettingGroups[0]).length > 0 ? Object.keys(userSettingGroups[0])[0] : undefined;
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe || 'custom' !== e.data.msg) return;
       iframe._ready = true;
@@ -76,7 +76,7 @@
     });
 
     LuigiConfig.readUserSettings()
-      .then(storedUserSettingsData => {
+      .then((storedUserSettingsData) => {
         previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
         if (storedUserSettingsData === null) {
           storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), {});
@@ -88,7 +88,7 @@
         }
         openEditor([key, userSettingGroups[0][key]]);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error && error.message) {
           console.error(error.message);
         }
@@ -103,7 +103,7 @@
 
   function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
     let userSettingsObject = {};
-    userSettingGroups.forEach(userSettingGroup => {
+    userSettingGroups.forEach((userSettingGroup) => {
       for (let key in userSettingGroup) {
         for (let i in userSettingGroup[key].settings) {
           userSettingGroup[key].settings[i] = '';
@@ -140,7 +140,7 @@
     let selectedUserSettingGroupData = selectedUserSettingGroup[1];
     errorHandling(selectedUserSettingGroupData);
     if (event) {
-      document.querySelectorAll('.lui-us-list .lui-us-navlist__item').forEach(elem => {
+      document.querySelectorAll('.lui-us-list .lui-us-navlist__item').forEach((elem) => {
         elem.classList.remove('is-selected');
       });
       const link = closest(event.target, '.lui-us-navlist__item', 20);
@@ -158,7 +158,7 @@
     if (selectedUserSettingGroupData.viewUrl) {
       UserSettingsHelper.hideUserSettingsIframe();
       if (customIframes.hasOwnProperty(selectedUserSettingGroupKey)) {
-        UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
+        UserSettingsHelper.getUserSettingsIframesInDom().forEach((iframe) => {
           if (iframe.userSettingsGroup === selectedUserSettingGroupKey) {
             iframe.style.display = 'block';
           }
@@ -187,7 +187,7 @@
     document.querySelector('.usersettingseditor').style.display = 'block';
   }
 
-  const updateSettingsObject = event => {
+  const updateSettingsObject = (event) => {
     storedUserSettings = event.detail.userSettings;
   };
 
@@ -196,7 +196,7 @@
       .then(() => {
         dispatch('close');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error && error.message) {
           console.error(error.message);
         }
@@ -314,7 +314,7 @@
                     class="fd-list__item fd-list__item--link lui-us-navlist__item"
                     data-testid="us-navigation-item"
                     on:click|preventDefault={() => openEditor(userSettingsGroupProperty, event)}
-                    on:keydown={event => handleKeyUp(event, [index])}
+                    on:keydown={(event) => handleKeyUp(event, [index])}
                     tabindex="0"
                   >
                     <!-- svelte-ignore a11y-invalid-attribute -->
@@ -327,14 +327,21 @@
                         {:else}
                           <span
                             class={userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}
-                            aria-label={userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}
+                            aria-label={userSettingsGroupProperty[1].altText
+                              ? userSettingsGroupProperty[1].altText
+                              : ''}
                             style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
                           />
                           {#if userSettingsGroupProperty[1].initials}
                             <span
-                              class={userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' || 'fd-image--s fd-list__thumbnail'}
-                              aria-label={userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}
-                            >{userSettingsGroupProperty[1].initials ? userSettingsGroupProperty[1].initials : ''}</span>
+                              class={userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' ||
+                                'fd-image--s fd-list__thumbnail'}
+                              aria-label={userSettingsGroupProperty[1].altText
+                                ? userSettingsGroupProperty[1].altText
+                                : ''}
+                            >
+                              {userSettingsGroupProperty[1].initials ? userSettingsGroupProperty[1].initials : ''}
+                            </span>
                           {/if}
                         {/if}
                         <i role="presentation" class="sap-icon" />
@@ -342,10 +349,14 @@
 
                       <div class="fd-list__content">
                         <div class="fd-list__title">
-                          {$getTranslation(userSettingsGroupProperty[1].label ? userSettingsGroupProperty[1].label : '')}
+                          {$getTranslation(
+                            userSettingsGroupProperty[1].label ? userSettingsGroupProperty[1].label : ''
+                          )}
                         </div>
                         <div class="fd-list__byline">
-                          {$getTranslation(userSettingsGroupProperty[1].sublabel ? userSettingsGroupProperty[1].sublabel : '')}
+                          {$getTranslation(
+                            userSettingsGroupProperty[1].sublabel ? userSettingsGroupProperty[1].sublabel : ''
+                          )}
                         </div>
                       </div>
                     </a>

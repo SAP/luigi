@@ -23,7 +23,7 @@
     }
   };
 
-  const isValidForArea = e => {
+  const isValidForArea = (e) => {
     if (!area) {
       return true;
     }
@@ -31,7 +31,7 @@
       ...IframeHelpers.getMicrofrontendsInDom(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
-    const microfrontend = allMessagesSources.find(mf => mf.container && mf.container.contentWindow === e.source);
+    const microfrontend = allMessagesSources.find((mf) => mf.container && mf.container.contentWindow === e.source);
     if (microfrontend && area === microfrontend.type) {
       return false;
     }
@@ -42,7 +42,7 @@
     const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
     if (!backdropDisabled) {
       setBackdropClass();
-      EventListenerHelpers.addEventListener('message', e => {
+      EventListenerHelpers.addEventListener('message', (e) => {
         const srcIframe = IframeHelpers.getValidMessageSource(e);
         if (!srcIframe) return;
         if (disable !== true) {
