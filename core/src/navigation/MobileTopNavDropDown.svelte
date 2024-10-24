@@ -45,7 +45,9 @@
             {#each nodes as node}
               {#if node.label}
                 <li
-                  class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : ''} {node.selected ? 'selected' : ''}"
+                  class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : ''} {node.selected
+                    ? 'selected'
+                    : ''}"
                   on:click={() => onActionClick(node)}
                   data-e2e="mobile-topnav-item"
                   data-testid={NavigationHelpers.getTestId(node)}

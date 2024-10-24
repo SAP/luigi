@@ -18,18 +18,14 @@
   export let addNavHrefForAnchor;
 
   onMount(async () => {
-    StateHelpers.doOnStoreChange(
-      store,
-      async () => {
-        config = NavigationHelpers.getProductSwitcherConfig();
-        if (config) {
-          productSwitcherItems = await LuigiConfig.getConfigValueAsync('navigation.productSwitcher.items');
-          setColumnsClass();
-        }
-        setViewportHeightVariable();
-      },
-      ['navigation.productSwitcher']
-    );
+    StateHelpers.doOnStoreChange(store, async () => {
+      config = NavigationHelpers.getProductSwitcherConfig();
+      if (config) {
+        productSwitcherItems = await LuigiConfig.getConfigValueAsync('navigation.productSwitcher.items');
+        setColumnsClass();
+      }
+      setViewportHeightVariable();
+    }, ['navigation.productSwitcher']);
   });
 
   // [svelte-upgrade suggestion]
@@ -134,7 +130,7 @@
                       {#if addNavHrefForAnchor}
                         <a
                           href={getRouteLink(productSwitcherItem)}
-                          on:click={event => {
+                          on:click={(event) => {
                             NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                           }}
                           class="fd-menu__link"
@@ -142,7 +138,9 @@
                           <div class="lui-product-switch__icon">
                             {#if hasOpenUIicon(productSwitcherItem)}
                               <i
-                                class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : ''}"
+                                class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem)
+                                  ? getSapIconStr(productSwitcherItem.icon)
+                                  : ''}"
                               />
                             {:else}
                               <img
@@ -162,7 +160,9 @@
                         <div class="lui-product-switch__icon">
                           {#if hasOpenUIicon(productSwitcherItem)}
                             <i
-                              class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : ''}"
+                              class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem)
+                                ? getSapIconStr(productSwitcherItem.icon)
+                                : ''}"
                             />
                           {:else}
                             <img

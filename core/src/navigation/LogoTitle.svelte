@@ -56,9 +56,9 @@
           logo
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'pathData') {
               pathData = obj.pathData;
             } else if (prop === 'appSwitcherItems') {
@@ -167,7 +167,7 @@
   <a
     class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click={event => {
+    on:click={(event) => {
       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
     }}
     href="/"
@@ -194,7 +194,7 @@
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
         data-testid="luigi-topnav-title"
-        on:click={event => {
+        on:click={(event) => {
           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
         }}
         href="/"
@@ -299,7 +299,7 @@
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click={event => {
+                      on:click={(event) => {
                         NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(item.link);
                       }}
                       href={addNavHrefForAnchor ? getRouteLink(item, pathParams) : undefined}

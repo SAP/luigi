@@ -27,7 +27,7 @@
           pathParams
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
         }
       }
@@ -110,7 +110,7 @@
             >
               <a
                 href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-                on:click={event => {
+                on:click={(event) => {
                   NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                 }}
                 class="fd-menu__link"
