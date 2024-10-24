@@ -321,18 +321,20 @@
             {/if}
           </div>
         </div>
-        <div class="fd-bar__right">
-          <div class="fd-bar__element">
-            <button
-              class="fd-button fd-button--transparent fd-button--compact"
-              on:click={() => dispatch('close', { activeDrawer: false })}
-              aria-label="close"
-              data-testid={settings.closebtn_data_testid && isModal ? settings.closebtn_data_testid : 'lui-modal-index-' + modalIndex}
-            >
-              <i class="sap-icon sap-icon--decline" />
-            </button>
+        {#if settings.hideXBtn !== true}
+          <div class="fd-bar__right">
+            <div class="fd-bar__element">
+              <button
+                class="fd-button fd-button--transparent fd-button--compact"
+                on:click={() => dispatch('close', { activeDrawer: false })}
+                aria-label="close"
+                data-testid={settings.closebtn_data_testid && isModal ? settings.closebtn_data_testid : 'lui-modal-index-' + modalIndex}
+              >
+                <i class="sap-icon sap-icon--decline" />
+              </button>
+            </div>
           </div>
-        </div>
+        {/if}
       </div>
     {/if}
     <div class="fd-dialog__body">
