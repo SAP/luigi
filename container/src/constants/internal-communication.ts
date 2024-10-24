@@ -116,5 +116,5 @@ export namespace LuigiInternalMessageID {
   /**
    * A message emmitted from the Microfrontend when a request to set the 'token auth' is sent
    */
-    export const AUTH_SET_TOKEN = 'luigi.auth.tokenIssued';
+  export const AUTH_SET_TOKEN = 'luigi.auth.tokenIssued';
 }
