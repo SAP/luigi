@@ -12,7 +12,7 @@ describe('Iframe Settings Test', () => {
       expect($body.children()).to.have.length(0);
 
       // click button that calls container.init()
-      cy.get('#init-button').click();
+      cy.get('#defer-init-button').click();
 
       cy.get('#defer-init-test')
         .shadow()
@@ -27,7 +27,7 @@ describe('Iframe Settings Test', () => {
   });
 
   it('set sandbox rules by property', () => {
-    cy.get('#init-button').click();
+    cy.get('#defer-init-button').click();
     cy.get('button[id="sandbox-rules"]').click();
 
     cy.get('#defer-init-test')
@@ -53,7 +53,7 @@ describe('Iframe Settings Test', () => {
 
   describe('Allow Rules Test', () => {
     it('set allow rules by property', () => {
-      cy.get('#init-button').click();
+      cy.get('#defer-init-button').click();
       cy.get('#set-allow-rules-button').click();
       cy.get('#defer-init-test')
         .find('iframe')
@@ -69,6 +69,26 @@ describe('Iframe Settings Test', () => {
         .last()
         .invoke('attr', 'allow')
         .should('eq', 'fullscreen; microphone;');
+    });
+  });
+
+  describe('Luigi Client Initialization', () => {
+    it('should initialize Luigi Client', () => {
+      cy.get('iframe').then(($iframe) => {
+        const iframeBody = $iframe.contents().find('body');
+        
+        const checkLuigiClientStatus = (expectedStatus) => {
+          cy.wrap(iframeBody)
+            .find('#luigiClientStatus')
+            .should('exist')
+            .invoke('text')
+            .should('eq', expectedStatus);
+        };
+  
+        checkLuigiClientStatus('Luigi Client Initialized: Unknown');
+        cy.wait(2000);
+        checkLuigiClientStatus('Luigi Client Initialized: true');
+      });
     });
   });
 });
