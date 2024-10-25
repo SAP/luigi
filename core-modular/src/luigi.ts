@@ -1,3 +1,4 @@
+import { mount } from "svelte";
 import App from "./App.svelte";
 import { Navigation } from "./navigation";
 import { Routing } from "./routing";
@@ -14,12 +15,12 @@ export class Luigi {
     config: any;
 
     _connector: LuigiConnector | undefined;
-    _app: App | undefined;
+    _app: any;
     _ui = UI;
 
 
     bootstrap(connector: LuigiConnector): void {
-        this._app = new App({
+        this._app = mount(App,{
             target: document.body
         });
         this._connector = connector;

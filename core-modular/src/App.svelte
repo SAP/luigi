@@ -1,8 +1,8 @@
 <script>
 </script>
 
-<div id="luigi-app-root" />
+<div id="luigi-app-root"></div>
 
-<style lang="scss">
+<!-- <style lang="scss">
   /** nothing here yet*/
-</style>
+</style> -->
