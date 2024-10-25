@@ -29,12 +29,14 @@ The URL used for the renderer.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-```js
-myContainer.viewUrl = "/index.html"
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html"></luigi-container>
 ```
 
-```HTML
-<luigi-container viewurl="/index.html"></luigi-container>
+```javascript
+myContainer.viewurl = "/index.html"
 ```
 
 ### compoundConfig
@@ -44,81 +46,17 @@ Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navig
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+#### Examples
+
+```javascript
+renderer = { use: 'grid', config: { columns: '1fr 1fr 1fr 2fr', layouts: [{maxWidth: 600, columns: '1fr', gap: 0, ...}]}};
+children = [{ viewUrl: '/main.js', context: { label: 'WC', ...}, layoutConfig: {column: '1 / -1', ...}, eventListeners: [{ source: 'input1', ...}}]}];
+myContainer.compoundConfig = { renderer, children };
+```
+
 **Meta**
 
 *   **since**: 1.0.0
-```js
-myContainer.compoundConfig = {
-        renderer: {
-          use: 'grid',
-          config: {
-            columns: '1fr 1fr 1fr 2fr',
-            /*rows: '150px',*/
-            /*gap: '30px',*/
-            layouts: [
-              {
-                minWidth: 0,
-                maxWidth: 600,
-                columns: '1fr',
-                gap: 0
-              },
-              {
-                minWidth: 600,
-                maxWidth: 1024,
-                columns: '1fr 1fr',
-                gap: '30px'
-              }
-            ]
-          }
-        },
-        children: [
-          {
-            viewUrl: 'http://www.examples.com/header.js',
-            context: {
-              title: 'My Awesome Grid 000',
-              description: 'Really awesome'
-            },
-            layoutConfig: {
-              row: '1',
-              column: '1 / -1'
-            },
-            eventListeners: [
-              {
-                source: 'input1',
-                name: 'sendInput',
-                action: 'update',
-                dataConverter: data => {
-                  return 'new text: ' + data;
-                }
-              }
-            ]
-          },
-          {
-            id: 'input1',
-            viewUrl: '/helloWorldWC.js',
-            context: {
-              title: 'Some input',
-              instant: true
-            }
-          },
-          {
-            viewUrl: 'http://www.examples.com/main.js',
-            context: {
-              label: 'Another web component'
-            }
-          },
-          {
-            viewUrl: '/panelFooter.js',
-            context: {
-              footer: 'This is the end of awesomeness'
-            },
-            layoutConfig: {
-              column: '1 / -1'
-            }
-          }
-        ]
-      };
-```
 
 ### deferInit
 
@@ -126,17 +64,19 @@ If set to true defers from initializing the microfronted automatically. In that 
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" defer-init></luigi-container>
+```
 
-```js
+```javascript
 myContainer.deferInit = true
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### locale
 
@@ -144,10 +84,19 @@ The locale to be passed to the compound micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+#### Examples
+
+```javascript
+<luigi-container locale="en_us"></luigi-container>
+```
+
+```javascript
+myContainer.locale = "en_us"
+```
+
 **Meta**
 
 *   **since**: NEXT_RELEASE_CONTAINER
-
 
 ### nodeParams
 
@@ -155,17 +104,19 @@ The parameters to be passed to the compound micro frontend. Will not be passed t
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.nodeParams = {foo: bar}
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" node-params='{"node":"param"}'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### noShadow
 
@@ -173,17 +124,19 @@ If set to true, the Luigi compound container webcomponent will not use the shado
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.2.0
+```javascript
+<luigi-container viewurl="/index.html" no-shadow></luigi-container>
+```
 
-```js
+```javascript
 myContainer.noShadow = true
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" no-shadow='true'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.2.0
 
 ### searchParams
 
@@ -191,17 +144,19 @@ The search parameters to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.searchParams = {foo: bar}
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" search-params='{"search":"param"}'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### pathParams
 
@@ -209,17 +164,19 @@ The path parameters to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
+```
+
+```javascript
+myContainer.pathParams = {foo: "bar"}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
-
-```js
-myContainer.pathParams = {foo: bar}
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" path-params='{"path":"param"}'></luigi-container>
-```
 
 ### context
 
@@ -227,17 +184,19 @@ The stringified context to be passed to the compound microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.context = {label: "Dashboard"}
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### clientPermissions
 
@@ -245,17 +204,19 @@ The clientPermissions to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.clientPermissions = {permission: "adminGroup"}
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### userSettings
 
@@ -263,17 +224,19 @@ The user settings to be passed to the compound micro frontend
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### anchor
 
@@ -281,17 +244,19 @@ The anchor value to be passed to the compound micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.0.0
+```javascript
+<luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.anchor = '#foo'
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" anchor='#foo'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.0.0
 
 ### documentTitle
 
@@ -299,36 +264,40 @@ The document title value to be passed to the compound micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.2.0
+```javascript
+<luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.documentTitle = 'Luigi App'
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" document-title='Luigi App'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.2.0
 
 ### hasBack
 
 The hasBack value to be passed to the compound micro frontend.
 It indicates that there is one or more preserved views. Useful when you need to show a back button.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" has-back></luigi-container>
+```
+
+```javascript
+myContainer.hasBack = true
+```
 
 **Meta**
 
 *   **since**: 1.2.0
-
-```js
-myContainer.hasBack = '/detailsPage'
-```
-
-```HTML
-<luigi-container viewUrl="/index.html" has-back='/detailsPage'></luigi-container>
-```
 
 ### dirtyStatus
 
@@ -337,17 +306,19 @@ It's used to indicate that there are unsaved changes when navigating away.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
-**Meta**
+#### Examples
 
-*   **since**: 1.2.0
+```javascript
+<luigi-container viewurl="/index.html" dirty-status></luigi-container>
+```
 
-```js
+```javascript
 myContainer.dirtyStatus = true
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" dirty-status='true'></luigi-container>
-```
+**Meta**
+
+*   **since**: 1.2.0
 
 ### webcomponent
 
@@ -364,23 +335,35 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
     *   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
 *   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
 
+#### Examples
+
+```javascript
+<luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
+```
+
+```javascript
+myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
-
-```js
-myContainer.webcomponent = { webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}
-```
-
-```HTML
-<luigi-container webcomponent="{ webComponentSettings: {type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}}"></luigi-container>
-```
 
 ### skipInitCheck
 
 If set to true, skips handshake and ready event is fired immediately.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
+```
+
+```javascript
+myContainer.skipInitCheck = true
+```
 
 **Meta**
 
@@ -392,17 +375,19 @@ The list of active feature toggles to be passed to the compound microfrontend.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
-**Meta**
+#### Examples
 
-*   **since**: NEXT_RELEASE_CONTAINER
+```javascript
+<luigi-container viewUrl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
-```
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### theme
 
@@ -410,17 +395,19 @@ The theme to be passed to the compound microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-**Meta**
+#### Examples
 
-*   **since**: NEXT_RELEASE_CONTAINER
+```javascript
+<luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>
+```
 
-```js
+```javascript
 myContainer.theme = 'sap_horizon'
 ```
 
-```HTML
-<luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>
-```
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### updateContext
 
@@ -451,15 +438,3 @@ Returns **void**
 **Meta**
 
 *   **since**: 1.0.0
-#TODO: made up example
-```js
- ...
-  myContainer.deferInit = true
-}
-#or HTML: <luigi-container deferInit="true"></luigi-container> js: the handler
-
-eventHandlerFn{
-  ...
-  myContainer.init()
-}
-```

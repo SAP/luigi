@@ -9,13 +9,8 @@ export default class LuigiContainer extends HTMLElement {
    * The URL of the microfrontend to be rendered
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.viewurl = "/index.html"
-   * ```
-   *
-   * ```HTML
-   * <luigi-container viewurl="/index.html"></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html"></luigi-container>
+   * @example myContainer.viewurl = "/index.html"
    */
   viewurl: string;
 
@@ -23,25 +18,27 @@ export default class LuigiContainer extends HTMLElement {
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.deferInit = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewUrl="/index.html" defer-init="true"></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" defer-init></luigi-container>
+   * @example myContainer.deferInit = true
    */
   deferInit: boolean;
 
   /**
    * The stringified context object to be passed to the microfrontend
    * @since 1.0.0
+   * 
+   * 
+   * @example <luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
+   * @example myContainer.context = {label: "Dashboard"}
    */
   context: string;
 
   /**
    * Label information for the microfrontend
    * @since 1.0.0
+   * 
+   * @example <luigi-container viewUrl="/index.html" label="Dashboard"></luigi-container>
+   * @example myContainer.label = "Dashboard"
    */
   label: string;
 
@@ -66,13 +63,8 @@ export default class LuigiContainer extends HTMLElement {
    * The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
    * </br>
    * @since 1.0.0
-   * ```js
-   * myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
-   * ```
+   * @example <luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
+   * @example myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}
    */
   webcomponent: boolean | WebComponentSettings | string;
 
@@ -80,13 +72,8 @@ export default class LuigiContainer extends HTMLElement {
    * The locale to be passed to the web-component-based micro frontend
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.locale = "en_us"
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container locale="en_us"></luigi-container>
-   * ```
+   * @example <luigi-container locale="en_us"></luigi-container>
+   * @example myContainer.locale = "en_us"
    */
   locale: string;
 
@@ -94,13 +81,8 @@ export default class LuigiContainer extends HTMLElement {
    * The theme to be passed to the  web-component-based micro frontend
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.theme = 'sap_horizon'
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
+   * @example myContainer.theme = 'sap_horizon'
    */
   theme: string;
 
@@ -108,13 +90,8 @@ export default class LuigiContainer extends HTMLElement {
    * The list of active feature toggles to be passed to the web-component-based micro frontend
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
-   * ```
+   * @example myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
+   * @example <luigi-container viewurl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
    */
   activeFeatureToggleList: string[];
 
@@ -122,27 +99,17 @@ export default class LuigiContainer extends HTMLElement {
    * If set to true, skips third party cookie check
    * @since NEXT_RELEASE_CONTAINER
    * 
-   * ```js
-   * myContainer.skipCookieCheck = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
+   * @example myContainer.skipCookieCheck = true
    */
-  skipCookieCheck: 'false' | 'true';
+  skipCookieCheck: boolean;
 
   /**
    * If set to true, skips handshake and ready event is fired immediately
    * @since 1.0.0
    * TODO: https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML says booleans should not use "true"/"false", find a consistent style for our docs.
-   * ```js
-   * myContainer.skipInitCheck = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
+   * @example myContainer.skipInitCheck = true
    */
   skipInitCheck: boolean;
 
@@ -150,13 +117,8 @@ export default class LuigiContainer extends HTMLElement {
    * The parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.nodeParams = {foo: bar}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
+   * @example myContainer.nodeParams = {foo: bar}
    */
   nodeParams: Object;
 
@@ -164,13 +126,8 @@ export default class LuigiContainer extends HTMLElement {
    * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
    * @since 1.2.0
    * 
-   * ```js
-   * myContainer.noShadow = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" no-shadow='true'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" no-shadow></luigi-container>
+   * @example myContainer.noShadow = true
    */
   noShadow: boolean;
 
@@ -178,13 +135,8 @@ export default class LuigiContainer extends HTMLElement {
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.searchParams = {foo: bar}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
+   * @example myContainer.searchParams = {foo: bar}
    */
   searchParams: Object;
 
@@ -192,13 +144,8 @@ export default class LuigiContainer extends HTMLElement {
    * The path parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.pathParams = {foo: "bar"}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
+   * @example myContainer.pathParams = {foo: "bar"}
    */
   pathParams: Object;
 
@@ -206,13 +153,8 @@ export default class LuigiContainer extends HTMLElement {
    * The clientPermissions to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.clientPermissions = {permission: "adminGroup"}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
+   * @example myContainer.clientPermissions = {permission: "adminGroup"}
    */
   clientPermissions: Object;
 
@@ -220,13 +162,8 @@ export default class LuigiContainer extends HTMLElement {
    * The user settings to be passed to the web-component-based micro frontend
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+   * @example myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
    */
   userSettings: Object;
 
@@ -234,20 +171,15 @@ export default class LuigiContainer extends HTMLElement {
    * The anchor value to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    * 
-   * ```js
-   * myContainer.anchor = '#foo'
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
+   * @example myContainer.anchor = '#foo'
    */
   anchor: string;
 
   /**
    * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
    * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
-   * @example <luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
+   * @example <luigi-container viewurl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
    * @example containerElement.allowRules = ['microphone', 'camera']
    * @since 1.2.0
    */
@@ -256,7 +188,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
    * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
-   * @example <luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+   * @example <luigi-container viewurl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
    * @example containerElement.sandboxRules = ['allow-modals', 'allow-popups']
    * @since 1.2.0
    */
@@ -266,13 +198,8 @@ export default class LuigiContainer extends HTMLElement {
    * The document title value to be passed to the web-component-based micro frontend.
    * @since 1.2.0
    * 
-   * ```js
-   * myContainer.documentTitle = 'Luigi App'
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
+   * @example myContainer.documentTitle = 'Luigi App'
    */
   documentTitle: string;
 
@@ -281,13 +208,8 @@ export default class LuigiContainer extends HTMLElement {
    * It indicates that there is one or more preserved views. Useful when you need to show a back button.
    * @since 1.2.0
    * 
-   * ```js
-   * myContainer.hasBack = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" has-back></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" has-back></luigi-container>
+   * @example myContainer.hasBack = true
    */
   hasBack: boolean;
 
@@ -296,13 +218,8 @@ export default class LuigiContainer extends HTMLElement {
    * It's used to indicate that there are unsaved changes when navigating away.
    * @since 1.2.0
    * 
-   * ```js
-   * myContainer.dirtyStatus = true
-   * ```
-   * 
-   * ```HTML
-   * <luigi-container viewurl="/index.html" dirty-status='true'></luigi-container>
-   * ```
+   * @example <luigi-container viewurl="/index.html" dirty-status></luigi-container>
+   * @example myContainer.dirtyStatus = true
    */
   dirtyStatus: boolean;
 
