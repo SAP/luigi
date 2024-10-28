@@ -1,0 +1,918 @@
+{
+  "schemaVersion": "2.1.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/bundle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "LuigiContainer",
+          "name": "LuigiContainer",
+          "tagName": "luigi-container",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "activeFeatureToggleList",
+              "type": {
+                "text": "Array<string>",
+                "references": [
+                  {
+                    "name": "string"
+                  }
+                ]
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "allowRules",
+              "type": {
+                "text": "Array<string>",
+                "references": [
+                  {
+                    "name": "string"
+                  }
+                ]
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "anchor",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "authData",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "clientPermissions",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "context",
+              "type": {
+                "text": "any"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "deferInit",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "dirtyStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "documentTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "hasBack",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "noShadow",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "nodeParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "pathParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "sandboxRules",
+              "type": {
+                "text": "Array<string>",
+                "references": [
+                  {
+                    "name": "string"
+                  }
+                ]
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "searchParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "skipCookieCheck",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "skipInitCheck",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "userSettings",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "viewurl",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "webcomponent",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "closeAlert"
+            },
+            {
+              "kind": "method",
+              "name": "sendCustomMessage"
+            },
+            {
+              "kind": "method",
+              "name": "updateContext"
+            },
+            {
+              "kind": "method",
+              "name": "attributeChangedCallback"
+            },
+            {
+              "kind": "method",
+              "name": "getNoShadow"
+            },
+            {
+              "kind": "method",
+              "name": "init"
+            }
+          ],
+          "events": [
+            {
+              "name": "custom-message",
+              "description": "A message emitted from the micro frontend when a custom message is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "get-context-request",
+              "description": "A message emitted from the micro frontend when the context data is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "navigation-request",
+              "description": "A message emitted from the micro frontend when a navigation request is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-alert-request",
+              "description": "A message emitted from the micro frontend when a request to show an alert is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close-alert-request",
+              "description": "A message emitted from the micro frontend when a request to close an alert is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "initialized",
+              "description": "A message emitted from the micro frontend when it is first initialized.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-search-params-request",
+              "description": "A message emitted from the micro frontend to request adding search parameters to the URL.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-node-params-request",
+              "description": "A message emitted from the micro frontend to request adding node parameters to the URL.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-confirmation-modal-request",
+              "description": "A message emitted from the micro frontend when a request to show a confirmation modal is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-loading-indicator-request",
+              "description": "A message emitted from the micro frontend when a request to show a loading indicator is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "hide-loading-indicator-request",
+              "description": "A message emitted from the micro frontend when a request to hide the loading indicator is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-current-locale-request",
+              "description": "A message emitted from the micro frontend when a request to set the current locale is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-storage-request",
+              "description": "A message emitted from the micro frontend when a request to modify the local storage is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "runtime-error-handling-request",
+              "description": "A message emitted from the micro frontend when a request to handle an error during runtime is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-anchor-request",
+              "description": "A message emitted from the micro frontend when a request to set the anchor of the URL is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-third-party-cookies-request",
+              "description": "A message emitted from the micro frontend when a request to set third-party cookies is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "navigate-back-request",
+              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "get-current-route-request",
+              "description": "A message emitted from the micro frontend when a request to receive the current app route is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "report-navigation-completed-request",
+              "description": "A message emitted from the micro frontend to report that the navigation is completed.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "update-modal-path-data-request",
+              "description": "A message emitted from the micro frontend when a request to update the modal path parameters is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "check-path-exists-request",
+              "description": "A message emitted from the micro frontend when a request to check the validity of a path is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-dirty-status-request",
+              "description": "A message emitted from the micro frontend when a request to set the 'dirty status' is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-viewgroup-data-request",
+              "description": "A message emitted from the micro frontend when a request to set the view group data is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-document-title-request",
+              "description": "A message emitted from the micro frontend when a request to set the document title is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "open-user-settings-request",
+              "description": "A message emitted from the micro frontend when a request to open user settings is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close-user-settings-request",
+              "description": "A message emitted from the micro frontend when a request to close user settings is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "collapse-leftnav-request",
+              "description": "A message emitted from the micro frontend when a request to collapse the left side navigation is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "update-top-navigation-request",
+              "description": "A message emitted from the micro frontend when a request to update the top navigation is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "path-exists-request",
+              "description": "A message emitted from the micro frontend when a request to check if a path exists is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "go-back-request",
+              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "has-back-request",
+              "description": "A message emitted from the micro frontend to check if there is a back navigation option.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "remove-backdrop-request",
+              "description": "A message emitted from the micro frontend when a request to remove the backdrop is sent.",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LuigiContainer",
+          "declaration": {
+            "name": "LuigiContainer",
+            "module": "LuigiContainer.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "luigi-container",
+          "declaration": {
+            "name": "LuigiContainer",
+            "module": "LuigiContainer.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/bundle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "LuigiCompoundContainer",
+          "name": "LuigiCompoundContainer",
+          "tagName": "luigi-compound-container",
+          "customElement": true,
+          "members": [
+            {
+              "kind": "field",
+              "name": "activeFeatureToggleList",
+              "type": {
+                "text": "Array<string>",
+                "references": [
+                  {
+                    "name": "string"
+                  }
+                ]
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "anchor",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "clientPermissions",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "compoundConfig",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "context",
+              "type": {
+                "text": "any"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "deferInit",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "dirtyStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "documentTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "hasBack",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "noShadow",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "nodeParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "pathParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "searchParams",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "skipInitCheck",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "theme",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "userSettings",
+              "type": {
+                "text": "object"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "viewurl",
+              "type": {
+                "text": "string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "webcomponent",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateContext"
+            },
+            {
+              "kind": "method",
+              "name": "attributeChangedCallback"
+            },
+            {
+              "kind": "method",
+              "name": "getNoShadow"
+            },
+            {
+              "kind": "method",
+              "name": "init"
+            }
+          ],
+          "events": [
+            {
+              "name": "custom-message",
+              "description": "A message emitted from the micro frontend when a custom message is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "get-context-request",
+              "description": "A message emitted from the micro frontend when the context data is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "navigation-request",
+              "description": "A message emitted from the micro frontend when a navigation request is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-alert-request",
+              "description": "A message emitted from the micro frontend when a request to show an alert is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close-alert-request",
+              "description": "A message emitted from the micro frontend when a request to close an alert is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "initialized",
+              "description": "A message emitted from the micro frontend when it is first initialized.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-search-params-request",
+              "description": "A message emitted from the micro frontend to request adding search parameters to the URL.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-node-params-request",
+              "description": "A message emitted from the micro frontend to request adding node parameters to the URL.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-confirmation-modal-request",
+              "description": "A message emitted from the micro frontend when a request to show a confirmation modal is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "show-loading-indicator-request",
+              "description": "A message emitted from the micro frontend when a request to show a loading indicator is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "hide-loading-indicator-request",
+              "description": "A message emitted from the micro frontend when a request to hide the loading indicator is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-current-locale-request",
+              "description": "A message emitted from the micro frontend when a request to set the current locale is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-storage-request",
+              "description": "A message emitted from the micro frontend when a request to modify the local storage is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "runtime-error-handling-request",
+              "description": "A message emitted from the micro frontend when a request to handle an error during runtime is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-anchor-request",
+              "description": "A message emitted from the micro frontend when a request to set the anchor of the URL is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-third-party-cookies-request",
+              "description": "A message emitted from the micro frontend when a request to set third-party cookies is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "navigate-back-request",
+              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "get-current-route-request",
+              "description": "A message emitted from the micro frontend when a request to receive the current app route is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "report-navigation-completed-request",
+              "description": "A message emitted from the micro frontend to report that the navigation is completed.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "update-modal-path-data-request",
+              "description": "A message emitted from the micro frontend when a request to update the modal path parameters is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "check-path-exists-request",
+              "description": "A message emitted from the micro frontend when a request to check the validity of a path is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-dirty-status-request",
+              "description": "A message emitted from the micro frontend when a request to set the 'dirty status' is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-viewgroup-data-request",
+              "description": "A message emitted from the micro frontend when a request to set the view group data is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "set-document-title-request",
+              "description": "A message emitted from the micro frontend when a request to set the document title is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "open-user-settings-request",
+              "description": "A message emitted from the micro frontend when a request to open user settings is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close-user-settings-request",
+              "description": "A message emitted from the micro frontend when a request to close user settings is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "collapse-leftnav-request",
+              "description": "A message emitted from the micro frontend when a request to collapse the left side navigation is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "update-top-navigation-request",
+              "description": "A message emitted from the micro frontend when a request to update the top navigation is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "path-exists-request",
+              "description": "A message emitted from the micro frontend when a request to check if a path exists is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "go-back-request",
+              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "has-back-request",
+              "description": "A message emitted from the micro frontend to check if there is a back navigation option.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "remove-backdrop-request",
+              "description": "A message emitted from the micro frontend when a request to remove the backdrop is sent.",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LuigiCompoundContainer",
+          "declaration": {
+            "name": "LuigiCompoundContainer",
+            "module": "LuigiCompoundContainer.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "luigi-compound-container",
+          "declaration": {
+            "name": "LuigiCompoundContainer",
+            "module": "LuigiCompoundContainer.js"
+          }
+        }
+      ]
+    }
+  ]
+}
