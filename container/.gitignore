@@ -1,5 +1,6 @@
 /node_modules/
 
+/cypress/downloads
 /examples/bundle.js
 /examples/bundle.js.map
 /public/bundle.js
