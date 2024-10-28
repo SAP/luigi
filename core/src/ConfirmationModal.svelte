@@ -91,7 +91,9 @@
           <button
             on:click={() => dispatch('modalDismiss')}
             data-testid="luigi-modal-dismiss"
-            class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
+            class="fd-button {settings.buttonConfirm === false
+              ? 'fd-button--emphasized'
+              : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
           >
             {settings.buttonDismiss}
           </button>

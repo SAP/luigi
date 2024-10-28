@@ -36,10 +36,10 @@
     }
     setProfileNavData();
 
-    AuthLayerSvc.getLoggedInStore().subscribe(loggedIn => {
+    AuthLayerSvc.getLoggedInStore().subscribe((loggedIn) => {
       isLoggedIn = loggedIn;
     });
-    AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
+    AuthLayerSvc.getUserInfoStore().subscribe((uInfo) => {
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
     });
@@ -68,45 +68,41 @@
   // review these functions and remove unnecessary 'export' keywords
   export function setProfileNavData() {
     if (!navProfileListenerInstalled) {
-      StateHelpers.doOnStoreChange(
-        store,
-        async () => {
-          const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
-          //check if the User Settings schema exist
-          const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
-          const userSettings = userSettingsConfig
-            ? userSettingsConfig
-            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
+      StateHelpers.doOnStoreChange(store, async () => {
+        const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
+        //check if the User Settings schema exist
+        const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
+        const userSettings = userSettingsConfig
+          ? userSettingsConfig
+          : await LuigiConfig.getConfigValueAsync('settings.userSettings');
 
-          //check if Settings dropdown is enabled for navigation in Shellbar
-          const profileNavData = {
-            items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
+        //check if Settings dropdown is enabled for navigation in Shellbar
+        const profileNavData = {
+          items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
+        };
+        if (Boolean(userSettings)) {
+          const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
+          profileNavData['settings'] = {
+            ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
+            ...userSettingsProfileMenuEntry
           };
-          if (Boolean(userSettings)) {
-            const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
-            profileNavData['settings'] = {
-              ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
-              ...userSettingsProfileMenuEntry
-            };
-          }
-          profileNavData['logout'] = {
-            ...TOP_NAV_DEFAULTS.logout,
-            ...logoutItem
-          };
-          isProfileLogoutItem = Boolean(logoutItem);
-          profileLogoutFnDefined = false;
-          AuthLayerSvc.setProfileLogoutFn(null);
-          if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
-            // TODO: PROFNAVLOGOUT: three smiliar implementations.
-            // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
-            profileLogoutFnDefined = true;
-            AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
-          }
-          profileNav = profileNavData;
-          hasUserSettings = Boolean(userSettings);
-        },
-        ['navigation.profile']
-      );
+        }
+        profileNavData['logout'] = {
+          ...TOP_NAV_DEFAULTS.logout,
+          ...logoutItem
+        };
+        isProfileLogoutItem = Boolean(logoutItem);
+        profileLogoutFnDefined = false;
+        AuthLayerSvc.setProfileLogoutFn(null);
+        if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
+          // TODO: PROFNAVLOGOUT: three smiliar implementations.
+          // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
+          profileLogoutFnDefined = true;
+          AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
+        }
+        profileNav = profileNavData;
+        hasUserSettings = Boolean(userSettings);
+      }, ['navigation.profile']);
       navProfileListenerInstalled = true;
     }
   }
@@ -186,7 +182,9 @@
           <span
             class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
             aria-label="Avatar"
-          >{userInfo.initials ? userInfo.initials : ''}</span>
+          >
+            {userInfo.initials ? userInfo.initials : ''}
+          </span>
         {/if}
       </div>
       <div class="fd-user-menu__subheader">
@@ -215,7 +213,7 @@
               tabindex="0"
               class="fd-list__link"
               data-testid="luigi-topnav-profile-item"
-              on:click={event => {
+              on:click={(event) => {
                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
               }}
               href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
@@ -240,7 +238,7 @@
             tabindex="-1"
             class="fd-list__item fd-list__item--link lui-anchor-node"
             on:click|preventDefault={onUserSettingsClick}
-            on:keyup={event => handleKeyUp(event)}
+            on:keyup={(event) => handleKeyUp(event)}
           >
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <!-- svelte-ignore a11y-missing-attribute -->

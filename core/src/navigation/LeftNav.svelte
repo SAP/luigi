@@ -34,9 +34,9 @@
       hasCategoriesWithIcon,
       navParentNode
     }),
-    set: async obj => {
+    set: async (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(async prop => {
+        Object.getOwnPropertyNames(obj).forEach(async (prop) => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -72,7 +72,7 @@
                   context
                 );
                 if (res instanceof Promise) {
-                  res.then(headerData => {
+                  res.then((headerData) => {
                     navHeader = headerData;
                   });
                 } else {
@@ -100,16 +100,16 @@
 
                 const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), resolvedNavHeaderNode);
 
-                Navigation.extractDataFromPath(route).then(data => {
+                Navigation.extractDataFromPath(route).then((data) => {
                   const ctx = RoutingHelpers.substituteDynamicParamsInObject(
                     Object.assign({}, data.pathData.context, resolvedNavHeaderNode.context),
                     data.pathData.pathParams
                   );
                   NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
-                    .then(headerData => {
+                    .then((headerData) => {
                       navHeader = { ...resolvedNavHeader, ...headerData };
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.error('Error while retrieving title, fallback to node label');
                       navHeader = {
                         ...resolvedNavHeader,
@@ -162,7 +162,7 @@
   let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
   let navHeaderContainer;
 
-  const getNodeLabel = node => {
+  const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
   };
 
@@ -185,30 +185,22 @@
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
     expandedCategories = NavigationHelpers.loadExpandedCategories();
 
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        footerText = LuigiConfig.getConfigValue('settings.sideNavFooterText');
-      },
-      ['settings.footer']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      footerText = LuigiConfig.getConfigValue('settings.sideNavFooterText');
+    }, ['settings.footer']);
 
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        setLeftNavData();
-      },
-      ['navigation.viewgroupdata']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      setLeftNavData();
+    }, ['navigation.viewgroupdata']);
 
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;
-    SemiCollapsibleNavigation.onValueChanged(stateArr => {
+    SemiCollapsibleNavigation.onValueChanged((stateArr) => {
       isSemiCollapsed = stateArr.isSemiCollapsed;
     });
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setLeftNavData();
       }
@@ -220,7 +212,7 @@
       const moreEntries = btpNavTopCnt.querySelectorAll('.lui-moreItems  > .lui-nav-entry');
       const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
       const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
-      moreEntries?.forEach(item => {
+      moreEntries?.forEach((item) => {
         if (item.navGroupId) {
           navList.querySelector(`[navGroupId="${item.navGroupId}"]`).appendChild(item);
         } else {
@@ -250,7 +242,7 @@
   };
 
   const handleNavHeaderRenderer = () => {
-    const clickHandler = node => {
+    const clickHandler = (node) => {
       if (node) {
         handleClick(node);
       }
@@ -304,7 +296,7 @@
       const subCatEntries = [];
       const subCatDelim = toolLayoutSubCatDelimiter;
       let converted = [];
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry[0].startsWith(virtualGroupPrefix)) {
           //single nodes
           converted.push({ isSingleEntry: true, entries: [entry] });
@@ -332,7 +324,7 @@
         }
       });
 
-      subCatEntries.forEach(entry => {
+      subCatEntries.forEach((entry) => {
         const superCatId = entry[1].metaInfo.categoryUid.split(subCatDelim)[0];
         const potentialSuperCat = categoryById[superCatId];
         if (!potentialSuperCat) {
@@ -579,8 +571,8 @@
         ? $getTranslation(nodes.metaInfo.titleCollapseButton)
         : undefined
       : nodes.metaInfo.titleExpandButton
-      ? $getTranslation(nodes.metaInfo.titleExpandButton)
-      : undefined;
+        ? $getTranslation(nodes.metaInfo.titleExpandButton)
+        : undefined;
   }
 
   function displayMoreButtonMenu(event) {
@@ -604,7 +596,10 @@
 />
 {#if btpToolLayout}
   <div
-    class="fd-navigation fd-navigation--vertical {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}
+    class="fd-navigation fd-navigation--vertical {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
+    semiCollapsibleButton
+      ? 'hasFooter'
+      : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}
         {isSemiCollapsed ? 'fd-navigation--snapped' : ''}"
     role="navigation"
     style="width: var(--luigi__left-sidenav--width); height: 100%;"
@@ -628,7 +623,7 @@
                     </span>
                   {/if}
                 {/if}
-                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                <span class="fd-nested-list__title">{$getTranslation(navHeader.label)}</span>
                 {#if navHeader.showUpLink}
                   <i
                     class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
@@ -671,10 +666,10 @@
                               tabindex="0"
                               href={getRouteLink(node)}
                               title={resolveTooltipText(node, getNodeLabel(node))}
-                              on:click={event => {
+                              on:click={(event) => {
                                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                               }}
-                              on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                              on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
                             >
@@ -692,13 +687,18 @@
                                 {/if}
                               {:else}
                                 <span
-                                  class="fd-navigation__icon lui-hideOnHover-show {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                                  class="fd-navigation__icon lui-hideOnHover-show {isSemiCollapsed
+                                    ? 'sap-icon--rhombus-milestone-2'
+                                    : ''}"
                                   role="presentation"
                                   aria-hidden="true"
                                 />
                               {/if}
                               <span
-                                class="fd-navigation__text lui-hideOnHover-show badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                                class="fd-navigation__text lui-hideOnHover-show badge-align-{node.statusBadge &&
+                                node.statusBadge.align === 'right'
+                                  ? 'right'
+                                  : 'left'}"
                               >
                                 {getNodeLabel(node)}
                                 <StatusBadge {node} />
@@ -726,7 +726,7 @@
                       {/if}
                     {/if}
                   {/each}
-                {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
+                {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
                   <li
                     class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
                     aria-hidden="true"
@@ -737,9 +737,11 @@
                       class="fd-navigation__item {isSemiCollapsed ? 'fd-popover__control' : ''}"
                       role="treeitem"
                       title={resolveTooltipText(nodes, $getTranslation(key))}
-                      aria-expanded={isSemiCollapsed ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory : isExpanded(nodes, expandedCategories)}
+                      aria-expanded={isSemiCollapsed
+                        ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory
+                        : isExpanded(nodes, expandedCategories)}
                       aria-selected={isSemiCollapsed && nodes.indexOf(selectedNode) >= 0}
-                      on:click|stopPropagation={event => handleIconClick(nodes, event.currentTarget)}
+                      on:click|stopPropagation={(event) => handleIconClick(nodes, event.currentTarget)}
                     >
                       <!-- svelte-ignore a11y-missing-attribute -->
                       <!-- svelte-ignore a11y-click-events-have-key-events                   -->
@@ -747,13 +749,18 @@
                         class="fd-navigation__link"
                         role="button"
                         tabindex="0"
-                        on:click|preventDefault={() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
-                        on:keypress|preventDefault={() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
-                        on:keypress|preventDefault={event => handleExpandCollapseCategories(event, nodes)}
+                        on:click|preventDefault={() =>
+                          setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                        on:keypress|preventDefault={() =>
+                          setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                        on:keypress|preventDefault={(event) => handleExpandCollapseCategories(event, nodes)}
                       >
                         {#if isOpenUIiconName(nodes.metaInfo.icon)}
                           <span
-                            class="fd-navigation__icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                            class="fd-navigation__icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed &&
+                            !nodes.metaInfo.icon
+                              ? 'sap-icon--rhombus-milestone-2'
+                              : ''}"
                             role="presentation"
                             aria-hidden="true"
                           />
@@ -780,7 +787,9 @@
                     {#if !isSemiCollapsed || (nodes.metaInfo && nodes.metaInfo.label === selectedCategory)}
                       <div
                         class="fd-navigation__list-container
-                        {isSemiCollapsed ? 'fd-popover__body fd-popover__body--after fd-popover__body--arrow-left' : ''}"
+                        {isSemiCollapsed
+                          ? 'fd-popover__body fd-popover__body--after fd-popover__body--arrow-left'
+                          : ''}"
                       >
                         <div
                           class="fd-navigation__list-wrapper
@@ -839,13 +848,19 @@
                                         class="fd-navigation__link"
                                         tabindex="0"
                                         href={getRouteLink(node)}
-                                        on:click={event => {
-                                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                        on:click={(event) => {
+                                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                            handleClick(node);
                                         }}
-                                        on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                                        on:keyup={!addNavHrefForAnchor
+                                          ? (event) => handleEnterPressed(event, node)
+                                          : undefined}
                                       >
                                         <span
-                                          class="fd-navigation__text badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                                          class="fd-navigation__text badge-align-{node.statusBadge &&
+                                          node.statusBadge.align === 'right'
+                                            ? 'right'
+                                            : 'left'}"
                                         >
                                           {getNodeLabel(node)}
                                           <StatusBadge {node} />
@@ -879,17 +894,23 @@
                                     <a
                                       href={getRouteLink(node)}
                                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                                      on:click={event => {
-                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      on:click={(event) => {
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                          handleClick(node);
                                       }}
-                                      on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                                      on:keyup={!addNavHrefForAnchor
+                                        ? (event) => handleEnterPressed(event, node)
+                                        : undefined}
                                       role={!addNavHrefForAnchor ? 'button' : undefined}
                                       tabindex="0"
                                       data-testid={NavigationHelpers.getTestId(node)}
                                       title={resolveTooltipText(node, getNodeLabel(node))}
                                     >
                                       <span
-                                        class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                                        class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                        node.statusBadge.align === 'right'
+                                          ? 'right'
+                                          : 'left'}"
                                       >
                                         {getNodeLabel(node)}
                                         <StatusBadge {node} />
@@ -933,7 +954,7 @@
                 role="button"
                 tabindex="0"
                 on:click={displayMoreButtonMenu}
-                on:keypress={event => {
+                on:keypress={(event) => {
                   (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu(event);
                 }}
               >
@@ -953,7 +974,10 @@
   </div>
 {:else}
   <div
-    class="fd-app__sidebar fd-navigation {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
+    class="fd-app__sidebar fd-navigation {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
+    semiCollapsibleButton
+      ? 'hasFooter'
+      : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
   >
     {#if navHeader}
       <div class="lui-nav-title" bind:this={navHeaderContainer}>
@@ -974,7 +998,7 @@
                     </span>
                   {/if}
                 {/if}
-                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                <span class="fd-nested-list__title">{$getTranslation(navHeader.label)}</span>
                 {#if navHeader.showUpLink}
                   <i
                     class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
@@ -1011,11 +1035,11 @@
                             href={getRouteLink(node)}
                             title={resolveTooltipText(node, getNodeLabel(node))}
                             class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                            on:click={event => {
+                            on:click={(event) => {
                               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                             }}
                             tabindex="0"
-                            on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                            on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                             role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={NavigationHelpers.getTestId(node)}
                           >
@@ -1032,13 +1056,18 @@
                               {/if}
                             {:else}
                               <i
-                                class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                                class="fd-nested-list__icon sap-icon {isSemiCollapsed
+                                  ? 'sap-icon--rhombus-milestone-2'
+                                  : ''}"
                                 role="presentation"
                               />
                             {/if}
                             <span
-                              class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
-                            >{getNodeLabel(node)}
+                              class="fd-nested-list__title badge-align-{node.statusBadge &&
+                              node.statusBadge.align === 'right'
+                                ? 'right'
+                                : 'left'}"
+                              >{getNodeLabel(node)}
                               <StatusBadge {node} />
                             </span>
                             {#if node.externalLink && node.externalLink.url}
@@ -1052,7 +1081,7 @@
                       {/if}
                     {/if}
                   {/each}
-                {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
+                {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
                   <!-- Collapsible nodes -->
                   {#if nodes.metaInfo.collapsible}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -1065,7 +1094,7 @@
                       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                       <div
                         class="fd-nested-list__content has-child"
-                        on:keypress={event => handleExpandCollapseCategories(event, nodes)}
+                        on:keypress={(event) => handleExpandCollapseCategories(event, nodes)}
                         tabindex={isSemiCollapsed ? '0' : '-1'}
                       >
                         <a
@@ -1076,11 +1105,14 @@
                           id="collapsible_listnode_{index}"
                           aria-haspopup="true"
                           aria-expanded={isExpanded(nodes, expandedCategories)}
-                          on:click|preventDefault={() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                          on:click|preventDefault={() =>
+                            setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
                         >
                           {#if isOpenUIiconName(nodes.metaInfo.icon)}
                             <i
-                              class="fd-nested-list__icon sap-icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                              class="fd-nested-list__icon sap-icon {getSapIconStr(
+                                nodes.metaInfo.icon
+                              )} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
                               role="presentation"
                             />
                           {:else}
@@ -1101,10 +1133,13 @@
                           aria-haspopup="true"
                           aria-expanded={isExpanded(nodes, expandedCategories)}
                           title={setTitleForCategoryButton(nodes, expandedCategories)}
-                          on:click|preventDefault={() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                          on:click|preventDefault={() =>
+                            setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
                         >
                           <i
-                            class={isExpanded(nodes, expandedCategories) ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}
+                            class={isExpanded(nodes, expandedCategories)
+                              ? 'sap-icon--navigation-down-arrow'
+                              : 'sap-icon--navigation-right-arrow'}
                             role="presentation"
                           />
                         </button>
@@ -1120,17 +1155,22 @@
                                 <a
                                   href={getRouteLink(node)}
                                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                                  on:click={event => {
+                                  on:click={(event) => {
                                     NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                                   }}
-                                  on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                                  on:keyup={!addNavHrefForAnchor
+                                    ? (event) => handleEnterPressed(event, node)
+                                    : undefined}
                                   role={!addNavHrefForAnchor ? 'button' : undefined}
                                   tabindex="0"
                                   data-testid={NavigationHelpers.getTestId(node)}
                                   title={resolveTooltipText(node, getNodeLabel(node))}
                                 >
                                   <span
-                                    class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                                    class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                    node.statusBadge.align === 'right'
+                                      ? 'right'
+                                      : 'left'}"
                                   >
                                     {getNodeLabel(node)}
                                     <StatusBadge {node} />
@@ -1162,16 +1202,22 @@
                                         href={getRouteLink(node)}
                                         class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                                         tabindex="0"
-                                        on:click={event => {
-                                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                        on:click={(event) => {
+                                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                            handleClick(node);
                                         }}
-                                        on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                                        on:keyup={!addNavHrefForAnchor
+                                          ? (event) => handleEnterPressed(event, node)
+                                          : undefined}
                                         role={!addNavHrefForAnchor ? 'button' : undefined}
                                         data-testid={NavigationHelpers.getTestId(node)}
                                         title={resolveTooltipText(node, getNodeLabel(node))}
                                       >
                                         <span
-                                          class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                                          class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                          node.statusBadge.align === 'right'
+                                            ? 'right'
+                                            : 'left'}"
                                         >
                                           {getNodeLabel(node)}
                                           <StatusBadge {node} />
@@ -1203,7 +1249,9 @@
                       {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
                         {#if isOpenUIiconName(nodes.metaInfo.icon)}
                           <i
-                            class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? getSapIconStr(nodes.metaInfo.icon) : ''}"
+                            class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon
+                              ? getSapIconStr(nodes.metaInfo.icon)
+                              : ''}"
                             role="presentation"
                           />
                         {:else}
@@ -1226,10 +1274,10 @@
                               href={getRouteLink(node)}
                               tabindex="0"
                               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
-                              on:click={event => {
+                              on:click={(event) => {
                                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                               }}
-                              on:keyup={!addNavHrefForAnchor ? event => handleEnterPressed(event, node) : undefined}
+                              on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
                             >
@@ -1243,13 +1291,18 @@
                                 {/if}
                               {:else}
                                 <i
-                                  class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                                  class="fd-nested-list__icon sap-icon {isSemiCollapsed
+                                    ? 'sap-icon--rhombus-milestone-2'
+                                    : ''}"
                                 />
                                 <span>{isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}</span>
                               {/if}
                               <span
-                                class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
-                              >{getNodeLabel(node)}
+                                class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                node.statusBadge.align === 'right'
+                                  ? 'right'
+                                  : 'left'}"
+                                >{getNodeLabel(node)}
                                 {#if node.statusBadge}
                                   <StatusBadge {node} />
                                 {/if}
@@ -1274,29 +1327,32 @@
       {#if footerText || semiCollapsibleButton}
         <div class="fd-side-nav__utility">
           <span class="lui-side-nav__footer" data-testid="lui-side-nav__footer">
-            <span
-              class="lui-side-nav__footer--text fd-has-type-minus-1"
-              data-testid="lui-side-nav__footer--text"
-            >{footerText ? footerText : ''}</span>
+            <span class="lui-side-nav__footer--text fd-has-type-minus-1" data-testid="lui-side-nav__footer--text"
+              >{footerText ? footerText : ''}</span
+            >
             {#if semiCollapsibleButton}
               {#if semiCollapsibleButtonStyle == 'button'}
                 <button
-                  on:click={event => semiCollapsibleButtonClicked(event, this)}
+                  on:click={(event) => semiCollapsibleButtonClicked(event, this)}
                   data-testid="semiCollapsibleButton"
                   title={burgerTooltip}
                   tabindex="0"
                   class="fd-button fd-button--transparent fd-button--cozy lui-semi-btn"
                 >
                   <i
-                    class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
+                    class="lui-side-nav__footer--icon {isSemiCollapsed
+                      ? 'sap-icon--open-command-field'
+                      : 'sap-icon--close-command-field'}"
                   />
                 </button>
               {:else}
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                 <i
-                  class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
-                  on:click={event => semiCollapsibleButtonClicked(event, this)}
-                  on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
+                  class="lui-side-nav__footer--icon {isSemiCollapsed
+                    ? 'sap-icon--open-command-field'
+                    : 'sap-icon--close-command-field'}"
+                  on:click={(event) => semiCollapsibleButtonClicked(event, this)}
+                  on:keydown={(event) => handleEnterSemiCollapseBtn(event, this)}
                   data-testid="semiCollapsibleButton"
                   title={burgerTooltip}
                   tabindex="0"
