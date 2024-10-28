@@ -79,41 +79,33 @@
   };
 
   onMount(() => {
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
-        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
-        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
-        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
-        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
-        profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
-        responsiveShellbarPadding = LuigiConfig.getConfigValue('settings.header.responsiveShellbarPaddings');
-        productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
-        isGlobalSearchCentered =
-          globalSearchConfig &&
-          globalSearchConfig.searchFieldCentered &&
-          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
-        showGlobalNav =
-          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
-          GenericHelpers.requestExperimentalFeature('globalNav', true);
-        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
-        contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
-      },
-      ['navigation']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
+      profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
+      autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
+      isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
+      hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+      responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+      profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
+      responsiveShellbarPadding = LuigiConfig.getConfigValue('settings.header.responsiveShellbarPaddings');
+      productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
+      globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
+      isGlobalSearchCentered =
+        globalSearchConfig &&
+        globalSearchConfig.searchFieldCentered &&
+        GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
+      showGlobalNav =
+        LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+        GenericHelpers.requestExperimentalFeature('globalNav', true);
+      addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+      contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+    }, ['navigation']);
 
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        setTopNavData();
-      },
-      ['navigation.viewgroupdata']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      setTopNavData();
+    }, ['navigation.viewgroupdata']);
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
       }
@@ -138,7 +130,7 @@
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
 
-  const getNodeLabel = node => {
+  const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
   };
 
@@ -217,7 +209,7 @@
     const ddStates = dropDownStates || {};
     const keys = Object.keys(ddStates);
     if (keys && keys.length > 0) {
-      keys.forEach(k => {
+      keys.forEach((k) => {
         ddStates[k] = false;
         dropDownStates = ddStates;
       });
@@ -272,7 +264,9 @@
 {#if showTopNav}
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <div
-    class="fd-shellbar {responsiveShellbarPadding ? 'fd-shellbar--responsive-paddings' : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
+    class="fd-shellbar {responsiveShellbarPadding
+      ? 'fd-shellbar--responsive-paddings'
+      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -337,14 +331,16 @@
           {#each children as node, i}
             {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
               {#if node.isCat}
-                {#if node.visibleChildren.filter(node => !node.hideFromNav && node.label).length > 0}
+                {#if node.visibleChildren.filter((node) => !node.hideFromNav && node.label).length > 0}
                   <div class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop">
                     <div class="fd-popover fd-popover--right">
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                         <button
                           title={resolveTooltipText(node, getNodeLabel(node))}
-                          class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
+                          class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode
+                            ? 'is-selected'
+                            : ''}"
                           aria-controls="dropDownPopover-{i}"
                           aria-expanded={dropDownStates[`dropDownPopover-${i}`] || false}
                           aria-haspopup="true"
@@ -370,11 +366,13 @@
                   {#if addNavHrefForAnchor}
                     <a
                       href={getRouteLink(node)}
-                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
+                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode
+                        ? 'is-selected'
+                        : ''}"
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
-                      on:click={event => {
+                      on:click={(event) => {
                         NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                       }}
                       data-testid={NavigationHelpers.getTestId(node)}
@@ -385,7 +383,9 @@
                   {:else}
                     <button
                       title={resolveTooltipText(node, getNodeLabel(node))}
-                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
+                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode
+                        ? 'is-selected'
+                        : ''}"
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={() => handleClick(node)}
@@ -458,11 +458,14 @@
                           <!-- svelte-ignore a11y-missing-attribute -->
                           <a class="fd-menu__link" on:click|stopPropagation={openMobileContextSwitcher}>
                             <i
-                              class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? getSapIconStr(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
+                              class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon &&
+                              hasOpenUIicon(contextSwitcherConfig)
+                                ? getSapIconStr(contextSwitcherConfig.icon)
+                                : 'sap-icon--switch-views'}"
                             />
-                            <span
-                              class="fd-menu__title"
-                            >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
+                            <span class="fd-menu__title"
+                              >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span
+                            >
                           </a>
                         </li>
                       {/if}
@@ -478,7 +481,9 @@
                                   data-testid="{NavigationHelpers.getTestId(node)}-mobile"
                                 >
                                   <span
-                                    class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}"
+                                    class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node)
+                                      ? getSapIconStr(node.icon)
+                                      : ''}"
                                   >
                                     {#if !hasOpenUIicon(node)}
                                       <img src={node.icon} alt={node.altText ? node.altText : ''} />
@@ -488,7 +493,7 @@
                                   <span class="fd-menu__title">{getNodeLabel(node)}</span>
                                 </a>
                               </li>
-                            {:else if node.visibleChildren.filter(node => !node.hideFromNav && node.label).length > 0}
+                            {:else if node.visibleChildren.filter((node) => !node.hideFromNav && node.label).length > 0}
                               <li class="fd-menu__item">
                                 <a
                                   href={getRouteLink(node)}
@@ -500,9 +505,13 @@
                                   <span class="fd-top-nav__icon">
                                     {#if hasOpenUIicon(node)}
                                       <i
-                                        class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}"
+                                        class="sap-icon {node.icon && hasOpenUIicon(node)
+                                          ? getSapIconStr(node.icon)
+                                          : ''}"
                                       />
-                                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                                    {:else}
+                                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                                    {/if}
                                     <BadgeCounter {node} />
                                   </span>
                                   <span class="fd-list__title">{getNodeLabel(node)}</span>
@@ -638,7 +647,9 @@
                         />
                       {:else}
                         <i
-                          class="sap-icon {!userInfo.picture ? 'sap-icon--customer' : 'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                          class="sap-icon {!userInfo.picture
+                            ? 'sap-icon--customer'
+                            : 'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                         />
                       {/if}
                     </button>
