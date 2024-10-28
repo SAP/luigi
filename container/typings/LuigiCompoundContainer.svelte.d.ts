@@ -11,7 +11,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   viewurl: string;
 
   /**
-   * The configuration for the compound microfrontend
+   * The configuration for the compound microfrontend.
    * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details.
    * @since 1.0.0
    *
@@ -19,10 +19,23 @@ export default class LuigiCompoundContainer extends HTMLElement {
   compoundConfig: Object;
 
   /**
-   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used.
    * @since 1.0.0
    */
   deferInit: boolean;
+
+  /**
+   *
+   * The locale to be passed to the compound micro frontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  locale: string;
+
+  /**
+   * The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
+   * @since 1.0.0
+   */
+  nodeParams: Object;
 
   /**
    * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
@@ -43,7 +56,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   pathParams: Object;
 
   /**
-   * The stringified context to be passed to the compound microfrontend
+   * The stringified context to be passed to the compound microfrontend.
    * @since 1.0.0
    */
   context: string;
@@ -55,7 +68,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   clientPermissions: Object;
 
   /**
-   * The user settings to be passed to the compound micro frontend
+   * The user settings to be passed to the compound micro frontend.
    * @since 1.0.0
    */
   userSettings: Object;
@@ -96,6 +109,24 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since 1.0.0
    */
   webcomponent: boolean | WebComponentSettings | string;
+
+  /**
+   * If set to true, skips handshake and ready event is fired immediately.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  skipInitCheck: boolean;
+
+  /**
+   * The list of active feature toggles to be passed to the compound microfrontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  activeFeatureToggleList: string[];
+
+  /**
+   * The theme to be passed to the compound microfrontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  theme: string;
 
   /**
    * Function that updates the context of the compound microfrontend.

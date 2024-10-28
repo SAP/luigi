@@ -26,9 +26,10 @@
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }
     },
-    extend: customElementConstructor => {
-      let notInitFn = name => {
-        return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
+    extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
+        return () =>
+          console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
 
       return class extends customElementConstructor {
@@ -45,8 +46,8 @@
             }
           }
         }
-        getNoShadow(){
-          return this.hasAttribute('no-shadow') || this.noShadow
+        getNoShadow() {
+          return this.hasAttribute('no-shadow') || this.noShadow;
         }
       };
     }
@@ -132,7 +133,7 @@
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
-         if (webcomponent) {
+        if (webcomponent) {
           (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
@@ -148,11 +149,11 @@
 
       const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent && webcomponent != 'false') {
-        if(!thisComponent.getNoShadow()){
-          mainComponent.innerHTML=''
-          const shadow = thisComponent.attachShadow({ mode: "open"});
+        if (!thisComponent.getNoShadow()) {
+          mainComponent.innerHTML = '';
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
-        }else{
+        } else {
           //removing mainComponent
           thisComponent.innerHTML = '';
         }
@@ -163,11 +164,11 @@
           ctx,
           typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
-      }else{
-        if(!thisComponent.getNoShadow()){
+      } else {
+        if (!thisComponent.getNoShadow()) {
           //removeing mainComponent
-          thisComponent.innerHTML='';
-          const shadow = thisComponent.attachShadow({ mode: "open"});
+          thisComponent.innerHTML = '';
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
         }
       }
@@ -178,7 +179,10 @@
         });
       } else if (webcomponent) {
         (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+          if (
+            !(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent
+              ?.deferLuigiClientWCInit
+          ) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
@@ -206,18 +210,18 @@
 <main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}
-    <style>
-      main.lui-isolated,
-      .lui-isolated iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
+      <style>
+        main.lui-isolated,
+        .lui-isolated iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
 
-      main.lui-isolated {
-        line-height: 0;
-      }
-    </style>
+        main.lui-isolated {
+          line-height: 0;
+        }
+      </style>
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
