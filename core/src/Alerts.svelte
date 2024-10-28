@@ -26,13 +26,13 @@
       return;
     }
 
-    const processedAlerts = alertQueue.map(alert => {
+    const processedAlerts = alertQueue.map((alert) => {
       const { text, links, closeAfter } = alert.settings;
       const processedData = EscapingHelpers.processTextAndLinks(text, links, alert.settings.id);
 
       setTimeout(() => {
         // this needs to be done after links are rendered
-        processedData.links.forEach(link => {
+        processedData.links.forEach((link) => {
           addClickListener(link, alert.settings.id);
         });
       });
@@ -72,7 +72,7 @@
       if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
-      const listener = event => {
+      const listener = (event) => {
         if (link.url) {
           const isRelative = !link.url.startsWith('/');
           event.stopPropagation();

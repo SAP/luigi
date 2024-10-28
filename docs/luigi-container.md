@@ -34,6 +34,18 @@ npm install @luigi-project/container
 import '@luigi-project/container';
 ```
 
+3. (optional) Add VS Code HTML support to enhance HTML editing for LuigiContainer and LuigiCompoundContainer. You can do it by adding the following lines to .vscode/settings.json (since container v1.4.0)
+
+```
+{
+  ...some other settings,
+  "html.customData": [
+    "PATH/TO/node_modules/@luigi-project/container/vscode.html-custom-data.json"
+  ]
+}
+```
+
+
 ## Usage 
 
 After importing the package, you can use the Luigi container anywhere in your application. You can configure it just like a regular Luigi application, for example by using [parameters](navigation-parameters-reference.md) such as [viewURL](navigation-parameters-reference.md#viewurl) (which specifies the URL of the micro frontend):

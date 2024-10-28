@@ -86,7 +86,7 @@ describe('Web Container Test', () => {
       // the initialized webcomponent has id="defer-init-flag"
       cy.get('#defer-init-flag').should('not.exist');
       // click button that calls container.init()
-      cy.get('#init-button').click();
+      cy.get('#defer-init-button').click();
 
       cy.get('#defer-init-flag').should('exist');
     });
@@ -106,7 +106,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API navigateToIntent for LuigiContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get('[data-test-id="luigi-client-api-test-01"]')
+      cy.get(containerSelector)
         .shadow()
         .contains('navigateToIntent')
         .click()
@@ -131,18 +131,95 @@ describe('Web Container Test', () => {
             });
         });
     });
+
     it('sendCustomMessage', () => {
       cy.get(containerSelector)
         .shadow()
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: ');
 
-      cy.get('#sendCustomMessageBtn')
-        .click()
+      cy.get('#sendCustomMessageBtn').click();
       cy.get(containerSelector)
         .shadow()
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: cool custom Message');
+    });
+
+    it('linkManagerChainRequests for navigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerChainRequests')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
+          cy.hash().should('eq', '#hello-world-wc');
         });
+    });
+
+    it('pathExists', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#linkManagerUpdateTopPathExistsBack')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
+          );
+        });
+    });
+
+    it('showConfirmationModal', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('showConfirmationModal')
+        .click()
+        .then(() => {
+          cy.on('window:confirm', str => {
+            expect(str).to.equal('Are you sure you want to do this?');
+          });
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
+        });
+    });
+
+    it('receive custom message from WC', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('Publish event')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
+        });
+    });
+
+    it('LuigiClient API uxManagerChainRequests', () => {
+      const alertMessages = [
+        'LuigiClient.uxManager().openUserSettings()',
+        'LuigiClient.uxManager().closeUserSettings()',
+        'LuigiClient.uxManager().removeBackdrop()',
+        'LuigiClient.uxManager().collapseLeftSideNav()',
+        'LuigiClient.uxManager().hideAppLoadingIndicator()',
+        'LuigiClient.uxManager().getDocumentTitle()=my-title'
+      ];
+
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#uxManagerManyRequests')
+        .click()
+        .then(() => {
+          alertMessages.forEach((msg, index) => {
+            expect(stub.getCall(index)).to.be.calledWith(msg);
+          });
+        });
+    });
   });
 });

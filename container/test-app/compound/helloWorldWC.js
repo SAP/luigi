@@ -13,8 +13,11 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const current_locale = document.createElement('template');
+    current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
-    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+    templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
@@ -42,6 +45,12 @@ export default class extends HTMLElement {
 
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
+
+    const getFeatureToggleListBtn = document.createElement('template');
+    getFeatureToggleListBtn.innerHTML = '<button id="getFeatureToggleList">getFeatureToggleList</button>';
+
+    const getThemeBtn = document.createElement('template');
+    getThemeBtn.innerHTML = '<button id="getTheme">getTheme</button>';
 
     const setViewGroupDataBtn = document.createElement('template');
     setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
@@ -82,6 +91,9 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const confirmationModalBtn = document.createElement('template');
+    confirmationModalBtn.innerHTML = '<button id="confirmationModal">showConfirmationModal</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -97,6 +109,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
@@ -104,10 +118,23 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
+    this.$currentLocaleButton = this._shadowRoot.querySelector('#current_locale');
+    this.$currentLocaleButton.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          type: 'info'
+        });
+      }
+    });
+
     this.$paragraph = this._shadowRoot.querySelector('p');
+
     this.$button = this._shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -128,20 +155,22 @@ export default class extends HTMLElement {
         });
       }
     });
-    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+
+    this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
+    this.$publishEventBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own event data' }));
       }
     });
 
-    this.$button2 = this._shadowRoot.querySelector('#addNodeParams');
-    this.$button2.addEventListener('click', () => {
+    this.$addNodeParamsBtn = this._shadowRoot.querySelector('#addNodeParams');
+    this.$addNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.addNodeParams({ Luigi: 'rocks' }, true);
       }
     });
-    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
-    this.$button3.addEventListener('click', () => {
+    this.$getNodeParamsBtn = this._shadowRoot.querySelector('#getNodeParams');
+    this.$getNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
@@ -188,11 +217,32 @@ export default class extends HTMLElement {
         });
       }
     });
+
     this.$getAnchorBtn = this._shadowRoot.querySelector('#getAnchor');
     this.$getAnchorBtn.addEventListener('click', () => {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getFeatureToggleListBtn = this._shadowRoot.querySelector('#getFeatureToggleList');
+    this.$getFeatureToggleListBtn.addEventListener('click', () => {
+      const activeFeatureToggleList = this.LuigiClient.getActiveFeatureToggles();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getActiveFeatureToggles()=' + JSON.stringify(activeFeatureToggleList),
+        type: 'info'
+      });
+    });
+
+    this.$getThemeBtn = this._shadowRoot.querySelector('#getTheme');
+    this.$getThemeBtn.addEventListener('click', () => {
+      const currentTheme = this.LuigiClient.uxManager().getCurrentTheme();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getCurrentTheme()=' + JSON.stringify(currentTheme),
         type: 'info'
       });
     });
@@ -217,12 +267,12 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
-      this.LuigiClient.uxManager().collapseLeftSideNav();
-      this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().removeBackdrop();
+      this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
+      this.LuigiClient.uxManager().setDocumentTitle('my-title');
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
         type: 'info'
@@ -231,18 +281,29 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
+      const path = 'hello-world-wc';
+      const ctx = { ctx: 123 };
+
       this.LuigiClient.linkManager()
-        .fromContext({ ctx: 123 })
-        .navigate('hello-world-wc');
+        .fromContext(ctx)
+        .navigate();
       this.LuigiClient.linkManager()
         .fromClosestContext()
-        .navigate('hello-world-wc');
+        .navigate(path);
       this.LuigiClient.linkManager()
         .fromVirtualTreeRoot()
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager()
+        .fromParent(ctx)
+        .navigate(path);
       this.LuigiClient.linkManager()
         .withParams('my-params')
-        .navigate('hello-world-wc');
+        .navigate(path);
+      this.LuigiClient.linkManager().navigate(path);
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.linkManager().navigate()',
+        type: 'info'
+      });
     });
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
@@ -274,6 +335,26 @@ export default class extends HTMLElement {
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
+    });
+
+    this.$confirmationModalBtn = this._shadowRoot.querySelector('#confirmationModal');
+    this.$confirmationModalBtn.addEventListener('click', () => {
+      const settings = {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      };
+
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'LuigiClient.uxManager().showConfirmationModal()',
+            type: 'info'
+          });
+        });
     });
   }
 

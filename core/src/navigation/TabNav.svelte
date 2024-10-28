@@ -40,9 +40,9 @@
       dropDownStates,
       isMoreBtnExpanded
     }),
-    set: obj => {
+    set: (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(prop => {
+        Object.getOwnPropertyNames(obj).forEach((prop) => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -103,7 +103,7 @@
       let hasMoreBtnElements = false;
 
       // Iterate through tab elements
-      [...tabsContainerHeader.children].forEach(tabElement => {
+      [...tabsContainerHeader.children].forEach((tabElement) => {
         // Get unique identifier for the tab
         const uid = tabElement.getAttribute('uid');
         if (!uid) {
@@ -146,7 +146,7 @@
       const tabs = [...tabsContainerHeader.children];
 
       // Remove 'hide_element' class from each tab element
-      tabs.forEach(element => {
+      tabs.forEach((element) => {
         element.classList.remove('hide_element');
       });
     }
@@ -157,7 +157,7 @@
    * is changed according to the variable horizontal tabnav web component height.
    */
   const handleHorizontalNavHeightChange = () => {
-    resizeObserver = new ResizeObserver(entries => {
+    resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         document.documentElement.style.setProperty(
           '--luigi__horizontal-nav--live-height',
@@ -188,13 +188,9 @@
       LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') &&
       LuigiConfig.getConfigBooleanValue('settings.experimental.btpToolLayout');
     handleHorizontalNavHeightChange();
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        setTabNavData();
-      },
-      ['navigation.viewgroupdata']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      setTabNavData();
+    }, ['navigation.viewgroupdata']);
   });
 
   onDestroy(() => {
@@ -301,7 +297,7 @@
    * @returns {boolean} Returns true if any node has a label and is not hidden from navigation; otherwise, returns false.
    */
   function isTabItemWithSubItems(nodes) {
-    return nodes.some(node => !node.hideFromNav && node.label);
+    return nodes.some((node) => !node.hideFromNav && node.label);
   }
 
   /**
@@ -312,14 +308,14 @@
    */
   function isHiddenAndOnlySubCategoryNode(nodes) {
     // reference node = a subcategory node
-    const referenceNode = nodes.find(node => GenericHelpers.isObject(node.category));
+    const referenceNode = nodes.find((node) => GenericHelpers.isObject(node.category));
     if (!referenceNode) {
       return;
     }
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
 
     const isOnlyOtherCategoryNodeHidden =
-      nodes.filter(node => node.category === referenceCategoryName && node.hideFromNav === true).length === 1;
+      nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav === true).length === 1;
 
     return isOnlyOtherCategoryNodeHidden;
   }
@@ -331,7 +327,7 @@
    * @returns {Object|undefined} Returns the first node with a truthy navigateOnClick property, or undefined if not found.
    */
   function getNodeToNavigateTo(nodes) {
-    const referenceNode = nodes.find(node => node.category?.navigateOnClick);
+    const referenceNode = nodes.find((node) => node.category?.navigateOnClick);
     if (!referenceNode) {
       return;
     }
@@ -340,7 +336,7 @@
       return referenceNode;
     }
     // return node which has same pathSegment as the navigateOnClick value
-    return nodes.find(node => node.pathSegment === navigateOnClick);
+    return nodes.find((node) => node.pathSegment === navigateOnClick);
   }
 
   /**
@@ -372,7 +368,7 @@
     const luigiTabsContainer = document.querySelectorAll(
       '.luigi-tabsContainerHeader .fd-icon-tab-bar__item--single-click .fd-popover__body'
     );
-    luigiTabsContainer.forEach(child => {
+    luigiTabsContainer.forEach((child) => {
       child.classList.remove('fd-popover__body--right');
       if (!hasSpaceOnRight(child)) {
         child.classList.add('fd-popover__body--right');
@@ -390,7 +386,7 @@
     <nav
       class="fd-icon-tab-bar fd-icon-tab-bar--lg"
       role="tablist"
-      on:toggleDropdownState={event => toggleDropdownState(event.name)}
+      on:toggleDropdownState={(event) => toggleDropdownState(event.name)}
     >
       <div
         class="tabsContainerHeader luigi-tabsContainerHeader fd-icon-tab-bar__header"
@@ -413,8 +409,10 @@
                       aria-selected={isSelected}
                       on:click|preventDefault={() => handleClick(node)}
                     >
-                      <span class="fd-icon-tab-bar__tag">{getNodeLabel(node)}
-                        <StatusBadge {node} /></span>
+                      <span class="fd-icon-tab-bar__tag">
+                        {getNodeLabel(node)}
+                        <StatusBadge {node} />
+                      </span>
                     </a>
                   </span>
                 {/if}
@@ -433,7 +431,7 @@
                 {uid}
                 role="presentation"
                 class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
-                on:click={event => event.stopPropagation()}
+                on:click={(event) => event.stopPropagation()}
               >
                 <!-- svelte-ignore a11y-missing-attribute -->
                 <a
@@ -462,7 +460,9 @@
                     </div>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body "
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive
+                      ? 'fd-popover__body--right'
+                      : ''} fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                     id={popoverId}
                   >
@@ -497,7 +497,7 @@
               <span
                 class="fd-icon-tab-bar__item fd-icon-tab-bar__item--single-click"
                 {uid}
-                on:click={event => event.stopPropagation()}
+                on:click={(event) => event.stopPropagation()}
                 isSelected={isSelectedCat(key, selectedNodeForTabNav)}
               >
                 <div class="fd-popover">
@@ -519,7 +519,9 @@
                     </a>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive
+                      ? 'fd-popover__body--right'
+                      : ''} fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                   >
                     <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
@@ -534,8 +536,10 @@
                                 on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-list__title">{getNodeLabel(node)}
-                                  <StatusBadge {node} /></span>
+                                <span class="fd-list__title">
+                                  {getNodeLabel(node)}
+                                  <StatusBadge {node} />
+                                </span>
                               </a>
                             </li>
                           {/if}
@@ -551,7 +555,7 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           class="luigi-tabsMoreButton fd-icon-tab-bar__item fd-icon-tab-bar__item--overflow"
-          on:click={event => event.stopPropagation()}
+          on:click={(event) => event.stopPropagation()}
           bind:this={moreButton}
         >
           <div class="fd-popover">
@@ -578,8 +582,10 @@
                           on:click|preventDefault={() => handleClick(node)}
                           aria-selected={node === selectedNodeForTabNav}
                         >
-                          <span class="fd-nested-list__title">{getNodeLabel(node)}
-                            <StatusBadge {node} /></span>
+                          <span class="fd-nested-list__title">
+                            {getNodeLabel(node)}
+                            <StatusBadge {node} />
+                          </span>
                         </a>
                       </li>
                     {/each}
@@ -610,7 +616,9 @@
                           on:click|preventDefault={() => toggleDropdownState(key + index)}
                         >
                           <i
-                            class={dropDownStates[key + index] ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}
+                            class={dropDownStates[key + index]
+                              ? 'sap-icon--navigation-down-arrow'
+                              : 'sap-icon--navigation-right-arrow'}
                             role="presentation"
                           />
                         </button>
@@ -626,7 +634,8 @@
                                 on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-nested-list__title">{getNodeLabel(node)}
+                                <span class="fd-nested-list__title">
+                                  {getNodeLabel(node)}
                                   <StatusBadge {node} />
                                 </span>
                               </a>
@@ -696,8 +705,7 @@
 
   .lui-breadcrumb .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
-      100vh -
-        calc(
+      100vh - calc(
           var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
             var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
         )
@@ -707,8 +715,7 @@
 
   .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
-      100vh -
-        calc(
+      100vh - calc(
           var(--luigi__shellbar--height) +
             var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
         )
