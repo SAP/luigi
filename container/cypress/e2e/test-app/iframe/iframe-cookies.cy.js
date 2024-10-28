@@ -10,9 +10,7 @@ describe('Iframe Cookies Test', () => {
   it('should not sent third party cookies request', () => {
     cy.on('window:alert', stub);
 
-    cy.get(containerSelector)
-      .should('have.attr', 'skip-cookie-check')
-      .and('match', /true/);
+    cy.get(containerSelector).should('have.attr', 'skip-cookie-check').and('match', /true/);
     cy.get(containerSelector)
       .shadow()
       .get('iframe')

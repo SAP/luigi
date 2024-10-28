@@ -1,7 +1,7 @@
 <!-- This microfrontend HTML file is used to test luigi-client-init functionality -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Luigi Client Init Test</title>
     <script src="./luigi-client.js"></script>
@@ -16,19 +16,26 @@
         const isInitialized = LuigiClient.isLuigiClientInitialized();
         console.log('isInitialized: ' + isInitialized);
         if (document.getElementById('luigiClientStatus')) {
-        document.getElementById('luigiClientStatus').innerText = `Luigi Client Initialized: ${isInitialized}`;
-
+          document.getElementById('luigiClientStatus').innerText =
+            `Luigi Client Initialized: ${isInitialized}`;
         }
         return isInitialized;
       }
     </script>
-</head>
-<body style="border: solid green 2px;">
+  </head>
+  <body style="border: solid green 2px">
     <div>
-        <h1>Luigi Client Init Test for Iframes</h1>
-        <button id="testLuigiClientInitButton" onclick="testLuigiClientInit()">Test luigiClientInit</button>
-        <button id="testIsLuigiClientInitializedButton" onclick="testIsLuigiClientInitialized()">Test isLuigiClientInitialized</button>
-         <p id="luigiClientStatus">Luigi Client Initialized: Unknown</p>
+      <h1>Luigi Client Init Test for Iframes</h1>
+      <button id="testLuigiClientInitButton" onclick="testLuigiClientInit()">
+        Test luigiClientInit
+      </button>
+      <button
+        id="testIsLuigiClientInitializedButton"
+        onclick="testIsLuigiClientInitialized()"
+      >
+        Test isLuigiClientInitialized
+      </button>
+      <p id="luigiClientStatus">Luigi Client Initialized: Unknown</p>
     </div>
-</body>
+  </body>
 </html>

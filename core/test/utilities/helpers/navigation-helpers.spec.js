@@ -455,7 +455,7 @@ describe('Navigation-helpers', () => {
         }
       };
 
-      it('should reject if no titleResolver set', done => {
+      it('should reject if no titleResolver set', (done) => {
         NavigationHelpers.fetchNodeTitleData({ titleResolver: undefined }, {})
           .then(() => {
             assert.fail('Should not be here');
@@ -466,7 +466,7 @@ describe('Navigation-helpers', () => {
           });
       });
 
-      it('should get data from cache', done => {
+      it('should get data from cache', (done) => {
         const node = {
           titleResolver: {
             url: 'http://localhost'
@@ -482,13 +482,13 @@ describe('Navigation-helpers', () => {
           value: value
         };
 
-        NavigationHelpers.fetchNodeTitleData(node, node.context).then(data => {
+        NavigationHelpers.fetchNodeTitleData(node, node.context).then((data) => {
           assert.equal(data, value);
           done();
         });
       });
 
-      it('should use correct request data and properly process response data', done => {
+      it('should use correct request data and properly process response data', (done) => {
         const node = JSON.parse(JSON.stringify(samplenode));
 
         let fetchUrl, fetchOptions;
@@ -516,7 +516,7 @@ describe('Navigation-helpers', () => {
             assertRequestData();
             done();
           })
-          .catch(e => {
+          .catch((e) => {
             assertRequestData();
             done();
           });

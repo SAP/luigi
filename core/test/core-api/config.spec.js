@@ -78,10 +78,7 @@ describe('updateContextValues', () => {
 
     querySelectorStub.withArgs('.wcContainer').returns(mockContainer);
 
-    sinon
-      .stub(document, 'querySelectorAll')
-      .withArgs('[lui_web_component=true]')
-      .returns(mockLuiWebComponents);
+    sinon.stub(document, 'querySelectorAll').withArgs('[lui_web_component=true]').returns(mockLuiWebComponents);
 
     const newContext = { updatedContext: 'updated' };
 
@@ -90,7 +87,7 @@ describe('updateContextValues', () => {
     sinon.assert.calledWith(querySelectorStub, '.wcContainer');
     sinon.assert.calledWith(document.querySelectorAll, '[lui_web_component=true]');
 
-    mockLuiWebComponents.forEach(component => {
+    mockLuiWebComponents.forEach((component) => {
       assert.deepEqual(component.context, { initialContext: 'initial', updatedContext: 'updated' });
     });
   });
@@ -103,7 +100,7 @@ describe('updateContextValues', () => {
     };
     let containerStub = sinon.stub(LuigiElements, 'getLuigiContainer').returns({
       firstChild: {},
-      removeChild: sinon.spy(function() {
+      removeChild: sinon.spy(function () {
         this.firstChild = null;
       })
     });

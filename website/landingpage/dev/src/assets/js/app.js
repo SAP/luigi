@@ -16,13 +16,13 @@ require('foundation-sites');
 
 $(document).foundation();
 
-$('#menuBtn, #closeMainNavigation').on('click', function() {
+$('#menuBtn, #closeMainNavigation').on('click', function () {
   $('#mainNavigation').toggleClass('is-active');
 });
 
 if (document.getElementById('num')) {
   let number = 10;
-  let counter = setInterval(function() {
+  let counter = setInterval(function () {
     if (number > 0) {
       document.getElementById('num').innerHTML = String(--number).padStart(2, '0');
     } else {
@@ -49,7 +49,7 @@ if (!String.prototype.padStart) {
 }
 
 if (!String.prototype.repeat) {
-  String.prototype.repeat = function(count) {
+  String.prototype.repeat = function (count) {
     'use strict';
     if (this == null) {
       throw new TypeError("can't convert " + this + ' to object');
@@ -100,13 +100,13 @@ if (document.getElementById('social-list')) {
 function setActiveLinkOnHover(listItems) {
   for (let i = 0; i < listItems.length; i++) {
     listItems[i].index = i;
-    listItems[i].addEventListener('mouseover', function(event) {
+    listItems[i].addEventListener('mouseover', function (event) {
       removeActiveState(listItems);
       event.target.classList.add('is-active');
       listCounter = event.target.index;
     });
 
-    listItems[i].addEventListener('mouseout', function(event) {
+    listItems[i].addEventListener('mouseout', function (event) {
       removeActiveState(listItems);
       listItems[0].classList.add('is-active');
       listCounter = 0;
@@ -115,7 +115,7 @@ function setActiveLinkOnHover(listItems) {
 }
 
 function setActiveLinkOnKeyboardClick(listItems) {
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function (e) {
     switch (e.which) {
       case 38: // up
         if (listCounter > 0) {
@@ -141,7 +141,7 @@ function setActiveLinkOnKeyboardClick(listItems) {
 }
 
 function removeActiveState(arr) {
-  [].forEach.call(arr, function(el) {
+  [].forEach.call(arr, function (el) {
     el.classList.remove('is-active');
   });
 }
@@ -155,13 +155,13 @@ var filesAmount = $('#blog-chunks-data').data('chunk-total'); //count amount of 
 var chunksMinBlogLoadAmount = $('#blog-chunks-data').data('chunk-step'); //amount of blogs to be visible on first load
 var chunkCounter = 0;
 
-loadMoreBlogsBtn.on('click', function() {
+loadMoreBlogsBtn.on('click', function () {
   fetch('blog-chunks/blog-chunk' + chunkCounter + '.html', {
     method: 'GET'
   })
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
-        response.text().then(response => {
+        response.text().then((response) => {
           $('#blog-chunk').append(DOMPurify.sanitize(response));
           chunkCounter = chunkCounter + chunksMinBlogLoadAmount;
           let chunksWrapperDIV = $('#blog-chunk div.blog-entry:nth-child(' + chunkCounter + ')');
@@ -182,14 +182,14 @@ loadMoreBlogsBtn.on('click', function() {
         console.log('Can not fetch the chunk');
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('No blog-chunks is available', error);
     });
 });
 
 // use history api back() instead of standard link if coming from overview page
 if (backToBlog.length && document.referrer.indexOf('/blog/overview') !== -1 && window.history) {
-  backToBlog.on('click', function(e) {
+  backToBlog.on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
     history.back();

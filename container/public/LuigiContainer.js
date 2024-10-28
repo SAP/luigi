@@ -1,1 +1,1 @@
-export { LuigiContainer as default } from "./bundle.js";
+export { LuigiContainer as default } from './bundle.js';
