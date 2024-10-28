@@ -8,7 +8,7 @@
     expanded = !expanded;
     NavigationHelpers.storeExpandedState(navGroup.uid, expanded);
     if (!navGroup.isSingleEntry) {
-      NavigationHelpers.storeCollapsedSuperCategoriesState(navGroup.uid, expanded)
+      NavigationHelpers.storeCollapsedSuperCategoriesState(navGroup.uid, expanded);
     }
   }
 </script>
@@ -32,7 +32,7 @@
         role="button"
         tabindex="0"
         on:click|preventDefault|stopPropagation={toggleExpanded}
-        on:keyup={event => {
+        on:keyup={(event) => {
           (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
         }}
       >
