@@ -14,7 +14,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   viewurl: string;
 
   /**
-   * The configuration for the compound microfrontend
+   * The configuration for the compound microfrontend.
    * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details.
    * @since 1.0.0
    * 
@@ -25,7 +25,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   compoundConfig: Object;
 
   /**
-   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used.
    * @since 1.0.0
    * 
    * @example <luigi-container viewurl="/index.html" defer-init></luigi-container>
@@ -80,7 +80,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   pathParams: Object;
 
   /**
-   * The stringified context to be passed to the compound microfrontend
+   * The stringified context to be passed to the compound microfrontend.
    * @since 1.0.0
    * 
    * @example <luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
@@ -98,7 +98,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   clientPermissions: Object;
 
   /**
-   * The user settings to be passed to the compound micro frontend
+   * The user settings to be passed to the compound micro frontend.
    * @since 1.0.0
    * 
    * @example <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>

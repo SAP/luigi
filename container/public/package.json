@@ -8,6 +8,7 @@
         "type": "git",
         "url": "ssh://github.com/SAP/luigi.git"
     },
+    "customElements": "./dist/custom-elements.json",
     "publishConfig": {
         "tag": "luigi-container"
     },

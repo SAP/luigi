@@ -41,7 +41,7 @@ myContainer.viewurl = "/index.html"
 
 ### compoundConfig
 
-The configuration for the compound microfrontend
+The configuration for the compound microfrontend.
 Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -60,7 +60,7 @@ myContainer.compoundConfig = { renderer, children };
 
 ### deferInit
 
-If set to true defers from initializing the microfronted automatically. In that case init() can be used
+If set to true defers from initializing the microfronted automatically. In that case init() can be used.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -180,7 +180,7 @@ myContainer.pathParams = {foo: "bar"}
 
 ### context
 
-The stringified context to be passed to the compound microfrontend
+The stringified context to be passed to the compound microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -220,7 +220,7 @@ myContainer.clientPermissions = {permission: "adminGroup"}
 
 ### userSettings
 
-The user settings to be passed to the compound micro frontend
+The user settings to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
