@@ -84,6 +84,7 @@
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+          // alert("NAVIGATION_REQUEST received");
           console.log(event.detail);
           window.location.hash = event.detail.link;
         });
@@ -109,7 +110,10 @@
             alert(event.detail.data);
           }
         });
-
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
+          console.log(event);
+          //alert(event.detail.text);
+        });
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
           event => {
