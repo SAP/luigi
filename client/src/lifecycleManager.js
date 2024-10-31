@@ -39,6 +39,15 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * Check if the html head element contains the attribute "disable-tpc-check"
+   * @private
+   * @memberof Lifecycle
+   */
+  _isTpcCheckDisabled() {
+    return window.document.head.hasAttribute('disable-tpc-check');
+  }
+
+  /**
    * Check if LuigiClient is initialized
    * @returns {boolean} client initialized state
    * @since 1.12.0
@@ -140,9 +149,15 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck() {
-    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || this.disableTpcCheck) {
+    const tpcCheckDisabled =
+      this.disableTpcCheck ||
+      this._isTpcCheckDisabled() ||
+      this.currentContext?.internal?.thirdPartyCookieCheck?.disabled;
+
+    if (tpcCheckDisabled) {
       return;
     }
+
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
