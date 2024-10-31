@@ -129,7 +129,7 @@ describe('Iframe Container Test', () => {
           .click();
   
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/iframe/iframeContainer.html#openAsModal-iframe');
+          expect(loc.hash).to.eq('#openAsModal-iframe');
         });
       });
   });
@@ -147,7 +147,7 @@ describe('Iframe Container Test', () => {
           .click();
   
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/iframe/iframeContainer.html#openAsDrawer-iframe');
+          expect(loc.hash).to.eq('#openAsDrawer-iframe');
         });
       });
   });
@@ -165,7 +165,7 @@ describe('Iframe Container Test', () => {
           .click();
   
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/iframe/iframeContainer.html#openAsSplitview-iframe');
+          expect(loc.hash).to.eq('#openAsSplitview-iframe');
         });
       });
   });
