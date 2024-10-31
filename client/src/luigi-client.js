@@ -26,8 +26,8 @@ class LuigiClient {
     }
   }
 
-  addInitListener(initFn, disableTpcCheck) {
-    return lifecycleManager.addInitListener(initFn, disableTpcCheck);
+  addInitListener(initFn) {
+    return lifecycleManager.addInitListener(initFn);
   }
   removeInitListener(id) {
     return lifecycleManager.removeInitListener(id);
