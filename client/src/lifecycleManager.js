@@ -9,11 +9,10 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
+      this.defaultContextKeys.reduce(function (acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -36,6 +35,18 @@ class LifecycleManager extends LuigiClientBase {
    */
   _isDeferInitDefined() {
     return window.document.head.hasAttribute('defer-luigi-init');
+  }
+
+  /**
+   * Check if the html head element contains the attribute "disable-tpc-check"
+   * @private
+   * @memberof Lifecycle
+   */
+  _isTpcCheckDisabled() {
+    return (
+      window.document.head.hasAttribute('disable-tpc-check') ||
+      this.currentContext?.internal?.thirdPartyCookieCheck?.disabled
+    );
   }
 
   /**
@@ -66,7 +77,7 @@ class LifecycleManager extends LuigiClientBase {
      * Save context data every time navigation to a different node happens
      * @private
      */
-    const setContext = rawData => {
+    const setContext = (rawData) => {
       for (let index = 0; index < this.defaultContextKeys.length; index++) {
         let key = this.defaultContextKeys[index];
         try {
@@ -80,13 +91,13 @@ class LifecycleManager extends LuigiClientBase {
       this.setCurrentContext(rawData);
     };
 
-    const setAuthData = eventPayload => {
+    const setAuthData = (eventPayload) => {
       if (eventPayload) {
         this.authData = eventPayload;
       }
     };
 
-    helpers.addEventListener('luigi.init', e => {
+    helpers.addEventListener('luigi.init', (e) => {
       setContext(e.data);
       setAuthData(e.data.authData);
       helpers.setLuigiCoreDomain(e.origin);
@@ -96,15 +107,15 @@ class LifecycleManager extends LuigiClientBase {
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
     });
 
-    helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
+    helpers.addEventListener('luigi-client.inactive-microfrontend', (e) => {
       this._notifyInactive(e.origin);
     });
 
-    helpers.addEventListener('luigi.auth.tokenIssued', e => {
+    helpers.addEventListener('luigi.auth.tokenIssued', (e) => {
       setAuthData(e.data.authData);
     });
 
-    helpers.addEventListener('luigi.navigate', e => {
+    helpers.addEventListener('luigi.navigate', (e) => {
       setContext(e.data);
       if (!this.currentContext.internal.isNavigateBack && !this.currentContext.withoutSync) {
         const previousHash = window.location.hash;
@@ -140,17 +151,18 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck() {
-    if (this.currentContext?.internal?.thirdPartyCookieCheck?.disabled || this.disableTpcCheck) {
+    if (this._isTpcCheckDisabled()) {
       return;
     }
+
     let tpc = 'enabled';
     let cookies = document.cookie;
     let luigiCookie;
     if (cookies) {
       luigiCookie = cookies
         .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie === 'luigiCookie=true');
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
       document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
@@ -160,8 +172,8 @@ class LifecycleManager extends LuigiClientBase {
     if (cookies) {
       luigiCookie = cookies
         .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie === 'luigiCookie=true');
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie === 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
       document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
@@ -231,9 +243,11 @@ class LifecycleManager extends LuigiClientBase {
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
   addInitListener(initFn, disableTpcCheck) {
-    this.disableTpcCheck = disableTpcCheck;
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
+    if (disableTpcCheck) {
+      document.head.setAttribute('disable-tpc-check');
+    }
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
