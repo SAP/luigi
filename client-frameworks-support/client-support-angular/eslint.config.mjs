@@ -13,7 +13,7 @@ export default [
     processor: angular.processInlineTemplates,
     rules: {
       "curly": "error",
-      "no-console": "warn",
+      "no-console": ["error", {allow: ["debug"]}],
       "no-undef": "error"
     }
   }
