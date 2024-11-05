@@ -25,7 +25,7 @@ In addition you can use standard `addEventListener` function to react on events 
 
 ### viewurl
 
-The URL of the microfrontend to be rendered
+The URL of the microfrontend to be rendered.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -35,7 +35,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### deferInit
 
-If set to true defers from initializing the microfronted automatically. In that case init() can be used
+If set to true defers from initializing the microfronted automatically. In that case init() can be used.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -45,7 +45,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### context
 
-The stringified context object to be passed to the microfrontend
+The stringified context object to be passed to the microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -55,7 +55,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### label
 
-Label information for the microfrontend
+Label information for the microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -94,7 +94,7 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 ### locale
 
-The locale to be passed to the web-component-based micro frontend
+The locale to be passed to the web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -104,7 +104,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### theme
 
-The theme to be passed to the  web-component-based micro frontend
+The theme to be passed to the  web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -114,7 +114,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### activeFeatureToggleList
 
-The list of active feature toggles to be passed to the web-component-based micro frontend
+The list of active feature toggles to be passed to the web-component-based micro frontend.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
@@ -124,7 +124,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 ### skipCookieCheck
 
-If set to true, skips third party cookie check
+If set to true, skips third party cookie check.
 
 Type: (`"false"` | `"true"`)
 
@@ -134,7 +134,7 @@ Type: (`"false"` | `"true"`)
 
 ### skipInitCheck
 
-If set to true, skips handshake and ready event is fired immediately
+If set to true, skips handshake and ready event is fired immediately.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -194,7 +194,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### userSettings
 
-The user settings to be passed to the web-component-based micro frontend
+The user settings to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -288,7 +288,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### updateContext
 
-Function that updates the context of the microfrontend
+Function that updates the context of the microfrontend.
 
 #### Parameters
 
@@ -309,7 +309,7 @@ Returns **void**
 
 ### sendCustomMessage
 
-Send a custom message to the microfronted
+Send a custom message to the microfronted.
 
 #### Parameters
 
@@ -330,7 +330,7 @@ Returns **void**
 
 ### closeAlert
 
-A function that notifies the microfrontend that the opened alert has been closed
+A function that notifies the microfrontend that the opened alert has been closed.
 
 #### Parameters
 
@@ -351,7 +351,7 @@ Returns **void**
 
 ### init
 
-Manually triggers the micro frontend rendering process when using defer-init attribute
+Manually triggers the micro frontend rendering process when using defer-init attribute.
 
 #### Examples
 

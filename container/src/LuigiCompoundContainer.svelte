@@ -36,7 +36,8 @@
         reflect: false,
         attribute: 'user-settings'
       },
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {

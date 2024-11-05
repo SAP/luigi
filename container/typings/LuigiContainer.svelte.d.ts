@@ -6,25 +6,25 @@ export declare interface WebComponentSettings {
 
 export default class LuigiContainer extends HTMLElement {
   /**
-   * The URL of the microfrontend to be rendered
+   * The URL of the microfrontend to be rendered.
    * @since 1.0.0
    */
   viewurl: string;
 
   /**
-   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used.
    * @since 1.0.0
    */
   deferInit: boolean;
 
   /**
-   * The stringified context object to be passed to the microfrontend
+   * The stringified context object to be passed to the microfrontend.
    * @since 1.0.0
    */
   context: string;
 
   /**
-   * Label information for the microfrontend
+   * Label information for the microfrontend.
    * @since 1.0.0
    */
   label: string;
@@ -54,31 +54,31 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
-   * The locale to be passed to the web-component-based micro frontend
+   * The locale to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
   locale: string;
 
   /**
-   * The theme to be passed to the  web-component-based micro frontend
+   * The theme to be passed to the  web-component-based micro frontend.
    * @since 1.0.0
    */
   theme: string;
 
   /**
-   * The list of active feature toggles to be passed to the web-component-based micro frontend
+   * The list of active feature toggles to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
   activeFeatureToggleList: string[];
 
   /**
-   * If set to true, skips third party cookie check
+   * If set to true, skips third party cookie check.
    * @since NEXT_RELEASE_CONTAINER
    */
   skipCookieCheck: 'false' | 'true';
 
   /**
-   * If set to true, skips handshake and ready event is fired immediately
+   * If set to true, skips handshake and ready event is fired immediately.
    * @since 1.0.0
    */
   skipInitCheck: boolean;
@@ -114,7 +114,7 @@ export default class LuigiContainer extends HTMLElement {
   clientPermissions: Object;
 
   /**
-   * The user settings to be passed to the web-component-based micro frontend
+   * The user settings to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
   userSettings: Object;
@@ -164,7 +164,7 @@ export default class LuigiContainer extends HTMLElement {
   dirtyStatus: boolean;
 
   /**
-   * Function that updates the context of the microfrontend
+   * Function that updates the context of the microfrontend.
    * @param {Object} contextObj The context data
    * @param {Object} internal internal luigi legacy data used for iframes
    * @example
@@ -174,7 +174,7 @@ export default class LuigiContainer extends HTMLElement {
   updateContext(contextObj: Object, internal?: Object): void;
 
   /**
-   * Send a custom message to the microfronted
+   * Send a custom message to the microfronted.
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
    * @example
@@ -184,7 +184,7 @@ export default class LuigiContainer extends HTMLElement {
   sendCustomMessage(id: string, data?: Object): void;
 
   /**
-   * A function that notifies the microfrontend that the opened alert has been closed
+   * A function that notifies the microfrontend that the opened alert has been closed.
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    * @example
@@ -194,7 +194,7 @@ export default class LuigiContainer extends HTMLElement {
   closeAlert(id: string, dismissKey: string): void;
 
   /**
-   * Manually triggers the micro frontend rendering process when using defer-init attribute
+   * Manually triggers the micro frontend rendering process when using defer-init attribute.
    * @example
    * containerElement.init()
    * @since 1.0.0
