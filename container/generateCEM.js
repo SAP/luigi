@@ -13,36 +13,36 @@ const luigiEventsPath = 'src/constants/communication.ts';
  * @returns {Object} The parsed `props` object.
  */
 function parseContainerProps(fileContent) {
-    const propsIndex = fileContent.indexOf('props:');
-    if (propsIndex === -1) {
-        throw new Error('No properties found.');
+  const propsIndex = fileContent.indexOf('props:');
+  if (propsIndex === -1) {
+    throw new Error('No properties found.');
+  }
+
+  let openBraces = 0;
+  let propsStart = fileContent.indexOf('{', propsIndex);
+  let propsEnd = propsStart;
+
+  for (let i = propsStart; i < fileContent.length; i++) {
+    if (fileContent[i] === '{') {
+      openBraces++;
+    } else if (fileContent[i] === '}') {
+      openBraces--;
     }
 
-    let openBraces = 0;
-    let propsStart = fileContent.indexOf('{', propsIndex);
-    let propsEnd = propsStart;
-
-    for (let i = propsStart; i < fileContent.length; i++) {
-        if (fileContent[i] === '{') {
-            openBraces++;
-        } else if (fileContent[i] === '}') {
-            openBraces--;
-        }
-
-        if (openBraces === 0) {
-            propsEnd = i;
-            break;
-        }
+    if (openBraces === 0) {
+      propsEnd = i;
+      break;
     }
+  }
 
-    const propsObjectString = fileContent.slice(propsStart, propsEnd + 1);
-    const propsObject = eval(`(${propsObjectString})`);
+  const propsObjectString = fileContent.slice(propsStart, propsEnd + 1);
+  const propsObject = eval(`(${propsObjectString})`);
 
-    return propsObject;
+  return propsObject;
 }
 
 /**
-* Generates an array of module objects based on the provided container definitions.
+ * Generates an array of module objects based on the provided container definitions.
  *
  * @param {Array<Object>} containers - An array of container objects, each containing properties
  * needed to generate a module structure.
@@ -53,60 +53,58 @@ function parseContainerProps(fileContent) {
  *   - `exports` (Array<Object>): Contains export objects that define the module exports.
  */
 function generateModules(containers) {
-    const modules = [];
-    containers.forEach(container => {
-        let module = {
-            "kind": "javascript-module",
-            "path": container.modulePath,
-            "declarations": [
-                {
-                    "kind": "class",
-                    "description": container.containerName,
-                    "name": container.containerName,
-                    "tagName": container.tagName,
-                    "customElement": true,
-                    "members": generateMembers(container.containerMembers, container.containerFields),
-                    "events": generateEvents(container.containerEvents)
-                }
-            ],
-            "exports": [
-                {
-                    "kind": "js",
-                    "name": container.containerName,
-                    "declaration": {
-                        "name": container.containerName,
-                        "module": container.module
-                    }
-                },
-                {
-                    "kind": "custom-element-definition",
-                    "name": container.tagName,
-                    "declaration": {
-                        "name": container.containerName,
-                        "module": container.module
-                    }
-                }
-            ]
+  const modules = [];
+  containers.forEach((container) => {
+    let module = {
+      kind: 'javascript-module',
+      path: container.modulePath,
+      declarations: [
+        {
+          kind: 'class',
+          description: container.containerName,
+          name: container.containerName,
+          tagName: container.tagName,
+          customElement: true,
+          members: generateMembers(container.containerMembers, container.containerFields),
+          events: generateEvents(container.containerEvents)
         }
-        modules.push(module)
-    });
-    return modules;
+      ],
+      exports: [
+        {
+          kind: 'js',
+          name: container.containerName,
+          declaration: {
+            name: container.containerName,
+            module: container.module
+          }
+        },
+        {
+          kind: 'custom-element-definition',
+          name: container.tagName,
+          declaration: {
+            name: container.containerName,
+            module: container.module
+          }
+        }
+      ]
+    };
+    modules.push(module);
+  });
+  return modules;
 }
-
 
 /**
  * Generates the custom element manifest file
  * @param {Array} containers meta data for luigi container and luigi compound container
- * @returns 
+ * @returns
  */
 function generateCEM(containers) {
-    const cem =
-    {
-        schemaVersion: "2.1.0",
-        readme: "",
-        modules: generateModules(containers)
-    };
-    return cem;
+  const cem = {
+    schemaVersion: '2.1.0',
+    readme: '',
+    modules: generateModules(containers)
+  };
+  return cem;
 }
 
 /**
@@ -129,54 +127,53 @@ function generateCEM(containers) {
  *
  */
 function generateMembers(props, fields) {
-    const members = [];
-    for (let key in props) {
-        let member =
-        {
-            "kind": "field",
-            "name": key,
-            "type": generateMemeberType(key, props[key]),
-            "default": "undefined"
-        };
-        members.push(member);
-    }
-    for (let key in fields) {
-        let field = {
-            kind: "method",
-            name: fields[key].name
-        };
-        members.push(field);
-    }
-    return members;
+  const members = [];
+  for (let key in props) {
+    let member = {
+      kind: 'field',
+      name: key,
+      type: generateMemeberType(key, props[key]),
+      default: 'undefined'
+    };
+    members.push(member);
+  }
+  for (let key in fields) {
+    let field = {
+      kind: 'method',
+      name: fields[key].name
+    };
+    members.push(field);
+  }
+  return members;
 }
 
 /**
  * Generates a member object based on the given type.
- * @param {string} type 
+ * @param {string} type
  */
 function generateMemeberType(key, value) {
-    if (value.type === 'Array') {
-        return {
-            "text": "Array<string>",
-            "references": [
-                {
-                    "name": "string"
-                }
-            ]
+  if (value.type === 'Array') {
+    return {
+      text: 'Array<string>',
+      references: [
+        {
+          name: 'string'
         }
-    } else if (value.type === 'String' || value.type === 'Object' || value.type === 'Boolean') {
-        if (key === 'context' || key === 'webcomponent') {
-            return { "text": "any" }
-        } else {
-            return {
-                "text": String(value.type).toLowerCase()
-            }
-        }
+      ]
+    };
+  } else if (value.type === 'String' || value.type === 'Object' || value.type === 'Boolean') {
+    if (key === 'context' || key === 'webcomponent') {
+      return { text: 'any' };
     } else {
-        return {
-            "text": value.type
-        }
+      return {
+        text: String(value.type).toLowerCase()
+      };
     }
+  } else {
+    return {
+      text: value.type
+    };
+  }
 }
 
 /**
@@ -191,158 +188,157 @@ function generateMemeberType(key, value) {
  *   - `type` (string): The fixed string `"Event"`.
  */
 function generateEvents(events) {
-    const eventsArray = [];
-    for (let key in events) {
-        let event = {
-            "name": events[key].name,
-            "description": events[key].description,
-            "type": { text: "Event" }
-        }
-        eventsArray.push(event);
-    }
-    return eventsArray;
+  const eventsArray = [];
+  for (let key in events) {
+    let event = {
+      name: events[key].name,
+      description: events[key].description,
+      type: { text: 'Event' }
+    };
+    eventsArray.push(event);
+  }
+  return eventsArray;
 }
 
 function parseContainerMethods(fileContent) {
-    const constants = [];
-    const lines = fileContent.split('\n');
+  const constants = [];
+  const lines = fileContent.split('\n');
 
-    let inCommentBlock = false;
-    let description = "";
+  let inCommentBlock = false;
+  let description = '';
 
-    lines.forEach((line) => {
-        line = line.trim();
+  lines.forEach((line) => {
+    line = line.trim();
 
-        if (line.startsWith('/**')) {
-            inCommentBlock = true;
-            description = "";
-            return;
-        }
+    if (line.startsWith('/**')) {
+      inCommentBlock = true;
+      description = '';
+      return;
+    }
 
-        if (inCommentBlock && line.startsWith('*')) {
-            const descLine = line.replace(/^\*\s?/, '');
-            description += " " + descLine;
-        }
+    if (inCommentBlock && line.startsWith('*')) {
+      const descLine = line.replace(/^\*\s?/, '');
+      description += ' ' + descLine;
+    }
 
-        if (line.startsWith('*/')) {
-            inCommentBlock = false;
-        }
-        const constMatch = line.match(/(\w+)\(/);
-        if (constMatch && !inCommentBlock) {
-            const constName = constMatch[1];
-            const constValue = constMatch[2];
+    if (line.startsWith('*/')) {
+      inCommentBlock = false;
+    }
+    const constMatch = line.match(/(\w+)\(/);
+    if (constMatch && !inCommentBlock) {
+      const constName = constMatch[1];
+      const constValue = constMatch[2];
 
-            const firstSentence = description.trim().split('. ')[0] + ".";
+      const firstSentence = description.trim().split('. ')[0] + '.';
 
-            constants.push({
-                name: constName,
-                description: firstSentence.trim()
-            });
+      constants.push({
+        name: constName,
+        description: firstSentence.trim()
+      });
 
-            description = "";
-        }
-    });
+      description = '';
+    }
+  });
 
-    return constants;
-
+  return constants;
 }
 
 /**
  * Writes the custom element manifest to a file.
- * @param {Object} cem custom element manifest file in json format 
+ * @param {Object} cem custom element manifest file in json format
  */
 function writeFile(cem) {
-    const outputPath = path.join(__dirname, 'public/dist/custom-elements.json');
-    fs.writeFile(outputPath, JSON.stringify(cem, null, 2), (writeErr) => {
-        if (writeErr) {
-            console.error('Error to write JSON-file:', writeErr);
-            return;
-        }
-        console.log('Created file successfully!');
-    });
+  const outputPath = path.join(__dirname, 'public/dist/custom-elements.json');
+  fs.writeFile(outputPath, JSON.stringify(cem, null, 2), (writeErr) => {
+    if (writeErr) {
+      console.error('Error to write JSON-file:', writeErr);
+      return;
+    }
+    console.log('Created file successfully!');
+  });
 }
 
 function parseContainerEvents(fileContent) {
-    const constants = {};
-    const lines = fileContent.split('\n');
+  const constants = {};
+  const lines = fileContent.split('\n');
 
-    let inCommentBlock = false;
-    let description = "";
+  let inCommentBlock = false;
+  let description = '';
 
-    lines.forEach((line) => {
-        line = line.trim();
+  lines.forEach((line) => {
+    line = line.trim();
 
-        if (line.startsWith('/**')) {
-            inCommentBlock = true;
-            description = "";
-            return;
-        }
+    if (line.startsWith('/**')) {
+      inCommentBlock = true;
+      description = '';
+      return;
+    }
 
-        if (inCommentBlock && line.startsWith('*')) {
-            const descLine = line.replace(/^\*\s?/, '');
-            description += " " + descLine;
-        }
+    if (inCommentBlock && line.startsWith('*')) {
+      const descLine = line.replace(/^\*\s?/, '');
+      description += ' ' + descLine;
+    }
 
-        if (line.startsWith('*/')) {
-            inCommentBlock = false;
-        }
+    if (line.startsWith('*/')) {
+      inCommentBlock = false;
+    }
 
-        const constMatch = line.match(/^export\s+const\s+(\w+)\s*=\s*'([^']+)';/);
-        if (constMatch && !inCommentBlock) {
-            const constName = constMatch[1];
-            const constValue = constMatch[2];
+    const constMatch = line.match(/^export\s+const\s+(\w+)\s*=\s*'([^']+)';/);
+    if (constMatch && !inCommentBlock) {
+      const constName = constMatch[1];
+      const constValue = constMatch[2];
 
-            const firstSentence = description.trim().split('. ')[0] + ".";
+      const firstSentence = description.trim().split('. ')[0] + '.';
 
-            constants[constName] = {
-                name: constValue,
-                description: firstSentence.trim()
-            };
+      constants[constName] = {
+        name: constValue,
+        description: firstSentence.trim()
+      };
 
-            description = "";
-        }
-    });
+      description = '';
+    }
+  });
 
-    return constants;
+  return constants;
 }
 
 function main() {
-    const getFileContent = (filePath) => fs.readFileSync(path.join(__dirname, filePath), 'utf-8');
-    try {
-        const luigiContainerFileContent = getFileContent(luigiContainerPath);
-        const luigiCompoundContainerFileContent = getFileContent(luigiCompoundContainerPath);
-        const luigiContainerTypingsContent = getFileContent(luigiContainerTypingsPath);
-        const luigiCompoundContainerTypingsContent = getFileContent(luigiCompoundContainerTypingsPath);
-        const eventsFileContent = getFileContent(luigiEventsPath);
+  const getFileContent = (filePath) => fs.readFileSync(path.join(__dirname, filePath), 'utf-8');
+  try {
+    const luigiContainerFileContent = getFileContent(luigiContainerPath);
+    const luigiCompoundContainerFileContent = getFileContent(luigiCompoundContainerPath);
+    const luigiContainerTypingsContent = getFileContent(luigiContainerTypingsPath);
+    const luigiCompoundContainerTypingsContent = getFileContent(luigiCompoundContainerTypingsPath);
+    const eventsFileContent = getFileContent(luigiEventsPath);
 
-        const events = parseContainerEvents(eventsFileContent);
+    const events = parseContainerEvents(eventsFileContent);
 
+    const containersMetaData = [
+      {
+        containerName: 'LuigiContainer',
+        module: 'LuigiContainer.js',
+        tagName: 'luigi-container',
+        modulePath: 'dist/bundle.js',
+        containerMembers: parseContainerProps(luigiContainerFileContent),
+        containerEvents: events,
+        containerFields: parseContainerMethods(luigiContainerTypingsContent)
+      },
+      {
+        containerName: 'LuigiCompoundContainer',
+        module: 'LuigiCompoundContainer.js',
+        tagName: 'luigi-compound-container',
+        modulePath: 'dist/bundle.js',
+        containerMembers: parseContainerProps(luigiCompoundContainerFileContent),
+        containerEvents: events,
+        containerFields: parseContainerMethods(luigiCompoundContainerTypingsContent)
+      }
+    ];
 
-        const containersMetaData = [
-            {
-                containerName: 'LuigiContainer',
-                module: 'LuigiContainer.js',
-                tagName: 'luigi-container',
-                modulePath: 'dist/bundle.js',
-                containerMembers: parseContainerProps(luigiContainerFileContent),
-                containerEvents: events,
-                containerFields: parseContainerMethods(luigiContainerTypingsContent)
-            }, {
-                containerName: 'LuigiCompoundContainer',
-                module: 'LuigiCompoundContainer.js',
-                tagName: 'luigi-compound-container',
-                modulePath: 'dist/bundle.js',
-                containerMembers: parseContainerProps(luigiCompoundContainerFileContent),
-                containerEvents: events,
-                containerFields: parseContainerMethods(luigiCompoundContainerTypingsContent)
-            }
-        ]
-
-        const cem = generateCEM(containersMetaData);
-        writeFile(cem);
-    } catch (error) {
-        console.error('Error: ', error.message);
-    }
+    const cem = generateCEM(containersMetaData);
+    writeFile(cem);
+  } catch (error) {
+    console.error('Error: ', error.message);
+  }
 }
 
 main();
