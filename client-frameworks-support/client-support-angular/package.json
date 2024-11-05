@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "npx eslint projects/client-support-angular",
     "build:lib": "ng build client-support-angular --configuration production",
     "bundle": "ng build client-support-angular --configuration production",
     "bundle-develop": "ng build client-support-angular --watch"
@@ -31,10 +31,14 @@
     "@angular-devkit/build-angular": "^18.2.11",
     "@angular/cli": "^18.2.11",
     "@angular/compiler-cli": "^18.2.10",
+    "@eslint/js": "^9.14.0",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^20.14.5",
+    "angular-eslint": "18.4.0",
     "codelyzer": "^6.0.2",
     "engine.io": "~6.6.2",
+    "eslint": "^9.14.0",
+    "globals": "^15.12.0",
     "jasmine-core": "~5.1.2",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.3",
@@ -45,8 +49,8 @@
     "ng-packagr": "^18.2.1",
     "socket.io-adapter": "~2.5.5",
     "ts-node": "~8.3.0",
-    "tslint": "^6.1.3",
     "typescript": "~5.5.4",
+    "typescript-eslint": "^8.10.0",
     "ws": "~8.17.1"
   },
   "engines": {

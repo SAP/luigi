@@ -11,7 +11,7 @@ export class LuigiReuseRouteStrategy extends LuigiRouteStrategy {
     let shouldReuse = false;
     console.debug('checking if this route should be re used or not', route);
     if (route.routeConfig.data) {
-      route.routeConfig.data.reuse ? (shouldReuse = true) : (shouldReuse = false);
+      shouldReuse = !!route.routeConfig.data.reuse;
     }
 
     return shouldReuse;
