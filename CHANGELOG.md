@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.18.0] (2024-11-05)
+
+#### :rocket: Added
+* [#3983](https://github.com/SAP/luigi/pull/3983) Disable tpc via client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4008](https://github.com/SAP/luigi/pull/4008) Adds document attribute for disable tcpcheck ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3988](https://github.com/SAP/luigi/pull/3988) Fix wrong msg target resolution ([@hardl](https://github.com/hardl))
+
+
+
+
+
 ## [v2.17.0] (2024-10-02)
 
 #### :rocket: Added
@@ -1883,3 +1896,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
 [v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
 [v2.17.0]: https://github.com/SAP/luigi/compare/v2.16.0...v2.17.0
+[v2.18.0]: https://github.com/SAP/luigi/compare/v2.17.0...v2.18.0
