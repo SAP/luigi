@@ -22,7 +22,8 @@
     "svelte": "5.1.2",
     "svelte-preprocess": "6.0.3",
     "typescript": "5.4.5",
-    "vite": "5.2.13"
+    "vite": "5.2.13",
+    "vite-plugin-dts": "4.3.0"
   },
   "scripts": {
     "test": "jest",

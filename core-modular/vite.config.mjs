@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import dts from 'vite-plugin-dts';
 // import * as csstree from 'css-tree';
 // import * as fs from 'fs';
 
@@ -56,5 +57,5 @@ export default defineConfig({
     outDir: 'public'
   },
   publicDir: 'public_root',
-  plugins: [luigiPlugin(), svelte()]
+  plugins: [luigiPlugin(), svelte(), dts()]
 });
