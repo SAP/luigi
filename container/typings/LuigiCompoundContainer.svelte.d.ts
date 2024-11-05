@@ -36,7 +36,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   /**
    *
    * The locale to be passed to the compound micro frontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.4.0
    * 
    * @example <luigi-container locale="en_us"></luigi-container>
    * @example myContainer.locale = "en_us"
@@ -160,7 +160,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * If set to true, skips handshake and ready event is fired immediately.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.4.0
    * 
    * @example <luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
    * @example myContainer.skipInitCheck = true
@@ -169,7 +169,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The list of active feature toggles to be passed to the compound microfrontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.4.0
    * 
    * 
    * @example <luigi-container viewUrl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
@@ -179,7 +179,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The theme to be passed to the compound microfrontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.4.0
    * 
    * 
    * @example <luigi-container viewUrl="/index.html" theme='sap_horizon'></luigi-container>

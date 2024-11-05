@@ -97,7 +97,7 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * If set to true, skips third party cookie check
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.4.0
    * 
    * @example <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
    * @example myContainer.skipCookieCheck = true

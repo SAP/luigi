@@ -220,7 +220,7 @@ myContainer.skipCookieCheck = true
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### skipInitCheck
 
