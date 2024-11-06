@@ -138,7 +138,7 @@ export class WebComponentService {
             fromClosestContext = true;
             return linkManagerInstance;
           },
-          fromContext: navigationContext => {
+          fromContext: (navigationContext) => {
             fromContext = navigationContext;
             return linkManagerInstance;
           },
@@ -163,7 +163,7 @@ export class WebComponentService {
                 Events.GET_CURRENT_ROUTE_REQUEST,
                 this.thisComponent,
                 { ...options },
-                route => {
+                (route) => {
                   if (route) {
                     resolve(route);
                   } else {
@@ -174,7 +174,7 @@ export class WebComponentService {
               );
             });
           },
-          withParams: params => {
+          withParams: (params) => {
             nodeParams = params;
             return linkManagerInstance;
           },
@@ -187,7 +187,7 @@ export class WebComponentService {
                 Events.PATH_EXISTS_REQUEST,
                 this.thisComponent,
                 {},
-                exists => {
+                (exists) => {
                   if (exists) {
                     resolve(true);
                   } else {
@@ -209,7 +209,7 @@ export class WebComponentService {
               splitView: splitViewSettings
             });
           },
-          goBack: goBackContext => {
+          goBack: (goBackContext) => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
@@ -220,16 +220,16 @@ export class WebComponentService {
       },
       uxManager: () => {
         return {
-          showAlert: alertSettings => {
+          showAlert: (alertSettings) => {
             this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
           },
-          showConfirmationModal: settings => {
+          showConfirmationModal: (settings) => {
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                data => {
+                (data) => {
                   if (data) {
                     resolve(data);
                   } else {
@@ -258,7 +258,7 @@ export class WebComponentService {
           getDocumentTitle: () => {
             return this.thisComponent.documentTitle;
           },
-          setDocumentTitle: title => {
+          setDocumentTitle: (title) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
           removeBackdrop: () => {
@@ -275,7 +275,7 @@ export class WebComponentService {
       getActiveFeatureToggles: (): string[] => {
         return this.thisComponent.activeFeatureToggleList || [];
       },
-      publishEvent: ev => {
+      publishEvent: (ev) => {
         if (eventBusElement && eventBusElement.eventBus) {
           // compound component use case only
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
@@ -312,7 +312,7 @@ export class WebComponentService {
         }
         return this.thisComponent.nodeParams || {};
       },
-      setAnchor: anchor => {
+      setAnchor: (anchor) => {
         if (isCompoundChild) {
           return;
         }
@@ -333,7 +333,7 @@ export class WebComponentService {
       getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};
       },
-      setViewGroupData: data => {
+      setViewGroupData: (data) => {
         this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }
     };
@@ -402,7 +402,7 @@ export class WebComponentService {
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
         this.dynamicImport(i18nViewUrl)
-          .then(module => {
+          .then((module) => {
             try {
               if (!window.customElements.get(wc_id)) {
                 let cmpClazz = module.default;
@@ -422,7 +422,7 @@ export class WebComponentService {
               reject(err);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       } else {
@@ -551,7 +551,7 @@ export class WebComponentService {
           .then(() => {
             this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
           })
-          .catch(error => {
+          .catch((error) => {
             console.warn('ERROR =>', error);
             // dispatch an error event to be handled core side
             this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
@@ -586,7 +586,7 @@ export class WebComponentService {
                 this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
                 resolve(wc);
               })
-              .catch(error => {
+              .catch((error) => {
                 console.warn('Error: ', error);
                 // dispatch an error event to be handled core side
                 this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
@@ -614,7 +614,7 @@ export class WebComponentService {
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = this.processViewUrl(navNode.viewUrl, { context });
-      renderer.createCompoundItemContainer = layoutConfig => {
+      renderer.createCompoundItemContainer = (layoutConfig) => {
         const cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
           cnt.setAttribute('slot', layoutConfig.slot);
@@ -626,7 +626,7 @@ export class WebComponentService {
     }
 
     renderer = renderer || new DefaultCompoundRenderer();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.createCompoundContainerAsync(renderer, context, navNode)
         .then((compoundCnt: HTMLElement) => {
           (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
@@ -638,7 +638,7 @@ export class WebComponentService {
               const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
               listeners.push(...(ebListeners['*.' + event.type] || []));
 
-              listeners.forEach(listenerInfo => {
+              listeners.forEach((listenerInfo) => {
                 const target =
                   listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
                 if (target) {
@@ -669,7 +669,7 @@ export class WebComponentService {
           registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
           resolve(compoundCnt);
         })
-        .catch(error => {
+        .catch((error) => {
           // dispatch an error event to be handled core sid
           console.warn('Error: ', error);
           this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);

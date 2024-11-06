@@ -47,7 +47,7 @@ export class ContainerService {
     const customEvent = new CustomEvent(msg, { detail: data });
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
-      (customEvent as any)[callbackName] = data => {
+      (customEvent as any)[callbackName] = (data) => {
         callback(data);
       };
     }
@@ -64,7 +64,7 @@ export class ContainerService {
   getTargetContainer(event) {
     let cnt;
 
-    globalThis.__luigi_container_manager.container.forEach(element => {
+    globalThis.__luigi_container_manager.container.forEach((element) => {
       if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
         cnt = element;
       }
@@ -83,7 +83,7 @@ export class ContainerService {
     if (!globalThis.__luigi_container_manager) {
       globalThis.__luigi_container_manager = {
         container: [],
-        messageListener: event => {
+        messageListener: (event) => {
           // Handle incoming messages and dispatch events based on the message type
           // (Custom messages, navigation requests, alert requests, etc.)
           const targetCnt = this.getTargetContainer(event);
