@@ -76,7 +76,7 @@
   export let hasBack: boolean;
   export let label: string;
   export let locale: string;
-  export let noShadow: Boolean;
+  export let noShadow: boolean;
   export let nodeParams: any;
   export let pathParams: any;
   export let sandboxRules: string[];
