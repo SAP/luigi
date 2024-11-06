@@ -4,6 +4,23 @@
 
 
 
+## [v1.4.0] (2024-11-05)
+
+#### :rocket: Added
+
+* [#3985](https://github.com/SAP/luigi/pull/3985) Add custom elements manifest for Luigi(Compound)Container ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3936](https://github.com/SAP/luigi/pull/3936) Adds theme property for compound container ([@walmazacn](https://github.com/walmazacn))
+* [#3934](https://github.com/SAP/luigi/pull/3934) Adds node params to compound container typings ([@walmazacn](https://github.com/walmazacn))
+* [#3937](https://github.com/SAP/luigi/pull/3937) Adds activeFeatureToggleList property to LuigiCompoundContainer ([@walmazacn](https://github.com/walmazacn))
+* [#3935](https://github.com/SAP/luigi/pull/3935) Adds locale property to Luigi Compound Container ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+
+* [#3988](https://github.com/SAP/luigi/pull/3988) fix wrong msg target resolution ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v1.3.0] (2024-08-27)
 
 #### :rocket: Added
@@ -37,3 +54,4 @@
 [v1.1.0]: https://github.com/SAP/luigi/compare/container/v1.0.0...container/v1.1.0
 [v1.2.0]: https://github.com/SAP/luigi/compare/container/v1.1.0...container/v1.2.0
 [v1.3.0]: https://github.com/SAP/luigi/compare/container/v1.2.0...container/v1.3.0
+[v1.4.0]: https://github.com/SAP/luigi/compare/container/v1.3.0...container/v1.4.0
