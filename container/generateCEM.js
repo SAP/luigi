@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { parse } = require('@typescript-eslint/typescript-estree');
 
 const luigiContainerPath = 'src/LuigiContainer.svelte';
 const luigiCompoundContainerPath = 'src/LuigiCompoundContainer.svelte';
@@ -13,6 +14,9 @@ const luigiEventsPath = 'src/constants/communication.ts';
  * @returns {Object} The parsed `props` object.
  */
 function parseContainerProps(fileContent) {
+  if (!fileContent || fileContent === '') {
+    throw new Error('Cannot parse container props, fileContent is empty in parseContainerProps.');
+  }
   const propsIndex = fileContent.indexOf('props:');
   if (propsIndex === -1) {
     throw new Error('No properties found.');
@@ -42,6 +46,78 @@ function parseContainerProps(fileContent) {
 }
 
 /**
+ * Parses a JavaScript file content to extract custom events and their descriptions from JSDoc comments.
+ *
+ * @param {string} fileContent - The content of a JavaScript file as a string, expected to contain event declarations with JSDoc comments.
+ * @returns {Array<Object>} An array of event objects, each containing:
+ *   - `name` (string): The name of the event.
+ *   - `description` (string): The description of the event from JSDoc comments, or "No description" if not available.
+ *
+ * This function creates an Abstract Syntax Tree (AST) from the file content and iterates through export declarations to locate event definitions.
+ * For each event with a literal type, the function extracts the name and associated JSDoc comment, cleans the comment, and stores both in the returned array.
+ */
+function parseContainerEvents(fileContent) {
+  if (!fileContent || fileContent === '') {
+    throw new Error('Cannot parse events in parseContainerEvents');
+  }
+  const options = {
+    loc: true,
+    range: true,
+    tokens: true,
+    comment: true,
+    errorOnUnknownASTType: true
+  };
+
+  const ast = parse(fileContent, options);
+
+  const events = [];
+
+  ast.body.forEach((stmt) => {
+    if (stmt.type === 'ExportNamedDeclaration') {
+      stmt.declaration.body.body.forEach((eventName, index) => {
+        if (eventName.type === 'ExportNamedDeclaration') {
+          const { declaration } = eventName;
+
+          if (
+            declaration.type === 'VariableDeclaration' &&
+            declaration.declarations[0].init &&
+            declaration.declarations[0].init.type === 'Literal'
+          ) {
+            const name = declaration.declarations[0].init.value;
+            const jsdocComment = ast.comments[index].value.trim();
+            let cleanedComment = jsdocComment
+              .split('\n')
+              .map((line) => {
+                if (line.trim().startsWith('*')) {
+                  return line.trim().slice(1).trim();
+                }
+                return line.trim();
+              })
+              .join(' ')
+              .trim();
+
+            events.push({
+              name,
+              description: cleanedComment || 'No description'
+            });
+          }
+        }
+      });
+    }
+  });
+  // Keep it for debugging purpose
+  // const outputPath = path.join(__dirname, 'eventsAst.json');
+  // fs.writeFile(outputPath, JSON.stringify(ast, null, 2), (writeErr) => {
+  //     if (writeErr) {
+  //         console.error('Error to write JSON-file:', writeErr);
+  //         return;
+  //     }
+  //     console.log('Created file successfully!');
+  // });
+  return events;
+}
+
+/**
  * Generates an array of module objects based on the provided container definitions.
  *
  * @param {Array<Object>} containers - An array of container objects, each containing properties
@@ -53,6 +129,9 @@ function parseContainerProps(fileContent) {
  *   - `exports` (Array<Object>): Contains export objects that define the module exports.
  */
 function generateModules(containers) {
+  if (!containers || !containers.length) {
+    throw new Error('Cannot create modules for cem in generateModules');
+  }
   const modules = [];
   containers.forEach((container) => {
     let module = {
@@ -99,21 +178,24 @@ function generateModules(containers) {
  * @returns
  */
 function generateCEM(containers) {
-  const cem = {
-    schemaVersion: '2.1.0',
-    readme: '',
-    modules: generateModules(containers)
-  };
-  return cem;
+  const modules = generateModules(containers);
+  if (!modules && !modules.length) {
+    throw new Error('Cannot create modules for cem in generateCEM.');
+  } else {
+    return {
+      schemaVersion: '2.1.0',
+      readme: '',
+      modules
+    };
+  }
 }
 
 /**
- * Generates an array for the memebers in the cem objects based on provided properties and fields.
+ * Generates an array of member objects based on provided properties and methods.
  *
- * @param {Object} props - An object representing the properties of the members. Each key is a property name,
- * and each value is an object with a `type` property describing the property's data type.
- * @param {Object} fields - An object representing the fields of the members. Each key is a field name,
- * and each value is an object with a `name` property describing the field's name.
+ * @param {Object} props - An object representing properties of the members, where each key is a property name
+ * and each value is an object describing the property's type.
+ * @param {Array<string>} methods - An array of method names for the members.
  *
  * @returns {Array<Object>} An array of member objects, where each object represents either a field or a method:
  *   - Field members contain:
@@ -124,26 +206,27 @@ function generateCEM(containers) {
  *   - Method members contain:
  *     - `kind` (string): The type of member, set to `"method"`.
  *     - `name` (string): The name of the method.
- *
  */
-function generateMembers(props, fields) {
+function generateMembers(props, methods) {
+  if (!props || !methods) {
+    throw new Error('Props or methods in generateMembers are undefined');
+  }
   const members = [];
   for (let key in props) {
     let member = {
       kind: 'field',
       name: key,
-      type: generateMemeberType(key, props[key]),
+      type: generateMemberType(key, props[key]),
       default: 'undefined'
     };
     members.push(member);
   }
-  for (let key in fields) {
-    let field = {
+  methods.forEach((methodName) => {
+    members.push({
       kind: 'method',
-      name: fields[key].name
-    };
-    members.push(field);
-  }
+      name: methodName
+    });
+  });
   return members;
 }
 
@@ -151,7 +234,10 @@ function generateMembers(props, fields) {
  * Generates a member object based on the given type.
  * @param {string} type
  */
-function generateMemeberType(key, value) {
+function generateMemberType(key, value) {
+  if (!key || !value) {
+    throw new Error('Cannont create member object in generateMemberType');
+  }
   if (value.type === 'Array') {
     return {
       text: 'Array<string>',
@@ -188,59 +274,57 @@ function generateMemeberType(key, value) {
  *   - `type` (string): The fixed string `"Event"`.
  */
 function generateEvents(events) {
+  if (!events || !events.length) {
+    throw new Error('No events in generateEvents');
+  }
   const eventsArray = [];
-  for (let key in events) {
-    let event = {
-      name: events[key].name,
-      description: events[key].description,
+  events.forEach((event) => {
+    let ev = {
+      name: event.name,
+      description: event.description,
       type: { text: 'Event' }
     };
-    eventsArray.push(event);
-  }
+    eventsArray.push(ev);
+  });
   return eventsArray;
 }
 
+/**
+ * Parses a JavaScript file content and extracts method names from it.
+ *
+ * @param {string} fileContent - The content of the JavaScript file as a string, which should define one or more classes or objects.
+ * @returns {Array<string>} An array of method names found within the file content.
+ *
+ * This function utilizes a parsed Abstract Syntax Tree (AST) from the file content to identify method definitions.
+ * It iterates through the AST and collects the names of all methods defined in class bodies.
+ */
 function parseContainerMethods(fileContent) {
-  const constants = [];
-  const lines = fileContent.split('\n');
+  if (!fileContent || fileContent === '') {
+    throw new Error('No fileContent in parseContainerMethods');
+  }
+  const ast = parse(fileContent);
+  const methods = [];
 
-  let inCommentBlock = false;
-  let description = '';
-
-  lines.forEach((line) => {
-    line = line.trim();
-
-    if (line.startsWith('/**')) {
-      inCommentBlock = true;
-      description = '';
-      return;
-    }
-
-    if (inCommentBlock && line.startsWith('*')) {
-      const descLine = line.replace(/^\*\s?/, '');
-      description += ' ' + descLine;
-    }
-
-    if (line.startsWith('*/')) {
-      inCommentBlock = false;
-    }
-    const constMatch = line.match(/(\w+)\(/);
-    if (constMatch && !inCommentBlock) {
-      const constName = constMatch[1];
-      const constValue = constMatch[2];
-
-      const firstSentence = description.trim().split('. ')[0] + '.';
-
-      constants.push({
-        name: constName,
-        description: firstSentence.trim()
-      });
-
-      description = '';
-    }
+  ast.body.forEach((stmt) => {
+    stmt.declaration.body.body.forEach((property) => {
+      if (property.type === 'MethodDefinition') {
+        methods.push(property.key.name);
+      }
+    });
   });
 
-  return constants;
+  // Keep it for debugging purpose
+  //   const fileName = ast.body[1].declaration.id.name;
+  //   const outputPath = path.join(__dirname, fileName+'_typingsAst.json');
+  //   fs.writeFile(outputPath, JSON.stringify(ast, null, 2), (writeErr) => {
+  //       if (writeErr) {
+  //           console.error('Error to write JSON-file:', writeErr);
+  //           return;
+  //       }
+  //       console.log('Created file successfully!');
+  //   });
+
+  return methods;
 }
 
 /**
@@ -248,6 +332,9 @@ function parseContainerMethods(fileContent) {
  * @param {Object} cem custom element manifest file in json format
  */
 function writeFile(cem) {
+  if (!cem || Object.keys(cem).length === 0) {
+    throw new Error('CEM is empty. Cannot write file.');
+  }
   const outputPath = path.join(__dirname, 'public/dist/custom-elements.json');
   fs.writeFile(outputPath, JSON.stringify(cem, null, 2), (writeErr) => {
     if (writeErr) {
@@ -256,50 +343,6 @@ function writeFile(cem) {
     }
     console.log('Created file successfully!');
   });
-}
-
-function parseContainerEvents(fileContent) {
-  const constants = {};
-  const lines = fileContent.split('\n');
-
-  let inCommentBlock = false;
-  let description = '';
-
-  lines.forEach((line) => {
-    line = line.trim();
-
-    if (line.startsWith('/**')) {
-      inCommentBlock = true;
-      description = '';
-      return;
-    }
-
-    if (inCommentBlock && line.startsWith('*')) {
-      const descLine = line.replace(/^\*\s?/, '');
-      description += ' ' + descLine;
-    }
-
-    if (line.startsWith('*/')) {
-      inCommentBlock = false;
-    }
-
-    const constMatch = line.match(/^export\s+const\s+(\w+)\s*=\s*'([^']+)';/);
-    if (constMatch && !inCommentBlock) {
-      const constName = constMatch[1];
-      const constValue = constMatch[2];
-
-      const firstSentence = description.trim().split('. ')[0] + '.';
-
-      constants[constName] = {
-        name: constValue,
-        description: firstSentence.trim()
-      };
-
-      description = '';
-    }
-  });
-
-  return constants;
 }
 
 function main() {
@@ -312,7 +355,6 @@ function main() {
     const eventsFileContent = getFileContent(luigiEventsPath);
 
     const events = parseContainerEvents(eventsFileContent);
-
     const containersMetaData = [
       {
         containerName: 'LuigiContainer',
@@ -335,6 +377,7 @@ function main() {
     ];
 
     const cem = generateCEM(containersMetaData);
+
     writeFile(cem);
   } catch (error) {
     console.error('Error: ', error.message);
