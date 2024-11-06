@@ -4,19 +4,15 @@ import stylistic from '@stylistic/eslint-plugin';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  ...neostandard(),
+  pluginCypress.configs.recommended,
+  stylistic.configs['recommended-flat'],
   {
-    files: ['**/*.js', '**/*.ts']
-  },
-  {
+    files: ['**/*.js', '**/*.ts'],
     plugins: {
       cypress: pluginCypress,
       '@stylistic': stylistic
-    }
-  },
-  ...neostandard(),
-  ...pluginCypress.configs.recommended,
-  ...stylistic.configs['recommended-flat'],
-  {
+    },
     rules: {
       'no-ex-assign': 'warn',
       '@stylistic/indent': 'off',
