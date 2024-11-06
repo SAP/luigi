@@ -30,7 +30,7 @@
     "release": "node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
-    "generate-cem": "custom-elements-manifest analyze --globs './src/*.svelte' --outdir './public'"
+    "generate-cem": "node generateCEM.js"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
