@@ -222,7 +222,7 @@ function generateMembers(props, methods) {
  * @param {string} key - The name of the member.
  * @param {Object} value - An object representing the member's details, typically containing a `type` property.
  * @param {string} value.type - The type of the member, which can be `Array`, `String`, `Object`, `Boolean`, or other types.
- * 
+ *
  * @returns {Object} A member type object.
  */
 function generateMemberType(key, value) {
