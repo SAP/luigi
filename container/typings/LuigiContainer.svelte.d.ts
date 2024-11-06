@@ -8,7 +8,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html"></luigi-container>
    * @example myContainer.viewurl = "/index.html"
    */
@@ -17,7 +17,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" defer-init></luigi-container>
    * @example myContainer.deferInit = true
    */
@@ -26,8 +26,8 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The stringified context object to be passed to the microfrontend.
    * @since 1.0.0
-   * 
-   * 
+   *
+   *
    * @example <luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
    * @example myContainer.context = {label: "Dashboard"}
    */
@@ -36,7 +36,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Label information for the microfrontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewUrl="/index.html" label="Dashboard"></luigi-container>
    * @example myContainer.label = "Dashboard"
    */
@@ -71,7 +71,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The locale to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container locale="en_us"></luigi-container>
    * @example myContainer.locale = "en_us"
    */
@@ -80,7 +80,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The theme to be passed to the  web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
    * @example myContainer.theme = 'sap_horizon'
    */
@@ -89,16 +89,16 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of active feature toggles to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
    * @example <luigi-container viewurl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
    */
   activeFeatureToggleList: string[];
 
   /**
-   * If set to true, skips third party cookie check.
-   * @since NEXT_RELEASE_CONTAINER
-   * 
+   * If set to true, skips third party cookie check
+   * @since 1.4.0
+   *
    * @example <luigi-container viewurl="/index.html" skipCookieCheck></luigi-container>
    * @example myContainer.skipCookieCheck = true
    */
@@ -116,7 +116,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
    * @example myContainer.nodeParams = {foo: bar}
    */
@@ -125,7 +125,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
    * @since 1.2.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" no-shadow></luigi-container>
    * @example myContainer.noShadow = true
    */
@@ -134,7 +134,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
    * @example myContainer.searchParams = {foo: bar}
    */
@@ -143,7 +143,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
    * @example myContainer.pathParams = {foo: "bar"}
    */
@@ -152,7 +152,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
    * @example myContainer.clientPermissions = {permission: "adminGroup"}
    */
@@ -161,7 +161,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The user settings to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
    * @example myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
    */
@@ -170,7 +170,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
    * @since 1.0.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
    * @example myContainer.anchor = '#foo'
    */
@@ -197,7 +197,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The document title value to be passed to the web-component-based micro frontend.
    * @since 1.2.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
    * @example myContainer.documentTitle = 'Luigi App'
    */
@@ -207,7 +207,7 @@ export default class LuigiContainer extends HTMLElement {
    * The hasBack value to be passed to the web-component-based micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button.
    * @since 1.2.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" has-back></luigi-container>
    * @example myContainer.hasBack = true
    */
@@ -217,7 +217,7 @@ export default class LuigiContainer extends HTMLElement {
    * The dirty status value to be passed to the web-component-based micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
    * @since 1.2.0
-   * 
+   *
    * @example <luigi-container viewurl="/index.html" dirty-status></luigi-container>
    * @example myContainer.dirtyStatus = true
    */

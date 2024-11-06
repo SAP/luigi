@@ -204,7 +204,7 @@ myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
 
 ### skipCookieCheck
 
-If set to true, skips third party cookie check.
+If set to true, skips third party cookie check
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -220,7 +220,7 @@ myContainer.skipCookieCheck = true
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### skipInitCheck
 
