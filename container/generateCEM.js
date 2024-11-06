@@ -6,7 +6,7 @@ const luigiContainerPath = 'src/LuigiContainer.svelte';
 const luigiCompoundContainerPath = 'src/LuigiCompoundContainer.svelte';
 const luigiContainerTypingsPath = 'typings/LuigiContainer.svelte.d.ts';
 const luigiCompoundContainerTypingsPath = 'typings/LuigiCompoundContainer.svelte.d.ts';
-const luigiEventsPath = 'src/constants/communication.ts';
+const luigiEventsPath = 'typings/constants/events.ts';
 
 /**
  * Parses a `props` object from the provided file content string.
