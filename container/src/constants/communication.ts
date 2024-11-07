@@ -25,7 +25,7 @@ export namespace Events {
   export const ALERT_CLOSED = 'close-alert-request';
 
   /**
-   * Event fired when the micro frontend requests when it is initialized.
+   * Event fired when the micro frontend has been initialized.
    */
   export const INITIALIZED = 'initialized';
 
