@@ -85,7 +85,7 @@ export namespace Events {
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
   /**
-   * Event fired when the micro frontend requests to receive the current app route.
+   * Event fired when the micro frontend requests the current app route.
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
