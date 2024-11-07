@@ -150,7 +150,7 @@ export namespace Events {
   export const GO_BACK_REQUEST = 'go-back-request';
 
   /**
-   * Event fired when the micro frontend requests to check if there are one or more preserved views.
+   * Event fired when the micro frontend requests to check if there are any preserved views.
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
 
