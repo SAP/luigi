@@ -198,7 +198,6 @@ function deSanitizeParam(param: any) {
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')
     .replaceAll('&quot;', '"')
-    // eslint-disable-next-line
     .replaceAll('&#39;', "'")
     .replaceAll('&sol;', '/');
   return desani;
