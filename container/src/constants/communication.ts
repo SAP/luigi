@@ -30,7 +30,7 @@ export namespace Events {
   export const INITIALIZED = 'initialized';
 
   /**
-   * Event fired when the micro frontend requests to add search parameters to the URL.
+   * Event fired when the micro frontend requests the addition of search parameters to the URL.
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
 
