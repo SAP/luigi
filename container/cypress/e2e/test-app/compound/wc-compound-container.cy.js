@@ -217,6 +217,40 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('openAsModal webcomponent container', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsModalBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsModal-wc');
+        });
+    });
+    it('openAsDrawer webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsDrawerBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsDrawer-wc');
+        });
+    });
+    it('openAsSplitview webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsSplitviewBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsSplitview-wc');
+        });
+    });
+
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
