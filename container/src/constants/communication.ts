@@ -100,7 +100,7 @@ export namespace Events {
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
-   * Event fired when the micro frontend requests to check on the validity of a path.
+   * Event fired when the micro frontend requests to check the validity of a path.
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
