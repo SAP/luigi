@@ -12,7 +12,7 @@
     "public"
   ],
   "scripts": {
-    "build": "npm run sync-event-typings && rollup -c",
+    "build": "npm run sync-event-typings && npm run generate-cem  && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
