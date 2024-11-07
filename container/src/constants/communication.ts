@@ -70,7 +70,7 @@ export namespace Events {
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
   /**
-   * Event fired when the micro frontend requests to set anchor of the URL.
+   * Event fired when the micro frontend requests to set the anchor of the URL.
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
