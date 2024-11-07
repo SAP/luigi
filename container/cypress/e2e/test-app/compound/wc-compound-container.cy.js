@@ -166,17 +166,35 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API - pathExists', () => {
+    it('LuigiClient API - pathExists, goBack, updateTopNavigation', () => {
       cy.on('window:alert', stub);
+
+      const alertMessages = [
+        'UPDATE_TOP_NAVIGATION_REQUEST event received',
+        'some goBackValue',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+      ];
 
       cy.get(containerSelector)
         .shadow()
         .get('#linkManagerUpdateTopPathExistsBack')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith(
-            'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
-          );
+          alertMessages.forEach((msg, index) => {
+            expect(stub.getCall(index)).to.be.calledWith(msg);
+          });
+        });
+    });
+
+    it('LuigiClient API - showAlert', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
         });
     });
 
