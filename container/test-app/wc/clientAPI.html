@@ -109,7 +109,9 @@
             alert(event.detail.data);
           }
         });
-
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
+          console.log(event);
+        });
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
           event => {
