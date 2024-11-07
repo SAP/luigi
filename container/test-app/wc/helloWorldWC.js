@@ -12,6 +12,9 @@ export default class extends HTMLElement {
 
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
+    
+    const showAlertBtn = document.createElement('template');
+    showAlertBtn.innerHTML = '<button id="showAlert">showAlert</button>';
 
     const templateBtn2 = document.createElement('template');
     templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
@@ -78,12 +81,6 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
-    const goBackBtn = document.createElement('template');
-    goBackBtn.innerHTML = '<button id="goBackBtn">lm.GOBACK()</button>';
-
-    const updateTopNavigationBtn = document.createElement('template');
-    updateTopNavigationBtn.innerHTML = '<button id="updateTopNavigationBtn">lm.UPDATETOPNAV</button>';
-
     const openAsModalBtn = document.createElement('template');
     openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
 
@@ -94,7 +91,7 @@ export default class extends HTMLElement {
     openAsSplitviewBtn.innerHTML = '<button id="openAsSplitviewBtn">lm.openAsSplitview</button>';
 
     const navigateBtn = document.createElement('template');
-    navigateBtn.innerHTML = '<button id="navigateBtn">---navigate---</button>';
+    navigateBtn.innerHTML = '<button id="navigateBtn">navigate</button>';
 
     const alertBtn = document.createElement('template');
     alertBtn.innerHTML = '<button id="alertBtn">uxManager.showAlert()</button';
@@ -115,6 +112,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
+    this._shadowRoot.appendChild(showAlertBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
@@ -127,15 +125,11 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-
-    this._shadowRoot.appendChild(goBackBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(updateTopNavigationBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(alertBtn.content.cloneNode(true));
-    
+    this._shadowRoot.appendChild(alertBtn.content.cloneNode(true)); 
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
@@ -143,6 +137,14 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
+
+    this.$showAlert = this._shadowRoot.querySelector('#showAlert');
+    this.$showAlert.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: 'uxManager().showAlert() test',
+        type: 'info'
+      });
+    })
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
@@ -348,20 +350,7 @@ export default class extends HTMLElement {
             type: 'info'
           });
         });
-      this.LuigiClient.linkManager().goBack();
-    });
-
-    this.$goBackBtn = this._shadowRoot.querySelector('#goBackBtn');
-    this.$goBackBtn.addEventListener('click', () => {
-      this.LuigiClient.linkManager().goBack();
-      console.log("goBack() CLICKED");
-    });
-
-    this.$updateTopNavigationBtn = this._shadowRoot.querySelector('#updateTopNavigationBtn');
-    this.$updateTopNavigationBtn.addEventListener('click', () => {
-      console.log("updateTopNavigation() CLICKED 1");
-      this.LuigiClient.linkManager().updateTopNavigationBtn();
-      console.log("updateTopNavigation() CLICKED 2");
+      this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
