@@ -90,7 +90,7 @@ export namespace Events {
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
   /**
-   * Event fired when the micro frontend requests to report that the navigation is completed.
+   * Event fired to report that the micro frontend's navigation has completed.
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
 
