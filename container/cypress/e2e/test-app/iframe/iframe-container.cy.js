@@ -36,6 +36,47 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('showAlert', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test showAlert')
+          .click()
+          .then(() => {
+            cy.wrap(stub).should(
+              'have.been.calledWith',
+              'show-alert-request message received: {\"isTrusted\":true}'
+            );
+          });
+      });
+  });
+
+  it('goBack', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test goBack')
+          .click()
+          .then(() => {
+            console.log(cy.wrap(stub));
+            cy.wrap(stub).should(
+              'have.been.calledWith',
+              'navigate-back-request'
+            );
+          });
+      });
+  });
+
   it('sendCustomMessage', () => {
     cy.get('#btn-1').click();
     cy.get(containerSelector)
