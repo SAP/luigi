@@ -43,7 +43,7 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
+  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: (any) => void, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {

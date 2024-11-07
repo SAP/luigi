@@ -30,7 +30,7 @@
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
         return () =>
-          console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
+          console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
       };
 
       return class extends customElementConstructor {
@@ -47,6 +47,7 @@
             }
           }
         }
+
         getNoShadow() {
           return this.hasAttribute('no-shadow') || this.noShadow;
         }
@@ -88,13 +89,8 @@
   export let viewurl: string;
   export let webcomponent: any;
 
-  const iframeHandle:
-    | {
-        iframe: HTMLIFrameElement;
-      }
-    | any = {};
+  const iframeHandle: { iframe: HTMLIFrameElement } | any = {};
   let mainComponent: HTMLElement;
-
   let containerInitialized = false;
 
   const webcomponentService = new WebComponentService();
@@ -157,7 +153,7 @@
           const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
         } else {
-          //removing mainComponent
+          // removing mainComponent
           thisComponent.innerHTML = '';
         }
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
@@ -169,7 +165,7 @@
         );
       } else {
         if (!thisComponent.getNoShadow()) {
-          //removeing mainComponent
+          // removeing mainComponent
           thisComponent.innerHTML = '';
           const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);

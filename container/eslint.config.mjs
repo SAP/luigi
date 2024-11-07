@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   eslint.configs.recommended,
+  stylistic.configs['recommended-flat'],
   ...tseslint.configs.recommended,
   {
     files: ['src/**/*.*'],
@@ -24,6 +25,7 @@ export default [
       'coverage',
       'cypress',
       '*.md',
+      '*.mjs',
       '*.map',
       '*.json',
       '.*.*'
@@ -46,10 +48,13 @@ export default [
       }
     },
     rules: {
-      camelcase: 'off',
+      'camelcase': 'off',
       'no-undef': 'off',
+      '@stylistic/brace-style': 'off',
+      '@stylistic/comma-dangle': 'off',
+      '@stylistic/operator-linebreak': 'off',
       '@stylistic/semi': 'off',
-      '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-empty-object-type': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-namespace': 'off',

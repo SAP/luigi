@@ -35,7 +35,7 @@ export class ContainerAPIFunctions {
     if (iframeHandle && authData) {
       containerService.sendCustomMessageToIframe(
         iframeHandle,
-        {authData},
+        { authData },
         LuigiInternalMessageID.AUTH_SET_TOKEN
       );
     } else {

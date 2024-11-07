@@ -10,12 +10,13 @@ export class GenericHelpersClass {
   isFunction(functionToCheck: any): boolean {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
   }
+
   /**
    * Checks if input is an object.
    * @param objectToCheck mixed
    * @returns {boolean}
    */
-  isObject(objectToCheck) {
+  isObject(objectToCheck): boolean {
     return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
   }
 

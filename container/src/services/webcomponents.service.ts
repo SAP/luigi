@@ -70,7 +70,7 @@ export class WebComponentService {
    * @param data the data to be sent
    * @param callback the callback function to be called
    */
-  dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
+  dispatchLuigiEvent(msg: string, data: any, callback?: () => void) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
@@ -364,8 +364,8 @@ export class WebComponentService {
     const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
 
     if (wc.__postProcess) {
-      const url =
-        new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin
+      const url
+        = new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin
           ? new URL('./', new URL(viewUrl, document.baseURI))
           : new URL('./', viewUrl);
       wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);

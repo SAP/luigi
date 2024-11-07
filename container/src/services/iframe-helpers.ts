@@ -8,6 +8,7 @@ export const getAllowRules = (allowRules: string[]) => {
   const rules = allowRules;
   rules.forEach((rule, index) => {
     rules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
+    // eslint-disable-next-line
     rules[index] = (allowRules[index] as any).replaceAll('"', "'");
   });
   return rules.join(' ');
