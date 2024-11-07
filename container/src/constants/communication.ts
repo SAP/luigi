@@ -105,7 +105,7 @@ export namespace Events {
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
-   * Event fired when the micro frontend requests to set the 'dirty status' (e.g. avoid closing if unsaved changes).
+   * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
