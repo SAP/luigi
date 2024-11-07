@@ -25,9 +25,11 @@ export class ContainerService {
 
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
-      messageName === 'custom'
-        ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin)
-        : iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin);
+      if (messageName === 'custom') {
+        iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin);
+      } else {
+        iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin);
+      }
     } else {
       console.error('Message target could not be resolved');
     }
@@ -41,11 +43,11 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
+  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: (any) => void, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
-      (customEvent as any)[callbackName] = data => {
+      (customEvent as any)[callbackName] = (data) => {
         callback(data);
       };
     }
@@ -62,7 +64,7 @@ export class ContainerService {
   getTargetContainer(event) {
     let cnt;
 
-    globalThis.__luigi_container_manager.container.forEach(element => {
+    globalThis.__luigi_container_manager.container.forEach((element) => {
       if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
         cnt = element;
       }
@@ -81,7 +83,7 @@ export class ContainerService {
     if (!globalThis.__luigi_container_manager) {
       globalThis.__luigi_container_manager = {
         container: [],
-        messageListener: event => {
+        messageListener: (event) => {
           // Handle incoming messages and dispatch events based on the message type
           // (Custom messages, navigation requests, alert requests, etc.)
           const targetCnt = this.getTargetContainer(event);
