@@ -30,7 +30,7 @@
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
         return () =>
-          console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
+          console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
 
       return class extends customElementConstructor {

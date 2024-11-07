@@ -13,5 +13,5 @@ export interface ParamsEvent extends Event {}
  * };
  */
 export interface PathExistsEvent extends Event {
-  callback: (value: boolean) => void
+  callback: (value: boolean) => void;
 }
