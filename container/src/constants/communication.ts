@@ -10,7 +10,7 @@ export namespace Events {
   export const GET_CONTEXT_REQUEST = 'get-context-request';
 
   /**
-   * Event fired when the micro frontend requests a navigation request.
+   * Event fired when a navigation has been requested by the micro frontend.
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
 
