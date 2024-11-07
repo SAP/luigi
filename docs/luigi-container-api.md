@@ -29,6 +29,16 @@ The URL of the microfrontend to be rendered
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html"></luigi-container>
+```
+
+```javascript
+myContainer.viewurl = "/index.html"
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -38,6 +48,16 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 If set to true defers from initializing the microfronted automatically. In that case init() can be used
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" defer-init></luigi-container>
+```
+
+```javascript
+myContainer.deferInit = true
+```
 
 **Meta**
 
@@ -49,6 +69,16 @@ The stringified context object to be passed to the microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+#### Examples
+
+```javascript
+<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
+```
+
+```javascript
+myContainer.context = {label: "Dashboard"}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -58,6 +88,16 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 Label information for the microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### Examples
+
+```javascript
+<luigi-container viewUrl="/index.html" label="Dashboard"></luigi-container>
+```
+
+```javascript
+myContainer.label = "Dashboard"
+```
 
 **Meta**
 
@@ -88,6 +128,16 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
     The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
     </br>
 
+#### Examples
+
+```javascript
+<luigi-container webcomponent="{ type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}"></luigi-container>
+```
+
+```javascript
+myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-webcomponent'}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -97,6 +147,16 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 The locale to be passed to the web-component-based micro frontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### Examples
+
+```javascript
+<luigi-container locale="en_us"></luigi-container>
+```
+
+```javascript
+myContainer.locale = "en_us"
+```
 
 **Meta**
 
@@ -108,6 +168,16 @@ The theme to be passed to the  web-component-based micro frontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" theme='sap_horizon'></luigi-container>
+```
+
+```javascript
+myContainer.theme = 'sap_horizon'
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -117,6 +187,16 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 The list of active feature toggles to be passed to the web-component-based micro frontend
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+#### Examples
+
+```javascript
+myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
+```
+
+```javascript
+<luigi-container viewurl="/index.html" active-feature-toggle-list='["enable-foo", "allow-bar"]'></luigi-container>
+```
 
 **Meta**
 
@@ -128,15 +208,36 @@ If set to true, skips handshake and ready event is fired immediately
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" skipInitCheck></luigi-container>
+```
+
+```javascript
+myContainer.skipInitCheck = true
+```
+
 **Meta**
 
 *   **since**: 1.0.0
+    TODO: https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML says booleans should not use "true"/"false", find a consistent style for our docs.
 
 ### nodeParams
 
 The parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" node-params='{"node":"param"}'></luigi-container>
+```
+
+```javascript
+myContainer.nodeParams = {foo: bar}
+```
 
 **Meta**
 
@@ -148,6 +249,16 @@ If set to true, the Luigi container webcomponent will not use the shadow DOM for
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" no-shadow></luigi-container>
+```
+
+```javascript
+myContainer.noShadow = true
+```
+
 **Meta**
 
 *   **since**: 1.2.0
@@ -157,6 +268,16 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 The search parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" search-params='{"search":"param"}'></luigi-container>
+```
+
+```javascript
+myContainer.searchParams = {foo: bar}
+```
 
 **Meta**
 
@@ -168,6 +289,16 @@ The path parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" path-params='{"path":"param"}'></luigi-container>
+```
+
+```javascript
+myContainer.pathParams = {foo: "bar"}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -177,6 +308,16 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 The clientPermissions to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" client-permissions='{"permission": "adminGroup"}'></luigi-container>
+```
+
+```javascript
+myContainer.clientPermissions = {permission: "adminGroup"}
+```
 
 **Meta**
 
@@ -188,6 +329,16 @@ The user settings to be passed to the web-component-based micro frontend
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" user-settings='{"language": "de", "theme":"sap_horizon"}'></luigi-container>
+```
+
+```javascript
+myContainer.userSettings = {language: 'de', theme: 'sap_horizon'}
+```
+
 **Meta**
 
 *   **since**: 1.0.0
@@ -197,6 +348,16 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 The anchor value to be passed to the web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" anchor='#foo'></luigi-container>
+```
+
+```javascript
+myContainer.anchor = '#foo'
+```
 
 **Meta**
 
@@ -212,7 +373,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 #### Examples
 
 ```javascript
-<luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
+<luigi-container viewurl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
 ```
 
 ```javascript
@@ -233,7 +394,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 #### Examples
 
 ```javascript
-<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+<luigi-container viewurl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
 ```
 
 ```javascript
@@ -250,6 +411,16 @@ The document title value to be passed to the web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" document-title='Luigi App'></luigi-container>
+```
+
+```javascript
+myContainer.documentTitle = 'Luigi App'
+```
+
 **Meta**
 
 *   **since**: 1.2.0
@@ -259,7 +430,17 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 The hasBack value to be passed to the web-component-based micro frontend.
 It indicates that there is one or more preserved views. Useful when you need to show a back button.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" has-back></luigi-container>
+```
+
+```javascript
+myContainer.hasBack = true
+```
 
 **Meta**
 
@@ -271,6 +452,16 @@ The dirty status value to be passed to the web-component-based micro frontend.
 It's used to indicate that there are unsaved changes when navigating away.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+#### Examples
+
+```javascript
+<luigi-container viewurl="/index.html" dirty-status></luigi-container>
+```
+
+```javascript
+myContainer.dirtyStatus = true
+```
 
 **Meta**
 
