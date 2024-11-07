@@ -60,9 +60,34 @@
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
       <button onclick="testGetToken()">test get token</button>
+
+      <button onclick="openAsModal()">test openAsModal()</button>
+      <button onclick="openAsDrawer()">test openAsDrawer()</button>
+      <button onclick="openAsSplitview()">test openAsSplitview()</button>
     </div>
+
     <script>
       // List of onclick handlers for client calls
+
+      function openAsModal(){
+        LuigiClient.linkManager().openAsModal('openAsModal-iframe', {
+        title:'Modal Title',
+        size: 'm'
+      });
+      }
+
+      function openAsDrawer(){
+        LuigiClient.linkManager().openAsDrawer('openAsDrawer-iframe', {
+        size: 's'
+      });
+      }
+
+      function openAsSplitview(){
+        LuigiClient.linkManager().openAsDrawer('openAsSplitview-iframe', {
+          size: 'l'
+        });
+      }
+
       function testNav() {
         LuigiClient.linkManager().navigate('/');
       }

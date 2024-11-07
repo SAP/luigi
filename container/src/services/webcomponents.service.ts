@@ -70,7 +70,7 @@ export class WebComponentService {
    * @param data the data to be sent
    * @param callback the callback function to be called
    */
-  dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
+  dispatchLuigiEvent(msg: string, data: any, callback?: () => void) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 

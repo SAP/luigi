@@ -79,12 +79,22 @@ export default class extends HTMLElement {
     withParams().navigate()
     </button>`;
 
+    /*
     const linkManagerOpenAsRequestsBtn = document.createElement('template');
     linkManagerOpenAsRequestsBtn.innerHTML = `<button id="linkManagerOpenAsRequests">linkManager().
     openAsDrawer,
     openAsModal,
     openAsSplitView,
     </button>`;
+    */
+    const openAsModalBtn = document.createElement('template');
+    openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
+
+    const openAsDrawerBtn = document.createElement('template');
+    openAsDrawerBtn.innerHTML = '<button id="openAsDrawerBtn">lm.openAsDrawer</button>';
+
+    const openAsSplitviewBtn = document.createElement('template');
+    openAsSplitviewBtn.innerHTML = '<button id="openAsSplitviewBtn">lm.openAsSplitview</button>';
 
     const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
     linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
@@ -115,7 +125,12 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+
+    this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
+    // this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
@@ -296,11 +311,24 @@ export default class extends HTMLElement {
       });
     });
 
-    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
-    this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', { size: 's' });
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
+    this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
+    this.$openAsModalBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
+        title:'Modal Title',
+        size: 'm'
+      });
+    });
+    this.$openAsDrawerBtn = this._shadowRoot.querySelector('#openAsDrawerBtn');
+    this.$openAsDrawerBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsDrawer('openAsDrawer-wc', {
+        size: 's'
+      });
+    });
+    this.$openAsSplitviewBtn = this._shadowRoot.querySelector('#openAsSplitviewBtn');
+    this.$openAsSplitviewBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsSplitView('openAsSplitview-wc', {
+        size: 'l'
+      });
     });
 
     this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
