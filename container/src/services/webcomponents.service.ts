@@ -303,7 +303,7 @@ export class WebComponentService {
           keepBrowserHistory
         });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object => {
+      getNodeParams: (shouldDesanitise: boolean): object => {
         if (isCompoundChild) {
           return {};
         }
@@ -321,16 +321,16 @@ export class WebComponentService {
       getAnchor: (): string => {
         return this.thisComponent.anchor || '';
       },
-      getCoreSearchParams: (): Object => {
+      getCoreSearchParams: (): object => {
         return this.thisComponent.searchParams || {};
       },
-      getPathParams: (): Object => {
+      getPathParams: (): object => {
         return this.thisComponent.pathParams || {};
       },
-      getClientPermissions: (): Object => {
+      getClientPermissions: (): object => {
         return this.thisComponent.clientPermissions || {};
       },
-      getUserSettings: (): Object => {
+      getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};
       },
       setViewGroupData: (data) => {
