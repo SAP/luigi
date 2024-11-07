@@ -35,7 +35,7 @@ export namespace Events {
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
 
   /**
-   * Event fired when the micro frontend requests to add node parameters to the URL.
+   * Event fired when the micro frontend requests the addition of node parameters to the URL.
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
 
