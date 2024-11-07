@@ -60,7 +60,7 @@ export namespace Events {
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
   /**
-   * Event fired when the micro frontend requests to modify the local storate.
+   * Event fired when the micro frontend requests to modify the local storage.
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
@@ -120,17 +120,17 @@ export namespace Events {
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
   /**
-   * Event fired when the micro frontend requests to open the user sesttings.
+   * Event fired when the micro frontend requests to open the user settings.
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
 
   /**
-   * Event fired when the micro frontend requests to close the user setttings.
+   * Event fired when the micro frontend requests to close the user settings.
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
 
   /**
-   * Event fired when the micro frontend requests to collapse left side navigation
+   * Event fired when the micro frontend requests to collapse left side navigation.
    */
   export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
 
