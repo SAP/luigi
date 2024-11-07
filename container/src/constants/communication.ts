@@ -65,7 +65,7 @@ export namespace Events {
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
   /**
-   * Event fired when the micro frontend requests to handle an error that happened during the runtime of the micro frontend.
+   * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
