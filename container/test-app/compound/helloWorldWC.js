@@ -314,7 +314,7 @@ export default class extends HTMLElement {
     this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
     this.$openAsModalBtn.addEventListener('click', () => {
       this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
-        title:'Modal Title',
+        title: 'Modal Title',
         size: 'm'
       });
     });
