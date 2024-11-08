@@ -209,15 +209,8 @@
               "name": "webcomponent",
               "type": {
                 "text": "any"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "closeAlert"
-            },
-            {
-              "kind": "method",
-              "name": "sendCustomMessage"
+              },
+              "default": "undefined"
             },
             {
               "kind": "method",
@@ -225,11 +218,11 @@
             },
             {
               "kind": "method",
-              "name": "attributeChangedCallback"
+              "name": "sendCustomMessage"
             },
             {
               "kind": "method",
-              "name": "getNoShadow"
+              "name": "closeAlert"
             },
             {
               "kind": "method",
@@ -239,224 +232,224 @@
           "events": [
             {
               "name": "custom-message",
-              "description": "A message emitted from the micro frontend when a custom message is sent.",
+              "description": "Event fired when the micro frontend sends a custom message.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "get-context-request",
-              "description": "A message emitted from the micro frontend when the context data is sent.",
+              "description": "Event fired when the micro frontend requests the context data.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "navigation-request",
-              "description": "A message emitted from the micro frontend when a navigation request is sent.",
+              "description": "Event fired when a navigation has been requested by the micro frontend.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-alert-request",
-              "description": "A message emitted from the micro frontend when a request to show an alert is sent.",
+              "description": "Event fired when the micro frontend requests to show an alert.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "close-alert-request",
-              "description": "A message emitted from the micro frontend when a request to close an alert is sent.",
+              "description": "Event fired when the micro frontend requests to close an alert.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "initialized",
-              "description": "A message emitted from the micro frontend when it is first initialized.",
+              "description": "Event fired when the micro frontend has been initialized.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "add-search-params-request",
-              "description": "A message emitted from the micro frontend to request adding search parameters to the URL.",
+              "description": "Event fired when the micro frontend requests the addition of search parameters to the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "add-node-params-request",
-              "description": "A message emitted from the micro frontend to request adding node parameters to the URL.",
+              "description": "Event fired when the micro frontend requests the addition of node parameters to the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-confirmation-modal-request",
-              "description": "A message emitted from the micro frontend when a request to show a confirmation modal is sent.",
+              "description": "Event fired when the micro frontend requests to show a confirmation modal.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-loading-indicator-request",
-              "description": "A message emitted from the micro frontend when a request to show a loading indicator is sent.",
+              "description": "Event fired when the micro frontend requests to show a loading indicator.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "hide-loading-indicator-request",
-              "description": "A message emitted from the micro frontend when a request to hide the loading indicator is sent.",
+              "description": "Event fired when the micro frontend requests to hide the loading indicator.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-current-locale-request",
-              "description": "A message emitted from the micro frontend when a request to set the current locale is sent.",
+              "description": "Event fired when the micro frontend requests to set the current locale.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-storage-request",
-              "description": "A message emitted from the micro frontend when a request to modify the local storage is sent.",
+              "description": "Event fired when the micro frontend requests to modify the local storage.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "runtime-error-handling-request",
-              "description": "A message emitted from the micro frontend when a request to handle an error during runtime is sent.",
+              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-anchor-request",
-              "description": "A message emitted from the micro frontend when a request to set the anchor of the URL is sent.",
+              "description": "Event fired when the micro frontend requests to set the anchor of the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-third-party-cookies-request",
-              "description": "A message emitted from the micro frontend when a request to set third-party cookies is sent.",
+              "description": "Event fired when the micro frontend requests to set third-party cookies.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "navigate-back-request",
-              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "get-current-route-request",
-              "description": "A message emitted from the micro frontend when a request to receive the current app route is sent.",
+              "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "report-navigation-completed-request",
-              "description": "A message emitted from the micro frontend to report that the navigation is completed.",
+              "description": "Event fired to report that the micro frontend's navigation has completed.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-modal-path-data-request",
-              "description": "A message emitted from the micro frontend when a request to update the modal path parameters is sent.",
+              "description": "Event fired when the micro frontend requests to update the modal path parameters.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "check-path-exists-request",
-              "description": "A message emitted from the micro frontend when a request to check the validity of a path is sent.",
+              "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-dirty-status-request",
-              "description": "A message emitted from the micro frontend when a request to set the 'dirty status' is sent.",
+              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-viewgroup-data-request",
-              "description": "A message emitted from the micro frontend when a request to set the view group data is sent.",
+              "description": "Event fired when the micro frontend requests to set the view group data.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-document-title-request",
-              "description": "A message emitted from the micro frontend when a request to set the document title is sent.",
+              "description": "Event fired when the micro frontend requests to set the document title.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "open-user-settings-request",
-              "description": "A message emitted from the micro frontend when a request to open user settings is sent.",
+              "description": "Event fired when the micro frontend requests to open the user settings.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "close-user-settings-request",
-              "description": "A message emitted from the micro frontend when a request to close user settings is sent.",
+              "description": "Event fired when the micro frontend requests to close the user settings.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "collapse-leftnav-request",
-              "description": "A message emitted from the micro frontend when a request to collapse the left side navigation is sent.",
+              "description": "Event fired when the micro frontend requests to collapse left side navigation.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-top-navigation-request",
-              "description": "A message emitted from the micro frontend when a request to update the top navigation is sent.",
+              "description": "Event fired when the micro frontend requests to update the top navigation.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "path-exists-request",
-              "description": "A message emitted from the micro frontend when a request to check if a path exists is sent.",
+              "description": "Event fired when the micro frontend requests to check if the path exists.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "go-back-request",
-              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "has-back-request",
-              "description": "A message emitted from the micro frontend to check if there is a back navigation option.",
+              "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "remove-backdrop-request",
-              "description": "A message emitted from the micro frontend when a request to remove the backdrop is sent.",
+              "description": "Event fired when the micro frontend requests to remove the backdrop.",
               "type": {
                 "text": "Event"
               }
@@ -648,19 +641,12 @@
               "name": "webcomponent",
               "type": {
                 "text": "any"
-              }
+              },
+              "default": "undefined"
             },
             {
               "kind": "method",
               "name": "updateContext"
-            },
-            {
-              "kind": "method",
-              "name": "attributeChangedCallback"
-            },
-            {
-              "kind": "method",
-              "name": "getNoShadow"
             },
             {
               "kind": "method",
@@ -670,224 +656,224 @@
           "events": [
             {
               "name": "custom-message",
-              "description": "A message emitted from the micro frontend when a custom message is sent.",
+              "description": "Event fired when the micro frontend sends a custom message.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "get-context-request",
-              "description": "A message emitted from the micro frontend when the context data is sent.",
+              "description": "Event fired when the micro frontend requests the context data.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "navigation-request",
-              "description": "A message emitted from the micro frontend when a navigation request is sent.",
+              "description": "Event fired when a navigation has been requested by the micro frontend.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-alert-request",
-              "description": "A message emitted from the micro frontend when a request to show an alert is sent.",
+              "description": "Event fired when the micro frontend requests to show an alert.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "close-alert-request",
-              "description": "A message emitted from the micro frontend when a request to close an alert is sent.",
+              "description": "Event fired when the micro frontend requests to close an alert.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "initialized",
-              "description": "A message emitted from the micro frontend when it is first initialized.",
+              "description": "Event fired when the micro frontend has been initialized.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "add-search-params-request",
-              "description": "A message emitted from the micro frontend to request adding search parameters to the URL.",
+              "description": "Event fired when the micro frontend requests the addition of search parameters to the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "add-node-params-request",
-              "description": "A message emitted from the micro frontend to request adding node parameters to the URL.",
+              "description": "Event fired when the micro frontend requests the addition of node parameters to the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-confirmation-modal-request",
-              "description": "A message emitted from the micro frontend when a request to show a confirmation modal is sent.",
+              "description": "Event fired when the micro frontend requests to show a confirmation modal.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "show-loading-indicator-request",
-              "description": "A message emitted from the micro frontend when a request to show a loading indicator is sent.",
+              "description": "Event fired when the micro frontend requests to show a loading indicator.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "hide-loading-indicator-request",
-              "description": "A message emitted from the micro frontend when a request to hide the loading indicator is sent.",
+              "description": "Event fired when the micro frontend requests to hide the loading indicator.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-current-locale-request",
-              "description": "A message emitted from the micro frontend when a request to set the current locale is sent.",
+              "description": "Event fired when the micro frontend requests to set the current locale.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-storage-request",
-              "description": "A message emitted from the micro frontend when a request to modify the local storage is sent.",
+              "description": "Event fired when the micro frontend requests to modify the local storage.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "runtime-error-handling-request",
-              "description": "A message emitted from the micro frontend when a request to handle an error during runtime is sent.",
+              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-anchor-request",
-              "description": "A message emitted from the micro frontend when a request to set the anchor of the URL is sent.",
+              "description": "Event fired when the micro frontend requests to set the anchor of the URL.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-third-party-cookies-request",
-              "description": "A message emitted from the micro frontend when a request to set third-party cookies is sent.",
+              "description": "Event fired when the micro frontend requests to set third-party cookies.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "navigate-back-request",
-              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "get-current-route-request",
-              "description": "A message emitted from the micro frontend when a request to receive the current app route is sent.",
+              "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "report-navigation-completed-request",
-              "description": "A message emitted from the micro frontend to report that the navigation is completed.",
+              "description": "Event fired to report that the micro frontend's navigation has completed.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-modal-path-data-request",
-              "description": "A message emitted from the micro frontend when a request to update the modal path parameters is sent.",
+              "description": "Event fired when the micro frontend requests to update the modal path parameters.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "check-path-exists-request",
-              "description": "A message emitted from the micro frontend when a request to check the validity of a path is sent.",
+              "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-dirty-status-request",
-              "description": "A message emitted from the micro frontend when a request to set the 'dirty status' is sent.",
+              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-viewgroup-data-request",
-              "description": "A message emitted from the micro frontend when a request to set the view group data is sent.",
+              "description": "Event fired when the micro frontend requests to set the view group data.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-document-title-request",
-              "description": "A message emitted from the micro frontend when a request to set the document title is sent.",
+              "description": "Event fired when the micro frontend requests to set the document title.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "open-user-settings-request",
-              "description": "A message emitted from the micro frontend when a request to open user settings is sent.",
+              "description": "Event fired when the micro frontend requests to open the user settings.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "close-user-settings-request",
-              "description": "A message emitted from the micro frontend when a request to close user settings is sent.",
+              "description": "Event fired when the micro frontend requests to close the user settings.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "collapse-leftnav-request",
-              "description": "A message emitted from the micro frontend when a request to collapse the left side navigation is sent.",
+              "description": "Event fired when the micro frontend requests to collapse left side navigation.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-top-navigation-request",
-              "description": "A message emitted from the micro frontend when a request to update the top navigation is sent.",
+              "description": "Event fired when the micro frontend requests to update the top navigation.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "path-exists-request",
-              "description": "A message emitted from the micro frontend when a request to check if a path exists is sent.",
+              "description": "Event fired when the micro frontend requests to check if the path exists.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "go-back-request",
-              "description": "A message emitted from the micro frontend when a request to navigate back is sent.",
+              "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "has-back-request",
-              "description": "A message emitted from the micro frontend to check if there is a back navigation option.",
+              "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "remove-backdrop-request",
-              "description": "A message emitted from the micro frontend when a request to remove the backdrop is sent.",
+              "description": "Event fired when the micro frontend requests to remove the backdrop.",
               "type": {
                 "text": "Event"
               }
