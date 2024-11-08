@@ -32,6 +32,9 @@
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
+        if (confirm('Do you want to leave this page?')) {
+          window.location = event.detail.link;
+        }
       });
 
       luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, event => {
@@ -55,12 +58,6 @@
 
       updateAccessTokenButton.addEventListener('click', () => {
         luigiContainer.setAttribute('auth-data', '{"accessToken": "updated token"}');
-      });
-
-      luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
-        if (confirm('Do you want to leave this page?')) {
-          window.location = event.detail.link;
-        }
       });
 
       const showAnAlert = alertSettings => {
