@@ -1,7 +1,7 @@
-import globals from 'globals';
-import angular from 'angular-eslint';
-import tseslint from 'typescript-eslint';
-import stylistic from '@stylistic/eslint-plugin';
+import globals from 'globals'
+import angular from 'angular-eslint'
+import tseslint from 'typescript-eslint'
+import stylistic from '@stylistic/eslint-plugin'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -11,14 +11,14 @@ export default [
   {
     files: ['projects/client-support-angular/src/**/*.ts'],
     plugins: {
-      '@stylistic': stylistic
+      '@stylistic': stylistic,
     },
     processor: angular.processInlineTemplates,
     languageOptions: {
-      globals: globals.browser
+      globals: globals.browser,
     },
     rules: {
-      curly: 'error',
+      'curly': 'error',
       'no-console': ['error', { allow: ['debug'] }],
       'no-undef': 'error',
       '@stylistic/brace-style': 'off',
@@ -32,8 +32,8 @@ export default [
       '@stylistic/space-before-function-paren': ['error', {
         anonymous: 'never',
         asyncArrow: 'always',
-        named: 'never'
-      }]
-    }
-  }
-];
+        named: 'never',
+      }],
+    },
+  },
+]

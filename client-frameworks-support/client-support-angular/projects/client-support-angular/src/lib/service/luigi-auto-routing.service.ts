@@ -1,13 +1,6 @@
 import { Injectable, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ActivatedRouteSnapshot,
-  Event,
-  NavigationEnd,
-  ParamMap,
-  Router,
-  convertToParamMap
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Event, NavigationEnd, ParamMap, Router, convertToParamMap } from '@angular/router';
 import { linkManager, uxManager, isLuigiClientInitialized } from '@luigi-project/client';
 import { OperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -20,7 +13,10 @@ import { LuigiContextService } from './luigi-context.service';
 export class LuigiAutoRoutingService {
   private destroyRef = inject(DestroyRef);
 
-  constructor(private router: Router, private luigiContextService: LuigiContextService) {
+  constructor(
+    private router: Router,
+    private luigiContextService: LuigiContextService
+  ) {
     this.router.events
       .pipe(this.doFilter(), takeUntilDestroyed(this.destroyRef))
       .subscribe((event: NavigationEnd) => this.doSubscription(event));
@@ -29,11 +25,7 @@ export class LuigiAutoRoutingService {
   doFilter(): OperatorFunction<Event, NavigationEnd> {
     return filter(
       (event: Event): event is NavigationEnd =>
-        !!(
-          event instanceof NavigationEnd
-          && event?.url?.length
-          && !history?.state?.luigiInduced
-        )
+        !!(event instanceof NavigationEnd && event?.url?.length && !history?.state?.luigiInduced)
     );
   }
 
