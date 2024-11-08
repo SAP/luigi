@@ -2,7 +2,7 @@
   "name": "luigi-scripts-private",
   "private": true,
   "scripts": {
-    "docu": "npm run docu:container && npm run docu:client && npm run docu:core",
+    "docu": "npm run docu:container && npm run docu:client && npm run docu:core && npm run docu:element",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:sections",
     "docu:container": "npm run docu:container:validate && npm run docu:container:generate:sections",
     "docu:container:validate": "documentation lint ../container/typings/LuigiContainer.svelte.d.ts ../container/typings/LuigiCompoundContainer.svelte.d.ts",
