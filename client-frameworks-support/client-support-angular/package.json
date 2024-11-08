@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "npx eslint projects/client-support-angular",
+    "lint": "eslint projects/client-support-angular/src/**/*.* --ignore-pattern **/*.spec.ts",
     "build:lib": "ng build client-support-angular --configuration production",
     "bundle": "ng build client-support-angular --configuration production",
     "bundle-develop": "ng build client-support-angular --watch"

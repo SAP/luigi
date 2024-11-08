@@ -30,9 +30,9 @@ export class LuigiAutoRoutingService {
     return filter(
       (event: Event): event is NavigationEnd =>
         !!(
-          event instanceof NavigationEnd &&
-          event?.url?.length &&
-          !history?.state?.luigiInduced
+          event instanceof NavigationEnd
+          && event?.url?.length
+          && !history?.state?.luigiInduced
         )
     );
   }
