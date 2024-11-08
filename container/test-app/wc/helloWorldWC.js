@@ -12,7 +12,7 @@ export default class extends HTMLElement {
 
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
-    
+
     const showAlertBtn = document.createElement('template');
     showAlertBtn.innerHTML = '<button id="showAlert">showAlert</button>';
 
@@ -144,7 +144,7 @@ export default class extends HTMLElement {
         text: 'uxManager().showAlert() test',
         type: 'info'
       });
-    })
+    });
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
