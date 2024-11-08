@@ -1,6 +1,6 @@
 export namespace Events {
   /**
-   * Event fired when the micro frontend requests a custom message.
+   * Event fired when the micro frontend sends a custom message.
    */
   export const CUSTOM_MESSAGE = 'custom-message';
 

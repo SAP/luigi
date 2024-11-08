@@ -1,6 +1,6 @@
 export namespace Events {
   /**
-   * Event fired when the micro frontend requests a custom message.
+   * Event fired when the micro frontend sends a custom message.
    */
   export const CUSTOM_MESSAGE = 'custom-message';
 
@@ -10,7 +10,7 @@ export namespace Events {
   export const GET_CONTEXT_REQUEST = 'get-context-request';
 
   /**
-   * Event fired when the micro frontend requests a navigation request.
+   * Event fired when a navigation has been requested by the micro frontend.
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
 
@@ -25,17 +25,17 @@ export namespace Events {
   export const ALERT_CLOSED = 'close-alert-request';
 
   /**
-   * Event fired when the micro frontend requests when it is initialized.
+   * Event fired when the micro frontend has been initialized.
    */
   export const INITIALIZED = 'initialized';
 
   /**
-   * Event fired when the micro frontend requests to add search parameters to the URL.
+   * Event fired when the micro frontend requests the addition of search parameters to the URL.
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
 
   /**
-   * Event fired when the micro frontend requests to add node parameters to the URL.
+   * Event fired when the micro frontend requests the addition of node parameters to the URL.
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
 
@@ -65,12 +65,12 @@ export namespace Events {
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
   /**
-   * Event fired when the micro frontend requests to handle an error that happened during the runtime of the micro frontend.
+   * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
   /**
-   * Event fired when the micro frontend requests to set anchor of the URL.
+   * Event fired when the micro frontend requests to set the anchor of the URL.
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
@@ -85,12 +85,12 @@ export namespace Events {
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
   /**
-   * Event fired when the micro frontend requests to receive the current app route.
+   * Event fired when the micro frontend requests the current app route.
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
   /**
-   * Event fired when the micro frontend requests to report that the navigation is completed.
+   * Event fired to report that the micro frontend's navigation has completed.
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
 
@@ -100,12 +100,12 @@ export namespace Events {
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
-   * Event fired when the micro frontend requests to check on the validity of a path.
+   * Event fired when the micro frontend requests to check the validity of a path.
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
-   * Event fired when the micro frontend requests to set the 'dirty status' (e.g. avoid closing if unsaved changes).
+   * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
@@ -150,7 +150,7 @@ export namespace Events {
   export const GO_BACK_REQUEST = 'go-back-request';
 
   /**
-   * Event fired when the micro frontend requests to check if there are one or more preserved views.
+   * Event fired when the micro frontend requests to check if there are any preserved views.
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
 
