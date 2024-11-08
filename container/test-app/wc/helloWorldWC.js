@@ -129,7 +129,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(alertBtn.content.cloneNode(true)); 
+    this._shadowRoot.appendChild(alertBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
@@ -274,21 +274,11 @@ export default class extends HTMLElement {
       const path = 'hello-world-wc';
       const ctx = { ctx: 123 };
 
-      this.LuigiClient.linkManager()
-        .fromContext(ctx)
-        .navigate();
-      this.LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromVirtualTreeRoot()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromParent(ctx)
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .withParams('my-params')
-        .navigate(path);
+      this.LuigiClient.linkManager().fromContext(ctx).navigate();
+      this.LuigiClient.linkManager().fromClosestContext().navigate(path);
+      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate(path);
+      this.LuigiClient.linkManager().fromParent(ctx).navigate(path);
+      this.LuigiClient.linkManager().withParams('my-params').navigate(path);
       this.LuigiClient.linkManager().navigate(path);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.linkManager().navigate()',
@@ -299,7 +289,7 @@ export default class extends HTMLElement {
     this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
     this.$openAsModalBtn.addEventListener('click', () => {
       this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
-        title:'Modal Title',
+        title: 'Modal Title',
         size: 'm'
       });
     });
@@ -319,18 +309,18 @@ export default class extends HTMLElement {
     this.$alertBtn = this._shadowRoot.querySelector('#alertBtn');
     this.$alertBtn.addEventListener('click', () => {
       this.LuigiClient.uxManager().showAlert({
-        text: "showAlert test",
+        text: 'showAlert test',
         type: 'info'
       });
-    })
+    });
 
     this.$navigateBtn = this._shadowRoot.querySelector('#navigateBtn');
     this.$navigateBtn.addEventListener('click', () => {
-      const path = "AAA.html";
+      const path = 'AAA.html';
       const modalSettings = {
-        title:'Modal Title',
+        title: 'Modal Title',
         size: 'm'
-      }
+      };
       this.LuigiClient.linkManager().navigate(path, 0, true, modalSettings);
     });
 
@@ -339,7 +329,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().updateTopNavigation();
       this.LuigiClient.linkManager()
         .pathExists()
-        .then(result => {
+        .then((result) => {
           console.log('PATH EXISTS');
           this.LuigiClient.uxManager().showAlert({
             text:
@@ -353,6 +343,19 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
+    this.$goBackBtn = this._shadowRoot.querySelector('#goBackBtn');
+    this.$goBackBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().goBack();
+      console.log('goBack() CLICKED');
+    });
+
+    this.$updateTopNavigationBtn = this._shadowRoot.querySelector('#updateTopNavigationBtn');
+    this.$updateTopNavigationBtn.addEventListener('click', () => {
+      console.log('updateTopNavigation() CLICKED 1');
+      this.LuigiClient.linkManager().updateTopNavigationBtn();
+      console.log('updateTopNavigation() CLICKED 2');
+    });
+
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
@@ -362,7 +365,7 @@ export default class extends HTMLElement {
     this.$getCurrentRoute.addEventListener('click', () => {
       this.LuigiClient.linkManager()
         .getCurrentRoute()
-        .then(result => {
+        .then((result) => {
           console.log(result);
           alert('current route: ' + result);
         });
@@ -376,7 +379,7 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', event => {
+    this.addEventListener('custom-message-id', (event) => {
       console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;

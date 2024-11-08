@@ -311,21 +311,11 @@ export default class extends HTMLElement {
       const path = 'hello-world-wc';
       const ctx = { ctx: 123 };
 
-      this.LuigiClient.linkManager()
-        .fromContext(ctx)
-        .navigate();
-      this.LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromVirtualTreeRoot()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromParent(ctx)
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .withParams('my-params')
-        .navigate(path);
+      this.LuigiClient.linkManager().fromContext(ctx).navigate();
+      this.LuigiClient.linkManager().fromClosestContext().navigate(path);
+      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate(path);
+      this.LuigiClient.linkManager().fromParent(ctx).navigate(path);
+      this.LuigiClient.linkManager().withParams('my-params').navigate(path);
       this.LuigiClient.linkManager().navigate(path);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.linkManager().navigate()',
@@ -336,7 +326,7 @@ export default class extends HTMLElement {
     this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
     this.$openAsModalBtn.addEventListener('click', () => {
       this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
-        title:'Modal Title',
+        title: 'Modal Title',
         size: 'm'
       });
     });
@@ -358,7 +348,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().updateTopNavigation();
       this.LuigiClient.linkManager()
         .pathExists()
-        .then(result => {
+        .then((result) => {
           console.log('PATH EXISTS');
           this.LuigiClient.uxManager().showAlert({
             text:

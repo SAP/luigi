@@ -55,7 +55,7 @@
       const deferInitContainer = document.getElementById('defer-init-test');
       const deferInitButton = document.getElementById('defer-init-button');
 
-      deferInitButton.addEventListener('click', function() {
+      deferInitButton.addEventListener('click', function () {
         deferInitContainer.init();
       });
 
@@ -72,7 +72,7 @@
         deferInitContainer.allowRules = [
           'microphone',
           "camera 'none'",
-          "geolocation 'self' https://a.example.com https://b.example.com"
+          "geolocation 'self' https://a.example.com https://b.example.com",
         ];
       });
     </script>

@@ -14,7 +14,7 @@
       sendCustomMessage
     </button>
 
-    <div style="height: fit-content;">
+    <div style="height: fit-content">
       <div style="border: 1px solid blue">
         <!-- Luigi Container to test general functionalities, params etc-->
         <luigi-container
@@ -68,26 +68,26 @@
       import MFEventID from '../bundle.js';
       const deferInitContainer = document.getElementById('defer-init-test');
       const deferInitButton = document.getElementById('defer-init-button');
-      deferInitButton.addEventListener('click', function() {
+      deferInitButton.addEventListener('click', function () {
         deferInitContainer.init();
       });
       // document.querySelector('luigi-container');
       const container = document.querySelector(
-        '[data-test-id="luigi-client-api-test-01"]'
+        '[data-test-id="luigi-client-api-test-01"]',
       );
       const sendCustomMsgBtn = document.getElementById('sendCustomMessageBtn');
       sendCustomMsgBtn.addEventListener('click', () => {
         container.sendCustomMessage('custom-message-id', {
-          dataToSend: 'cool custom Message'
+          dataToSend: 'cool custom Message',
         });
       });
 
-      [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
-        luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+      [...document.querySelectorAll('luigi-container')].forEach((luigiContainer) => {
+        luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, (event) => {
           console.log(event.detail);
           window.location.hash = event.detail.link;
         });
-        luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
           console.log(event.detail);
           alert(event.detail.text);
         });
@@ -100,7 +100,7 @@
         });
         luigiContainer.addEventListener(
           MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
-          event => {
+          (event) => {
             const data = event.detail;
             console.log(data);
             const val = confirm(data.body);
@@ -109,60 +109,63 @@
             if (event.callback) {
               event.callback(val);
             }
-          }
+          },
         );
-        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
           if (event.detail.id !== 'timer') {
             alert(event.detail.data);
           }
         });
-        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
           console.log(event);
         });
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
-          event => {
+          (event) => {
             console.log(event.detail);
-          }
+          },
         );
-        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, (event) => {
           const params = event.detail.params;
           console.log('params', params);
         });
-        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
           console.log('anchor', event.detail);
         });
-        luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, (event) => {
           console.log('Open User Settings Request received', event.detail);
           alert('LuigiClient.uxManager().openUserSettings()');
         });
-        luigiContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
-          console.log('Close User Settings Request received', event.detail);
-          alert('LuigiClient.uxManager().closeUserSettings()');
-        });
-        luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
+        luigiContainer.addEventListener(
+          MFEventID.CLOSE_USER_SETTINGS_REQUEST,
+          (event) => {
+            console.log('Close User Settings Request received', event.detail);
+            alert('LuigiClient.uxManager().closeUserSettings()');
+          },
+        );
+        luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, (event) => {
           console.log('Remove Backdrop Request received', event.detail);
           alert('LuigiClient.uxManager().removeBackdrop()');
         });
-        luigiContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, (event) => {
           console.log('Collapse Left Side Nav Request received', event.detail);
           alert('LuigiClient.uxManager().collapseLeftSideNav()');
         });
-        luigiContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, (event) => {
           console.log('Set Document Title Request received', event.detail);
           luigiContainer.documentTitle = event.detail;
         });
         luigiContainer.addEventListener(
           MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
-          event => {
+          (event) => {
             console.log('Hide Loading Indicator Request received', event.detail);
             alert('LuigiClient.uxManager().hideAppLoadingIndicator()');
-          }
+          },
         );
 
         // linkManager listeners:
         // path exists
-        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
           console.log('Path Exists Request received', event.detail, event);
           // send back result with defined 'callback'
           // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
@@ -170,11 +173,14 @@
         });
 
         // setViewGroup Data listener
-        luigiContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
-          console.log('Set View Group Data Request received', event.detail, event);
-        });
+        luigiContainer.addEventListener(
+          MFEventID.SET_VIEW_GROUP_DATA_REQUEST,
+          (event) => {
+            console.log('Set View Group Data Request received', event.detail, event);
+          },
+        );
 
-        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, (event) => {
           event.callback(window.location.pathname);
         });
       });
