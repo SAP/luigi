@@ -12,7 +12,7 @@
     "public"
   ],
   "scripts": {
-    "build": "npm run sync-event-typings && rollup -c",
+    "build": "npm run sync-event-typings && npm run generate-cem  && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
@@ -29,7 +29,9 @@
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "release": "node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
-    "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts"
+    "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
+    "generate-cem": "node generateCEM.js"
+
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
@@ -63,6 +65,7 @@
     "svelte-preprocess": "5.0.4",
     "tslib": "2.6.1",
     "typescript": "5.1.6",
+    "@typescript-eslint/typescript-estree": "^8.13.0",
     "typescript-eslint": "^8.13.0"
   },
   "engines": {
