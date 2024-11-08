@@ -343,19 +343,6 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
-    this.$goBackBtn = this._shadowRoot.querySelector('#goBackBtn');
-    this.$goBackBtn.addEventListener('click', () => {
-      this.LuigiClient.linkManager().goBack();
-      console.log('goBack() CLICKED');
-    });
-
-    this.$updateTopNavigationBtn = this._shadowRoot.querySelector('#updateTopNavigationBtn');
-    this.$updateTopNavigationBtn.addEventListener('click', () => {
-      console.log('updateTopNavigation() CLICKED 1');
-      this.LuigiClient.linkManager().updateTopNavigationBtn();
-      console.log('updateTopNavigation() CLICKED 2');
-    });
-
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
