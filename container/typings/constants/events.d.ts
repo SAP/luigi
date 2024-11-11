@@ -1,151 +1,161 @@
 export namespace Events {
   /**
-   * A message emitted from the micro frontend when a custom message is sent
+   * Event fired when the micro frontend sends a custom message.
    */
   export const CUSTOM_MESSAGE = 'custom-message';
+
   /**
-   * A message emitted from the micro frontend when the context data is sent
+   * Event fired when the micro frontend requests the context data.
    */
   export const GET_CONTEXT_REQUEST = 'get-context-request';
+
   /**
-   * A message emitted from the micro frontend when a navigation request is sent
+   * Event fired when a navigation has been requested by the micro frontend.
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
+
   /**
-   * A message emitted from the micro frontend when a request to show an alert is sent
+   * Event fired when the micro frontend requests to show an alert.
    */
   export const ALERT_REQUEST = 'show-alert-request';
+
   /**
-   * A message emitted from the micro frontend when a request to show an alert is sent
+   * Event fired when the micro frontend requests to close an alert.
    */
   export const ALERT_CLOSED = 'close-alert-request';
+
   /**
-   * A message emitted from the micro frontend when it is first initialized
+   * Event fired when the micro frontend has been initialized.
    */
   export const INITIALIZED = 'initialized';
+
   /**
-   * A message emitted from the micro frontend to request adding search parameters to the URL
+   * Event fired when the micro frontend requests the addition of search parameters to the URL.
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
+
   /**
-   * A message emitted from the micro frontend to request adding node parameters to the URL
+   * Event fired when the micro frontend requests the addition of node parameters to the URL.
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
+
   /**
-   * A message emitted from the micro frontend when a request to show a confirmation modal is sent
+   * Event fired when the micro frontend requests to show a confirmation modal.
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
+
   /**
-   * A message emitted from the micro frontend when a request to show a loading indicator is sent
+   * Event fired when the micro frontend requests to show a loading indicator.
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'show-loading-indicator-request';
+
   /**
-   * A message emitted from the micro frontend when a request to hide the loading indicator is sent
+   * Event fired when the micro frontend requests to hide the loading indicator.
    */
   export const HIDE_LOADING_INDICATOR_REQUEST = 'hide-loading-indicator-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set the current locale is sent
+   * Event fired when the micro frontend requests to set the current locale.
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
   /**
-   * A message emitted from the micro frontend when a request to modify the local storage is sent
+   * Event fired when the micro frontend requests to modify the local storage.
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
   /**
-   * A message emitted from the micro frontend when a request to handle an error that happened during the runtime of the micro frontend is sent
+   * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set the anchor of the URL is sent
+   * Event fired when the micro frontend requests to set the anchor of the URL.
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set third-party cookies is sent
+   * Event fired when the micro frontend requests to set third-party cookies.
    */
   export const SET_THIRD_PARTY_COOKIES_REQUEST = 'set-third-party-cookies-request';
 
   /**
-   * A message emitted from the micro frontend when a request to navigate back is sent
+   * Event fired when the micro frontend requests to navigate back.
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
   /**
-   * A message emitted from the micro frontend when a request to receive the current app route is sent
+   * Event fired when the micro frontend requests the current app route.
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
   /**
-   * A message emitted from the micro frontend to report that the navigation is completed is sent
+   * Event fired to report that the micro frontend's navigation has completed.
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
 
   /**
-   * A message emitted from the micro frontend when a request to update the modal path parameters is sent
+   * Event fired when the micro frontend requests to update the modal path parameters.
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
-   * A message emitted from the micro frontend when a request to check on the validity of a path is sent
+   * Event fired when the micro frontend requests to check the validity of a path.
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set the 'dirty status' (eg: avoid closing if unsaved changes) is sent
+   * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set the view group data
+   * Event fired when the micro frontend requests to set the view group data.
    */
   export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set the document title
+   * Event fired when the micro frontend requests to set the document title.
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
   /**
-   * A message emitted from the micro frontend when a request to open user settings
+   * Event fired when the micro frontend requests to open the user settings.
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
 
   /**
-   * A message emitted from the micro frontend when a request to close user settings
+   * Event fired when the micro frontend requests to close the user settings.
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
 
   /**
-   * A message emitted from the micro frontend when a request to collapse left side navigation
+   * Event fired when the micro frontend requests to collapse left side navigation.
    */
   export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
 
   /**
-   * A message emitted from the micro frontend when a request to remove the backdrop
+   * Event fired when the micro frontend requests to update the top navigation.
    */
   export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
 
   /**
-   * A message emitted from the micro frontend when a request to remove the backdrop
+   * Event fired when the micro frontend requests to check if the path exists.
    */
   export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
   /**
-   * A message emitted from the micro frontend when a request to remove the backdrop
+   * Event fired when the micro frontend requests to navigate back.
    */
   export const GO_BACK_REQUEST = 'go-back-request';
 
   /**
-   * A message emitted from the micro frontend when a request to remove the backdrop
+   * Event fired when the micro frontend requests to check if there are any preserved views.
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
 
   /**
-   * A message emitted from the micro frontend when a request to remove the backdrop
+   * Event fired when the micro frontend requests to remove the backdrop.
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }

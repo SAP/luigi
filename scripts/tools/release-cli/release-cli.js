@@ -17,9 +17,9 @@ import color from 'cli-color';
 /**
  * COLORS
  */
-const logHeadline = str => console.log(color.bold.cyan(str));
-const logWarning = str => console.log(color.yellow.bold(str));
-const logError = str => console.log(color.redBright.bold(str));
+const logHeadline = (str) => console.log(color.bold.cyan(str));
+const logWarning = (str) => console.log(color.yellow.bold(str));
+const logError = (str) => console.log(color.redBright.bold(str));
 const logStep = (s1, s2, s3) => {
   if (s3) {
     console.log(color.cyan(s1), color.cyan(s2), color.cyan(s3));
@@ -82,7 +82,7 @@ async function getReleases() {
     }
   });
   return JSON.parse(input.body)
-    .map(r => r.tag_name)
+    .map((r) => r.tag_name)
     .filter((t, i) => i <= 8);
 }
 
@@ -169,7 +169,7 @@ function addToChangelog(versionText, changelog, lastline) {
       type: 'text',
       name: 'version',
       message: 'Version you want to release (current: ' + getVersion('core') + ')?',
-      validate: str => (semver.valid(str) ? true : 'Invalid version (no valid semver)'),
+      validate: (str) => (semver.valid(str) ? true : 'Invalid version (no valid semver)'),
       initial: nextVersion
     },
     {
@@ -179,7 +179,7 @@ function addToChangelog(versionText, changelog, lastline) {
       initial: true
     },
     {
-      type: prev => (prev == true ? 'select' : null),
+      type: (prev) => (prev == true ? 'select' : null),
       name: 'prevVersion',
       message: 'Previous version to generate from?',
       choices: releases

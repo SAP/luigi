@@ -25,7 +25,7 @@ In addition you can use standard `addEventListener` function to react on events 
 
 ### viewurl
 
-The URL of the microfrontend to be rendered
+The URL of the microfrontend to be rendered.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -45,7 +45,7 @@ myContainer.viewurl = "/index.html"
 
 ### deferInit
 
-If set to true defers from initializing the microfronted automatically. In that case init() can be used
+If set to true defers from initializing the microfronted automatically. In that case init() can be used.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -65,7 +65,7 @@ myContainer.deferInit = true
 
 ### context
 
-The stringified context object to be passed to the microfrontend
+The stringified context object to be passed to the microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -85,7 +85,7 @@ myContainer.context = {label: "Dashboard"}
 
 ### label
 
-Label information for the microfrontend
+Label information for the microfrontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -144,7 +144,7 @@ myContainer.webcomponent = { type: 'module', selfRegistered: true, tagName: 'my-
 
 ### locale
 
-The locale to be passed to the web-component-based micro frontend
+The locale to be passed to the web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -164,7 +164,7 @@ myContainer.locale = "en_us"
 
 ### theme
 
-The theme to be passed to the  web-component-based micro frontend
+The theme to be passed to the  web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -184,7 +184,7 @@ myContainer.theme = 'sap_horizon'
 
 ### activeFeatureToggleList
 
-The list of active feature toggles to be passed to the web-component-based micro frontend
+The list of active feature toggles to be passed to the web-component-based micro frontend.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
@@ -220,11 +220,11 @@ myContainer.skipCookieCheck = true
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### skipInitCheck
 
-If set to true, skips handshake and ready event is fired immediately
+If set to true, skips handshake and ready event is fired immediately.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
@@ -345,7 +345,7 @@ myContainer.clientPermissions = {permission: "adminGroup"}
 
 ### userSettings
 
-The user settings to be passed to the web-component-based micro frontend
+The user settings to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -489,7 +489,7 @@ myContainer.dirtyStatus = true
 
 ### updateContext
 
-Function that updates the context of the microfrontend
+Function that updates the context of the microfrontend.
 
 #### Parameters
 
@@ -510,7 +510,7 @@ Returns **void**
 
 ### sendCustomMessage
 
-Send a custom message to the microfronted
+Send a custom message to the microfronted.
 
 #### Parameters
 
@@ -531,7 +531,7 @@ Returns **void**
 
 ### closeAlert
 
-A function that notifies the microfrontend that the opened alert has been closed
+A function that notifies the microfrontend that the opened alert has been closed.
 
 #### Parameters
 
@@ -552,7 +552,7 @@ Returns **void**
 
 ### init
 
-Manually triggers the micro frontend rendering process when using defer-init attribute
+Manually triggers the micro frontend rendering process when using defer-init attribute.
 
 #### Examples
 

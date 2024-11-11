@@ -83,7 +83,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     let mediaQueries = '';
 
     if (this.config.layouts) {
-      this.config.layouts.forEach(el => {
+      this.config.layouts.forEach((el) => {
         if (el.minWidth || el.maxWidth) {
           let mq = '@media only screen ';
           if (el.minWidth != null) {
@@ -136,7 +136,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
  *
  * @param {*} rendererConfig the renderer config object defined in luigi config
  */
-export const resolveRenderer = rendererConfig => {
+export const resolveRenderer = (rendererConfig) => {
   const rendererDef = rendererConfig.use;
   if (!rendererDef) {
     return new DefaultCompoundRenderer(rendererConfig);
@@ -162,7 +162,7 @@ export const resolveRenderer = rendererConfig => {
  */
 export const registerEventListeners = (eventbusListeners, navNode, nodeId: string, wcElement?) => {
   if (navNode?.eventListeners) {
-    navNode.eventListeners.forEach(el => {
+    navNode.eventListeners.forEach((el) => {
       const evID = el.source + '.' + el.name;
       const listenerList = eventbusListeners[evID];
       const listenerInfo = {
@@ -186,7 +186,7 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId: strin
  * @param {Object} paramsMap
  * @returns
  */
-export const deSanitizeParamsMap = paramsMap => {
+export const deSanitizeParamsMap = (paramsMap) => {
   return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
     sanitizedMap[deSanitizeParam(paramPair[0])] = deSanitizeParam(paramPair[1]);
     return sanitizedMap;

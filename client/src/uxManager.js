@@ -10,7 +10,7 @@ class UxManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-    helpers.addEventListener('luigi.current-locale-changed', e => {
+    helpers.addEventListener('luigi.current-locale-changed', (e) => {
       if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
         lifecycleManager.currentContext.internal.currentLocale = e.data.currentLocale;
         lifecycleManager._notifyUpdate();
@@ -183,7 +183,7 @@ class UxManager extends LuigiClientBase {
 
     const alertPromises = this.getPromise('alerts') || {};
     alertPromises[settings.id] = {};
-    alertPromises[settings.id].promise = new Promise(resolve => {
+    alertPromises[settings.id].promise = new Promise((resolve) => {
       alertPromises[settings.id].resolveFn = resolve;
     });
     this.setPromise('alerts', alertPromises);
@@ -297,13 +297,13 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().applyCSS();
    */
   applyCSS() {
-    document.querySelectorAll('head style[luigi-injected]').forEach(luigiInjectedStyleTag => {
+    document.querySelectorAll('head style[luigi-injected]').forEach((luigiInjectedStyleTag) => {
       luigiInjectedStyleTag.remove();
     });
     const vars = lifecycleManager.currentContext?.internal?.cssVariables;
     if (vars) {
       let cssString = ':root {\n';
-      Object.keys(vars).forEach(key => {
+      Object.keys(vars).forEach((key) => {
         const val = vars[key];
         cssString += (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';
       });

@@ -327,7 +327,7 @@ const fullEslint = async (filesByExtension) => {
     console.log('Wrote eslint report to file ' + path.resolve(reportFile));
   }
   console.log(
-    "Eslint executed in ' + esLintResult.numberFiles + ' files. Results written in 'full_eslint_report.html' "
+    'Eslint executed in ' + esLintResult.numberFiles + ' files. Results written in "full_eslint_report.html"'
   );
 };
 
@@ -376,7 +376,7 @@ const getOptions = () => {
   }
 
   console.error(
-    'You need to pass application parameter -- mode=pre_commit|pre_commit-prettier|pre_commit-eslint|full|full-prettier|full-eslint'
+    'You need to pass application parameter -- mode=pre_commit|pre_commit_prettier|pre_commit_eslint|full|full-prettier|full-eslint'
   );
 })().catch((err) => {
   console.log(err);

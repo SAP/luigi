@@ -96,7 +96,7 @@ myContainer.locale = "en_us"
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### nodeParams
 
@@ -367,7 +367,7 @@ myContainer.skipInitCheck = true
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### activeFeatureToggleList
 
@@ -387,7 +387,7 @@ myContainer.activeFeatureToggleList = ["enable-foo", "allow-bar"]
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### theme
 
@@ -407,7 +407,7 @@ myContainer.theme = 'sap_horizon'
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.4.0
 
 ### updateContext
 

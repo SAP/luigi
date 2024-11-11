@@ -5,8 +5,8 @@
     if (cookies) {
       luigiCookie = cookies
         .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie == 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
       document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
@@ -16,8 +16,8 @@
     if (cookies) {
       luigiCookie = cookies
         .split(';')
-        .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie == 'luigiCookie=true');
     }
     if (luigiCookie === 'luigiCookie=true') {
       window.parent.postMessage('luigi.tpcEnabled', '*');

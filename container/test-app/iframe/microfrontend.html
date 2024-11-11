@@ -1,5 +1,5 @@
 <!-- This microfrontend HTML file is used to test a variety of functionality -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title></title>
@@ -32,7 +32,7 @@
     </style>
   </head>
 
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <body style="-webkit-font-smoothing: antialiased; color: #515559">
     <div id="imgCnt"></div>
     <div id="textCnt">
       <h1 id="title">Multi purpose demo page</h1>
@@ -60,9 +60,34 @@
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
       <button onclick="testGetToken()">test get token</button>
+
+      <button onclick="openAsModal()">test openAsModal()</button>
+      <button onclick="openAsDrawer()">test openAsDrawer()</button>
+      <button onclick="openAsSplitview()">test openAsSplitview()</button>
     </div>
+
     <script>
       // List of onclick handlers for client calls
+
+      function openAsModal() {
+        LuigiClient.linkManager().openAsModal('openAsModal-iframe', {
+          title: 'Modal Title',
+          size: 'm',
+        });
+      }
+
+      function openAsDrawer() {
+        LuigiClient.linkManager().openAsDrawer('openAsDrawer-iframe', {
+          size: 's',
+        });
+      }
+
+      function openAsSplitview() {
+        LuigiClient.linkManager().openAsDrawer('openAsSplitview-iframe', {
+          size: 'l',
+        });
+      }
+
       function testNav() {
         LuigiClient.linkManager().navigate('/');
       }
@@ -85,7 +110,7 @@
           header: 'Confirmation',
           body: 'Are you sure you want to do this?',
           buttonConfirm: 'Yes',
-          buttonDismiss: 'No'
+          buttonDismiss: 'No',
         };
         LuigiClient.uxManager().showConfirmationModal(settings);
       }
@@ -101,7 +126,7 @@
       function testGetContext() {
         LuigiClient.sendCustomMessage({
           id: 'my.contextMessage',
-          ...LuigiClient.getContext()
+          ...LuigiClient.getContext(),
         });
       }
 
@@ -110,9 +135,7 @@
       }
 
       function testSetLocalStorage() {
-        LuigiClient.storageManager()
-          .setItem('keyExample', 'valueExample')
-          .then();
+        LuigiClient.storageManager().setItem('keyExample', 'valueExample').then();
       }
 
       // this is ran only when client is initialized and an error has occurred
@@ -155,7 +178,7 @@
         // send back message with get Token value
         LuigiClient.sendCustomMessage({
           id: 'token.updated',
-          value: LuigiClient.getToken()
+          value: LuigiClient.getToken(),
         });
       }
 
@@ -174,14 +197,14 @@
             relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
             neverShowItAgain: {
               text: "Don't show this again",
-              dismissKey: 'neverShowItAgain'
-            }
+              dismissKey: 'neverShowItAgain',
+            },
           },
-          closeAfter: 300000
+          closeAfter: 300000,
         };
         LuigiClient.uxManager()
           .showAlert(settings)
-          .then(param => {
+          .then((param) => {
             console.log('Callback called on microfrontend', param);
           });
       }
@@ -213,14 +236,14 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
-      LuigiClient.addCustomMessageListener('update', msg => {
+      LuigiClient.addCustomMessageListener('update', (msg) => {
         console.log('Custom Message Received inside iframe Container', msg);
         document.getElementById('content').innerHTML =
           'Received Custom Message: ' + msg.dataToSend;
       });
 
       // fallback visibility if no initlistener called for 3 seconds
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
     </script>

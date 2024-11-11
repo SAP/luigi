@@ -133,10 +133,7 @@ describe('Web Container Test', () => {
     });
 
     it('sendCustomMessage', () => {
-      cy.get(containerSelector)
-        .shadow()
-        .find('#customMessageDiv')
-        .should('have.text', 'Received Custom Message: ');
+      cy.get(containerSelector).shadow().find('#customMessageDiv').should('have.text', 'Received Custom Message: ');
 
       cy.get('#sendCustomMessageBtn').click();
       cy.get(containerSelector)
@@ -155,6 +152,40 @@ describe('Web Container Test', () => {
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.linkManager().navigate()');
           cy.hash().should('eq', '#hello-world-wc');
+        });
+    });
+
+    it('openAsModal webcomponent container', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsModalBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsModal-wc');
+        });
+    });
+    it('openAsDrawer webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsDrawerBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsDrawer-wc');
+        });
+    });
+    it('openAsSplitview webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsSplitviewBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsSplitview-wc');
         });
     });
 
@@ -180,7 +211,7 @@ describe('Web Container Test', () => {
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.on('window:confirm', str => {
+          cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
