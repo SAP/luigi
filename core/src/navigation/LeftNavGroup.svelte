@@ -30,7 +30,7 @@
       <a
         class="fd-navigation__link"
         role="button"
-        tabindex="0"
+        tabindex="-1"
         on:click|preventDefault|stopPropagation={toggleExpanded}
         on:keyup={(event) => {
           (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();

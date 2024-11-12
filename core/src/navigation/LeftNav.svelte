@@ -663,7 +663,7 @@
                           >
                             <a
                               class="fd-navigation__link {node === selectedNode ? 'is-selected' : ''} lui-hideOnHover"
-                              tabindex="0"
+                              tabindex="-1"
                               href={getRouteLink(node)}
                               title={resolveTooltipText(node, getNodeLabel(node))}
                               on:click={(event) => {
@@ -748,7 +748,7 @@
                       <a
                         class="fd-navigation__link"
                         role="button"
-                        tabindex="0"
+                        tabindex="-1"
                         on:click|preventDefault={() =>
                           setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
                         on:keypress|preventDefault={() =>
@@ -807,7 +807,7 @@
                               data-testid={getTestIdForCat(nodes.metaInfo, key)}
                             >
                               <!-- svelte-ignore a11y-missing-attribute -->
-                              <a class="fd-navigation__link" role="button" tabindex="0">
+                              <a class="fd-navigation__link" role="button" tabindex="-1">
                                 {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
                                   {#if isOpenUIiconName(nodes.metaInfo.icon)}
                                     <span
@@ -846,7 +846,7 @@
                                     >
                                       <a
                                         class="fd-navigation__link"
-                                        tabindex="0"
+                                        tabindex="-1"
                                         href={getRouteLink(node)}
                                         on:click={(event) => {
                                           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
@@ -945,14 +945,13 @@
               aria-haspopup="menu"
               role="menuitem"
               aria-expanded="false"
-              tabindex="-1"
             >
               <!-- svelte-ignore a11y-missing-attribute -->
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <a
                 class="fd-navigation__link"
                 role="button"
-                tabindex="0"
+                tabindex="-1"
                 on:click={displayMoreButtonMenu}
                 on:keypress={(event) => {
                   (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu(event);
@@ -1021,9 +1020,7 @@
       <div class="fd-side-nav__main-navigation">
         {#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
           <div class="lui-fd-side-nav-wrapper">
-            <ul
-              class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}"
-            >
+            <ul class="{sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}">
               {#each sortedChildrenEntries as [key, nodes], index}
                 {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
                   <!-- Single nodes -->
