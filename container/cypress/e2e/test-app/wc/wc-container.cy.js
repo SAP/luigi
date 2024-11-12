@@ -133,10 +133,7 @@ describe('Web Container Test', () => {
     });
 
     it('sendCustomMessage', () => {
-      cy.get(containerSelector)
-        .shadow()
-        .find('#customMessageDiv')
-        .should('have.text', 'Received Custom Message: ');
+      cy.get(containerSelector).shadow().find('#customMessageDiv').should('have.text', 'Received Custom Message: ');
 
       cy.get('#sendCustomMessageBtn').click();
       cy.get(containerSelector)
@@ -214,7 +211,7 @@ describe('Web Container Test', () => {
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.on('window:confirm', str => {
+          cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');

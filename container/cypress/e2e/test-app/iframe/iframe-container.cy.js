@@ -11,13 +11,11 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body)
-          .contains('test navigate')
-          .click();
+        cy.wrap($body).contains('test navigate').click();
 
-        cy.location().should(loc => {
+        cy.location().should((loc) => {
           expect(loc.href).to.eq('http://localhost:8080/');
         });
       });
@@ -28,11 +26,9 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body)
-          .find('#content')
-          .should('have.text', 'Received Custom Message: some data');
+        cy.wrap($body).find('#content').should('have.text', 'Received Custom Message: some data');
       });
   });
 
@@ -42,7 +38,7 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test custom message')
@@ -65,7 +61,7 @@ describe('Iframe Container Test', () => {
         cy.get(containerSelector)
           .shadow()
           .get('iframe')
-          .then(iframe => {
+          .then((iframe) => {
             const $body = iframe.contents().find('body');
 
             cy.wrap($body)
@@ -89,7 +85,7 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test get token')
@@ -104,54 +100,48 @@ describe('Iframe Container Test', () => {
   });
 
   it('openAsModal', () => {
-    cy.on('window:confirm', () => false); 
-  
+    cy.on('window:confirm', () => false);
+
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body)
-          .contains('test openAsModal()')
-          .click();
-  
-        cy.location().should(loc => {
+        cy.wrap($body).contains('test openAsModal()').click();
+
+        cy.location().should((loc) => {
           expect(loc.hash).to.eq('#openAsModal-iframe');
         });
       });
   });
 
   it('openAsDrawer', () => {
-    cy.on('window:confirm', () => false); 
-  
+    cy.on('window:confirm', () => false);
+
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body)
-          .contains('test openAsDrawer')
-          .click();
-  
-        cy.location().should(loc => {
+        cy.wrap($body).contains('test openAsDrawer').click();
+
+        cy.location().should((loc) => {
           expect(loc.hash).to.eq('#openAsDrawer-iframe');
         });
       });
   });
 
   it('openAsSplitview', () => {
-    cy.on('window:confirm', () => false); 
-  
+    cy.on('window:confirm', () => false);
+
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body)
-          .contains('test openAsSplitview')
-          .click();
-  
-        cy.location().should(loc => {
+        cy.wrap($body).contains('test openAsSplitview').click();
+
+        cy.location().should((loc) => {
           expect(loc.hash).to.eq('#openAsSplitview-iframe');
         });
       });
