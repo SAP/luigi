@@ -653,7 +653,7 @@
                   {#each nodes as node}
                     {#if !node.hideFromNav}
                       {#if node.label}
-                        <li class="fd-navigation__list-item lui-nav-entry" aria-hidden="true">
+                        <li class="fd-navigation__list-item lui-nav-entry">
                           <div
                             class="fd-navigation__item"
                             aria-level="2"
@@ -663,7 +663,7 @@
                           >
                             <a
                               class="fd-navigation__link {node === selectedNode ? 'is-selected' : ''} lui-hideOnHover"
-                              tabindex="-1"
+                              tabindex="0"
                               href={getRouteLink(node)}
                               title={resolveTooltipText(node, getNodeLabel(node))}
                               on:click={(event) => {
@@ -729,7 +729,6 @@
                 {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
                   <li
                     class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
-                    aria-hidden="true"
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -748,7 +747,7 @@
                       <a
                         class="fd-navigation__link"
                         role="button"
-                        tabindex="-1"
+                        tabindex="0"
                         on:click|preventDefault={() =>
                           setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
                         on:keypress|preventDefault={() =>
@@ -794,7 +793,6 @@
                         <div
                           class="fd-navigation__list-wrapper
                             {isSemiCollapsed ? 'fd-popover__wrapper' : ''}"
-                          aria-hidden="true"
                         >
                           {#if isSemiCollapsed}
                             <div
@@ -807,7 +805,7 @@
                               data-testid={getTestIdForCat(nodes.metaInfo, key)}
                             >
                               <!-- svelte-ignore a11y-missing-attribute -->
-                              <a class="fd-navigation__link" role="button" tabindex="-1">
+                              <a class="fd-navigation__link" role="button" tabindex="0">
                                 {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
                                   {#if isOpenUIiconName(nodes.metaInfo.icon)}
                                     <span
@@ -834,7 +832,7 @@
                             {#each nodes as node}
                               {#if !node.hideFromNav}
                                 {#if node.label}
-                                  <li class="fd-navigation__list-item" aria-hidden="true">
+                                  <li class="fd-navigation__list-item">
                                     <div
                                       class="fd-navigation__item fd-navigation__item--child"
                                       aria-level="3"
@@ -846,7 +844,7 @@
                                     >
                                       <a
                                         class="fd-navigation__link"
-                                        tabindex="-1"
+                                        tabindex="0"
                                         href={getRouteLink(node)}
                                         on:click={(event) => {
                                           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
@@ -939,14 +937,14 @@
 
           <li class="lui-spacer" role="presentation" aria-hidden="true" />
 
-          <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
+          <li class="fd-navigation__list-item fd-navigation__list-item--overflow">
             <div class="fd-navigation__item lui-nav-more" aria-haspopup="menu" role="menuitem" aria-expanded="false">
               <!-- svelte-ignore a11y-missing-attribute -->
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <a
                 class="fd-navigation__link"
                 role="button"
-                tabindex="-1"
+                tabindex="0"
                 on:click={displayMoreButtonMenu}
                 on:keypress={(event) => {
                   (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu(event);
@@ -1136,10 +1134,7 @@
                           />
                         </button>
                       </div>
-                      <ul
-                        class="fd-nested-list fd-nested-list--text-only level-2"
-                        aria-hidden={!isExpanded(nodes, expandedCategories)}
-                      >
+                      <ul class="fd-nested-list fd-nested-list--text-only level-2">
                         {#each nodes as node}
                           {#if !node.hideFromNav}
                             {#if node.label}

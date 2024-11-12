@@ -16,7 +16,7 @@
 {#if navGroup.isSingleEntry}
   <slot />
 {:else}
-  <li class="fd-navigation__list-item" aria-hidden="true">
+  <li class="fd-navigation__list-item">
     <div
       class="fd-navigation__item fd-navigation__item--group"
       aria-level="1"
@@ -30,7 +30,7 @@
       <a
         class="fd-navigation__link"
         role="button"
-        tabindex="-1"
+        tabindex="0"
         on:click|preventDefault|stopPropagation={toggleExpanded}
         on:keyup={(event) => {
           (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
