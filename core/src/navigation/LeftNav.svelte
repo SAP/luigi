@@ -1491,6 +1491,9 @@
         padding-right: 1rem;
       }
     }
+    &:not(.lui-item-expanded) .fd-nested-list {
+      display: none;
+    }
   }
 
   .fd-nested-list__link {
