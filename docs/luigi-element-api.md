@@ -16,7 +16,7 @@ meta -->
 
 # Luigi Element
 
-This document outlines the parameters provided by the Luigi Luigi Element. The `LuigiElement` class is a base class for building web component micro frontends within the Luigi framework. It provides essential functionality for rendering and managing the lifecycle of web components.
+This document outlines the parameters provided by the Luigi Element. The `LuigiElement` class is a base class for building web component micro frontends within the Luigi framework. It provides essential functionality for rendering and managing the lifecycle of web components.
 
 ## Example Usage
 
