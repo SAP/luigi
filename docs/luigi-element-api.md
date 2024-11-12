@@ -37,7 +37,6 @@ class MyComponent extends LuigiElement {
   }
 }
 
-customElements.define('my-component', MyComponent);
 ```
 
 The html function allows for creating HTML templates with interpolated values.
