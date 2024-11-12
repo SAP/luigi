@@ -36,7 +36,6 @@ class MyComponent extends LuigiElement {
     console.log('Context updated:', ctx);
   }
 }
-
 ```
 
 The html function allows for creating HTML templates with interpolated values.
@@ -60,50 +59,6 @@ Base class for Luigi web component micro frontends.
 #### Parameters
 
 *   `options`  
-
-#### afterInit
-
-Override to execute logic after initialization of the web component, i.e.
-after internal rendering and all context data set.
-
-##### Parameters
-
-*   `ctx` **any** The context object passed by luigi core
-
-#### render
-
-Override to return the html template string defining the web component view.
-
-##### Parameters
-
-*   `ctx` **any** The context object passed by luigi core
-
-#### update
-
-Override to execute logic after an attribute of this web component has changed.
-
-#### onContextUpdate
-
-Override to execute logic when a new context object is set.
-
-##### Parameters
-
-*   `ctx` **any** The new context object passed by luigi core
-
-#### querySelector
-
-*   **See**: ParentNode.querySelector
-
-Query selector operating on shadow root.
-
-##### Parameters
-
-*   `selector`  
-
-### LuigiElement
-
-LuigiElement
-Base class for Luigi web component micro frontends.
 
 #### afterInit
 
