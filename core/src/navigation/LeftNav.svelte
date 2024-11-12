@@ -940,12 +940,7 @@
           <li class="lui-spacer" role="presentation" aria-hidden="true" />
 
           <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
-            <div
-              class="fd-navigation__item lui-nav-more"
-              aria-haspopup="menu"
-              role="menuitem"
-              aria-expanded="false"
-            >
+            <div class="fd-navigation__item lui-nav-more" aria-haspopup="menu" role="menuitem" aria-expanded="false">
               <!-- svelte-ignore a11y-missing-attribute -->
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <a
@@ -1020,7 +1015,7 @@
       <div class="fd-side-nav__main-navigation">
         {#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
           <div class="lui-fd-side-nav-wrapper">
-            <ul class="{sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}">
+            <ul class={sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}>
               {#each sortedChildrenEntries as [key, nodes], index}
                 {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
                   <!-- Single nodes -->
