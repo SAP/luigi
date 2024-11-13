@@ -1,6 +1,7 @@
 import { Helpers } from './helpers';
 import type { Luigi } from './luigi';
-import { ModalSettings, NavigationService } from './services/navigation.service';
+import { NavigationService } from './services/navigation.service';
+import type { ModalSettings } from './services/navigation.service';
 
 const createContainer = (node: any): HTMLElement => {
   const lc: any = document.createElement('luigi-container');
