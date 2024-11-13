@@ -11,3 +11,5 @@ export interface LuigiConnector {
 
   renderModal(container: HTMLElement, modalSettings: ModalSettings, onCloseCallback: Function): any;
 }
+
+export type { Node };

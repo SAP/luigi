@@ -19,9 +19,11 @@ export interface PathData {
 }
 
 export interface Node {
-  pathSegment?: string;
-  children: Node[];
-  category?: any;
+    pathSegment?: string;
+    label?: string;
+    icon?: string;
+    children: Node[];
+    category?: any;
 }
 
 export interface Category {
