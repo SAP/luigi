@@ -60,7 +60,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Check if the html head element contains the attribute "disable-tpc-check"
    * @private
-   * @memberof Lifecycle
+   * @memberof lifecycleManager
    */
   _isTpcCheckDisabled(): boolean {
     return !!(
