@@ -1,6 +1,5 @@
 import type { Luigi } from "./luigi";
 import { NavigationService } from "./services/navigation.service";
-import Title from '../../website/fiddle/public/vendor/ui5/webcomponents/Title';
 
 export class Navigation {
     luigi: Luigi;
