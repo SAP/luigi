@@ -29,6 +29,7 @@ nav:
   - API Reference: 
     - Luigi Core API: luigi-core-api.md
     - Luigi Client API: luigi-client-api.md
+    - Luigi Element API: luigi-element-api.md
   - Advanced: 
     - Advanced scenarios: advanced-scenarios.md
     - Core/Client Communication: communication.md
