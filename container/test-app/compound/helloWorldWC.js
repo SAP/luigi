@@ -13,6 +13,9 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const showAlertBtn = document.createElement('template');
+    showAlertBtn.innerHTML = '<button id="showAlert">showAlert</button>';
+
     const current_locale = document.createElement('template');
     current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
 
@@ -111,6 +114,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
+    this._shadowRoot.appendChild(showAlertBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
@@ -170,6 +174,14 @@ export default class extends HTMLElement {
         });
       }
     });
+
+    this.$showAlert = this._shadowRoot.querySelector('#showAlert');
+    this.$showAlert.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: 'uxManager().showAlert() test',
+        type: 'info'
+      });
+    })
 
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
     this.$publishEventBtn.addEventListener('click', () => {
@@ -347,7 +359,7 @@ export default class extends HTMLElement {
             type: 'info'
           });
         });
-      this.LuigiClient.linkManager().goBack();
+        this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
