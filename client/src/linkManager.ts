@@ -438,8 +438,8 @@ class linkManager extends LuigiClientBase {
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
 
     pathExistsPromises[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn: () => void) {
+      resolveFn: function () {},
+      then: function (resolveFn: () => void) {
         this.resolveFn = resolveFn;
       }
     };
@@ -562,8 +562,8 @@ class linkManager extends LuigiClientBase {
     const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
 
     currentRoutePromise[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn: () => void) {
+      resolveFn: function () {},
+      then: function (resolveFn: () => void) {
         this.resolveFn = resolveFn;
       }
     };

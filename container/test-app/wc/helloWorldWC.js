@@ -73,17 +73,31 @@ export default class extends HTMLElement {
     withParams().navigate()
     </button>`;
 
-    const linkManagerOpenAsRequestsBtn = document.createElement('template');
-    linkManagerOpenAsRequestsBtn.innerHTML = `<button id="linkManagerOpenAsRequests">linkManager().
-    openAsDrawer,
-    openAsModal,
-    openAsSplitView,
-    </button>`;
-
     const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
     linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
+
+    const goBackBtn = document.createElement('template');
+    goBackBtn.innerHTML = '<button id="goBackBtn">lm.GOBACK()</button>';
+
+    const updateTopNavigationBtn = document.createElement('template');
+    updateTopNavigationBtn.innerHTML = '<button id="updateTopNavigationBtn">lm.UPDATETOPNAV</button>';
+
+    const openAsModalBtn = document.createElement('template');
+    openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
+
+    const openAsDrawerBtn = document.createElement('template');
+    openAsDrawerBtn.innerHTML = '<button id="openAsDrawerBtn">lm.openAsDrawer</button>';
+
+    const openAsSplitviewBtn = document.createElement('template');
+    openAsSplitviewBtn.innerHTML = '<button id="openAsSplitviewBtn">lm.openAsSplitview</button>';
+
+    const navigateBtn = document.createElement('template');
+    navigateBtn.innerHTML = '<button id="navigateBtn">---navigate---</button>';
+
+    const alertBtn = document.createElement('template');
+    alertBtn.innerHTML = '<button id="alertBtn">uxManager.showAlert()</button';
 
     const navigateToIntentBtn = document.createElement('template');
     navigateToIntentBtn.innerHTML = '<button id="navigateToIntent">navigateToIntent</button>';
@@ -113,13 +127,20 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+
+    this._shadowRoot.appendChild(goBackBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateTopNavigationBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(navigateBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(alertBtn.content.cloneNode(true));
+
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateToIntentBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
-
     this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -251,21 +272,11 @@ export default class extends HTMLElement {
       const path = 'hello-world-wc';
       const ctx = { ctx: 123 };
 
-      this.LuigiClient.linkManager()
-        .fromContext(ctx)
-        .navigate();
-      this.LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromVirtualTreeRoot()
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .fromParent(ctx)
-        .navigate(path);
-      this.LuigiClient.linkManager()
-        .withParams('my-params')
-        .navigate(path);
+      this.LuigiClient.linkManager().fromContext(ctx).navigate();
+      this.LuigiClient.linkManager().fromClosestContext().navigate(path);
+      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate(path);
+      this.LuigiClient.linkManager().fromParent(ctx).navigate(path);
+      this.LuigiClient.linkManager().withParams('my-params').navigate(path);
       this.LuigiClient.linkManager().navigate(path);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.linkManager().navigate()',
@@ -273,17 +284,42 @@ export default class extends HTMLElement {
       });
     });
 
-    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
-    this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', {
-        size: 's'
-      });
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc', {
+    this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
+    this.$openAsModalBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
+        title: 'Modal Title',
         size: 'm'
       });
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', {
+    });
+    this.$openAsDrawerBtn = this._shadowRoot.querySelector('#openAsDrawerBtn');
+    this.$openAsDrawerBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsDrawer('openAsDrawer-wc', {
+        size: 's'
+      });
+    });
+    this.$openAsSplitviewBtn = this._shadowRoot.querySelector('#openAsSplitviewBtn');
+    this.$openAsSplitviewBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsSplitView('openAsSplitview-wc', {
         size: 'l'
       });
+    });
+
+    this.$alertBtn = this._shadowRoot.querySelector('#alertBtn');
+    this.$alertBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: 'showAlert test',
+        type: 'info'
+      });
+    });
+
+    this.$navigateBtn = this._shadowRoot.querySelector('#navigateBtn');
+    this.$navigateBtn.addEventListener('click', () => {
+      const path = 'AAA.html';
+      const modalSettings = {
+        title: 'Modal Title',
+        size: 'm'
+      };
+      this.LuigiClient.linkManager().navigate(path, 0, true, modalSettings);
     });
 
     this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
@@ -291,7 +327,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().updateTopNavigation();
       this.LuigiClient.linkManager()
         .pathExists()
-        .then(result => {
+        .then((result) => {
           console.log('PATH EXISTS');
           this.LuigiClient.uxManager().showAlert({
             text:
@@ -305,6 +341,19 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().goBack();
     });
 
+    this.$goBackBtn = this._shadowRoot.querySelector('#goBackBtn');
+    this.$goBackBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().goBack();
+      console.log('goBack() CLICKED');
+    });
+
+    this.$updateTopNavigationBtn = this._shadowRoot.querySelector('#updateTopNavigationBtn');
+    this.$updateTopNavigationBtn.addEventListener('click', () => {
+      console.log('updateTopNavigation() CLICKED 1');
+      this.LuigiClient.linkManager().updateTopNavigationBtn();
+      console.log('updateTopNavigation() CLICKED 2');
+    });
+
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
@@ -314,7 +363,7 @@ export default class extends HTMLElement {
     this.$getCurrentRoute.addEventListener('click', () => {
       this.LuigiClient.linkManager()
         .getCurrentRoute()
-        .then(result => {
+        .then((result) => {
           console.log(result);
           alert('current route: ' + result);
         });
@@ -328,7 +377,7 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', event => {
+    this.addEventListener('custom-message-id', (event) => {
       console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;

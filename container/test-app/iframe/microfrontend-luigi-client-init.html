@@ -1,0 +1,41 @@
+<!-- This microfrontend HTML file is used to test luigi-client-init functionality -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luigi Client Init Test</title>
+    <script src="./luigi-client.js"></script>
+    <script>
+      setTimeout(() => testIsLuigiClientInitialized(), 2000);
+
+      function testLuigiClientInit() {
+        LuigiClient.luigiClientInit();
+      }
+
+      function testIsLuigiClientInitialized() {
+        const isInitialized = LuigiClient.isLuigiClientInitialized();
+        console.log('isInitialized: ' + isInitialized);
+        if (document.getElementById('luigiClientStatus')) {
+          document.getElementById('luigiClientStatus').innerText =
+            `Luigi Client Initialized: ${isInitialized}`;
+        }
+        return isInitialized;
+      }
+    </script>
+  </head>
+  <body style="border: solid green 2px">
+    <div>
+      <h1>Luigi Client Init Test for Iframes</h1>
+      <button id="testLuigiClientInitButton" onclick="testLuigiClientInit()">
+        Test luigiClientInit
+      </button>
+      <button
+        id="testIsLuigiClientInitializedButton"
+        onclick="testIsLuigiClientInitialized()"
+      >
+        Test isLuigiClientInitialized
+      </button>
+      <p id="luigiClientStatus">Luigi Client Initialized: Unknown</p>
+    </div>
+  </body>
+</html>

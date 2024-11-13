@@ -47,9 +47,9 @@
           splitViewWCData
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'splitViewSettings') {
               splitViewSettings = obj.splitViewSettings;
             } else if (prop === 'lastNode') {
@@ -246,14 +246,14 @@
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
 
-  const setDraggerVisibility = visible => {
+  const setDraggerVisibility = (visible) => {
     let dragger = SplitViewSvc.getDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
     dragger = SplitViewSvc.getCollapsedDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
   };
 
-  const backdropStateChanged = event => {
+  const backdropStateChanged = (event) => {
     setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
   };
 </script>

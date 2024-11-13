@@ -99,7 +99,7 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showConfirmationModal(settings: ConfirmationModalSettings): Promise<void> {
-    helpers.addEventListener('luigi.ux.confirmationModal.hide', (event, listenerId) => {
+    helpers.addEventListener('luigi.ux.confirmationModal.hide', (event: any, listenerId: string) => {
       this.hideConfirmationModal(event.data.data);
       helpers.removeEventListener(listenerId);
     });
@@ -174,7 +174,7 @@ class UxManager extends LuigiClientBase {
     // generate random ID
     settings.id = helpers.getRandomId().toString();
 
-    helpers.addEventListener('luigi.ux.alert.hide', (event, listenerId) => {
+    helpers.addEventListener('luigi.ux.alert.hide', (event: any, listenerId: string) => {
       if (event.data.id === settings.id) {
         this.hideAlert(event.data);
         helpers.removeEventListener(listenerId);
@@ -194,7 +194,7 @@ class UxManager extends LuigiClientBase {
     const alertPromises = this.getPromise('alerts') || {};
 
     alertPromises[settings.id] = {};
-    alertPromises[settings.id].promise = new Promise(resolve => {
+    alertPromises[settings.id].promise = new Promise((resolve) => {
       alertPromises[settings.id].resolveFn = resolve;
     });
     this.setPromise('alerts', alertPromises);
@@ -310,7 +310,7 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().applyCSS();
    */
   applyCSS(): void {
-    document.querySelectorAll('head style[luigi-injected]').forEach(luigiInjectedStyleTag => {
+    document.querySelectorAll('head style[luigi-injected]').forEach((luigiInjectedStyleTag) => {
       luigiInjectedStyleTag.remove();
     });
 
@@ -319,7 +319,7 @@ class UxManager extends LuigiClientBase {
     if (vars) {
       let cssString = ':root {\n';
 
-      Object.keys(vars).forEach(key => {
+      Object.keys(vars).forEach((key) => {
         const val = vars[key];
 
         cssString += (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';

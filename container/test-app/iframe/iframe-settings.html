@@ -9,7 +9,7 @@
       This page is used to test Container Luigi CLient API functionalities for web
       component based microfrontend
     </h3>
-    <button id="init-button">container.init() defer-init enabled</button>
+    <button id="defer-init-button">container.init() defer-init enabled</button>
     <button id="sandbox-rules">Set sandboxRules</button>
     <button id="set-allow-rules-button">Set allowRules</button>
 
@@ -41,13 +41,21 @@
       ></luigi-container>
     </div>
 
+    <!-- Luigi Container to test luigi client init  -->
+    <div style="border: solid 1px red; height: 150px">
+      <luigi-container
+        id="luigi-client-init"
+        viewURL="./microfrontend-luigi-client-init.html"
+      ></luigi-container>
+    </div>
+
     <script type="module">
       import Events from '../bundle.js';
 
       const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
+      const deferInitButton = document.getElementById('defer-init-button');
 
-      initButton.addEventListener('click', function() {
+      deferInitButton.addEventListener('click', function () {
         deferInitContainer.init();
       });
 
@@ -60,11 +68,11 @@
       const allowRulesContainer = document.getElementById('allow-rules-test');
       const setAllowRulesButton = document.getElementById('set-allow-rules-button');
 
-      initButton.addEventListener('click', () => {
+      deferInitButton.addEventListener('click', () => {
         deferInitContainer.allowRules = [
           'microphone',
           "camera 'none'",
-          "geolocation 'self' https://a.example.com https://b.example.com"
+          "geolocation 'self' https://a.example.com https://b.example.com",
         ];
       });
     </script>

@@ -42,48 +42,44 @@
   let isContextSwitcherDropdownShown;
 
   onMount(async () => {
-    StateHelpers.doOnStoreChange(
-      store,
-      async () => {
-        const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
-        contextSwitcherEnabled = !!contextSwitcherConfig;
-        if (!contextSwitcherEnabled) {
-          return;
+    StateHelpers.doOnStoreChange(store, async () => {
+      const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+      contextSwitcherEnabled = !!contextSwitcherConfig;
+      if (!contextSwitcherEnabled) {
+        return;
+      }
+
+      customOptionsRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
+        ? contextSwitcherConfig.customOptionsRenderer
+        : undefined;
+
+      customSelectedOptionRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customSelectedOptionRenderer)
+        ? contextSwitcherConfig.customSelectedOptionRenderer
+        : undefined;
+      config = contextSwitcherConfig;
+      options = undefined;
+      if (contextSwitcherConfig) {
+        alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
+        actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
+        const currentPath = Routing.getCurrentPath();
+
+        fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
+
+        ContextSwitcherHelpers.resetFallbackLabelCache();
+
+        // options are loaded lazy by default
+        if (!contextSwitcherConfig.lazyloadOptions) {
+          await fetchOptions();
         }
-
-        customOptionsRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
-          ? contextSwitcherConfig.customOptionsRenderer
-          : undefined;
-
-        customSelectedOptionRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customSelectedOptionRenderer)
-          ? contextSwitcherConfig.customSelectedOptionRenderer
-          : undefined;
-        config = contextSwitcherConfig;
-        options = undefined;
-        if (contextSwitcherConfig) {
-          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
-          actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
-          const currentPath = Routing.getCurrentPath();
-
-          fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
-
-          ContextSwitcherHelpers.resetFallbackLabelCache();
-
-          // options are loaded lazy by default
-          if (!contextSwitcherConfig.lazyloadOptions) {
-            await fetchOptions();
-          }
-          if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
-            await setSelectedContext(currentPath);
-          }
+        if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
+          await setSelectedContext(currentPath);
         }
-      },
-      ['navigation.contextSwitcher']
-    );
+      }
+    }, ['navigation.contextSwitcher']);
 
-    RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
+    RoutingHelpers.addRouteChangeListener((path) => setSelectedContext(path));
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
       if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
         options = null;

@@ -6,10 +6,11 @@
   </head>
   <body>
     <h3>
-      This page is used to test  **skip-cookie-check** feature for iFrame based LuigiContainer
+      This page is used to test **skip-cookie-check** feature for iFrame based
+      LuigiContainer
     </h3>
 
-    <div style="border:solid 1px blue; height: 400px">
+    <div style="border: solid 1px blue; height: 400px">
       <!-- Luigi Container to test general functionality-->
       <luigi-container
         data-test-id="iframe-based-container-test"
@@ -22,15 +23,15 @@
       import Events from '../bundle.js';
 
       const luigiContainer = document.querySelector(
-        '[data-test-id="iframe-based-container-test"]'
+        '[data-test-id="iframe-based-container-test"]',
       );
 
       // SET_THIRD_PARTY_COOKIES_REQUEST - called on microfrontend startup
-      luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, (event) => {
         console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
         alert(
           Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data.data)
+          'message received: ' + JSON.stringify(event.detail.data.data),
         );
       });
     </script>

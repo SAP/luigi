@@ -19,7 +19,6 @@ class LifecycleManager extends LuigiClientBase {
   currentContext!: Context;
   private authData: AuthData;
   private defaultContextKeys: string[];
-  private disableTpcCheck: boolean;
   private luigiInitialized: boolean;
   private _onContextUpdatedFns: Record<any, any>;
   private _onInactiveFns: Record<any, any>;
@@ -28,8 +27,6 @@ class LifecycleManager extends LuigiClientBase {
   /** @private */
   constructor() {
     super();
-
-    this.disableTpcCheck = false;
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
 
@@ -58,6 +55,18 @@ class LifecycleManager extends LuigiClientBase {
    */
   _isDeferInitDefined(): boolean {
     return window.document.head.hasAttribute('defer-luigi-init');
+  }
+
+  /**
+   * Check if the html head element contains the attribute "disable-tpc-check"
+   * @private
+   * @memberof Lifecycle
+   */
+  _isTpcCheckDisabled(): boolean {
+    return !!(
+      window.document.head.hasAttribute('disable-tpc-check') ||
+      (this.currentContext.internal as Record<string, any>)['thirdPartyCookieCheck']?.disabled
+    );
   }
 
   /**
@@ -172,7 +181,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   _tpcCheck(): void {
-    if ((this.currentContext.internal as Record<string, any>)['thirdPartyCookieCheck']?.disabled || this.disableTpcCheck) {
+    if (this._isTpcCheckDisabled()) {
       return;
     }
 
@@ -271,8 +280,11 @@ class LifecycleManager extends LuigiClientBase {
   addInitListener(initFn: (context: Context, origin?: string) => void, disableTpcCheck: boolean): number {
     const id: number = helpers.getRandomId();
 
-    this.disableTpcCheck = disableTpcCheck;
     this._onInitFns[`${id}`] = initFn;
+
+    if (disableTpcCheck) {
+      document.head.setAttribute('disable-tpc-check', 'true');
+    }
 
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context as Record<string, any>, helpers.getLuigiCoreDomain());

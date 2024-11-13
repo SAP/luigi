@@ -15,14 +15,14 @@
   </head>
   <body>
     <h3>
-      This page is used to test Compound-Container Luigi CLient API functionalities for
+      This page is used to test Compound-Container Luigi Client API functionalities for
       compound web component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
 
     <!-- base scenario compound container-->
     <span>Below is a compound container example for testing functionality</span>
-    <div style="border:solid 1px blue">
+    <div style="border: solid 1px blue">
       <luigi-compound-container
         data-test-id="luigi-client-api-test-compound-01"
         id="dashboard"
@@ -42,11 +42,24 @@
       ></luigi-compound-container>
     </div>
 
+    <!-- luigi-client-init scenario wc container-->
+    <button id="luigi-client-init-button" style="margin: 25px 0 10px">
+      this.LuigiClient.luigiClientInit();
+    </button>
+    <div style="border: solid 1px red; height: 100px">
+      <luigi-compound-container
+        id="luigi-client-init-test"
+        webcomponent="true"
+        context='{"content":" -- luigi-client-init-test --"}'
+        defer-init="false"
+      ></luigi-compound-container>
+    </div>
+
     <!-- defer-init scenario wc container-->
-    <button id="init-button" style="margin: 25px 0 10px;">
+    <button id="defer-init-button" style="margin: 25px 0 10px">
       container.init() - click to initialize defered compound wc
     </button>
-    <div style="border:solid 1px red; height: 100px;">
+    <div style="border: solid 1px red; height: 100px">
       <luigi-compound-container
         id="defer-init-test"
         webcomponent="true"
@@ -63,7 +76,7 @@
 
       const compoundContainer = document.getElementById('dashboard');
 
-      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
+      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
         console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
 
@@ -77,94 +90,94 @@
                 minWidth: 0,
                 maxWidth: 600,
                 columns: '1fr',
-                gap: 0
+                gap: 0,
               },
               {
                 minWidth: 600,
                 maxWidth: 1024,
                 columns: '1fr 1fr',
-                gap: '30px'
-              }
-            ]
-          }
+                gap: '30px',
+              },
+            ],
+          },
         },
         children: [
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js',
             context: {
               title: 'My Awesome Grid 000',
-              description: 'Really awesome'
+              description: 'Really awesome',
             },
             layoutConfig: {
               row: '1',
-              column: '1 / -1'
+              column: '1 / -1',
             },
             eventListeners: [
               {
                 source: 'input1',
                 name: 'sendInput',
                 action: 'update',
-                dataConverter: data => {
+                dataConverter: (data) => {
                   console.log(
-                    'dataConverter(): Received Custom Message from "input1" MF ' + data
+                    'dataConverter(): Received Custom Message from "input1" MF ' + data,
                   );
                   return 'new text: ' + data;
-                }
-              }
-            ]
+                },
+              },
+            ],
           },
           {
             id: 'input1',
             viewUrl: './compound/helloWorldWC.js',
             context: {
               title: 'Some input',
-              instant: true
-            }
+              instant: true,
+            },
           },
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
             context: {
-              label: 'Another web component'
-            }
+              label: 'Another web component',
+            },
           },
           {
             id: 'timerMFE',
             viewUrl: 'https://luigiwebcomponents.gitlab.io/util/timer.js',
             context: {
               min: 2,
-              fontScale: '0.5'
-            }
+              fontScale: '0.5',
+            },
           },
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
             context: {
-              label: 'My Label'
-            }
+              label: 'My Label',
+            },
           },
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelFooter.js',
             context: {
-              footer: 'This is the end of awesomeness'
+              footer: 'This is the end of awesomeness',
             },
             layoutConfig: {
-              column: '1 / -1'
-            }
-          }
-        ]
+              column: '1 / -1',
+            },
+          },
+        ],
       };
 
       compoundContainer.init();
-      compoundContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
       });
-      compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
         console.log(event.detail);
         alert(event.detail.text);
       });
       compoundContainer.addEventListener(
         MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
-        event => {
+        (event) => {
           const data = event.detail;
           console.log(data);
           const val = confirm(data.body);
@@ -173,9 +186,9 @@
           if (event.callback) {
             event.callback(val);
           }
-        }
+        },
       );
-      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
         if (event.detail.id !== 'timer') {
           alert(event.detail.id);
         }
@@ -183,48 +196,57 @@
 
       compoundContainer.addEventListener(
         MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
-        event => {
+        (event) => {
           console.log(event.detail);
-        }
+        },
       );
-      compoundContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, (event) => {
         const params = event.detail.params;
         console.log('params', params);
       });
-      compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
         console.log('anchor', event.detail);
       });
-      compoundContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, event => {
-        console.log('Open User Settings Request received', event.detail);
-        alert('LuigiClient.uxManager().openUserSettings()');
-      });
-      compoundContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
-        console.log('Close User Settings Request received', event.detail);
-        alert('LuigiClient.uxManager().closeUserSettings()');
-      });
-      compoundContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
+      compoundContainer.addEventListener(
+        MFEventID.OPEN_USER_SETTINGS_REQUEST,
+        (event) => {
+          console.log('Open User Settings Request received', event.detail);
+          alert('LuigiClient.uxManager().openUserSettings()');
+        },
+      );
+      compoundContainer.addEventListener(
+        MFEventID.CLOSE_USER_SETTINGS_REQUEST,
+        (event) => {
+          console.log('Close User Settings Request received', event.detail);
+          alert('LuigiClient.uxManager().closeUserSettings()');
+        },
+      );
+      compoundContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, (event) => {
         console.log('Remove Backdrop Request received', event.detail);
         alert('LuigiClient.uxManager().removeBackdrop()');
       });
-      compoundContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, (event) => {
         console.log('Collapse Left Side Nav Request received', event.detail);
         alert('LuigiClient.uxManager().collapseLeftSideNav()');
       });
-      compoundContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
-        console.log('Set Document Title Request received', event.detail);
-        compoundContainer.documentTitle = event.detail;
-      });
+      compoundContainer.addEventListener(
+        MFEventID.SET_DOCUMENT_TITLE_REQUEST,
+        (event) => {
+          console.log('Set Document Title Request received', event.detail);
+          compoundContainer.documentTitle = event.detail;
+        },
+      );
       compoundContainer.addEventListener(
         MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
-        event => {
+        (event) => {
           console.log('Hide Loading Indicator Request received', event.detail);
           alert('LuigiClient.uxManager().hideAppLoadingIndicator()');
-        }
+        },
       );
 
       // linkManager listeners:
       // path exists
-      compoundContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
         console.log('Path Exists Request received', event.detail, event);
         // send back result with defined 'callback'
         // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
@@ -232,14 +254,17 @@
       });
 
       // setViewGroup Data listener
-      compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
-        console.log('Set View Group Data Request received', event.detail, event);
-        alert(JSON.stringify(event.detail));
-      });
+      compoundContainer.addEventListener(
+        MFEventID.SET_VIEW_GROUP_DATA_REQUEST,
+        (event) => {
+          console.log('Set View Group Data Request received', event.detail, event);
+          alert(JSON.stringify(event.detail));
+        },
+      );
 
       const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
-      initButton.addEventListener('click', function() {
+      const deferInitButton = document.getElementById('defer-init-button');
+      deferInitButton.addEventListener('click', function () {
         deferInitContainer.init();
       });
       deferInitContainer.compoundConfig = {
@@ -247,17 +272,39 @@
           use: 'grid',
           config: {
             columns: '1fr 1fr',
-            gap: '20px'
-          }
+            gap: '20px',
+          },
         },
         children: [
           {
-            viewUrl: './compound/defer-init-wc/compoundWCDeferInit1.js'
+            viewUrl: './compound/defer-init-wc/compoundWCDeferInit1.js',
           },
           {
-            viewUrl: './compound/defer-init-wc/compoundWCDeferInit2.js'
-          }
-        ]
+            viewUrl: './compound/defer-init-wc/compoundWCDeferInit2.js',
+          },
+        ],
+      };
+
+      const luigiClientInitContainer = document.getElementById('luigi-client-init-test');
+      const luigiClientInitButton = document.getElementById('luigi-client-init-button');
+      luigiClientInitButton.addEventListener('click', function () {
+        console.log('luigi-client-init');
+        luigiClientInitContainer.init();
+      });
+
+      luigiClientInitContainer.compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr',
+            gap: '20px',
+          },
+        },
+        children: [
+          {
+            viewUrl: './compound/luigi-client-init-wc/luigi-client-init-wc.js',
+          },
+        ],
       };
 
       document.querySelector('#luigi-update-context').addEventListener('click', () => {

@@ -33,11 +33,11 @@
   let modalElementClassSelector;
   let store = getContext('store');
 
-  const getNodeLabel = node => {
+  const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
   };
 
-  const prepareNodeData = async path => {
+  const prepareNodeData = async (path) => {
     const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     nodeParams = RoutingHelpers.getNodeParams(params);
@@ -78,7 +78,7 @@
     isDataPrepared = true;
   };
 
-  const getNode = async path => {
+  const getNode = async (path) => {
     if (iframeCreated || wcCreated) {
       return;
     }
@@ -205,7 +205,7 @@
     getNode(nodepath);
   });
 
-  const onMessage = async e => {
+  const onMessage = async (e) => {
     if ('luigi.show-loading-indicator' === e.data.msg) {
       showLoadingIndicator = true;
     }
@@ -248,15 +248,11 @@
   };
 
   onMount(() => {
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        if (settings._liveLabel && nodeObject) {
-          settings.title = getNodeLabel(nodeObject);
-        }
-      },
-      ['navigation.viewgroupdata']
-    );
+    StateHelpers.doOnStoreChange(store, () => {
+      if (settings._liveLabel && nodeObject) {
+        settings.title = getNodeLabel(nodeObject);
+      }
+    }, ['navigation.viewgroupdata']);
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
@@ -305,7 +301,11 @@
   style={isModal ? 'z-index:1001' : ''}
 >
   <div
-    class="fd-dialog__content {isDrawer ? (settings.backdrop ? 'drawer drawer-dialog__content drawer__backdrop' : 'drawer drawer-dialog__content') : 'lui-modal-mf lui-modal-index-' + modalIndex}"
+    class="fd-dialog__content {isDrawer
+      ? settings.backdrop
+        ? 'drawer drawer-dialog__content drawer__backdrop'
+        : 'drawer drawer-dialog__content'
+      : 'lui-modal-mf lui-modal-index-' + modalIndex}"
     data-testid={isModal ? 'modal-mf' : 'drawer-mf'}
     role="dialog"
     aria-modal="true"
@@ -327,7 +327,9 @@
               class="fd-button fd-button--transparent fd-button--compact"
               on:click={() => dispatch('close', { activeDrawer: false })}
               aria-label="close"
-              data-testid={settings.closebtn_data_testid && isModal ? settings.closebtn_data_testid : 'lui-modal-index-' + modalIndex}
+              data-testid={settings.closebtn_data_testid && isModal
+                ? settings.closebtn_data_testid
+                : 'lui-modal-index-' + modalIndex}
             >
               <i class="sap-icon sap-icon--decline" />
             </button>
