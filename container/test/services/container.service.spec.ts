@@ -25,7 +25,7 @@ describe('getContainerManager messageListener', () => {
             contentWindow: cw
           }
         },
-        dispatchEvent: customEvent => {
+        dispatchEvent: (customEvent) => {
           dispatchedEvent = customEvent;
         }
       };
@@ -508,7 +508,7 @@ describe('dispatch', () => {
     targetContainer.dispatchEvent = jest.fn();
 
     // Define a callback function
-    const callbackFunction = data => {
+    const callbackFunction = (data) => {
       // This function should not be called in this test
     };
 

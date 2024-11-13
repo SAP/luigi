@@ -1,0 +1,30 @@
+<body>
+  <script>
+    let cookies = document.cookie;
+    let luigiCookie;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
+    }
+    document.cookie = 'luigiCookie=true; SameSite=None; Secure';
+    cookies = document.cookie;
+    if (cookies) {
+      luigiCookie = cookies
+        .split(';')
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie == 'luigiCookie=true');
+    }
+    if (luigiCookie === 'luigiCookie=true') {
+      window.parent.postMessage('luigi.tpcEnabled', '*');
+      document.cookie = 'luigiCookie=; Max-Age=-99999999; SameSite=None; Secure';
+    } else {
+      window.parent.postMessage('luigi.tpcDisabled', '*');
+      console.warn('Third party cookies are not supported!');
+    }
+  </script>
+</body>

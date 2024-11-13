@@ -118,9 +118,7 @@ describe('Compound Container Tests', () => {
     });
 
     it('LuigiClient API - getSkipInitCheck', () => {
-      cy.get(containerSelector)
-        .invoke('attr', 'skip-init-check')
-        .should('eq', 'true');
+      cy.get(containerSelector).invoke('attr', 'skip-init-check').should('eq', 'true');
     });
 
     it('LuigiClient API - getActiveFeatureToggles', () => {
@@ -188,7 +186,7 @@ describe('Compound Container Tests', () => {
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.on('window:confirm', str => {
+          cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
@@ -217,11 +215,45 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('openAsModal webcomponent container', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsModalBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsModal-wc');
+        });
+    });
+    it('openAsDrawer webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsDrawerBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsDrawer-wc');
+        });
+    });
+    it('openAsSplitview webcomponent container', () => {
+      cy.on('window:alert', stub);
+      
+      cy.get(containerSelector)
+        .shadow()
+        .get('#openAsSplitviewBtn')
+        .click()
+        .then(() => {
+          cy.hash().should('eq', '#openAsSplitview-wc');
+        });
+    });
+
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
       // Set up a spy on console.log
-      cy.window().then(win => {
+      cy.window().then((win) => {
         cy.spy(win.console, 'log').as('consoleLogSpy');
       });
 

@@ -46,6 +46,7 @@
             }
           }
         }
+
         getNoShadow() {
           return this.hasAttribute('no-shadow') || this.noShadow;
         }
@@ -75,7 +76,7 @@
   export let hasBack: boolean;
   export let label: string;
   export let locale: string;
-  export let noShadow: Boolean;
+  export let noShadow: boolean;
   export let nodeParams: any;
   export let pathParams: any;
   export let sandboxRules: string[];
@@ -86,13 +87,8 @@
   export let viewurl: string;
   export let webcomponent: any;
 
-  const iframeHandle:
-    | {
-        iframe: HTMLIFrameElement;
-      }
-    | any = {};
+  const iframeHandle: { iframe: HTMLIFrameElement } | any = {};
   let mainComponent: HTMLElement;
-
   let containerInitialized = false;
 
   const webcomponentService = new WebComponentService();
@@ -154,7 +150,7 @@
           const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
         } else {
-          //removing mainComponent
+          // removing mainComponent
           thisComponent.innerHTML = '';
         }
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
@@ -166,7 +162,7 @@
         );
       } else {
         if (!thisComponent.getNoShadow()) {
-          //removeing mainComponent
+          // removeing mainComponent
           thisComponent.innerHTML = '';
           const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
