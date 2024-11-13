@@ -276,7 +276,7 @@ class linkManager extends LuigiClientBase {
   openAsSplitView(path: string, splitViewSettings = {}): SplitViewInstance {
     this.navigate(path, '0', true, undefined, splitViewSettings);
 
-    return (new splitViewHandle(splitViewSettings) as unknown) as SplitViewInstance;
+    return new splitViewHandle(splitViewSettings) as unknown as SplitViewInstance;
   }
 
   /**
@@ -328,8 +328,8 @@ class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext(): LinkManager {
-    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext?.context?.parentNavigationContexts
-      ?.length;
+    const hasParentNavigationContext: boolean =
+      !!_lifecycleManager.currentContext?.context?.parentNavigationContexts?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;

@@ -168,7 +168,7 @@ describe('Web Container Test', () => {
     });
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -179,7 +179,7 @@ describe('Web Container Test', () => {
     });
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')
