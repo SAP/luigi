@@ -1,4 +1,4 @@
-import type { LeftNavData, Node, TopNavData } from "../services/navigation.service";
+import type { ModalSettings, LeftNavData, Node, TopNavData } from "../services/navigation.service";
 
 export interface LuigiConnector {
     renderMainLayout(): void;
@@ -9,5 +9,5 @@ export interface LuigiConnector {
 
     getContainerWrapper(): HTMLElement;
 
-    renderModal(container: HTMLElement, modalSettings: any): any;
+    renderModal(container: HTMLElement, modalSettings: ModalSettings, onCloseCallback): any;
 }

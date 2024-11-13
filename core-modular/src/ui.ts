@@ -1,6 +1,6 @@
 import { Helpers } from "./helpers";
 import type { Luigi } from "./luigi";
-import { NavigationService } from "./services/navigation.service";
+import { ModalSettings, NavigationService } from "./services/navigation.service";
 
 const createContainer = (node: any): HTMLElement => {
     const lc: any = document.createElement('luigi-container');
@@ -39,8 +39,8 @@ export const UI = {
             containerWrapper?.appendChild(createContainer(currentNode));
         }
     },
-    openModal: (luigi: Luigi, node: any, modalSettings: any /* TODO: type */, onCloseCallback: Function) => {
+    openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
         const lc = createContainer(node);
-        const modalHandle = luigi._connector?.renderModal(lc, modalSettings);
+        const modalHandle = luigi._connector?.renderModal(lc, modalSettings, onCloseCallback);
     }
 }

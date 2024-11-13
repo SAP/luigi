@@ -1,5 +1,5 @@
 import type { Luigi } from "./luigi";
-import { NavigationService } from "./services/navigation.service";
+import { ModalSettings, NavigationService } from "./services/navigation.service";
 
 export class Navigation {
     luigi: Luigi;
@@ -21,7 +21,7 @@ export class Navigation {
         }
     };
 
-    openAsModal = (path: string, modalSettings: any /* TODO: type */, onCloseCallback: Function) => {        
+    openAsModal = (path: string, modalSettings: ModalSettings, onCloseCallback: Function) => {        
         const normalizedPath = path.replace(/\/\/+/g, '/');
         const node = this.navService.getCurrentNode(normalizedPath);
         const settings = modalSettings || {};

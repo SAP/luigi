@@ -37,6 +37,14 @@ export interface NavItem {
     selected?: boolean;
 }
 
+export interface ModalSettings {
+    size?: 'fullscreen' | 'l' | 'm' | 's';
+    width?: string;
+    height?: string;
+    title?: string;
+    closebtn_data_testid?: string;
+}
+
 export class NavigationService {
     constructor(private luigi: Luigi) {}
     
