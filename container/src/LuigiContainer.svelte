@@ -1,6 +1,6 @@
 <svelte:options
   customElement={{
-    tag: null,
+    tag: '',
     shadow: 'none',
     props: {
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
