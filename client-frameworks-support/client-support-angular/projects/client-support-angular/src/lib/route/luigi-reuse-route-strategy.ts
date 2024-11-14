@@ -11,7 +11,7 @@ export class LuigiReuseRouteStrategy extends LuigiRouteStrategy {
     let shouldReuse = false;
     console.debug('checking if this route should be re used or not', route);
     if (route.routeConfig.data) {
-      route.routeConfig.data.reuse ? (shouldReuse = true) : (shouldReuse = false);
+      shouldReuse = !!route.routeConfig.data.reuse;
     }
 
     return shouldReuse;
@@ -32,7 +32,7 @@ export class LuigiReuseRouteStrategy extends LuigiRouteStrategy {
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
     super.retrieve(route);
     if (!route.routeConfig || route.routeConfig.loadChildren) {
-      return (null as unknown) as DetachedRouteHandle;
+      return null as unknown as DetachedRouteHandle;
     }
 
     return this.handlers[this.getUrl(route)];
@@ -49,6 +49,6 @@ export class LuigiReuseRouteStrategy extends LuigiRouteStrategy {
       console.debug('returning url', url);
       return url as string;
     }
-    return (null as unknown) as string;
+    return null as unknown as string;
   }
 }

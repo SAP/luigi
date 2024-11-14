@@ -44,7 +44,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    * Get a promise that resolves when context is set.
    */
   public getContextAsync(): Promise<Context> {
-    return new Promise<Context>((resolve, reject) => {
+    return new Promise<Context>((resolve) => {
       const context: Context = this.getContext();
 
       if (this.isObject(context) && Object.keys(context)?.length) {
@@ -62,7 +62,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    * @param objectToCheck mixed
    * @returns {boolean}
    */
-  private isObject(objectToCheck: any): boolean {
+  private isObject(objectToCheck: Context | undefined): boolean {
     return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
   }
 
