@@ -1134,7 +1134,10 @@
                           />
                         </button>
                       </div>
-                      <ul class="fd-nested-list fd-nested-list--text-only level-2">
+                      <ul
+                        class="fd-nested-list fd-nested-list--text-only level-2"
+                        aria-hidden={!isExpanded(nodes, expandedCategories)}
+                      >
                         {#each nodes as node}
                           {#if !node.hideFromNav}
                             {#if node.label}
@@ -1490,9 +1493,6 @@
       .fd-nested-list__link {
         padding-right: 1rem;
       }
-    }
-    &:not(.lui-item-expanded) .fd-nested-list {
-      display: none;
     }
   }
 
