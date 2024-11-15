@@ -30,7 +30,8 @@
     "build": "vite build",
     "bundle-develop": "vite build --watch",
     "bundle": "npm run build",
-    "simpledev": "node ./dev-tools/simpledev.mjs"
+    "simpledev": "node ./dev-tools/simpledev.mjs",
+    "release": "sh ../../tmp_release.sh"
   },
   "repository": {
     "type": "git",
