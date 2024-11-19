@@ -15,6 +15,7 @@
         color: #515559;
       }
     </style>
+    <script src="./public_client/luigi-client.js"></script>
   </head>
 
   <body>
@@ -26,6 +27,9 @@
       let div = document.createElement('div');
       div.innerHTML = location.hash;
       document.body.appendChild(div);
+      window.addEventListener('hashchange', () => {
+        div.innerHTML = location.hash;
+      });
     </script>
   </body>
 </html>

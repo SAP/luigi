@@ -8,6 +8,7 @@ const createContainer = (node: any): HTMLElement => {
   lc.setAttribute('viewUrl', node.viewUrl);
   lc.webcomponent = node.webcomponent;
   lc.context = node.context;
+  lc.viewGroup = node.viewGroup;
   return lc;
 };
 
@@ -34,10 +35,26 @@ export const UI = {
   },
   updateMainContent: (currentNode: any, luigi: Luigi) => {
     const containerWrapper = luigi._connector?.getContainerWrapper();
-    // if viewgroup and preload do some caching/restoring... for now only re-render
     if (currentNode && containerWrapper) {
-      containerWrapper.innerHTML = '';
-      containerWrapper?.appendChild(createContainer(currentNode));
+      let viewGroupContainer: any;
+      containerWrapper.childNodes.forEach((element: any) => {
+        if( element.viewGroup ) {
+          if (currentNode.viewGroup === element.viewGroup) {
+            viewGroupContainer = element;
+          } else {
+            element.style.display = 'none';
+          }
+        } else {
+          element.remove();
+        }
+      });
+
+      if (viewGroupContainer) {        
+        viewGroupContainer.style.display = 'block';
+        viewGroupContainer.updateContext({viewUrl: currentNode.viewUrl});
+      } else {
+        containerWrapper?.appendChild(createContainer(currentNode));
+      }
     }
   },
   openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
