@@ -135,7 +135,10 @@ class LuigiAuth {
        * @memberof AuthorizationStore
        * @example Luigi.auth().store.setNewlyAuthorized()
        */
-      setNewlyAuthorized: () => AuthStoreSvc.setNewlyAuthorized()
+      setNewlyAuthorized: () => { 
+        AuthStoreSvc.setNewlyAuthorized();
+        AuthLayerSvc.resetExpirationChecks();
+      }
     };
   }
 }

@@ -152,6 +152,12 @@ export default class oAuth2ImplicitGrant {
     return random.map(x => validChars[x % validChars.length]).join('');
   }
 
+  resetExpirationChecks() {
+    this.unload();
+    this.setTokenExpirationAction();
+    this.setTokenExpireSoonAction();
+  }
+
   unload() {
     clearInterval(this.expirationCheckIntervalInstance);
     clearInterval(this.expirationSoonCheckIntervalInstance);

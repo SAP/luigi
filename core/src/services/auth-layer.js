@@ -190,6 +190,12 @@ class AuthLayerSvcClass {
       this.idpProviderInstance.unload();
     }
   }
+
+  resetExpirationChecks() {
+    if (this.idpProviderInstance && GenericHelpers.isFunction(this.idpProviderInstance.resetExpirationChecks)) {
+      this.idpProviderInstance.resetExpirationChecks();
+    }
+  }
 }
 
 export const AuthLayerSvc = new AuthLayerSvcClass();
