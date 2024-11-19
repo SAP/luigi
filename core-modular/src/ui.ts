@@ -38,7 +38,7 @@ export const UI = {
     if (currentNode && containerWrapper) {
       let viewGroupContainer: any;
       containerWrapper.childNodes.forEach((element: any) => {
-        if( element.viewGroup ) {
+        if (element.viewGroup) {
           if (currentNode.viewGroup === element.viewGroup) {
             viewGroupContainer = element;
           } else {
@@ -49,9 +49,9 @@ export const UI = {
         }
       });
 
-      if (viewGroupContainer) {        
+      if (viewGroupContainer) {
         viewGroupContainer.style.display = 'block';
-        viewGroupContainer.updateContext({viewUrl: currentNode.viewUrl});
+        viewGroupContainer.updateContext({ viewUrl: currentNode.viewUrl });
       } else {
         containerWrapper?.appendChild(createContainer(currentNode));
       }
