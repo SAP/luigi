@@ -123,7 +123,7 @@ class LuigiAuth {
        * @param {AuthData} data - new auth data object
        * @example Luigi.auth().store.setAuthData(data)
        */
-      setAuthData: data => AuthStoreSvc.setAuthData(data),
+      setAuthData: (data) => AuthStoreSvc.setAuthData(data),
       /**
        * Clears authorization data from store
        * @memberof AuthorizationStore
@@ -135,7 +135,7 @@ class LuigiAuth {
        * @memberof AuthorizationStore
        * @example Luigi.auth().store.setNewlyAuthorized()
        */
-      setNewlyAuthorized: () => { 
+      setNewlyAuthorized: () => {
         AuthStoreSvc.setNewlyAuthorized();
         AuthLayerSvc.resetExpirationChecks();
       }

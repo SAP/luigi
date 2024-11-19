@@ -51,11 +51,11 @@ class AuthLayerSvcClass {
     this.idpProviderInstance = this.getIdpProviderInstance(idpProviderName, idpProviderSettings);
     if (GenericHelpers.isPromise(this.idpProviderInstance)) {
       return this.idpProviderInstance
-        .then(resolved => {
+        .then((resolved) => {
           this.idpProviderInstance = resolved;
           return this.checkAuth(idpProviderSettings);
         })
-        .catch(err => {
+        .catch((err) => {
           const errorMsg = `Error: ${err.message || err}`;
           console.error(errorMsg, err.message && err);
           LuigiConfig.setErrorMessage(errorMsg);
@@ -88,13 +88,13 @@ class AuthLayerSvcClass {
     }
 
     if (this.idpProviderInstance.settings && GenericHelpers.isFunction(this.idpProviderInstance.settings.userInfoFn)) {
-      this.idpProviderInstance.settings.userInfoFn(this.idpProviderInstance.settings, authData).then(userInfo => {
+      this.idpProviderInstance.settings.userInfoFn(this.idpProviderInstance.settings, authData).then((userInfo) => {
         this.setUserInfo(userInfo);
         this.setLoggedIn(true);
       });
     } else {
       if (GenericHelpers.isFunction(this.idpProviderInstance.userInfo)) {
-        this.idpProviderInstance.userInfo(idpProviderSettings).then(userInfo => {
+        this.idpProviderInstance.userInfo(idpProviderSettings).then((userInfo) => {
           this.setUserInfo(userInfo);
           this.setLoggedIn(true);
         });
@@ -121,7 +121,7 @@ class AuthLayerSvcClass {
 
   async startAuthorization() {
     if (this.idpProviderInstance) {
-      return this.idpProviderInstance.login().then(res => {
+      return this.idpProviderInstance.login().then((res) => {
         AuthStoreSvc.setNewlyAuthorized();
         if (res) {
           // TODO: is not required for secure usecases, only if auth is done within core.
@@ -135,7 +135,7 @@ class AuthLayerSvcClass {
 
   logout() {
     const authData = AuthHelpers.getStoredAuthData();
-    const logoutCallback = async redirectUrl => {
+    const logoutCallback = async (redirectUrl) => {
       await LuigiAuth.handleAuthEvent('onLogout', this.idpProviderInstance.settings, undefined, redirectUrl);
       AuthStoreSvc.removeAuthData();
     };
@@ -162,7 +162,7 @@ class AuthLayerSvcClass {
     const idpProvider = GenericHelpers.getConfigValueFromObject(idpProviderSettings, 'idpProvider');
     if (idpProvider) {
       const customIdpInstance = await new idpProvider(idpProviderSettings);
-      ['login'].forEach(requiredFnName => {
+      ['login'].forEach((requiredFnName) => {
         if (!GenericHelpers.isFunction(customIdpInstance[requiredFnName])) {
           throw this.IdpProviderException(
             `${requiredFnName} function does not exist in custom IDP Provider ${idpProviderName}`

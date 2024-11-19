@@ -25,10 +25,7 @@ export default class oAuth2ImplicitGrant {
   }
 
   parseIdToken(token) {
-    const payload = token
-      .split('.')[1]
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
+    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
     return JSON.parse(window.atob(payload));
   }
 
@@ -88,7 +85,7 @@ export default class oAuth2ImplicitGrant {
       // TODO: We're not resolving the promise at any time,
       // since oauth2 is redirecting off the page
       // maybe it is possible to catch errors
-      document.querySelector('form#signIn').addEventListener('load', e => {
+      document.querySelector('form#signIn').addEventListener('load', (e) => {
         console.info('load, e', e, this);
       });
     });
@@ -149,7 +146,7 @@ export default class oAuth2ImplicitGrant {
     const crypto = window.crypto;
     const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
 
-    return random.map(x => validChars[x % validChars.length]).join('');
+    return random.map((x) => validChars[x % validChars.length]).join('');
   }
 
   resetExpirationChecks() {
