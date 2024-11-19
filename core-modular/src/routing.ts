@@ -19,6 +19,7 @@ export const Routing = {
                 const currentNode = navService.getCurrentNode(path);
                 luigi._connector?.renderTopNav(navService.getTopNavData());
                 luigi._connector?.renderLeftNav(navService.getLeftNavData(path));
+                luigi._connector?.renderTabNav(navService.getTabNavData(path));
                 luigi._ui.updateMainContent(currentNode, luigi);
             });
         } else {
