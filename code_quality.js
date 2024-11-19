@@ -109,16 +109,21 @@ const groupFilesByExtension = (files) => {
  */
 const prettifyFile = async (file, config) => {
   try {
-    const text = fs.readFileSync(file).toString();
-    const check = await prettier.check(text, config);
-    if (check || config?.excludedFiles?.includes(file)) {
+    if (config?.excludedFiles?.includes(file)) {
       return;
     }
 
-    console.log('Running prettier on the file: ' + file);
-    const format = await prettier.format(text, config);
-    fs.writeFileSync(file, format);
-    return true;
+    const fileContent = fs.readFileSync(file).toString();
+    const isFormatted = await prettier.check(fileContent, config);
+
+    if (!isFormatted) {
+      console.log('Running prettier on the file: ' + file);
+      const format = await prettier.format(fileContent, config);
+      fs.writeFileSync(file, format);
+      return true;
+    }
+
+    return false;
   } catch (error) {
     console.log('Error in running prettier the file ' + file + ': \n' + error);
   }
