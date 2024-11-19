@@ -26,7 +26,7 @@ export const UI = {
 
     luigi._connector?.renderTopNav(navService.getTopNavData());
     luigi._connector?.renderLeftNav(navService.getLeftNavData(path));
-    luigi._connector?.renderTabNav(navService.getTabNavData(path))
+    luigi._connector?.renderTabNav(navService.getTabNavData(path));
 
     const currentNode = navService.getCurrentNode(path);
     if (currentNode) {
@@ -37,7 +37,7 @@ export const UI = {
     const containerWrapper = luigi._connector?.getContainerWrapper();
     // if viewgroup and preload do some caching/restoring... for now only re-render
     if (currentNode && containerWrapper) {
-      if(!currentNode.tabNav) containerWrapper.innerHTML = '';
+      if (!currentNode.tabNav) containerWrapper.innerHTML = '';
       containerWrapper?.appendChild(createContainer(currentNode));
     }
   },

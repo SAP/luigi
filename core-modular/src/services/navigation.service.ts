@@ -19,12 +19,12 @@ export interface PathData {
 }
 
 export interface Node {
-    pathSegment?: string;
-    label?: string;
-    icon?: string;
-    children: Node[];
-    category?: any;
-    tabNav?:boolean;
+  pathSegment?: string;
+  label?: string;
+  icon?: string;
+  children: Node[];
+  category?: any;
+  tabNav?: boolean;
 }
 
 export interface Category {
@@ -40,10 +40,10 @@ export interface NavItem {
   selected?: boolean;
 }
 
-export interface TabNavData{
-    selectedNode?: any;
-    items?: NavItem[];
-    basePath?: string;
+export interface TabNavData {
+  selectedNode?: any;
+  items?: NavItem[];
+  basePath?: string;
 }
 
 export interface ModalSettings {
@@ -103,9 +103,9 @@ export class NavigationService {
         }
         catNode.category?.nodes?.push({ node, selected: node === selectedNode });
       }
-    //    else if(node.tabNav){
+      //    else if(node.tabNav){
 
-    //   } 
+      //   }
       else {
         items.push({ node, selected: node === selectedNode });
       }
@@ -134,15 +134,15 @@ export class NavigationService {
    * @param array children
    * @returns array children
    */
-  getTruncatedChildren(children:any) {
+  getTruncatedChildren(children: any) {
     let childToKeepFound = false;
     let tabNavUnset = false;
-    let res:any = [];
+    let res: any = [];
 
     children
-    .slice()
-    .reverse()
-      .forEach((node: any)  => {
+      .slice()
+      .reverse()
+      .forEach((node: any) => {
         if (!childToKeepFound || node.tabNav) {
           if (node.tabNav === false) {
             // explicitly set to false
@@ -151,10 +151,7 @@ export class NavigationService {
           if (node.keepSelectedForChildren === false) {
             // explicitly set to false
             childToKeepFound = true;
-          } else if (
-            node.keepSelectedForChildren ||
-            (node.tabNav && !tabNavUnset)
-          ) {
+          } else if (node.keepSelectedForChildren || (node.tabNav && !tabNavUnset)) {
             childToKeepFound = true;
             res = [];
           }
@@ -166,38 +163,36 @@ export class NavigationService {
   }
 
   getLeftNavData(path: string): LeftNavData {
-      const pathData = this.getPathData(path);
-      
-      let navItems: NavItem[] = [];
-      let pathToLeftNavParent: Node[] = [];
-      let basePath = '';
-      pathData.nodesInPath?.forEach((nip) => {
-          if (nip.children) {
-            if(!nip.tabNav){
-                basePath += '/' + (nip.pathSegment || '');
-            }
-              pathToLeftNavParent.push(nip);
-            }
-      });
+    const pathData = this.getPathData(path);
+
+    let navItems: NavItem[] = [];
+    let pathToLeftNavParent: Node[] = [];
+    let basePath = '';
+    pathData.nodesInPath?.forEach((nip) => {
+      if (nip.children) {
+        if (!nip.tabNav) {
+          basePath += '/' + (nip.pathSegment || '');
+        }
+        pathToLeftNavParent.push(nip);
+      }
+    });
 
     const pathDataTruncatedChildren = this.getTruncatedChildren(pathData.nodesInPath);
     let lastElement = [...pathDataTruncatedChildren].pop();
     let selectedNode = pathData.selectedNode;
-    if(lastElement.keepSelectedForChildren || lastElement.tabNav){
-        selectedNode = lastElement;
-        pathDataTruncatedChildren.pop();
-        lastElement = [...pathDataTruncatedChildren].pop();
+    if (lastElement.keepSelectedForChildren || lastElement.tabNav) {
+      selectedNode = lastElement;
+      pathDataTruncatedChildren.pop();
+      lastElement = [...pathDataTruncatedChildren].pop();
     }
-    
+
     if (selectedNode && pathData.rootNodes.includes(selectedNode)) {
-        navItems = this.buildNavItems(selectedNode.children);
-    }else if(selectedNode && selectedNode.tabNav){
-        navItems = this.buildNavItems(lastElement.children, selectedNode);
+      navItems = this.buildNavItems(selectedNode.children);
+    } else if (selectedNode && selectedNode.tabNav) {
+      navItems = this.buildNavItems(lastElement.children, selectedNode);
+    } else {
+      navItems = this.buildNavItems(pathToLeftNavParent.pop()?.children || [], selectedNode);
     }
-    else{
-        navItems = this.buildNavItems(pathToLeftNavParent.pop()?.children || [], selectedNode);
-    }
-    
 
     return {
       selectedNode: selectedNode,
@@ -219,22 +214,22 @@ export class NavigationService {
   getTabNavData(path: string): TabNavData {
     const pathData = this.getPathData(path);
     let selectedNode = pathData.selectedNode;
-    if(!selectedNode?.tabNav){
-        return {};
+    if (!selectedNode?.tabNav) {
+      return {};
     }
     let basePath = '';
     pathData.nodesInPath?.forEach((nip) => {
-        if (nip.children) {
-          basePath += '/' + (nip.pathSegment || '');
-        }
+      if (nip.children) {
+        basePath += '/' + (nip.pathSegment || '');
+      }
     });
 
     const pathDataTruncatedChildren = this.getTruncatedChildren(selectedNode.children);
     const tabNavData = {
-        selectedNode,
-        items: pathDataTruncatedChildren,
-        basePath: basePath.replace(/\/\/+/g, '/')
-    }    
+      selectedNode,
+      items: pathDataTruncatedChildren,
+      basePath: basePath.replace(/\/\/+/g, '/')
+    };
     return tabNavData;
   }
 }
