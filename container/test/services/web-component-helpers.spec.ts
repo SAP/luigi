@@ -1,25 +1,21 @@
-import type {
-  LayoutConfig,
-  RendererObject,
-  RendererUseProps
-} from "../../src/constants/container.model";
+import type { LayoutConfig, RendererObject, RendererUseProps } from '../../src/constants/container.model';
 import {
   CustomCompoundRenderer,
   DefaultCompoundRenderer,
   GridCompoundRenderer
-} from "../../src/services/web-component-helpers";
-import * as helperFunctions from  "../../src/services/web-component-helpers";
+} from '../../src/services/web-component-helpers';
+import * as helperFunctions from '../../src/services/web-component-helpers';
 
 describe('DefaultCompoundRenderer', () => {
   it('should create a compound container', () => {
-      // Arrange
-      const renderer = new DefaultCompoundRenderer();
+    // Arrange
+    const renderer = new DefaultCompoundRenderer();
 
-      // Act
-      const compoundContainer = renderer.createCompoundContainer();
+    // Act
+    const compoundContainer = renderer.createCompoundContainer();
 
-      // Assert
-      expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
+    // Assert
+    expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
   });
 
   it('should create a compound item container', () => {
@@ -58,8 +54,8 @@ describe('DefaultCompoundRenderer', () => {
     // Arrange
     const rendererObject = {
       config: {
-        key: 'value',
-      },
+        key: 'value'
+      }
     } as RendererObject;
 
     // Act
@@ -99,8 +95,8 @@ describe('CustomCompoundRenderer', () => {
           createCompoundContainer: (config, superRenderer) => {
             // Custom logic for creating a compound container
             return document.createElement('div');
-          },
-        },
+          }
+        }
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
 
@@ -112,7 +108,6 @@ describe('CustomCompoundRenderer', () => {
       // You can add more specific assertions for the custom logic
     });
 
-
     it('should create a custom compound container when defined', () => {
       // Arrange
       const rendererObj = {
@@ -120,8 +115,8 @@ describe('CustomCompoundRenderer', () => {
           createCompoundContainer: (config, superRenderer) => {
             // Custom logic for creating a compound container
             return document.createElement('div');
-          },
-        },
+          }
+        }
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
 
@@ -136,9 +131,9 @@ describe('CustomCompoundRenderer', () => {
     it('should call the provided createCompoundContainer function', () => {
       const rendererObj = {
         use: {
-          createCompoundContainer: jest.fn(),
+          createCompoundContainer: jest.fn()
         },
-        config: {},
+        config: {}
       };
       // Arrange
       const renderer = new CustomCompoundRenderer(rendererObj);
@@ -153,18 +148,17 @@ describe('CustomCompoundRenderer', () => {
       expect(createCompoundContainerFn).toHaveBeenCalledWith(renderer.config, renderer.superRenderer);
     });
 
-    it('should call the superRenderer\'s createCompoundContainer when no function is provided', () => {
+    it("should call the superRenderer's createCompoundContainer when no function is provided", () => {
       // Arrange
       const rendererObj = {
-        use: {
-        },
-        config: {},
+        use: {},
+        config: {}
       };
       const renderer = new CustomCompoundRenderer(rendererObj);
 
       const superRenderer = new CustomCompoundRenderer(rendererObj); // Create a mock superRenderer
       renderer.superRenderer = superRenderer;
-      const mockElm = document.createElement('div')
+      const mockElm = document.createElement('div');
       const createCompoundContainerSpy = jest.spyOn(superRenderer, 'createCompoundContainer').mockReturnValue(mockElm);
 
       // Act
@@ -172,15 +166,14 @@ describe('CustomCompoundRenderer', () => {
 
       // Assert
       expect(result).toEqual(mockElm);
-      expect(createCompoundContainerSpy ).toHaveBeenCalled();
+      expect(createCompoundContainerSpy).toHaveBeenCalled();
     });
 
     it('should call the super.createCompoundContainer when no function or superRenderer is provided', () => {
       // Arrange
       const rendererObj = {
-        use: {
-        },
-        config: {},
+        use: {},
+        config: {}
       };
       const renderer = new CustomCompoundRenderer(rendererObj);
 
@@ -193,51 +186,51 @@ describe('CustomCompoundRenderer', () => {
   });
 
   describe('createCompoundItemContainer', () => {
-      it('should create a compound item container when defined', () => {
-        // Arrange
-        const rendererObj = {
-          use: {
-            createCompoundItemContainer: (layoutConfig, config, superRenderer) => {
-              // Custom logic for creating a compound item container
-              return document.createElement('span');
-            },
-          },
-        } as RendererObject;
-        const customRenderer = new CustomCompoundRenderer(rendererObj);
+    it('should create a compound item container when defined', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+          createCompoundItemContainer: (layoutConfig, config, superRenderer) => {
+            // Custom logic for creating a compound item container
+            return document.createElement('span');
+          }
+        }
+      } as RendererObject;
+      const customRenderer = new CustomCompoundRenderer(rendererObj);
 
-        // Act
-        const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
+      // Act
+      const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
 
-        // Assert
-        expect(compoundItemContainer).toBeInstanceOf(HTMLSpanElement);
-      });
+      // Assert
+      expect(compoundItemContainer).toBeInstanceOf(HTMLSpanElement);
+    });
 
-      it('should create a compound item container from superRenderer', () => {
-        // Arrange
-        const rendererObj = {
-          use: {
-            createCompoundItemContainer: undefined,
-            extends: 'test'
-          },
-        };
-        const customRenderer = new CustomCompoundRenderer(rendererObj);
+    it('should create a compound item container from superRenderer', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+          createCompoundItemContainer: undefined,
+          extends: 'test'
+        }
+      };
+      const customRenderer = new CustomCompoundRenderer(rendererObj);
 
-        const mockDiv = document.createElement('div');
-        mockDiv.style.color = 'red';
+      const mockDiv = document.createElement('div');
+      mockDiv.style.color = 'red';
 
-        // Act
-        const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
+      // Act
+      const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
 
-        // Assert
-        expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
+      // Assert
+      expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
     });
 
     it('should create a compound item container with superRenderer and use undefined', () => {
       // Arrange
       const rendererObj = {
         use: {
-          createCompoundItemContainer: undefined,
-        },
+          createCompoundItemContainer: undefined
+        }
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
 
@@ -260,8 +253,8 @@ describe('CustomCompoundRenderer', () => {
           attachCompoundItem: (compoundCnt, compoundItemCnt, superRenderer) => {
             // Custom logic for attaching a compound item
             compoundCnt.appendChild(compoundItemCnt);
-          },
-        },
+          }
+        }
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
       const compoundContainer = document.createElement('div');
@@ -280,7 +273,7 @@ describe('CustomCompoundRenderer', () => {
       const rendererObj = {
         use: {
           extends: 'test'
-        },
+        }
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
       const compoundContainer = document.createElement('div');
@@ -297,7 +290,7 @@ describe('CustomCompoundRenderer', () => {
     it('should attach a compound item with use and superrenderer undefined', () => {
       // Arrange
       const rendererObj = {
-        use: {},
+        use: {}
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
       const compoundContainer = document.createElement('div');
@@ -329,15 +322,15 @@ describe('GridCompoundRenderer', () => {
             maxWidth: 150,
             columns: '1fr',
             rows: '1fr 1fr',
-            gap: 5,
-          },
-        ],
+            gap: 5
+          }
+        ]
       }
     } as unknown as RendererObject;
     const config = rendererObject.config;
     const fixedTimestamp = 1619123456789;
-    const mockDate = new Date(fixedTimestamp)
-    const spyDate = jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
+    const mockDate = new Date(fixedTimestamp);
+    const spyDate = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
     const gridRenderer = new GridCompoundRenderer(rendererObject);
 
     // Act
@@ -354,7 +347,7 @@ describe('GridCompoundRenderer', () => {
     expect(compoundContainer.innerHTML).toContain(`min-height: ${config.minHeight || 'auto'};`);
     expect(compoundContainer.innerHTML).toContain(`and (max-width: ${config.maxWidth}`);
 
-    spyDate.mockRestore()
+    spyDate.mockRestore();
     // dateNowSpy.mockRestore();
   });
 
@@ -362,7 +355,7 @@ describe('GridCompoundRenderer', () => {
     // Arrange
     const layoutConfig = {
       row: 1,
-      column: 2,
+      column: 2
     } as unknown as LayoutConfig;
 
     const gridRenderer = new GridCompoundRenderer();
@@ -389,9 +382,9 @@ describe('registerEventListeners', () => {
           source: 'source1',
           name: 'event1',
           action: 'action1',
-          dataConverter: 'converter1',
-        },
-      ],
+          dataConverter: 'converter1'
+        }
+      ]
     };
     const nodeId = 'node1';
     const wcElement = 'element1';
@@ -408,24 +401,24 @@ describe('registerEventListeners', () => {
       wcElementId: nodeId,
       wcElement: wcElement,
       action: 'action1',
-      converter: 'converter1',
+      converter: 'converter1'
     });
   });
 
   it('should register event listeners when navNode has NO eventListeners', () => {
     // Arrange
     const eventbusListeners = {
-      's.n': [{test: '123'}]
+      's.n': [{ test: '123' }]
     };
     const navNode = {
       eventListeners: [
         {
-          source:'s',
+          source: 's',
           name: 'n',
           action: 'myaction',
           dataConverter: 'myconverter'
         }
-      ],
+      ]
     };
     const nodeId = 'node1';
     const wcElement = 'element1';
@@ -443,7 +436,7 @@ describe('registerEventListeners', () => {
       wcElementId: nodeId,
       wcElement: wcElement,
       action: 'myaction',
-      converter: 'myconverter',
+      converter: 'myconverter'
     });
   });
 
@@ -456,15 +449,15 @@ describe('registerEventListeners', () => {
           source: 'source1',
           name: 'event1',
           action: 'action1',
-          dataConverter: 'converter1',
+          dataConverter: 'converter1'
         },
         {
           source: 'source2',
           name: 'event2',
           action: 'action2',
-          dataConverter: 'converter2',
-        },
-      ],
+          dataConverter: 'converter2'
+        }
+      ]
     };
     const nodeId = 'node1';
     const wcElement = 'element1';
@@ -485,7 +478,7 @@ describe('registerEventListeners', () => {
       wcElementId: nodeId,
       wcElement: wcElement,
       action: 'action1',
-      converter: 'converter1',
+      converter: 'converter1'
     });
 
     expect(listenerList2).toBeDefined();
@@ -494,7 +487,7 @@ describe('registerEventListeners', () => {
       wcElementId: nodeId,
       wcElement: wcElement,
       action: 'action2',
-      converter: 'converter2',
+      converter: 'converter2'
     });
   });
 

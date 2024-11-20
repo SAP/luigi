@@ -48,7 +48,13 @@ export class ContainerAPIFunctions {
    * @param iframeHandle a reference to the iframe to be affected
    * @param data data to be sent alongside the custom message
    */
-  sendCustomMessage = (id: string, mainComponent: ContainerElement, isWebcomponent: boolean, iframeHandle: IframeHandle, data?: object) => {
+  sendCustomMessage = (
+    id: string,
+    mainComponent: ContainerElement,
+    isWebcomponent: boolean,
+    iframeHandle: IframeHandle,
+    data?: object
+  ) => {
     if (isWebcomponent && mainComponent._luigi_mfe_webcomponent) {
       containerService.dispatch(id, mainComponent._luigi_mfe_webcomponent, data);
     } else {

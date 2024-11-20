@@ -3,14 +3,13 @@ import { GenericHelperFunctions } from '../../src/utilities/helpers';
 describe('GenericHelpers', () => {
   describe('isFunction function', () => {
     it('should return true for a function', () => {
-      const testFunction = function () {
-      };
+      const testFunction = function () {};
       const result = GenericHelperFunctions.isFunction(testFunction);
       expect(result).toBe(true);
     });
 
     it('should return true for an arrow function', () => {
-      const testArrowFunction = () => { };
+      const testArrowFunction = () => {};
       const result = GenericHelperFunctions.isFunction(testArrowFunction);
       expect(result).toBe(true);
     });
@@ -70,13 +69,13 @@ describe('GenericHelpers', () => {
     it('should return the parsed object for a valid JSON string', () => {
       const jsonString = '{"selfRegistered": "true", "name": "MyComponent"}';
       const result = GenericHelperFunctions.checkWebcomponentValue(jsonString);
-      expect(result).toEqual({ selfRegistered: "true", name: "MyComponent" });
+      expect(result).toEqual({ selfRegistered: 'true', name: 'MyComponent' });
     });
 
     it('should return the parsed object for a valid JSON string', () => {
       const jsonString = '{"selfRegistered": true, "name": "MyComponent"}';
       const result = GenericHelperFunctions.checkWebcomponentValue(jsonString);
-      expect(result).toEqual({ selfRegistered: true, name: "MyComponent" });
+      expect(result).toEqual({ selfRegistered: true, name: 'MyComponent' });
     });
 
     it('should return the boolean value as is', () => {
@@ -86,7 +85,7 @@ describe('GenericHelpers', () => {
     });
 
     it('should return the object as is', () => {
-      const objValue = { name: "MyComponent", selfRegistered: false };
+      const objValue = { name: 'MyComponent', selfRegistered: false };
       const result = GenericHelperFunctions.checkWebcomponentValue(objValue);
       expect(result).toEqual(objValue);
     });
@@ -159,5 +158,3 @@ describe('GenericHelpers', () => {
     });
   });
 });
-
-

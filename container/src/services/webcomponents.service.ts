@@ -93,7 +93,13 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement: ContainerElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
+  createClientAPI(
+    eventBusElement: ContainerElement,
+    nodeId: string,
+    wc_id: string,
+    component: HTMLElement,
+    isCompoundChild?: boolean
+  ) {
     return {
       linkManager: () => {
         let fromContext = null;
@@ -574,7 +580,11 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer: WebComponentRenderer, ctx: object, navNode: WebComponentNode): Promise<HTMLElement> {
+  createCompoundContainerAsync(
+    renderer: WebComponentRenderer,
+    ctx: object,
+    navNode: WebComponentNode
+  ): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
@@ -617,7 +627,11 @@ export class WebComponentService {
    * @param {ContainerElement} wc_container the web component container dom element
    * @param {*} context the luigi node context
    */
-  renderWebComponentCompound(navNode: WebComponentNode, wc_container: ContainerElement, context: object): Promise<ContainerElement> {
+  renderWebComponentCompound(
+    navNode: WebComponentNode,
+    wc_container: ContainerElement,
+    context: object
+  ): Promise<ContainerElement> {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();

@@ -62,7 +62,11 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
 
   createCompoundItemContainer(layoutConfig): HTMLDivElement {
     if ((this.rendererObject.use as RendererUseProps).createCompoundItemContainer) {
-      return (this.rendererObject.use as RendererUseProps).createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
+      return (this.rendererObject.use as RendererUseProps).createCompoundItemContainer(
+        layoutConfig,
+        this.config,
+        this.superRenderer
+      );
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundItemContainer(layoutConfig);
     }
@@ -71,7 +75,11 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
 
   attachCompoundItem(compoundCnt, compoundItemCnt): void {
     if ((this.rendererObject.use as RendererUseProps).attachCompoundItem) {
-      (this.rendererObject.use as RendererUseProps).attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
+      (this.rendererObject.use as RendererUseProps).attachCompoundItem(
+        compoundCnt,
+        compoundItemCnt,
+        this.superRenderer
+      );
     } else if (this.superRenderer) {
       this.superRenderer.attachCompoundItem(compoundCnt, compoundItemCnt);
     } else {
