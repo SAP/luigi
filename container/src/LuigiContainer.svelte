@@ -139,6 +139,12 @@
         }
       };
 
+      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
+        if (viewUrl?.length) {
+          ContainerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+        }
+      };
+
       thisComponent.closeAlert = (id: any, dismissKey: any) => {
         ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
       };
