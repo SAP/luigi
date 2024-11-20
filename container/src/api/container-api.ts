@@ -27,6 +27,29 @@ export class ContainerAPIFunctions {
   };
 
   /**
+   * Updates route of the microfrontend by sending a message to the iframe that sets new view URL
+   * @param viewUrl new view URL
+   * @param internal internal luigi legacy data
+   * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
+   */
+  updateViewUrl = (viewUrl: string, internal?: object, iframeHandle?: any) => {
+    if (iframeHandle) {
+      const internalParameter = internal || {};
+      containerService.sendCustomMessageToIframe(
+        iframeHandle,
+        {
+          internal: internalParameter,
+          withoutSync: false,
+          viewUrl
+        },
+        LuigiInternalMessageID.NAVIGATION_REQUEST
+      );
+    } else {
+      console.warn('Attempting to update route on inexisting iframe');
+    }
+  };
+
+  /**
    * Updates the auth data of the microfrontend by sending a message to the iframe that sets the authData of the microfrontend
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    * @param authData the authData object being sent to the microfrontend

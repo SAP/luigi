@@ -1,8 +1,6 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
-import { Events } from '../../src/constants/communication';
 import { ContainerAPIFunctions } from '../../src/api/container-api';
 import { containerService } from '../../src/services/container.service';
-
 
 describe('Container Service', () => {
     describe('updateContext', () => {
@@ -58,6 +56,61 @@ describe('Container Service', () => {
             // assert
             expect(sendCustomMSGSpy).not.toHaveBeenCalled();
             expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update context on inexisting iframe')
+        });
+    });
+
+    describe('updateViewUrl', () => {
+        let containerAPI = new ContainerAPIFunctions();
+
+        it('iframeHandle exists, WITH internalParam', () => {
+            // mock and spy
+            const viewUrl = 'https://example.com/webcomponent';
+            const internal = { empty: false };
+            const iframeHandle = {
+                data: 'test'
+            };
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+
+            // act
+            containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+
+            // assert
+            expect(spy).toHaveBeenCalledWith(iframeHandle, { viewUrl, internal: internal, withoutSync: false }, LuigiInternalMessageID.NAVIGATION_REQUEST)
+        });
+
+        it('iframeHandle exists, UNDEFINED internalParam ', () => {
+            // mock and spy
+            const viewUrl = 'https://example.com/webcomponent';
+            const internal = undefined;
+            const iframeHandle = {
+                data: 'test'
+            };
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+
+            // act
+            containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+
+            // assert
+            expect(spy).toHaveBeenCalledWith(iframeHandle, { viewUrl, internal: {}, withoutSync: false }, LuigiInternalMessageID.NAVIGATION_REQUEST)
+        });
+
+        it('iframeHandle NOT exists', () => {
+            // mock and spy
+            const viewUrl = 'https://example.com/webcomponent';
+            const internal = {};
+            const iframeHandle = undefined;
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+
+            // act
+            containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+
+            // assert
+            expect(sendCustomMSGSpy).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update route on inexisting iframe')
         });
     });
 
