@@ -11,13 +11,15 @@ window.onload = () => {
               pathSegment: 'c1',
               label: 'MFE1',
               icon: 'group',
-              viewUrl: '/microfrontend.html#child1'
+              viewUrl: '/microfrontend.html#child1',
+              viewGroup: 'vg1'
             },
             {
               pathSegment: 'c2',
               label: 'MFE2',
               icon: 'calendar',
-              viewUrl: '/microfrontend.html#child2'
+              viewUrl: '/microfrontend.html#child2',
+              viewGroup: 'vg1'
             },
             {
               pathSegment: 'c3',
