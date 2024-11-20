@@ -3,7 +3,7 @@ export interface TopNavData {
   appTitle: string;
   logo: string;
   topNodes: [any];
-  productSwitcher?: ProductSwitcher
+  productSwitcher?: ProductSwitcher;
 }
 
 export interface LeftNavData {
@@ -20,11 +20,11 @@ export interface PathData {
 }
 
 export interface Node {
-    pathSegment?: string;
-    label?: string;
-    icon?: string;
-    children: Node[];
-    category?: any;
+  pathSegment?: string;
+  label?: string;
+  icon?: string;
+  children: Node[];
+  category?: any;
 }
 
 export interface Category {
@@ -48,29 +48,29 @@ export interface ModalSettings {
   closebtn_data_testid?: string;
 }
 
-export interface ProductSwitcher{
-    altText?: string,
-    columns?: number,
-    icon?: string,
-    items?: [ProductSwitcherItems]
-    label?: string,
-    testId?: string,
+export interface ProductSwitcher {
+  altText?: string;
+  columns?: number;
+  icon?: string;
+  items?: [ProductSwitcherItems];
+  label?: string;
+  testId?: string;
 }
 
-export interface ProductSwitcherItems{
-    altText?: string,
-    externalLink?:  ExternalLinkItems,
-    icon?: string,
-    label?: string,
-    link?: string,
-    selected?: boolean,
-    subTitle?: string,
-    testId?: string,
+export interface ProductSwitcherItems {
+  altText?: string;
+  externalLink?: ExternalLinkItems;
+  icon?: string;
+  label?: string;
+  link?: string;
+  selected?: boolean;
+  subTitle?: string;
+  testId?: string;
 }
 
-export interface ExternalLinkItems{
-    url?: string;
-    sameWindow?: boolean
+export interface ExternalLinkItems {
+  url?: string;
+  sameWindow?: boolean;
 }
 
 export class NavigationService {
