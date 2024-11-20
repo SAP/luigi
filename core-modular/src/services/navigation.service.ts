@@ -3,6 +3,7 @@ export interface TopNavData {
   appTitle: string;
   logo: string;
   topNodes: [any];
+  productSwitcher?: ProductSwitcher;
 }
 
 export interface LeftNavData {
@@ -52,6 +53,31 @@ export interface ModalSettings {
   height?: string;
   title?: string;
   closebtn_data_testid?: string;
+}
+
+export interface ProductSwitcher {
+  altText?: string;
+  columns?: number;
+  icon?: string;
+  items?: [ProductSwitcherItems];
+  label?: string;
+  testId?: string;
+}
+
+export interface ProductSwitcherItems {
+  altText?: string;
+  externalLink?: ExternalLinkItems;
+  icon?: string;
+  label?: string;
+  link?: string;
+  selected?: boolean;
+  subTitle?: string;
+  testId?: string;
+}
+
+export interface ExternalLinkItems {
+  url?: string;
+  sameWindow?: boolean;
 }
 
 export class NavigationService {
@@ -203,11 +229,11 @@ export class NavigationService {
 
   getTopNavData(): TopNavData {
     const cfg = this.luigi.getConfig();
-
     return {
       appTitle: cfg.settings?.header?.title,
       logo: cfg.settings?.header?.logo,
-      topNodes: cfg.navigation?.nodes
+      topNodes: cfg.navigation?.nodes,
+      productSwitcher: cfg.navigation?.productSwitcher
     };
   }
 
