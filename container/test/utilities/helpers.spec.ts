@@ -17,19 +17,19 @@ describe('GenericHelpers', () => {
 
     it('should return false for an object', () => {
       const testObject = { key: 'value' };
-      const result = GenericHelperFunctions.isFunction(testObject);
+      const result = GenericHelperFunctions.isFunction(testObject as any);
       expect(result).toBe(false);
     });
 
     it('should return false for an array', () => {
       const testArray = [1, 2, 3];
-      const result = GenericHelperFunctions.isFunction(testArray);
+      const result = GenericHelperFunctions.isFunction(testArray as any);
       expect(result).toBe(false);
     });
 
     it('should return false for a string', () => {
       const testString = 'Hello, World!';
-      const result = GenericHelperFunctions.isFunction(testString);
+      const result = GenericHelperFunctions.isFunction(testString as any);
       expect(result).toBe(false);
     });
   });
@@ -49,7 +49,7 @@ describe('GenericHelpers', () => {
 
     it('should return false for a string', () => {
       const testString = 'Hello, World!';
-      const result = GenericHelperFunctions.isObject(testString);
+      const result = GenericHelperFunctions.isObject(testString as any);
       expect(result).toBe(false);
     });
 

@@ -1,3 +1,4 @@
+import type { ComponentType } from 'svelte';
 import LuigiContainer from './LuigiContainer.svelte';
 import LuigiCompoundContainer from './LuigiCompoundContainer.svelte';
 import { Events } from './constants/communication';
@@ -8,9 +9,9 @@ export type { PathExistsEvent } from './constants/event-type';
 export default Events;
 
 if (!customElements.get('luigi-container')) {
-  customElements.define('luigi-container', (LuigiContainer as any).element);
+  customElements.define('luigi-container', (LuigiContainer as ComponentType).element);
 }
 
 if (!customElements.get('luigi-compound-container')) {
-  customElements.define('luigi-compound-container', (LuigiCompoundContainer as any).element);
+  customElements.define('luigi-compound-container', (LuigiCompoundContainer as ComponentType).element);
 }

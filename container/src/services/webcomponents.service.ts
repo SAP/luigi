@@ -7,11 +7,17 @@ import {
 } from './web-component-helpers';
 import { ContainerService } from './container.service';
 import { Events } from '../constants/communication';
+import type {
+  ContainerElement,
+  LayoutConfig,
+  WebComponentNode,
+  WebComponentRenderer
+} from '../constants/container.model';
 
 /** Methods for dealing with web components based micro frontend handling */
 export class WebComponentService {
   containerService: ContainerService;
-  thisComponent: any;
+  thisComponent: ContainerElement;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -22,7 +28,7 @@ export class WebComponentService {
     return Object.freeze(import(/* webpackIgnore: true */ viewUrl));
   }
 
-  processViewUrl(viewUrl: string, data?: any): string {
+  processViewUrl(viewUrl: string, data?: object): string {
     return viewUrl;
   }
 
@@ -41,8 +47,8 @@ export class WebComponentService {
   attachWC(
     wc_id: string,
     wcItemPlaceholder: HTMLDivElement,
-    wc_container,
-    ctx,
+    wc_container: ContainerElement,
+    ctx: object,
     viewUrl: string,
     nodeId: string,
     isCompoundChild?: boolean
@@ -70,7 +76,7 @@ export class WebComponentService {
    * @param data the data to be sent
    * @param callback the callback function to be called
    */
-  dispatchLuigiEvent(msg: string, data: any, callback?: () => void) {
+  dispatchLuigiEvent(msg: string, data: object, callback?: () => void) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
@@ -87,7 +93,7 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
+  createClientAPI(eventBusElement: ContainerElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
         let fromContext = null;
@@ -353,11 +359,11 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    */
   initWC(
-    wc: HTMLElement | any,
-    wc_id,
-    eventBusElement,
+    wc: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    wc_id: string,
+    eventBusElement: ContainerElement,
     viewUrl: string,
-    ctx,
+    ctx: object,
     nodeId: string,
     isCompoundChild?: boolean
   ) {
@@ -380,7 +386,7 @@ export class WebComponentService {
    * returns a string that can be used as part of a tagname, only alphanumeric
    * characters and no whitespaces.
    */
-  generateWCId(viewUrl: string) {
+  generateWCId(viewUrl: string): string {
     let charRep = '';
     const normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
@@ -397,7 +403,7 @@ export class WebComponentService {
    * @param wc_id a tagname that is used when creating the web component element
    * @returns a promise that gets resolved after successfull import
    */
-  registerWCFromUrl(viewUrl: string, wc_id: string) {
+  registerWCFromUrl(viewUrl: string, wc_id: string): Promise<unknown> {
     const i18nViewUrl = this.processViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
@@ -440,7 +446,7 @@ export class WebComponentService {
    * @param {*} viewUrl the source of the wc bundle
    * @param {*} onload callback function executed after script attached and loaded
    */
-  includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
+  includeSelfRegisteredWCFromUrl(node: WebComponentNode, viewUrl: string, onload: () => void) {
     if (this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!this.containerService.getContainerManager()._registerWebcomponent) {
@@ -481,7 +487,7 @@ export class WebComponentService {
    *
    * @param {*} url the url string to check
    */
-  checkWCUrl(url: string) {
+  checkWCUrl(url: string): boolean {
     // if (url.indexOf('://') > 0 || url.trim().indexOf('//') === 0) {
     //   const ur = new URL(url);
     //   if (ur.host === window.location.host) {
@@ -522,10 +528,10 @@ export class WebComponentService {
    */
   renderWebComponent(
     viewUrl: string,
-    wc_container: HTMLElement | any,
-    context: any,
-    node: any,
-    nodeId?: any,
+    wc_container: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    context: object,
+    node: WebComponentNode,
+    nodeId?: string,
     isCompoundChild?: boolean
   ) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
@@ -538,11 +544,13 @@ export class WebComponentService {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).luigiWCFn) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
-      } else if (node.webcomponent && node.webcomponent.selfRegistered) {
+      } else if (node?.webcomponent?.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
@@ -566,15 +574,15 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer: any, ctx: any, navNode: any): Promise<HTMLElement> {
+  createCompoundContainerAsync(renderer: WebComponentRenderer, ctx: object, navNode: WebComponentNode): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
           const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
-          if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
+          if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               const wc = document.createElement(wc_id);
-              wc.setAttribute('lui_web_component', true);
+              wc.setAttribute('lui_web_component', 'true');
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
@@ -582,7 +590,7 @@ export class WebComponentService {
             this.registerWCFromUrl(renderer.viewUrl, wc_id)
               .then(() => {
                 const wc = document.createElement(wc_id);
-                wc.setAttribute('lui_web_component', true);
+                wc.setAttribute('lui_web_component', 'true');
                 this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
                 resolve(wc);
               })
@@ -606,17 +614,17 @@ export class WebComponentService {
    * micro frontend.
    *
    * @param {*} navNode the navigation node defining the compound
-   * @param {HTMLElement} wc_container the web component container dom element
+   * @param {ContainerElement} wc_container the web component container dom element
    * @param {*} context the luigi node context
    */
-  renderWebComponentCompound(navNode, wc_container: HTMLElement, context) {
+  renderWebComponentCompound(navNode: WebComponentNode, wc_container: ContainerElement, context: object): Promise<ContainerElement> {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = this.processViewUrl(navNode.viewUrl, { context });
-      renderer.createCompoundItemContainer = (layoutConfig) => {
+      renderer.createCompoundItemContainer = (layoutConfig: LayoutConfig) => {
         const cnt = document.createElement('div');
-        if (layoutConfig && layoutConfig.slot) {
+        if (layoutConfig?.slot) {
           cnt.setAttribute('slot', layoutConfig.slot);
         }
         return cnt;
@@ -628,11 +636,11 @@ export class WebComponentService {
     renderer = renderer || new DefaultCompoundRenderer();
     return new Promise((resolve) => {
       this.createCompoundContainerAsync(renderer, context, navNode)
-        .then((compoundCnt: HTMLElement) => {
-          (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
-          (wc_container as any)._luigi_node = navNode;
+        .then((compoundCnt: ContainerElement) => {
+          wc_container._luigi_mfe_webcomponent = compoundCnt;
+          wc_container._luigi_node = navNode;
           const ebListeners = {};
-          (compoundCnt as any).eventBus = {
+          compoundCnt.eventBus = {
             listeners: ebListeners,
             onPublishEvent: (event, srcNodeId, wcId) => {
               const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
@@ -653,11 +661,11 @@ export class WebComponentService {
               });
             }
           };
-          navNode.compound?.children.forEach((wc, index) => {
+          navNode.compound?.children?.forEach((wc, index) => {
             const ctx = { ...context, ...wc.context };
             const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
 
-            compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
+            compoundItemCnt.eventBus = compoundCnt.eventBus;
             renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
             const nodeId = wc.id || 'gen_' + index;

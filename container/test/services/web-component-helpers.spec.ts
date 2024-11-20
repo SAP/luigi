@@ -1,4 +1,13 @@
-import { GridCompoundRenderer,  CustomCompoundRenderer, deSanitizeParamsMap, DefaultCompoundRenderer } from "../../src/services/web-component-helpers";
+import type {
+  LayoutConfig,
+  RendererObject,
+  RendererUseProps
+} from "../../src/constants/container.model";
+import {
+  CustomCompoundRenderer,
+  DefaultCompoundRenderer,
+  GridCompoundRenderer
+} from "../../src/services/web-component-helpers";
 import * as helperFunctions from  "../../src/services/web-component-helpers";
 
 describe('DefaultCompoundRenderer', () => {
@@ -51,7 +60,7 @@ describe('DefaultCompoundRenderer', () => {
       config: {
         key: 'value',
       },
-    };
+    } as RendererObject;
 
     // Act
     const renderer = new DefaultCompoundRenderer(rendererObject);
@@ -71,10 +80,10 @@ describe('CustomCompoundRenderer', () => {
         },
         config: {}
       };
-  
+
       // Act
       const renderer = new CustomCompoundRenderer(rendererObj);
-  
+
       // Assert
       expect(renderer).toBeInstanceOf(CustomCompoundRenderer);
       expect(renderer.superRenderer).toBeDefined();
@@ -134,7 +143,7 @@ describe('CustomCompoundRenderer', () => {
       // Arrange
       const renderer = new CustomCompoundRenderer(rendererObj);
       const createCompoundContainerFn = jest.fn();
-      renderer.rendererObject.use.createCompoundContainer = createCompoundContainerFn;
+      (renderer.rendererObject.use as RendererUseProps).createCompoundContainer = createCompoundContainerFn;
 
       // Act
       const result = renderer.createCompoundContainer();
@@ -152,12 +161,11 @@ describe('CustomCompoundRenderer', () => {
         config: {},
       };
       const renderer = new CustomCompoundRenderer(rendererObj);
-    
+
       const superRenderer = new CustomCompoundRenderer(rendererObj); // Create a mock superRenderer
       renderer.superRenderer = superRenderer;
       const mockElm = document.createElement('div')
       const createCompoundContainerSpy = jest.spyOn(superRenderer, 'createCompoundContainer').mockReturnValue(mockElm);
-
 
       // Act
       const result = renderer.createCompoundContainer();
@@ -166,7 +174,6 @@ describe('CustomCompoundRenderer', () => {
       expect(result).toEqual(mockElm);
       expect(createCompoundContainerSpy ).toHaveBeenCalled();
     });
-
 
     it('should call the super.createCompoundContainer when no function or superRenderer is provided', () => {
       // Arrange
@@ -185,7 +192,6 @@ describe('CustomCompoundRenderer', () => {
     });
   });
 
-
   describe('createCompoundItemContainer', () => {
       it('should create a compound item container when defined', () => {
         // Arrange
@@ -196,7 +202,7 @@ describe('CustomCompoundRenderer', () => {
               return document.createElement('span');
             },
           },
-        };
+        } as RendererObject;
         const customRenderer = new CustomCompoundRenderer(rendererObj);
 
         // Act
@@ -205,7 +211,7 @@ describe('CustomCompoundRenderer', () => {
         // Assert
         expect(compoundItemContainer).toBeInstanceOf(HTMLSpanElement);
       });
-    
+
       it('should create a compound item container from superRenderer', () => {
         // Arrange
         const rendererObj = {
@@ -218,14 +224,13 @@ describe('CustomCompoundRenderer', () => {
 
         const mockDiv = document.createElement('div');
         mockDiv.style.color = 'red';
-        
+
         // Act
         const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
 
         // Assert
         expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
     });
-
 
     it('should create a compound item container with superRenderer and use undefined', () => {
       // Arrange
@@ -238,7 +243,7 @@ describe('CustomCompoundRenderer', () => {
 
       const mockDiv = document.createElement('div');
       mockDiv.style.color = 'red';
-      
+
       // Act
       const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
 
@@ -311,9 +316,8 @@ describe('CustomCompoundRenderer', () => {
 describe('GridCompoundRenderer', () => {
   it('should create a compound container with grid styles', () => {
     // Arrange
-    const rendererObject = 
-   {
-    config: {
+    const rendererObject = {
+      config: {
         columns: '1fr 2fr',
         rows: 'auto',
         gap: '10px',
@@ -329,8 +333,8 @@ describe('GridCompoundRenderer', () => {
           },
         ],
       }
-   };
-   const config = rendererObject.config;
+    } as unknown as RendererObject;
+    const config = rendererObject.config;
     const fixedTimestamp = 1619123456789;
     const mockDate = new Date(fixedTimestamp)
     const spyDate = jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
@@ -350,7 +354,6 @@ describe('GridCompoundRenderer', () => {
     expect(compoundContainer.innerHTML).toContain(`min-height: ${config.minHeight || 'auto'};`);
     expect(compoundContainer.innerHTML).toContain(`and (max-width: ${config.maxWidth}`);
 
-
     spyDate.mockRestore()
     // dateNowSpy.mockRestore();
   });
@@ -360,7 +363,7 @@ describe('GridCompoundRenderer', () => {
     const layoutConfig = {
       row: 1,
       column: 2,
-    };
+    } as unknown as LayoutConfig;
 
     const gridRenderer = new GridCompoundRenderer();
 

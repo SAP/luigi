@@ -1,5 +1,5 @@
-// TODO: Add and extend event to inclide custom typings/interface to make it easier to use on the listener parameter
-export interface ParamsEvent extends Event {}
+// TODO: Add and extend event to include custom typings/interface to make it easier to use on the listener parameter
+export interface ParamsEvent extends Event {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
 /**
  * PathExistsEvent interface is used to make it easier to use the linkManager().pathExists() promise based function

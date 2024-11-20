@@ -1,3 +1,4 @@
+import type { IframeHandle, ContainerElement } from '../constants/container.model';
 import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { containerService } from '../services/container.service';
 
@@ -8,7 +9,7 @@ export class ContainerAPIFunctions {
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
-  updateContext = (contextObj: any, internal?: any, iframeHandle?: any) => {
+  updateContext = (contextObj: object, internal?: object, iframeHandle?: IframeHandle) => {
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
@@ -31,7 +32,7 @@ export class ContainerAPIFunctions {
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    * @param authData the authData object being sent to the microfrontend
    */
-  updateAuthData = (iframeHandle: any, authData: any) => {
+  updateAuthData = (iframeHandle: IframeHandle, authData: object) => {
     if (iframeHandle && authData) {
       containerService.sendCustomMessageToIframe(iframeHandle, { authData }, LuigiInternalMessageID.AUTH_SET_TOKEN);
     } else {
@@ -47,15 +48,15 @@ export class ContainerAPIFunctions {
    * @param iframeHandle a reference to the iframe to be affected
    * @param data data to be sent alongside the custom message
    */
-  sendCustomMessage = (id: string, mainComponent: any, isWebcomponent: boolean, iframeHandle: any, data?: any) => {
-    if (isWebcomponent && (mainComponent as any)._luigi_mfe_webcomponent) {
-      containerService.dispatch(id, (mainComponent as any)._luigi_mfe_webcomponent, data);
+  sendCustomMessage = (id: string, mainComponent: ContainerElement, isWebcomponent: boolean, iframeHandle: IframeHandle, data?: object) => {
+    if (isWebcomponent && mainComponent._luigi_mfe_webcomponent) {
+      containerService.dispatch(id, mainComponent._luigi_mfe_webcomponent, data);
     } else {
       const msg = { ...data };
-      if (msg.id) {
+      if (msg['id']) {
         console.warn('Property "id" is reserved and can not be used in custom message data');
       }
-      msg.id = id;
+      msg['id'] = id;
       containerService.sendCustomMessageToIframe(iframeHandle, msg);
     }
   };
@@ -66,7 +67,7 @@ export class ContainerAPIFunctions {
    * @param dismissKey the dismiss key being sent if any
    * @param iframeHandle the handle of the iframe to send the message to
    */
-  closeAlert(id: any, dismissKey: any, iframeHandle: any) {
+  closeAlert(id: string, dismissKey: string, iframeHandle: IframeHandle) {
     containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
   }
 }
