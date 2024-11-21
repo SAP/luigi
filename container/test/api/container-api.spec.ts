@@ -67,53 +67,49 @@ describe('Container Service', () => {
   });
 
   describe('updateViewUrl', () => {
-    let containerAPI = new ContainerAPIFunctions();
+    const containerAPI = new ContainerAPIFunctions();
 
     it('iframeHandle exists, WITH internalParam', () => {
       // mock and spy
-      const viewUrl = 'https://example.com/webcomponent';
+      const context = { viewUrl: '/' };
       const internal = { empty: false };
-      const iframeHandle = {
-        data: 'test'
-      };
+      const iframeHandle = { data: 'test' };
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
       // act
-      containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+      containerAPI.updateViewUrl(context, internal, iframeHandle);
 
       // assert
       expect(spy).toHaveBeenCalledWith(
         iframeHandle,
-        { viewUrl, internal: internal, withoutSync: false },
-        LuigiInternalMessageID.NAVIGATION_REQUEST
+        { context, internal, withoutSync: false, viewUrl: context['viewUrl'] },
+        LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
     });
 
     it('iframeHandle exists, UNDEFINED internalParam ', () => {
       // mock and spy
-      const viewUrl = 'https://example.com/webcomponent';
+      const context = { viewUrl: '/' };
       const internal = undefined;
-      const iframeHandle = {
-        data: 'test'
-      };
+      const iframeHandle = { data: 'test' };
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
       // act
-      containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+      containerAPI.updateViewUrl(context, internal, iframeHandle);
 
       // assert
       expect(spy).toHaveBeenCalledWith(
         iframeHandle,
-        { viewUrl, internal: {}, withoutSync: false },
-        LuigiInternalMessageID.NAVIGATION_REQUEST
+        { context, internal: {}, withoutSync: false, viewUrl: context['viewUrl'] },
+        LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
     });
 
     it('iframeHandle NOT exists', () => {
       // mock and spy
-      const viewUrl = 'https://example.com/webcomponent';
+      const context = { viewUrl: '/' };
       const internal = {};
       const iframeHandle = undefined;
       containerService.sendCustomMessageToIframe = jest.fn();
@@ -121,7 +117,7 @@ describe('Container Service', () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
 
       // act
-      containerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
+      containerAPI.updateViewUrl(context, internal, iframeHandle);
 
       // assert
       expect(sendCustomMSGSpy).not.toHaveBeenCalled();

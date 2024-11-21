@@ -36,6 +36,7 @@
       return class extends customElementConstructor {
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
+        updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
@@ -139,12 +140,6 @@
         }
       };
 
-      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
-        if (viewUrl?.length) {
-          ContainerAPI.updateViewUrl(viewUrl, internal, iframeHandle);
-        }
-      };
-
       thisComponent.closeAlert = (id: any, dismissKey: any) => {
         ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
       };
@@ -153,6 +148,15 @@
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
+
+      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
+        if (viewUrl?.length) {
+          const context = Object.assign(ctx, { viewUrl });
+
+          ContainerAPI.updateViewUrl(context, internal, iframeHandle);
+        }
+      };
+
       if (webcomponent && webcomponent != 'false') {
         if (!thisComponent.getNoShadow()) {
           mainComponent.innerHTML = '';

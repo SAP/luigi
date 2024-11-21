@@ -131,6 +131,31 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('update viewUrl', () => {
+    cy.on('window:alert', stub);
+
+    cy.get('#update-view-url')
+      .click()
+      .then(() => {
+        cy.get(containerSelector)
+          .shadow()
+          .get('iframe')
+          .then((iframe) => {
+            const $body = iframe.contents().find('body');
+
+            cy.wrap($body)
+              .contains('Get Context')
+              .click()
+              .then(() => {
+                cy.wrap(stub).should(
+                  'have.been.calledWith',
+                  'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"title":"Projects","content":" ","viewUrl":"/"}}'
+                );
+              });
+          });
+      });
+  });
+
   it('set auth token', () => {
     cy.on('window:alert', stub);
 

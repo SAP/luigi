@@ -28,21 +28,22 @@ export class ContainerAPIFunctions {
 
   /**
    * Updates route of the microfrontend by sending a message to the iframe that sets new view URL
-   * @param viewUrl new view URL
+   * @param context context data with new view URL
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
-  updateViewUrl = (viewUrl: string, internal?: object, iframeHandle?: any) => {
+  updateViewUrl = (context: object, internal?: object, iframeHandle?: any) => {
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
         iframeHandle,
         {
+          context,
           internal: internalParameter,
           withoutSync: false,
-          viewUrl
+          viewUrl: context['viewUrl']
         },
-        LuigiInternalMessageID.NAVIGATION_REQUEST
+        LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
     } else {
       console.warn('Attempting to update route on inexisting iframe');
