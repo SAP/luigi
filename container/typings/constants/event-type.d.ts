@@ -1,5 +1,9 @@
-// TODO: Add and extend event to include custom typings/interface to make it easier to use on the listener parameter
-export interface ParamsEvent extends Event {}
+/**
+ * ParamsEvent interface is used to make the handling of listener parameter easier
+ */
+export interface ParamsEvent extends Event {
+  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
 
 /**
  * PathExistsEvent interface is used to make it easier to use the `linkManager().pathExists()` promise based function
