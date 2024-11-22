@@ -3,6 +3,7 @@
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
+    "@luigi-project/container": "^1.4.0",
     "@sveltejs/vite-plugin-svelte": "4.0.0",
     "@tsconfig/svelte": "^5.0.4",
     "chai": "^4.3.6",

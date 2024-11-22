@@ -2,13 +2,15 @@ import { Helpers } from './helpers';
 import type { Luigi } from './luigi';
 import { NavigationService } from './services/navigation.service';
 import type { ModalSettings } from './services/navigation.service';
+import { LuigiContainer } from '@luigi-project/container';
 
-const createContainer = (node: any): HTMLElement => {
-  const lc: any = document.createElement('luigi-container');
+const createContainer = (node: any, luigi: Luigi): HTMLElement => {
+  const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
   lc.setAttribute('viewUrl', node.viewUrl);
   lc.webcomponent = node.webcomponent;
   lc.context = node.context;
-  lc.viewGroup = node.viewGroup;
+  (lc as any).viewGroup = node.viewGroup;
+  luigi._comm.addListeners(lc, luigi);
   return lc;
 };
 
@@ -54,12 +56,12 @@ export const UI = {
         viewGroupContainer.style.display = 'block';
         viewGroupContainer.updateContext({ viewUrl: currentNode.viewUrl });
       } else {
-        containerWrapper?.appendChild(createContainer(currentNode));
+        containerWrapper?.appendChild(createContainer(currentNode, luigi));
       }
     }
   },
   openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
-    const lc = createContainer(node);
+    const lc = createContainer(node, luigi);
     const modalHandle = luigi._connector?.renderModal(lc, modalSettings, onCloseCallback);
   }
 };

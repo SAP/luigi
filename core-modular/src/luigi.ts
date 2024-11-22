@@ -4,11 +4,13 @@ import { Navigation } from "./navigation";
 import { Routing } from "./routing";
 import type { LuigiConnector } from "./types/connector";
 import { UI } from './ui';
+import { Communication } from "./communicaton";
 
 const _init = () => {
     const luigi = (window as any).Luigi;
     Routing.init(luigi);
     UI.init(luigi);
+    Communication.init(luigi);
 }
 
 export class Luigi {
@@ -17,6 +19,7 @@ export class Luigi {
     _connector: LuigiConnector | undefined;
     _app: any;
     _ui = UI;
+    _comm = Communication;
 
 
     bootstrap(connector: LuigiConnector): void {
