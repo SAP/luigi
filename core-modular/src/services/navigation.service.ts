@@ -128,8 +128,7 @@ export class NavigationService {
           items.push(catNode);
         }
         catNode.category?.nodes?.push({ node, selected: node === selectedNode });
-      }
-      else {
+      } else {
         items.push({ node, selected: node === selectedNode });
       }
     });
@@ -234,9 +233,9 @@ export class NavigationService {
     };
   }
 
-  getParentNode(node: Node, pathData: PathData){
-    if(node === pathData.nodesInPath?.[pathData.nodesInPath.length-1]){
-        return pathData.nodesInPath[pathData.nodesInPath.length-2]
+  getParentNode(node: Node, pathData: PathData) {
+    if (node === pathData.nodesInPath?.[pathData.nodesInPath.length - 1]) {
+      return pathData.nodesInPath[pathData.nodesInPath.length - 2];
     }
     return undefined;
   }
@@ -248,8 +247,8 @@ export class NavigationService {
     const items: NavItem[] = [];
     if (!selectedNode) return {};
     if (!selectedNode.tabNav) {
-        parentNode = this.getParentNode(selectedNode, pathData) as Node;
-        if(parentNode && !parentNode.tabNav) return {}
+      parentNode = this.getParentNode(selectedNode, pathData) as Node;
+      if (parentNode && !parentNode.tabNav) return {};
     }
     let basePath = '';
     pathData.nodesInPath?.forEach((nip) => {
@@ -258,16 +257,18 @@ export class NavigationService {
       }
     });
 
-    const pathDataTruncatedChildren = parentNode ? this.getTruncatedChildren(parentNode.children) : this.getTruncatedChildren(selectedNode.children);
-    
-    pathDataTruncatedChildren.forEach((element:Node) =>{
-        const item:NavItem={};
-        item.selected=false;
-        if(element===selectedNode){
-            item.selected = true
-        }
-        item.node = element;
-        items.push(item);
+    const pathDataTruncatedChildren = parentNode
+      ? this.getTruncatedChildren(parentNode.children)
+      : this.getTruncatedChildren(selectedNode.children);
+
+    pathDataTruncatedChildren.forEach((element: Node) => {
+      const item: NavItem = {};
+      item.selected = false;
+      if (element === selectedNode) {
+        item.selected = true;
+      }
+      item.node = element;
+      items.push(item);
     });
     const tabNavData = {
       selectedNode,
