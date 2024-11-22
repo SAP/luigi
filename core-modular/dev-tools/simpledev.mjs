@@ -71,7 +71,7 @@ build({
  });
 
 var params = {
-  port: 4100,
+  port: 4400,
   host: '0.0.0.0',
   root: rootPath,
   open: false,

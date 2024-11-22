@@ -129,9 +129,6 @@ export class NavigationService {
         }
         catNode.category?.nodes?.push({ node, selected: node === selectedNode });
       }
-      //    else if(node.tabNav){
-
-      //   }
       else {
         items.push({ node, selected: node === selectedNode });
       }
@@ -237,11 +234,22 @@ export class NavigationService {
     };
   }
 
+  getParentNode(node: Node, pathData: PathData){
+    if(node === pathData.nodesInPath?.[pathData.nodesInPath.length-1]){
+        return pathData.nodesInPath[pathData.nodesInPath.length-2]
+    }
+    return undefined;
+  }
+
   getTabNavData(path: string): TabNavData {
     const pathData = this.getPathData(path);
-    let selectedNode = pathData.selectedNode;
-    if (!selectedNode?.tabNav) {
-      return {};
+    let selectedNode = pathData?.selectedNode;
+    let parentNode: Node | undefined;
+    const items: NavItem[] = [];
+    if (!selectedNode) return {};
+    if (!selectedNode.tabNav) {
+        parentNode = this.getParentNode(selectedNode, pathData) as Node;
+        if(parentNode && !parentNode.tabNav) return {}
     }
     let basePath = '';
     pathData.nodesInPath?.forEach((nip) => {
@@ -250,10 +258,20 @@ export class NavigationService {
       }
     });
 
-    const pathDataTruncatedChildren = this.getTruncatedChildren(selectedNode.children);
+    const pathDataTruncatedChildren = parentNode ? this.getTruncatedChildren(parentNode.children) : this.getTruncatedChildren(selectedNode.children);
+    
+    pathDataTruncatedChildren.forEach((element:Node) =>{
+        const item:NavItem={};
+        item.selected=false;
+        if(element===selectedNode){
+            item.selected = true
+        }
+        item.node = element;
+        items.push(item);
+    });
     const tabNavData = {
       selectedNode,
-      items: pathDataTruncatedChildren,
+      items,
       basePath: basePath.replace(/\/\/+/g, '/')
     };
     return tabNavData;
