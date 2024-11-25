@@ -653,7 +653,7 @@
                   {#each nodes as node}
                     {#if !node.hideFromNav}
                       {#if node.label}
-                        <li class="fd-navigation__list-item lui-nav-entry" aria-hidden="true">
+                        <li class="fd-navigation__list-item lui-nav-entry">
                           <div
                             class="fd-navigation__item"
                             aria-level="2"
@@ -729,7 +729,6 @@
                 {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
                   <li
                     class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
-                    aria-hidden="true"
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -794,7 +793,6 @@
                         <div
                           class="fd-navigation__list-wrapper
                             {isSemiCollapsed ? 'fd-popover__wrapper' : ''}"
-                          aria-hidden="true"
                         >
                           {#if isSemiCollapsed}
                             <div
@@ -834,7 +832,7 @@
                             {#each nodes as node}
                               {#if !node.hideFromNav}
                                 {#if node.label}
-                                  <li class="fd-navigation__list-item" aria-hidden="true">
+                                  <li class="fd-navigation__list-item">
                                     <div
                                       class="fd-navigation__item fd-navigation__item--child"
                                       aria-level="3"
@@ -939,14 +937,8 @@
 
           <li class="lui-spacer" role="presentation" aria-hidden="true" />
 
-          <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
-            <div
-              class="fd-navigation__item lui-nav-more"
-              aria-haspopup="menu"
-              role="menuitem"
-              aria-expanded="false"
-              tabindex="-1"
-            >
+          <li class="fd-navigation__list-item fd-navigation__list-item--overflow">
+            <div class="fd-navigation__item lui-nav-more" aria-haspopup="menu" role="menuitem" aria-expanded="false">
               <!-- svelte-ignore a11y-missing-attribute -->
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <a
@@ -1021,9 +1013,7 @@
       <div class="fd-side-nav__main-navigation">
         {#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
           <div class="lui-fd-side-nav-wrapper">
-            <ul
-              class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}"
-            >
+            <ul class={sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact' : 'fd-nested-list'}>
               {#each sortedChildrenEntries as [key, nodes], index}
                 {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
                   <!-- Single nodes -->

@@ -79,13 +79,15 @@
     'uxbutton4'
   ];
 
-  //Attach post message hook from MockModule
+  // Attach post message hook from MockModule
   initPostMessageMthd();
+
   const callMockModule = () => {
     let msgType = event.target.getAttribute('data-arg1');
     let LuigiClient = window.LuigiClient;
+
     switch (msgType) {
-      //Client Linkmanager features
+      // Client Linkmanager features
       case 'modal':
         LuigiClient.linkManager().openAsModal('projects/pr1/users', {
           title: 'Users',
@@ -113,7 +115,7 @@
         LuigiClient.linkManager().pathExists('/');
         break;
 
-      //Client UX Manager features
+      // Client UX Manager features
       case 'alert':
         const settings = {
           text: 'This is just a test alert for external micro frontend.',
@@ -149,7 +151,7 @@
     }
   };
 
-  //Attach event listeners to Buttons
+  // Attach event listeners to Buttons
   buttonArray.forEach(btn => {
     document.getElementById(btn).addEventListener('click', callMockModule);
   });
