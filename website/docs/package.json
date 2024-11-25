@@ -28,7 +28,7 @@
 		"@playwright/test": "^1.28.1",
 		"@rollup/plugin-json": "^6.0.0",
 		"@sveltejs/adapter-static": "^3.0.4",
-		"@sveltejs/kit": "^2.5.25",
+		"@sveltejs/kit": "^2.8.3",
 		"@types/lodash.orderby": "^4.6.7",
 		"algoliasearch": "^4.17.0",
 		"hastscript": "^9.0.0",
