@@ -91,13 +91,16 @@
           console.log(event.detail);
           alert(event.detail.text);
         });
-        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
-          console.log(event.detail)
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
+          console.log(event.detail);
           alert(event.detail.goBackValue);
         });
-        luigiContainer.addEventListener(MFEventID.UPDATE_TOP_NAVIGATION_REQUEST, event => {
-          alert("UPDATE_TOP_NAVIGATION_REQUEST event received");
-        });
+        luigiContainer.addEventListener(
+          MFEventID.UPDATE_TOP_NAVIGATION_REQUEST,
+          (event) => {
+            alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
+          },
+        );
         luigiContainer.addEventListener(
           MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
           (event) => {

@@ -170,7 +170,7 @@ describe('Compound Container Tests', () => {
       const alertMessages = [
         'UPDATE_TOP_NAVIGATION_REQUEST event received',
         'some goBackValue',
-        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
       ];
 
       cy.get(containerSelector)
@@ -192,7 +192,7 @@ describe('Compound Container Tests', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith('uxManager().showAlert() test');
         });
     });
 
