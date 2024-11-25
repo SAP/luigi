@@ -58,13 +58,15 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { containerService } from './services/container.service';
-  import { WebComponentService } from './services/webcomponents.service';
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
-  import { GenericHelperFunctions } from './utilities/helpers';
+  import type { IframeHandle, ContainerElement } from './constants/container.model';
+  import { containerService } from './services/container.service';
   import { getAllowRules } from './services/iframe-helpers';
+  import { WebComponentService } from './services/webcomponents.service';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
+  /* eslint-disable */
   export let activeFeatureToggleList: string[];
   export let allowRules: string[];
   export let anchor: string;
@@ -88,9 +90,10 @@
   export let userSettings: any;
   export let viewurl: string;
   export let webcomponent: any;
+  /* eslint-enable */
 
-  const iframeHandle: { iframe: HTMLIFrameElement } | any = {};
-  let mainComponent: HTMLElement;
+  const iframeHandle: IframeHandle = {};
+  let mainComponent: ContainerElement;
   let containerInitialized = false;
 
   const webcomponentService = new WebComponentService();
@@ -119,9 +122,10 @@
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
     if (!containerInitialized) {
-      thisComponent.sendCustomMessage = (id: string, data?: any) => {
+      thisComponent.sendCustomMessage = (id: string, data?: object) => {
         ContainerAPI.sendCustomMessage(
           id,
           thisComponent.getNoShadow() ? thisComponent : mainComponent,
@@ -131,7 +135,7 @@
         );
       };
 
-      thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      thisComponent.updateContext = (contextObj: object, internal?: object) => {
         if (webcomponent) {
           (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
@@ -139,7 +143,7 @@
         }
       };
 
-      thisComponent.closeAlert = (id: any, dismissKey: any) => {
+      thisComponent.closeAlert = (id: string, dismissKey: string) => {
         ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
       };
 
@@ -179,8 +183,7 @@
       } else if (webcomponent) {
         (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
           if (
-            !(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent
-              ?.deferLuigiClientWCInit
+            !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
           ) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
@@ -193,6 +196,7 @@
   };
 
   onMount(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const thisComponent: any = mainComponent.parentNode;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
