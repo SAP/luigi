@@ -4,7 +4,10 @@ const path = require('path');
 
 const cemPath = "../public/dist/custom-elements.json"
 const containerPath = "../src/LuigiContainer.svelte";
+const containerTypingsPath = "../typings/LuigiContainer.svelte.d.ts";
+
 const compoundContainerPath = "../src/LuigiCompoundContainer.svelte";
+
 const eventsPath = "../typings/constants/events.d.ts";
 
 
@@ -76,6 +79,26 @@ function getFieldType(field) {
   return typeValue;
 }
 
+function getMethods(fileContent) {
+  const lines = fileContent.split('\n');
+  // ignore comments in LuigiContainer.svelte.d.ts (filter out lines that start with /**, *, */, //)
+  const filteredLines = lines.filter(line => {
+    return !line.trim().startsWith('/**') && 
+            !line.trim().startsWith('*') && 
+            !line.trim().startsWith('*/') &&
+            !line.trim().startsWith('//');
+  });
+  let methods = [];
+  for (let i = 0; i < filteredLines.length; i++){
+    let methodNameEnd = filteredLines[i].indexOf("(");
+    if (methodNameEnd != -1){
+      let methodName = filteredLines[i].substring(0, filteredLines[i].indexOf('(')).trim();
+      methods.push(methodName);
+    }
+  }
+  return methods;
+}
+
 function getEvents(fileContent) {
   const lines = fileContent.split('\n');
   // ignore comments in events.d.ts (filter out lines that start with /**, *, */, //)
@@ -112,6 +135,9 @@ describe('Custom Element Manifest Validation', () => {
   let luigiContainerFile;
   let luigiContainerProps;
 
+  let luigiContainerTypingsFile;
+  let methodNames
+
   let eventNames;
 
   beforeAll(() => {
@@ -119,9 +145,13 @@ describe('Custom Element Manifest Validation', () => {
     const cemFilePath = path.resolve(__dirname, cemPath);
     cem = JSON.parse(fs.readFileSync(cemFilePath, 'utf-8'));
 
-    const luigiContainerFilePath = path.resolve(__dirname, containerPath)
-    luigiContainerFile = fs.readFileSync(luigiContainerFilePath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
+    const luigiContainerPath = path.resolve(__dirname, containerPath)
+    luigiContainerFile = fs.readFileSync(luigiContainerPath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
     luigiContainerProps = getContainerProps(luigiContainerFile);
+
+    const luigiContainerTypingsPath = path.resolve(__dirname, containerTypingsPath)
+    luigiContainerTypingsFile = fs.readFileSync(luigiContainerTypingsPath, 'utf-8').replace(/\r\n/g, '\n');
+    methodNames = getMethods(luigiContainerTypingsFile);
 
     const luigiEventsPath = path.resolve(__dirname, eventsPath);
     eventNames = getEvents(fs.readFileSync(luigiEventsPath, 'utf-8').replace(/\r\n/g, '\n'));
@@ -129,7 +159,6 @@ describe('Custom Element Manifest Validation', () => {
     // console.log("cem:" + "\n" + JSON.stringify(cem, null, 2));  // for full cem.json
     // console.log(cem);   
 
-    console.log("luigiContainerProps Array:");
     console.log(luigiContainerProps);
 
     //console.log("eventNames from events.d.ts:");
@@ -143,7 +172,7 @@ describe('Custom Element Manifest Validation', () => {
     expect(fs.existsSync(cemFilePath)).toBe(true);
   });
 
-  test('All Fields exist in CEM', () => {
+  test('CEM contains all fields', () => {
     let containerPropNames = [];
     let cemPropNames = [];
 
@@ -168,58 +197,78 @@ describe('Custom Element Manifest Validation', () => {
     expect(allFieldsExist).toBe(true);
   })
 
-  test('All fields have correct type', () => {
+  test('CEM fields have correct type', () => {
     let wrongTypes = [];
     // cem.modules[0] is for LuigiContainer
     let cemMembers = cem.modules[0].declarations[0].members;
-
     // 1. for each name in containerPropNames, get the type
-      let allFieldsCorrectType = true;
-      for(let i = 0; i < luigiContainerProps.length; i++) {
-        let propName = getPropName(luigiContainerProps[i]);
-        let propType = getFieldType(luigiContainerProps[i]);
-        for(let j = 0; j < cemMembers.length; j++) {
-          if (cemMembers[j].kind === "field"){
-            // 2. look for the corresponding "name" in CEM and check the "text"
-            if (cemMembers[j].name === propName){
-              switch (propType) {
-                case 'Array':
-                  // compare type in Container
-                  if (!(cemMembers[j].type.text === "Array<string>")){
-                    wrongTypes.push(cemMembers[j].name);
-                    allFieldsCorrectType = false;
-                  }
-                  break;
-                case 'String':
-                  if (!(cemMembers[j].type.text === "string")){
-                    wrongTypes.push(cemMembers[j].name);
-                    allFieldsCorrectType = false;
-                  }
-                  break;
-                case 'Object':
-                  if (!(cemMembers[j].type.text === "object")){
-                    wrongTypes.push(cemMembers[j].name);
-                    allFieldsCorrectType = false;
-                  }
-                  break;
-                case 'Boolean':
-                  if (!(cemMembers[j].type.text === "boolean")){
-                    wrongTypes.push(cemMembers[j].name);
-                    allFieldsCorrectType = false;
-                  }
-                  break;
-                default:
-                   throw new Error("unknown type: " + propType)
-              }
+    let allFieldsCorrectType = true;
+    for(let i = 0; i < luigiContainerProps.length; i++) {
+      let propName = getPropName(luigiContainerProps[i]);
+      let propType = getFieldType(luigiContainerProps[i]);
+      for(let j = 0; j < cemMembers.length; j++) {
+        if (cemMembers[j].kind === "field"){
+          // 2. look for the corresponding "name" in CEM and check the "text"
+          if (cemMembers[j].name === propName){
+            switch (propType) {
+              case 'Array':
+                // compare type in Container
+                if (!(cemMembers[j].type.text === "Array<string>")){
+                  wrongTypes.push(cemMembers[j].name);
+                  allFieldsCorrectType = false;
+                }
+                break;
+              case 'String':
+                if (!(cemMembers[j].type.text === "string")){
+                  wrongTypes.push(cemMembers[j].name);
+                  allFieldsCorrectType = false;
+                }
+                break;
+              case 'Object':
+                if (!(cemMembers[j].type.text === "object")){
+                  wrongTypes.push(cemMembers[j].name);
+                  allFieldsCorrectType = false;
+                }
+                break;
+              case 'Boolean':
+                if (!(cemMembers[j].type.text === "boolean")){
+                  wrongTypes.push(cemMembers[j].name);
+                  allFieldsCorrectType = false;
+                }
+                break;
+              default:
+                  throw new Error("unknown type: " + propType)
             }
           }
         }
       }
+    }
     if (wrongTypes.length != 0){
       throw new Error("these props have the wrong type: " + wrongTypes)
     }
     expect(allFieldsCorrectType).toBe(true);
   })
+
+  test('CEM contains all methods', () => {
+    let cemMembers = cem.modules[0].declarations[0].members;
+    let cemMethods = [];
+    for (let i = 0; i < cemMembers.length; i++){
+      if (cemMembers[i].kind === "method"){
+        cemMethods.push(cemMembers[i].name);
+      }
+    }
+    // test if all elements of methodNames are in cemMethods
+    console.log(methodNames);
+    console.log(cemMethods);
+    let allMethodsExist = true;
+    for(let i = 0; i < methodNames.length; i++) {
+      if(!cemMethods.includes(methodNames[i])){
+        allMethodsExist = false;
+        throw new Error("method: " + "'" + methodNames[i] + "'" + " does not exist in CEM");
+      }
+    }
+    expect(allMethodsExist).toBe(true);
+  });
 
   test('CEM contains all events', () => {
     let cemEvents = [];
