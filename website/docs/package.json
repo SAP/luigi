@@ -10,7 +10,7 @@
     "build": "npm run pre-build && vite build && npm run copy-docs-html",
     "vite-build": "vite build",
     "preview": "vite preview --port 4001",
-    "test": "playwright test",
+    "test": "npx playwright test",
     "serve-core": "sirv public --single --port 4000",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@docsearch/js": "^3.4.0",
-    "@playwright/test": "^1.28.1",
+    "@playwright/test": "^1.49.0",
     "@rollup/plugin-json": "^6.0.0",
     "@sveltejs/adapter-static": "^3.0.6",
     "@sveltejs/kit": "^2.8.4",
