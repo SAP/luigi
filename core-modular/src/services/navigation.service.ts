@@ -4,7 +4,34 @@ export interface TopNavData {
   logo: string;
   topNodes: [any];
   productSwitcher?: ProductSwitcher;
+  profile?: ProfileSettings;
 }
+
+export interface ProfileSettings{
+  logout: ProfileLogout;
+  items?: ProfileItems[];
+  staticUserInfoFn?: () => Promise<UserInfo>
+}
+
+export interface ProfileLogout{
+  label?: string;
+  icon?: string;
+}
+
+export interface ProfileItems{
+  label?:string;
+  link?:string;
+  externalLink?: ExternalLinkItems;
+  icon?:string;
+}
+
+export interface UserInfo{
+  name?: string;
+  initials?: string;
+  email?: string;
+  picture?: string;
+  description?: string;
+};
 
 export interface LeftNavData {
   selectedNode: any;
@@ -229,7 +256,8 @@ export class NavigationService {
       appTitle: cfg.settings?.header?.title,
       logo: cfg.settings?.header?.logo,
       topNodes: cfg.navigation?.nodes,
-      productSwitcher: cfg.navigation?.productSwitcher
+      productSwitcher: cfg.navigation?.productSwitcher,
+      profile: cfg.navigation?.profile
     };
   }
 
