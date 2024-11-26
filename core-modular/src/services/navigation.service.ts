@@ -7,31 +7,31 @@ export interface TopNavData {
   profile?: ProfileSettings;
 }
 
-export interface ProfileSettings{
+export interface ProfileSettings {
   logout: ProfileLogout;
   items?: ProfileItems[];
-  staticUserInfoFn?: () => Promise<UserInfo>
+  staticUserInfoFn?: () => Promise<UserInfo>;
 }
 
-export interface ProfileLogout{
+export interface ProfileLogout {
   label?: string;
   icon?: string;
 }
 
-export interface ProfileItems{
-  label?:string;
-  link?:string;
+export interface ProfileItems {
+  label?: string;
+  link?: string;
   externalLink?: ExternalLinkItems;
-  icon?:string;
+  icon?: string;
 }
 
-export interface UserInfo{
+export interface UserInfo {
   name?: string;
   initials?: string;
   email?: string;
   picture?: string;
   description?: string;
-};
+}
 
 export interface LeftNavData {
   selectedNode: any;
