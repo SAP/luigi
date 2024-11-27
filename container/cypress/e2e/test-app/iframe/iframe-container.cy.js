@@ -138,12 +138,12 @@ describe('Iframe Container Test', () => {
             const $body = iframe.contents().find('body');
 
             cy.wrap($body)
-              .contains('Get Context')
+              .contains('test history state')
               .click()
               .then(() => {
                 cy.wrap(stub).should(
                   'have.been.calledWith',
-                  'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"title":"Projects","content":" ","viewUrl":"/"}}'
+                  'Custom message received: {"id":"my.historyMessage","_metaData":{},"data":{"state":{"luigiInduced":true}}}'
                 );
               });
           });

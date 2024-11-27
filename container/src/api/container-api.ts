@@ -29,11 +29,12 @@ export class ContainerAPIFunctions {
 
   /**
    * Updates route of the microfrontend by sending a message to the iframe that sets new view URL
-   * @param context context data with new view URL
+   * @param viewUrl new view URL
+   * @param context context data
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
-  updateViewUrl = (context: object, internal?: object, iframeHandle?: IframeHandle) => {
+  updateViewUrl = (viewUrl: string, context: object, internal?: object, iframeHandle?: IframeHandle) => {
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
@@ -42,7 +43,7 @@ export class ContainerAPIFunctions {
           context,
           internal: internalParameter,
           withoutSync: false,
-          viewUrl: context['viewUrl']
+          viewUrl
         },
         LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );

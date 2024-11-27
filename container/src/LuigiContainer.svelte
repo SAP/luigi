@@ -155,9 +155,7 @@
 
       thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
         if (viewUrl?.length) {
-          const context = Object.assign(ctx, { viewUrl });
-
-          ContainerAPI.updateViewUrl(context, internal, iframeHandle);
+          ContainerAPI.updateViewUrl(viewUrl, ctx, internal, iframeHandle);
         }
       };
 
