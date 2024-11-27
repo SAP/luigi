@@ -16,6 +16,8 @@ export interface ProfileSettings {
 export interface ProfileLogout {
   label?: string;
   icon?: string;
+  testId?: string;
+  altText?: string;
 }
 
 export interface ProfileItems {
@@ -23,6 +25,9 @@ export interface ProfileItems {
   link?: string;
   externalLink?: ExternalLinkItems;
   icon?: string;
+  testId?: string;
+  altText?: string;
+  openNodeAsModal?: boolean | ModalSettings;
 }
 
 export interface UserInfo {
