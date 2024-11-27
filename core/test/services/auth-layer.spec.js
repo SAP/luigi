@@ -496,36 +496,36 @@ describe('AuthLayer', () => {
         });
       });
     });
-    
+
     describe('resetExpirationChecks', () => {
       let resetExpirationChecksStub;
-    
+
       beforeEach(() => {
         resetExpirationChecksStub = sinon.stub();
         AuthLayerSvc.idpProviderInstance = { resetExpirationChecks: resetExpirationChecksStub };
       });
-    
+
       afterEach(() => {
         sinon.restore();
       });
-    
+
       it('should call resetExpirationChecks once when idpProviderInstance is defined', () => {
         AuthLayerSvc.resetExpirationChecks();
         sinon.assert.calledOnce(resetExpirationChecksStub);
       });
-    
+
       it('should not call resetExpirationChecks when idpProviderInstance is undefined', () => {
         AuthLayerSvc.idpProviderInstance = undefined;
         AuthLayerSvc.resetExpirationChecks();
         sinon.assert.notCalled(resetExpirationChecksStub);
       });
-    
+
       it('should call resetExpirationChecks multiple times for consecutive invocations', () => {
         AuthLayerSvc.resetExpirationChecks();
         AuthLayerSvc.resetExpirationChecks();
         sinon.assert.calledTwice(resetExpirationChecksStub);
       });
-    
+
       it('should  handle errors thrown by resetExpirationChecks', () => {
         const error = new Error('Test Error');
         resetExpirationChecksStub.throws(error);
@@ -536,17 +536,17 @@ describe('AuthLayer', () => {
           assert.strictEqual(e.message, 'Test Error');
         }
       });
-    
-      it('should invoke resetExpirationChecks independently for each idpProviderInstance', () => { 
+
+      it('should invoke resetExpirationChecks independently for each idpProviderInstance', () => {
         const resetExpirationChecksStub1 = sinon.stub();
         const resetExpirationChecksStub2 = sinon.stub();
-      
+
         AuthLayerSvc.idpProviderInstance = { resetExpirationChecks: resetExpirationChecksStub1 };
         AuthLayerSvc.resetExpirationChecks();
-      
+
         AuthLayerSvc.idpProviderInstance = { resetExpirationChecks: resetExpirationChecksStub2 };
         AuthLayerSvc.resetExpirationChecks();
-      
+
         sinon.assert.calledOnce(resetExpirationChecksStub1);
         sinon.assert.calledOnce(resetExpirationChecksStub2);
       });
