@@ -92,11 +92,11 @@
         });
       }
 
-      function goBack(){
+      function goBack() {
         LuigiClient.linkManager().goBack();
       }
 
-      function updateTopNavigation(){
+      function updateTopNavigation() {
         LuigiClient.LuigiClient.linkManager().updateTopNavigation();
       }
 
@@ -138,7 +138,7 @@
       function testGetHistoryState() {
         LuigiClient.sendCustomMessage({
           id: 'my.historyMessage',
-          ...{state: window.history.state}
+          ...{ state: window.history.state },
         });
       }
 
