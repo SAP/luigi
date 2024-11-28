@@ -155,7 +155,7 @@
 
       thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
         if (viewUrl?.length) {
-          ContainerAPI.updateViewUrl(viewUrl, ctx, internal, iframeHandle);
+          ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
         }
       };
 
