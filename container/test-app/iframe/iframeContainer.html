@@ -29,12 +29,22 @@
       const luigiContainer = document.querySelector(
         '[data-test-id="iframe-based-container-test"]',
       );
+
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
         if (confirm('Do you want to leave this page?')) {
           window.location = event.detail.link;
         }
+      });
+
+      luigiContainer.addEventListener(Events.GO_BACK_REQUEST, (event) => {
+        console.log(event.detail);
+        alert(event.detail.goBackValue);
+      });
+
+      luigiContainer.addEventListener(Events.UPDATE_TOP_NAVIGATION_REQUEST, (event) => {
+        alert("UPDATE_TOP_NAVIGATION_REQUEST event received");
       });
 
       luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, (event) => {

@@ -171,6 +171,13 @@
         console.log(event.detail);
         window.location.hash = event.detail.link;
       });
+      compoundContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
+        console.log(event.detail);
+        alert(event.detail.goBackValue);
+      });
+      compoundContainer.addEventListener(MFEventID.UPDATE_TOP_NAVIGATION_REQUEST, event => {
+        alert("UPDATE_TOP_NAVIGATION_REQUEST event received");
+      });
       compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
         console.log(event.detail);
         alert(event.detail.text);

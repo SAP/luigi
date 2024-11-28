@@ -2,7 +2,7 @@
   "name": "luigi-scripts-private",
   "private": true,
   "scripts": {
-    "docu": "npm run docu:container && npm run docu:client && npm run docu:core",
+    "docu": "npm run docu:container && npm run docu:client && npm run docu:core && npm run docu:element",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:sections",
     "docu:container": "npm run docu:container:validate && npm run docu:container:generate:sections",
     "docu:container:validate": "documentation lint ../container/typings/LuigiContainer.svelte.d.ts ../container/typings/LuigiCompoundContainer.svelte.d.ts",
@@ -11,6 +11,7 @@
     "docu:container:generate:compound-container-api": "documentation readme ../container/typings/LuigiCompoundContainer.svelte.d.ts --parse-extension ts -f md --readme-file=../docs/luigi-compound-container-api.md --section=\"API Reference\" --markdown-toc=false --quiet --github false",
     "docu:client": "npm run docu:client:validate && npm run docu:client:generate:section",
     "docu:client:generate:section": "documentation readme ../client/src/luigi-client.js ../client/luigi-client-wc-docu-mixin.js -f md --readme-file=../docs/luigi-client-api.md --section=\"API Reference\" --markdown-toc=false --quiet --github false",
+    "docu:element": "documentation readme ../client/src/luigi-element.js -f md --readme-file=../docs/luigi-element-api.md --section=\"API Reference\" --markdown-toc=false --quiet --github false",
     "docu:client:validate": "documentation lint ../client/src/luigi-client.js",
     "docu:core": "npm run docu:core:validate && npm run docu:core:generate:sections",
     "docu:core:validate": "documentation lint --shallow ../core/src/core-api/config.js ../core/src/core-api/elements.js ../core/src/core-api/auth.js ../core/src/core-api/navigation.js ../core/src/core-api/i18n.js ../core/src/core-api/custom-messages.js ../core/src/core-api/ux.js ../core/src/core-api/globalsearch.js  ../core/src/core-api/theming.js ../core/src/core-api/featuretoggles.js",
