@@ -35,6 +35,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "engine.io": "~6.6.2",
+    "express": "~4.21.1",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.16",
