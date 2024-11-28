@@ -210,34 +210,42 @@ describe('Custom Element Manifest Validation', () => {
         if (cemMembers[j].kind === "field"){
           // 2. look for the corresponding "name" in CEM and check the "text"
           if (cemMembers[j].name === propName){
-            switch (propType) {
-              case 'Array':
-                // compare type in Container
-                if (!(cemMembers[j].type.text === "Array<string>")){
-                  wrongTypes.push(cemMembers[j].name);
-                  allFieldsCorrectType = false;
-                }
-                break;
-              case 'String':
-                if (!(cemMembers[j].type.text === "string")){
-                  wrongTypes.push(cemMembers[j].name);
-                  allFieldsCorrectType = false;
-                }
-                break;
-              case 'Object':
-                if (!(cemMembers[j].type.text === "object")){
-                  wrongTypes.push(cemMembers[j].name);
-                  allFieldsCorrectType = false;
-                }
-                break;
-              case 'Boolean':
-                if (!(cemMembers[j].type.text === "boolean")){
-                  wrongTypes.push(cemMembers[j].name);
-                  allFieldsCorrectType = false;
-                }
-                break;
-              default:
-                  throw new Error("unknown type: " + propType)
+            if (propName === "context" || propName === "webcomponent"){
+              if (!(cemMembers[j].type.text === "any")){
+                wrongTypes.push(cemMembers[j].name);
+                allFieldsCorrectType = false;
+              }
+            }
+            else{
+              switch (propType) {
+                case 'Array':
+                  // compare type in Container
+                  if (!(cemMembers[j].type.text === "Array<string>")){
+                    wrongTypes.push(cemMembers[j].name);
+                    allFieldsCorrectType = false;
+                  }
+                  break;
+                case 'String':
+                  if (!(cemMembers[j].type.text === "string")){
+                    wrongTypes.push(cemMembers[j].name);
+                    allFieldsCorrectType = false;
+                  }
+                  break;
+                case 'Object':
+                  if (!(cemMembers[j].type.text === "object")){
+                    wrongTypes.push(cemMembers[j].name);
+                    allFieldsCorrectType = false;
+                  }
+                  break;
+                case 'Boolean':
+                  if (!(cemMembers[j].type.text === "boolean")){
+                    wrongTypes.push(cemMembers[j].name);
+                    allFieldsCorrectType = false;
+                  }
+                  break;
+                default:
+                    throw new Error("unknown type: " + propType)
+              }
             }
           }
         }
