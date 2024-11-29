@@ -294,7 +294,7 @@ export class NavigationService {
       ? this.getTruncatedChildren(parentNode.children)
       : this.getTruncatedChildren(selectedNode.children);
 
-    const navItems = this.buildNavItems(pathDataTruncatedChildren, selectedNode);    
+    const navItems = this.buildNavItems(pathDataTruncatedChildren, selectedNode);
 
     const tabNavData = {
       selectedNode,
