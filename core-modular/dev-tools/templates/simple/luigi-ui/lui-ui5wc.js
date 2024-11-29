@@ -49,7 +49,7 @@ const connector = {
     }
   },
 
-  renderTopNav: topNavData => {
+  renderTopNav: (topNavData) => {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
     shellbar.setAttribute('primary-title', topNavData.appTitle);
 
@@ -71,7 +71,7 @@ const connector = {
       }
       shellbar.innerHTML = html;
 
-      (topNavData.topNodes || []).forEach(item => {
+      (topNavData.topNodes || []).forEach((item) => {
         addShellbarItem(shellbar, item);
       });
       // ...
@@ -81,8 +81,8 @@ const connector = {
         shellbar.querySelector('img[slot=logo]').setAttribute('src', topNavData.logo);
       }
       if (topNavData.topNodes !== shellbar._lastTopNavData.topNodes) {
-        shellbar.querySelectorAll('ui5-shellbar-item').forEach(item => item.remove());
-        (topNavData.topNodes || []).forEach(item => {
+        shellbar.querySelectorAll('ui5-shellbar-item').forEach((item) => item.remove());
+        (topNavData.topNodes || []).forEach((item) => {
           addShellbarItem(shellbar, item);
         });
       }
@@ -90,7 +90,7 @@ const connector = {
 
     shellbar._lastTopNavData = topNavData;
   },
-  renderLeftNav: leftNavData => {
+  renderLeftNav: (leftNavData) => {
     const sidenav = document.querySelector('ui5-side-navigation');
     const burger = document.getElementById('toggle');
     if (sidenav && burger) {
@@ -105,7 +105,7 @@ const connector = {
 
       if (leftNavData.items) {
         console.log(leftNavData);
-        leftNavData.items.forEach(item => {
+        leftNavData.items.forEach((item) => {
           if (item.node) {
             html += `<ui5-side-navigation-item
                                     text="${item.node.label}"
@@ -122,7 +122,7 @@ const connector = {
                                       readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''
                                     }>`;
 
-            item.category.nodes.forEach(item => {
+            item.category.nodes.forEach((item) => {
               html += `<ui5-side-navigation-sub-item
                                     text="${item.node.label}"
                                     icon="${item.node.icon}"
@@ -141,7 +141,7 @@ const connector = {
 
       const items = sidenav.querySelectorAll('[luigi-route]');
       if (items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           item.addEventListener('click', () => {
             globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
           });
@@ -149,8 +149,8 @@ const connector = {
       }
 
       if (!sidenav._observer) {
-        sidenav._observer = new MutationObserver(mutations => {
-          mutations.forEach(function(mutation) {
+        sidenav._observer = new MutationObserver((mutations) => {
+          mutations.forEach(function (mutation) {
             if (mutation.type === 'attributes') {
               const uid = mutation.target.getAttribute('category-uid');
               storeExpandedState(uid, mutation.target.hasAttribute('expanded'));
@@ -166,8 +166,8 @@ const connector = {
       }
       const categories = sidenav.querySelectorAll('[category-uid]');
       if (categories) {
-        categories.forEach(item => {
-          item.addEventListener('click', event => {
+        categories.forEach((item) => {
+          item.addEventListener('click', (event) => {
             if (event instanceof CustomEvent) {
               event.target.toggleAttribute('expanded');
             }
