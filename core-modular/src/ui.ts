@@ -54,7 +54,7 @@ export const UI = {
 
       if (viewGroupContainer) {
         viewGroupContainer.style.display = 'block';
-        viewGroupContainer.updateContext({ viewUrl: currentNode.viewUrl });
+        viewGroupContainer.updateViewUrl(currentNode.viewUrl);
       } else {
         containerWrapper?.appendChild(createContainer(currentNode, luigi));
       }

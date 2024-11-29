@@ -52,6 +52,12 @@ ui5-shellbar {
         0 0.5rem 1rem 0 color-mix(in srgb, var(--sapContent_ShadowColor) 16%, transparent);
 }
 
+.content luigi-container,
+.content luigi-compound-container {
+    display: block;
+    height: 100%;
+}
+
 
 .lui-dialog::part(header),
 .lui-dialog::part(footer) {
