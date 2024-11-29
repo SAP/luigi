@@ -11,6 +11,7 @@
     </h3>
     <button id="btn-1">Send Custom Message to iFrame Container</button>
     <button id="update-ctx">Update Ctx</button>
+    <button id="update-view-url" type="button">Update viewUrl</button>
     <button id="update-token">Update Access Token</button>
 
     <div style="border: solid 1px blue; height: 400px">
@@ -44,7 +45,7 @@
       });
 
       luigiContainer.addEventListener(Events.UPDATE_TOP_NAVIGATION_REQUEST, (event) => {
-        alert("UPDATE_TOP_NAVIGATION_REQUEST event received");
+        alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
       });
 
       luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, (event) => {
@@ -52,9 +53,11 @@
       });
 
       var alertSettings;
+
       // Some glue code
       const sendCustomMessageBtn = document.getElementById('btn-1');
       const updateContextButton = document.getElementById('update-ctx');
+      const updateViewUrlButton = document.getElementById('update-view-url');
       const updateAccessTokenButton = document.getElementById('update-token');
 
       // for testing send Custom message functionality
@@ -64,6 +67,10 @@
 
       updateContextButton.addEventListener('click', () => {
         luigiContainer.updateContext({ myContext: 'some context data' });
+      });
+
+      updateViewUrlButton.addEventListener('click', () => {
+        luigiContainer.updateViewUrl('/');
       });
 
       updateAccessTokenButton.addEventListener('click', () => {
