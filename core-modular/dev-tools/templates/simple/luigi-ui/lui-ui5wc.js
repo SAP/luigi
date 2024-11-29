@@ -207,6 +207,9 @@ const connector = {
       //document.body.removeChild(dialog);
     });
     dialog.open = true;
+  },
+  renderTabNav: () => {
+    // TBD
   }
 };
 
