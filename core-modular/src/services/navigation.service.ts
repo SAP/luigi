@@ -294,18 +294,11 @@ export class NavigationService {
       ? this.getTruncatedChildren(parentNode.children)
       : this.getTruncatedChildren(selectedNode.children);
 
-    pathDataTruncatedChildren.forEach((element: Node) => {
-      const item: NavItem = {};
-      item.selected = false;
-      if (element === selectedNode) {
-        item.selected = true;
-      }
-      item.node = element;
-      items.push(item);
-    });
+    const navItems = this.buildNavItems(pathDataTruncatedChildren, selectedNode);    
+
     const tabNavData = {
       selectedNode,
-      items,
+      items: navItems,
       basePath: basePath.replace(/\/\/+/g, '/')
     };
     return tabNavData;
