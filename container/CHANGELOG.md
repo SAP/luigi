@@ -4,6 +4,14 @@
 
 
 
+## [v1.5.0] (2024-11-29)
+
+#### :rocket: Added
+
+* [#4031](https://github.com/SAP/luigi/pull/4031) Adds possibility to change route/viewUrl in iframe based mfe ([@walmazacn](https://github.com/walmazacn))
+
+
+
 ## [v1.4.0] (2024-11-05)
 
 #### :rocket: Added
@@ -55,3 +63,4 @@
 [v1.2.0]: https://github.com/SAP/luigi/compare/container/v1.1.0...container/v1.2.0
 [v1.3.0]: https://github.com/SAP/luigi/compare/container/v1.2.0...container/v1.3.0
 [v1.4.0]: https://github.com/SAP/luigi/compare/container/v1.3.0...container/v1.4.0
+[v1.5.0]: https://github.com/SAP/luigi/compare/container/v1.4.0...container/v1.5.0
