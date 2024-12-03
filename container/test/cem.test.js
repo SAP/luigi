@@ -1,4 +1,3 @@
-//  npm test cem.test.js
 const fs = require('fs');
 const path = require('path');
 
@@ -26,7 +25,6 @@ function getContainerProps(fileContent) {
 
   let openBraces = 0;
   let propsStart = fileContent.indexOf('{', propsIndex);
-  // let propsEnd = propsStart;
 
   let propStart = fileContent.indexOf('{', propsIndex);
   let propEnd = propStart
@@ -48,7 +46,6 @@ function getContainerProps(fileContent) {
     }
 
     if (openBraces === 0) {
-      // propsEnd = i;
       propsArray.pop();
       break;
     }
@@ -59,10 +56,8 @@ function getContainerProps(fileContent) {
 function getPropName(prop) {
   // input: "activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' }",
   // output: 'activeFeatureToggleList'
-
   let attributeStart = 0;
   let attributeEnd = prop.indexOf(":");
-
   let attributeValue = prop.substring(attributeStart, attributeEnd);
   return attributeValue;
 }
@@ -70,10 +65,8 @@ function getPropName(prop) {
 function getFieldType(field) {
   // input: "activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' }",
   // output: 'Array'
-
   let typeStart = field.indexOf("type: '") + "type: '".length;
   let typeEnd = field.indexOf("'", typeStart);
-  
   let typeValue = field.substring(typeStart, typeEnd);
   return typeValue;
 }
@@ -131,60 +124,49 @@ function getEvents(fileContent) {
 
 describe('Custom Element Manifest Validation', () => {
   let cem;
-
-  let luigiContainerFile;
   let luigiContainerProps;
-  let luigiContainerTypingsFile;
   let containerMethodNames
-
-  let luigiCompoundCFile; 
   let luigiCompoundCProps;
-  let luigiCompoundCTypingsFile;
   let compoundCMethodNames
-
   let eventNames;
 
   beforeAll(() => {
-    // Load the generated custom-elements.json file
+    // Load custom-elements.json file
     const cemFilePath = path.resolve(__dirname, cemPath);
     cem = JSON.parse(fs.readFileSync(cemFilePath, 'utf-8'));
 
+    // Load the LuigiContainer file and extract the props in an array
     const luigiContainerPath = path.resolve(__dirname, containerPath)
-    luigiContainerFile = fs.readFileSync(luigiContainerPath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
+    const luigiContainerFile = fs.readFileSync(luigiContainerPath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
     luigiContainerProps = getContainerProps(luigiContainerFile);
+    // Load the LuigiContainer typings file and extract the method names in an array
     const luigiContainerTypingsPath = path.resolve(__dirname, containerTypingsPath)
-    luigiContainerTypingsFile = fs.readFileSync(luigiContainerTypingsPath, 'utf-8').replace(/\r\n/g, '\n');
+    const luigiContainerTypingsFile = fs.readFileSync(luigiContainerTypingsPath, 'utf-8').replace(/\r\n/g, '\n');
     containerMethodNames = getMethods(luigiContainerTypingsFile);
     
+    // Load the LuigiCompoundContainer file and extract the props in an array
     const luigiCompoundCPath = path.resolve(__dirname, compoundCPath)
-    luigiCompoundCFile = fs.readFileSync(luigiCompoundCPath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
+    const luigiCompoundCFile = fs.readFileSync(luigiCompoundCPath, 'utf-8').replace(/\r\n/g, '\n');  // replace \r\n with normal new-line char \n
     luigiCompoundCProps = getContainerProps(luigiCompoundCFile);
+    // Load the LuigiCompoundContainer typings file and extract the method names in an array
     const luigiCompoundCTypingsPath = path.resolve(__dirname, compoundCTypingsPath)
-    luigiCompoundCTypingsFile = fs.readFileSync(luigiCompoundCTypingsPath, 'utf-8').replace(/\r\n/g, '\n');
+    const luigiCompoundCTypingsFile = fs.readFileSync(luigiCompoundCTypingsPath, 'utf-8').replace(/\r\n/g, '\n');
     compoundCMethodNames = getMethods(luigiCompoundCTypingsFile);
 
+    // Load the Events typing file and extract the name of all events in an array
     const luigiEventsPath = path.resolve(__dirname, eventsPath);
-    eventNames = getEvents(fs.readFileSync(luigiEventsPath, 'utf-8').replace(/\r\n/g, '\n'));
-
-    // console.log("cem:" + "\n" + JSON.stringify(cem, null, 2));  // for full cem.json
-    // console.log(cem);   
-
-    // console.log(luigiCompoundCProps);
-
-    // console.log("eventNames from events.d.ts:");
-    // console.log(eventNames);
-
+    const luigiEventsFile = fs.readFileSync(luigiEventsPath, 'utf-8').replace(/\r\n/g, '\n');
+    eventNames = getEvents(luigiEventsFile);
   });
 
   test('CEM file exists', () => {
     const cemFilePath = path.resolve(__dirname, cemPath);
-    // Check if cem file exists
     expect(fs.existsSync(cemFilePath)).toBe(true);
   });
 
   test('CEM contains all fields', () => {
-    let containerPropNames = [];  // contains all container props extracted from LuigiContainer.svelte
-    let cemContainerPropNames = [];   // contains all container props(fields) from the cem file
+    let containerPropNames = [];    // contains all container prop names extracted from LuigiContainer.svelte
+    let cemContainerPropNames = [];   // contains all container props(fields) from the CEM file
     let containerMissingFields = [];
 
     let compoundCPropNames = [];
@@ -197,7 +179,6 @@ describe('Custom Element Manifest Validation', () => {
     for(let i = 0; i < luigiCompoundCProps.length; i++) {
       compoundCPropNames.push(getPropName(luigiCompoundCProps[i]));
     }
-
     // cem.modules[0] is for LuigiContainer
     let cemContainerMembers = cem.modules[0].declarations[0].members;
     for(let i = 0; i < cemContainerMembers.length; i++) {
@@ -245,7 +226,7 @@ describe('Custom Element Manifest Validation', () => {
       let propType = getFieldType(luigiContainerProps[i]);
       for(let j = 0; j < cemContainerMembers.length; j++) {
         if (cemContainerMembers[j].kind === "field"){
-          // 2. look for the corresponding "name" in CEM and check the "text"
+          // 2. look for the corresponding "name" in CEM and compare the "text" attribute
           if (cemContainerMembers[j].name === propName){
             if (propName === "context" || propName === "webcomponent"){
               if (!(cemContainerMembers[j].type.text === "any")){
@@ -292,12 +273,12 @@ describe('Custom Element Manifest Validation', () => {
     // cem.modules[1] is for LuigiCompoundContainer
     let cemCompoundCMembers = cem.modules[1].declarations[0].members;
     for(let i = 0; i < luigiCompoundCProps.length; i++) {
-      // 1. for each name in containerPropNames, get the type
+      // 1. for each name in luigiContainerProps, get the type
       let propName = getPropName(luigiCompoundCProps[i]);
       let propType = getFieldType(luigiCompoundCProps[i]);
       for(let j = 0; j < cemCompoundCMembers.length; j++) {
         if (cemCompoundCMembers[j].kind === "field"){
-          // 2. look for the corresponding "name" in CEM and check the "text"
+          // 2. look for the corresponding "name" in CEM and compare the "text" attribute
           if (cemCompoundCMembers[j].name === propName){
             if (propName === "context" || propName === "webcomponent"){
               if (!(cemCompoundCMembers[j].type.text === "any")){
@@ -367,7 +348,7 @@ describe('Custom Element Manifest Validation', () => {
         cemCompoundCMethods.push(cemCompoundCMembers[i].name);
       }
     }
-    // test if all elements of containerMethodNames are in cemContainerMethods (same for compoundContainer)
+    // check if all elements of containerMethodNames are in cemContainerMethods (same for compoundContainer)
     let allMethodsExist = true;
     for(let i = 0; i < containerMethodNames.length; i++) {
       if(!cemContainerMethods.includes(containerMethodNames[i])){
@@ -392,6 +373,7 @@ describe('Custom Element Manifest Validation', () => {
   test('CEM contains all events', () => {
     let cemEvents = [];
     let cemEvent;
+    let missingEvents = [];
     for (let i = 0; i < cem.modules[0].declarations[0].events.length; i++){
       cemEvent = cem.modules[0].declarations[0].events[i].name;
       cemEvents.push(cemEvent);
@@ -401,8 +383,11 @@ describe('Custom Element Manifest Validation', () => {
     for(let i = 0; i < eventNames.length; i++) {
       if(!cemEvents.includes(eventNames[i])){
         allEventsExist = false;
-        throw new Error("event: " + "'" + eventNames[i] + "'" + " does not exist in CEM");
+        missingEvents.push((eventNames[i]));
       }
+    }
+    if(!allEventsExist){
+      throw new Error("missing Events in CEM: {" + missingEvents) + "}";
     }
     expect(allEventsExist).toBe(true);
   });
