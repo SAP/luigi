@@ -89,7 +89,7 @@ Luigi.setConfig({
     useHashRouting: true
   },
   userSettings: {
-    userSettingGroups:{
+    userSettingGroups: {
       account: {
         label: 'Account',
         sublabel: 'account',

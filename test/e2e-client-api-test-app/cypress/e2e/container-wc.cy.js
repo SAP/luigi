@@ -65,9 +65,7 @@ describe('Core WC Test', () => {
     });
 
     it('getUserSettings', () => {
-      const alertMessages = [
-        'LuigiClient.getUserSettings()={}'
-      ];
+      const alertMessages = ['LuigiClient.getUserSettings()={}'];
 
       cy.get(containerSelector)
         .shadow()
@@ -83,9 +81,7 @@ describe('Core WC Test', () => {
     });
 
     it('getAnchor', () => {
-      const alertMessages = [
-        'LuigiClient.getAnchor()=""'
-      ];
+      const alertMessages = ['LuigiClient.getAnchor()=""'];
 
       cy.get(containerSelector)
         .shadow()
@@ -125,9 +121,7 @@ describe('Core WC Test', () => {
     });
 
     it('linkManagerChainRequests for navigation', () => {
-      const alertMessages = [
-        'LuigiClient.linkManager().navigate()'
-      ];
+      const alertMessages = ['LuigiClient.linkManager().navigate()'];
 
       cy.get(containerSelector)
         .shadow()
@@ -198,9 +192,7 @@ describe('Core WC Test', () => {
     });
 
     it('showAlert', () => {
-      const alertMessages = [
-        'uxManager().showAlert() test'
-      ];
+      const alertMessages = ['uxManager().showAlert() test'];
 
       cy.get(containerSelector)
         .shadow()
@@ -216,33 +208,30 @@ describe('Core WC Test', () => {
     });
 
     it('showConfirmationModal', () => {
-      const alertMessages = [
-        'LuigiClient.uxManager().showConfirmationModal()'
-      ];
+      const alertMessages = ['LuigiClient.uxManager().showConfirmationModal()'];
 
       cy.get(containerSelector)
         .shadow()
         .contains('showConfirmationModal')
         .click()
         .then(() => {
-          cy.get('.fd-message-box__content')
-            .then(($box) => {
-              expect($box.find('.fd-message-box__body')).to.contain('Are you sure you want to do this?');
-              cy.get('.confirm-button').click().then(() => {
+          cy.get('.fd-message-box__content').then(($box) => {
+            expect($box.find('.fd-message-box__body')).to.contain('Are you sure you want to do this?');
+            cy.get('.confirm-button')
+              .click()
+              .then(() => {
                 cy.get('.fd-message-strip--information')
-                .should('have.length', alertMessages.length)
-                .each(($div, index) => {
-                  expect($div.find('p')).to.contain(alertMessages[index]);
-                });
+                  .should('have.length', alertMessages.length)
+                  .each(($div, index) => {
+                    expect($div.find('p')).to.contain(alertMessages[index]);
+                  });
               });
-            });
+          });
         });
     });
 
     it('receive custom message from WC', () => {
-      const alertMessages = [
-        'LuigiClient.uxManager().publishEvent()'
-      ];
+      const alertMessages = ['LuigiClient.uxManager().publishEvent()'];
 
       cy.get(containerSelector)
         .shadow()
@@ -258,9 +247,7 @@ describe('Core WC Test', () => {
     });
 
     it('uxManagerChainRequests', () => {
-      const alertMessages = [
-        'LuigiClient.uxManager().getDocumentTitle()=my-title'
-      ];
+      const alertMessages = ['LuigiClient.uxManager().getDocumentTitle()=my-title'];
 
       cy.get(containerSelector)
         .shadow()
@@ -461,7 +448,7 @@ describe('Container WC Test', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith('uxManager().showAlert() test');
         });
     });
 
