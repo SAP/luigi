@@ -9,5 +9,8 @@ export const Communication = {
     containerElement.addEventListener(Events.NAVIGATION_REQUEST, (event: any) => {
       luigi.navigation().navigate((event as any).detail.link);
     });
+    containerElement.addEventListener(Events.ALERT_REQUEST, (event: any) => {
+      luigi.ux().showAlert(event.detail.data.data.settings, true);
+    });
   }
 };

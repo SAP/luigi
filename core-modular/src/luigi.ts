@@ -1,10 +1,11 @@
 import { mount } from 'svelte';
 import App from './App.svelte';
-import { Navigation } from './navigation';
+import { Navigation } from './core-api/navigation';
 import { Routing } from './routing';
 import type { LuigiConnector } from './types/connector';
 import { UI } from './ui';
 import { Communication } from './communicaton';
+import { UX } from './core-api/ux';
 
 const _init = () => {
   const luigi = (window as any).Luigi;
@@ -41,5 +42,9 @@ export class Luigi {
   navigation = (): Navigation => {
     return new Navigation(this);
   };
+
+  ux = (): any => {
+    return new UX(this);
+  } 
   // ...
 }

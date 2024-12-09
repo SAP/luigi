@@ -1,17 +1,28 @@
 import { Helpers } from './helpers';
 import type { Luigi } from './luigi';
-import { NavigationService } from './services/navigation.service';
-import type { ModalSettings } from './services/navigation.service';
-import { LuigiContainer } from '@luigi-project/container';
+import { NavigationService, type ModalSettings } from './services/navigation.service';
+import { LuigiCompoundContainer, LuigiContainer } from '@luigi-project/container';
+import type { AlertSettings } from './services/ux.service';
 
 const createContainer = (node: any, luigi: Luigi): HTMLElement => {
-  const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
-  lc.setAttribute('viewUrl', node.viewUrl);
-  lc.webcomponent = node.webcomponent;
-  lc.context = node.context;
-  (lc as any).viewGroup = node.viewGroup;
-  luigi._comm.addListeners(lc, luigi);
-  return lc;
+  if(node.compound){
+    const lcc: LuigiCompoundContainer = document.createElement('luigi-compound-container') as LuigiCompoundContainer;
+    lcc.setAttribute('viewUrl', node.viewUrl);
+    lcc.webcomponent = node.webcomponent;
+    lcc.compoundConfig=node.compound;
+    lcc.context = node.context;
+    (lcc as any).viewGroup = node.viewGroup;
+    luigi._comm.addListeners(lcc, luigi);
+    return lcc;
+  }else{
+    const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
+    lc.setAttribute('viewUrl', node.viewUrl);
+    lc.webcomponent = node.webcomponent;
+    lc.context = node.context;
+    (lc as any).viewGroup = node.viewGroup;
+    luigi._comm.addListeners(lc, luigi);
+    return lc;
+  }
 };
 
 export const UI = {
@@ -63,5 +74,5 @@ export const UI = {
   openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
     const lc = createContainer(node, luigi);
     const modalHandle = luigi._connector?.renderModal(lc, modalSettings, onCloseCallback);
-  }
+  },
 };
