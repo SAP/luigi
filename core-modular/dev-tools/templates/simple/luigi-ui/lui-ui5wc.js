@@ -208,7 +208,7 @@ const connector = {
     });
     dialog.open = true;
   },
-  renderTabNav: () => {
+  renderTabNav: (tabNavData) => {
     const tabcontainer = document.querySelector('ui5-tabcontainer');
     if (tabcontainer) tabcontainer.innerHTML = '';
     if (Object.keys(tabNavData).length === 0) {
@@ -219,7 +219,8 @@ const connector = {
     tabcontainer?.addEventListener('tab-select', (event) => {
       const customEvent = event;
       const selectedTab = customEvent.detail.tab;
-      if (selectedTab.getAttribute('luigi-route')) globalThis.Luigi.navigation().navigate(selectedTab.getAttribute('luigi-route'));
+      if (selectedTab.getAttribute('luigi-route'))
+        globalThis.Luigi.navigation().navigate(selectedTab.getAttribute('luigi-route'));
     });
     tabNavData.items.forEach((item) => {
       const tab = document.createElement('ui5-tab');
