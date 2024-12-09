@@ -125,6 +125,7 @@
     thisComponent.updateContext = (contextObj: object, internal?: object) => {
       const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
       rootElement._luigi_mfe_webcomponent.context = contextObj;
+      context = contextObj;
 
       const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
       if (compoundChildrenQueryElement) {

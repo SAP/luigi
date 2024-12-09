@@ -137,6 +137,7 @@
       };
 
       thisComponent.updateContext = (contextObj: object, internal?: object) => {
+        context = contextObj;
         if (webcomponent) {
           (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
