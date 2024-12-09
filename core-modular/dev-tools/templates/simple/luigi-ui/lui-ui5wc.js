@@ -209,7 +209,37 @@ const connector = {
     dialog.open = true;
   },
   renderTabNav: () => {
-    // TBD
+    const tabcontainer = document.querySelector('ui5-tabcontainer');
+    if (tabcontainer) tabcontainer.innerHTML = '';
+    if (Object.keys(tabNavData).length === 0) {
+      document.querySelector('.content-wrapper > ui5-tabcontainer')?.classList.add('ui5-tabcontainer-hidden');
+      return;
+    }
+    document.querySelector('.content-wrapper > ui5-tabcontainer')?.classList.remove('ui5-tabcontainer-hidden');
+    tabcontainer?.addEventListener('tab-select', (event) => {
+      const customEvent = event;
+      const selectedTab = customEvent.detail.tab;
+      if (selectedTab.getAttribute('luigi-route')) globalThis.Luigi.navigation().navigate(selectedTab.getAttribute('luigi-route'));
+    });
+    tabNavData.items.forEach((item) => {
+      const tab = document.createElement('ui5-tab');
+      if (item.node) {
+        tab.setAttribute('text', `${item.node.label}`);
+        tab.setAttribute('luigi-route', tabNavData.basePath + '/' + item.node.pathSegment);
+        item.selected ? item.selected && tab.setAttribute('selected', '') : '';
+      } else if (item.category) {
+        tab.setAttribute('text', item.category.label || item.category.id);
+        item.category.nodes?.forEach((subItem) => {
+          const subTab = document.createElement('ui5-tab');
+          subTab.setAttribute('slot', 'items');
+          subTab.setAttribute('text', subItem.node?.label || subItem.node?.pathSegment || '');
+          subItem.selected ? subItem.selected && subTab.setAttribute('selected', '') : '';
+          subTab.setAttribute('luigi-route', tabNavData.basePath + '/' + subItem.node?.pathSegment);
+          tab.appendChild(subTab);
+        });
+      }
+      tabcontainer?.appendChild(tab);
+    });
   }
 };
 
