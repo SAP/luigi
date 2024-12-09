@@ -1,4 +1,4 @@
-import type { ModalSettings, LeftNavData, Node, TopNavData, TabNavData} from '../services/navigation.service';
+import type { ModalSettings, LeftNavData, Node, TopNavData, TabNavData } from '../services/navigation.service';
 import type { AlertSettings } from '../services/ux.service';
 
 export interface LuigiConnector {
@@ -14,7 +14,7 @@ export interface LuigiConnector {
 
   renderTabNav(data: TabNavData): void;
 
-  renderAlert(alertSettings: AlertSettings, openFromClient:boolean, callback: Function): void;
+  renderAlert(alertSettings: AlertSettings, openFromClient: boolean, callback: Function): void;
 }
 
 export type { Node };

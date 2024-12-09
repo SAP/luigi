@@ -45,6 +45,6 @@ export class Luigi {
 
   ux = (): any => {
     return new UX(this);
-  } 
+  };
   // ...
 }

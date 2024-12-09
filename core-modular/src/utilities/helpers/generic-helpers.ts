@@ -1,6 +1,6 @@
-class GenericHelperClass{
-    constructor(){}
-    /**
+class GenericHelperClass {
+  constructor() {}
+  /**
    * Creates a random Id
    * @returns random numeric value {number}
    * @private
