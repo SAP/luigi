@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="module">
+      import WCElement from '/views/helloWorldWC.js';
+
+      customElements.define('my-wc-element', WCElement);
+    </script>
+    <style type="text/css">
+      .fd-panel {
+        padding: 15px;
+      }
+      .fd-panel h1 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fd-panel">
+      <h1>WC test</h1>
+      <div style="height: fit-content">
+        <div style="border: 1px solid blue">
+          <my-wc-element data-test-id="luigi-client-api-test"></my-wc-element>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

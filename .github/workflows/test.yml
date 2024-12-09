@@ -11,7 +11,7 @@ env:
   CYPRESS_DASHBOARD_RECORD_KEY:  ${{ secrets.CYPRESS_DASHBOARD }}
 
 jobs:
-  prepare: 
+  prepare:
     uses: ./.github/workflows/prepare.yml
     secrets: inherit
     with:
@@ -42,14 +42,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.14.0'    
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache-${{ github.ref }}
-      - run: cp -r ~/tmp_build/* . 
+      - run: cp -r ~/tmp_build/* .
       - run: npm i -g cypress
       - run: npm i -g live-server
       - run: bash ./test/mockengine.sh || exit 1
@@ -62,17 +62,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.14.0'    
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache-${{ github.ref }}
-      - run: cp -r ~/tmp_build/* . 
+      - run: cp -r ~/tmp_build/* .
       - run: npm test --prefix container || exit 1
-    
-    
+
   container_e2e_tests:
     name: Container E2E Tests
     runs-on: ubuntu-latest
@@ -84,22 +83,21 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.14.0'    
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache-${{ github.ref }}
-      - run: cp -r ~/tmp_build/* . 
+      - run: cp -r ~/tmp_build/* .
       - run: bash ./container/run-container-e2e.sh || exit 1
-
 
   e2e:
     name: Integration Tests
     needs: prepare
     runs-on: ubuntu-latest
-    
+
     env:
       USE_CYPRESS_DASHBOARD: true  # enable when trying to debug
     steps:
@@ -114,10 +112,11 @@ jobs:
           key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-      - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
-      - run: ls test 
+      - run: npm install --prefix test/e2e-test-application test/e2e-client-api-test-app @babel/plugin-proposal-class-properties
+      - run: ls test
       - run: bash ./test/e2e-js.sh || exit 1
       - run: bash ./test/e2e-angular.sh || exit 1
+      - run: bash ./test/e2e-client-api.sh || exit 1
 
   docu_check:
     name: Check Documentation
@@ -126,6 +125,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.14.0'       
+          node-version: '20.14.0'
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh

@@ -56,6 +56,7 @@ declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/test/e2e-js-test-application"
   "/test/e2e-test-application/externalMf"
+  "/test/e2e-client-api-test-app"
 )
 
 # Used for setting up webserver and killing them

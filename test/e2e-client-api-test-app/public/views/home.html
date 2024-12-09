@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/assets/luigi-client.js"></script>
+    <style type="text/css">
+      .fd-panel {
+        padding: 15px;
+      }
+      .fd-panel h1 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fd-panel">
+      <h1>Home</h1>
+      <div id="init-text"></div>
+    </div>
+    <script type="text/javascript">
+      LuigiClient.addContextUpdateListener((updatedContext) => {
+        document.getElementById('init-text').textContent = 'Luigi Client updated!';
+      });
+      LuigiClient.addInitListener((initialContext) => {
+        document.getElementById('init-text').textContent = 'Luigi Client initialized!';
+      });
+    </script>
+  </body>
+</html>
