@@ -241,6 +241,27 @@ const connector = {
       }
       tabcontainer?.appendChild(tab);
     });
+  },
+  renderAlert(alertSettings, openFromClient, promiseResolve, containerElement) {
+    // const alertTypeMap = {
+    //   info: 'Information',
+    //   success: 'Positive',
+    //   warning: 'Critical',
+    //   error: 'Negative'
+    // }
+    // const messageStrip = document.createElement('ui5-message-strip');
+    // messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.type]}`);
+    // messageStrip.innerHTML = alertSettings.text;
+    // document.querySelector('.luigi-alert--overlay')?.appendChild(messageStrip);
+    // messageStrip.addEventListener('close', () => {
+    //   if (openFromClient) {
+    //     containerElement?.closeAlert(alertSettings.id, 'something');
+    //   }
+    //   else {
+    //     promiseResolve(alertSettings.id);
+    //   }
+    //   document.querySelector('.luigi-alert--overlay').removeChild(messageStrip);
+    // });
   }
 };
 

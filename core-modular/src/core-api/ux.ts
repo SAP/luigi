@@ -12,13 +12,13 @@ export class UX {
     this.uxService = new UxService(luigi);
   }
 
-  showAlert = (alertSettings: AlertSettings, openFromClient = false) => {
+  showAlert = (alertSettings: AlertSettings) => {
     if (!alertSettings.id) {
       alertSettings.id = GenericHelpers.getRandomId();
     }
+    const processedAlerts = this.uxService.processAlerts(alertSettings);
     return new Promise((resolve) => {
-      const processedAlerts = this.uxService.processAlerts(alertSettings);
-      this.luigi._connector?.renderAlert(alertSettings, openFromClient, resolve);
+      this.luigi._connector?.renderAlert(alertSettings, false, resolve);
     });
   };
 }

@@ -1,5 +1,6 @@
 import Events from '@luigi-project/container';
 import type { Luigi } from './luigi';
+import { UxService } from './services/ux.service';
 
 export const Communication = {
   init: (luigi: Luigi) => {
@@ -10,7 +11,8 @@ export const Communication = {
       luigi.navigation().navigate((event as any).detail.link);
     });
     containerElement.addEventListener(Events.ALERT_REQUEST, (event: any) => {
-      luigi.ux().showAlert(event.detail.data.data.settings, true);
+      const uxService = new UxService(luigi);
+      uxService.handleAlerts(event.detail.data.data.settings, true, containerElement);
     });
   }
 };

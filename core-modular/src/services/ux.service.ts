@@ -27,4 +27,9 @@ export class UxService {
     console.log('processAlerts');
     return alertSettings;
   }
+
+  handleAlerts(alertSettings: AlertSettings, openFromClient: boolean, containerElement: HTMLElement) {
+    // TODO processAlerts
+    this.luigi._connector?.renderAlert(alertSettings, openFromClient, undefined, containerElement);
+  }
 }

@@ -2,12 +2,13 @@ import { Helpers } from './helpers';
 import type { Luigi } from './luigi';
 import { NavigationService, type ModalSettings } from './services/navigation.service';
 import { LuigiCompoundContainer, LuigiContainer } from '@luigi-project/container';
+
 import type { AlertSettings } from './services/ux.service';
 
 const createContainer = (node: any, luigi: Luigi): HTMLElement => {
   if (node.compound) {
     const lcc: LuigiCompoundContainer = document.createElement('luigi-compound-container') as LuigiCompoundContainer;
-    lcc.setAttribute('viewUrl', node.viewUrl);
+    lcc.viewurl = node.viewUrl;
     lcc.webcomponent = node.webcomponent;
     lcc.compoundConfig = node.compound;
     lcc.context = node.context;
@@ -16,7 +17,7 @@ const createContainer = (node: any, luigi: Luigi): HTMLElement => {
     return lcc;
   } else {
     const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
-    lc.setAttribute('viewUrl', node.viewUrl);
+    lc.viewurl = node.viewUrl;
     lc.webcomponent = node.webcomponent;
     lc.context = node.context;
     (lc as any).viewGroup = node.viewGroup;
