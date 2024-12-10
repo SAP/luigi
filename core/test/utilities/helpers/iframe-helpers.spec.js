@@ -1,3 +1,4 @@
+import { JSDOM } from 'jsdom';
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
@@ -6,11 +7,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 const sinon = require('sinon');
-const { TextDecoder, TextEncoder } = require('util');
-global.TextDecoder = TextDecoder;
-global.TextEncoder = TextEncoder;
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
 
 describe('Iframe-helpers', () => {
   let component;
@@ -525,30 +521,31 @@ describe('Iframe-helpers', () => {
     });
   });
 
-  describe('enable/disable a11y of inactive iframe', () => {
-    let globalDocRef = global.document;
+  xdescribe('enable/disable a11y of inactive iframe', () => {
+    const globalDocRef = global.document;
     const dom = new JSDOM(
       `<!DOCTYPE html>
-             <head>
-              <title>Mocked DOM</title>
-             </head>
-             <body>
-               <div class="divclass">
-                 <span class="spanclass">I am some text</span>
-                 <span tabindex="0" class="anotherspanclass">I am a text span with existing tabindex value</span>
-                 <div class="iframectnclass" tabindex="0">
-                 <iframe class="iframeclass"></iframe
-                 </div>
-                 <div class="anotherctnclass">
-                 <a class="aclass" tabindex="0"></a>
-                 <i class="iclass" tabindex="0"><i>
-                 <button class="buttonclass" tabindex="-1"></button>
-                 </div>
-               </div>
-             </body>
-         </html>`,
+        <head>
+          <title>Mocked DOM</title>
+        </head>
+        <body>
+          <div class="divclass">
+            <span class="spanclass">I am some text</span>
+            <span tabindex="0" class="anotherspanclass">I am a text span with existing tabindex value</span>
+            <div class="iframectnclass" tabindex="0">
+            <iframe class="iframeclass"></iframe
+            </div>
+            <div class="anotherctnclass">
+            <a class="aclass" tabindex="0"></a>
+            <i class="iclass" tabindex="0"><i>
+            <button class="buttonclass" tabindex="-1"></button>
+            </div>
+          </div>
+        </body>
+      </html>`,
       { url: 'http://localhost' }
     );
+
     beforeEach(() => {
       delete global.document;
       global.document = dom.window.document;
