@@ -2,4 +2,5 @@
 
 # dependencies
 /node_modules
+/cypress/screenshots
 /public/assets/*

@@ -4,7 +4,7 @@ describe('Core WC Test', () => {
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:3000/#/home/core-wc');
+      cy.visit('http://10.97.157.18:3000/#/home/core-wc');
       stub = cy.stub();
     });
 
@@ -270,7 +270,7 @@ describe('Container WC Test', () => {
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:3000/views/container/wc');
+      cy.visit('http://10.97.157.18:3000/views/container/wc');
       stub = cy.stub();
     });
 
