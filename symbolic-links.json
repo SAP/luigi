@@ -11,6 +11,16 @@
   },
   {
     "source": "client/public",
+    "destination": "test/e2e-client-api-test-app",
+    "scope": "@luigi-project/client"
+  },
+  {
+    "source": "core/public",
+    "destination": "test/e2e-client-api-test-app",
+    "scope": "@luigi-project/core"
+  },
+  {
+    "source": "client/public",
     "destination": "test/e2e-js-test-application",
     "scope": "@luigi-project/client"
   },

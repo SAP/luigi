@@ -18,6 +18,7 @@ const folders = [
   'test/e2e-test-application',
   'test/e2e-test-application/externalMf',
   'test/e2e-js-test-application',
+  'test/e2e-client-api-test-app',
   'client-frameworks-support/testing-utilities/test'
 ];
 // Check for verbose flag
