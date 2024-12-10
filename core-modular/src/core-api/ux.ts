@@ -17,8 +17,6 @@ export class UX {
       alertSettings.id = GenericHelpers.getRandomId();
     }
     const processedAlerts = this.uxService.processAlerts(alertSettings);
-    return new Promise((resolve) => {
-      this.luigi._connector?.renderAlert(alertSettings, false, resolve);
-    });
+    return this.luigi._connector?.renderAlert(alertSettings, false);
   };
 }

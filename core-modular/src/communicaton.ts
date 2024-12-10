@@ -11,7 +11,8 @@ export const Communication = {
       luigi.navigation().navigate((event as any).detail.link);
     });
     containerElement.addEventListener(Events.ALERT_REQUEST, (event: any) => {
-      luigi.ux().uxService.handleAlerts(event.detail.data.data.settings, true, containerElement);
+      const uxService = new UxService(luigi);
+      uxService.handleAlerts(event.detail.data.data.settings, true, containerElement);
     });
   }
 };

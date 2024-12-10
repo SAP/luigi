@@ -28,8 +28,10 @@ export class UxService {
     return alertSettings;
   }
 
-  handleAlerts(alertSettings: AlertSettings, openFromClient: boolean, containerElement: HTMLElement) {
+  handleAlerts(alertSettings: AlertSettings, openFromClient: boolean, containerElement: any) {
     // TODO processAlerts
-    this.luigi._connector?.renderAlert(alertSettings, openFromClient, undefined, containerElement);
+    this.luigi._connector?.renderAlert(alertSettings, openFromClient, containerElement).then((resolve) => {
+      containerElement.closeAlert(resolve, 'dismisskey');
+    });
   }
 }

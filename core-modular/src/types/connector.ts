@@ -14,12 +14,7 @@ export interface LuigiConnector {
 
   renderTabNav(data: TabNavData): void;
 
-  renderAlert(
-    alertSettings: AlertSettings,
-    openFromClient: boolean,
-    callback?: Function,
-    containerElement?: HTMLElement
-  ): void;
+  renderAlert(alertSettings: AlertSettings, openFromClient: boolean, containerElement?: HTMLElement): Promise<any>;
 }
 
 export type { Node };
