@@ -17,7 +17,7 @@ describe('Iframe-helpers', () => {
   beforeEach(() => {
     const lastObj = {};
     component = {
-      set: obj => {
+      set: (obj) => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj
@@ -28,7 +28,7 @@ describe('Iframe-helpers', () => {
     GenericHelpers.getRandomId.returns('abc');
     GenericHelpers.isFunction.callThrough();
     ViewUrlDecorator.hasDecorators.returns(false);
-    ViewUrlDecorator.applyDecorators.callsFake(url => url);
+    ViewUrlDecorator.applyDecorators.callsFake((url) => url);
   });
   afterEach(() => {
     if (document.createElement.restore) {
@@ -74,10 +74,7 @@ describe('Iframe-helpers', () => {
     it('createIframe with interceptor', () => {
       const icf = () => {};
       const interceptor = sinon.spy(icf);
-      sinon
-        .stub(LuigiConfig, 'getConfigValue')
-        .withArgs('settings.iframeCreationInterceptor')
-        .returns(interceptor);
+      sinon.stub(LuigiConfig, 'getConfigValue').withArgs('settings.iframeCreationInterceptor').returns(interceptor);
       const node = {
         pathSegment: 'tets'
       };
@@ -339,7 +336,7 @@ describe('Iframe-helpers', () => {
 
   describe('getMicrofrontendsInDom', () => {
     it('gets list of visible mfs', () => {
-      const mockContainer = id => ({
+      const mockContainer = (id) => ({
         luigi: { id }
       });
       sinon
@@ -355,13 +352,13 @@ describe('Iframe-helpers', () => {
         .withArgs('.iframeUserSettingsCtn iframe') // 'usersettings'
         .returns([mockContainer('usersettings')]);
 
-      GenericHelpers.isElementVisible.callsFake(container => {
+      GenericHelpers.isElementVisible.callsFake((container) => {
         // second container is not active
         return container.luigi.id !== 'main_2';
       });
       const iframes = IframeHelpers.getMicrofrontendsInDom();
       assert.equal(iframes.length, 6, 'total iframes');
-      assert.equal(iframes.filter(i => i.active).length, 5, 'active iframes');
+      assert.equal(iframes.filter((i) => i.active).length, 5, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
       assert.deepEqual(Object.keys(iframes[0]), expectedKeys, 'contains all required keys');
@@ -460,7 +457,7 @@ describe('Iframe-helpers', () => {
       const docMock = getMockedDocument();
       beforeEach(() => {
         docQuerySelectorAllSpy = jest.spyOn(document, 'querySelectorAll');
-        docQuerySelectorAllSpy.mockImplementation(selector => {
+        docQuerySelectorAllSpy.mockImplementation((selector) => {
           return docMock.querySelectorAll(selector);
         });
       });
@@ -490,7 +487,7 @@ describe('Iframe-helpers', () => {
       const docMock = getMockedDocument();
       beforeEach(() => {
         docQuerySelectorAllSpy = jest.spyOn(document, 'querySelectorAll');
-        docQuerySelectorAllSpy.mockImplementation(selector => {
+        docQuerySelectorAllSpy.mockImplementation((selector) => {
           return docMock.querySelectorAll(selector);
         });
         IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');

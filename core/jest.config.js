@@ -1,20 +1,13 @@
 /** @type {import('jest').Config} */
 const config = {
   collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.{js,mjs,ts,svelte}',
-    '!**/node_modules/**',
-    '!**/vendor/**',
-    '!**/*.spec.{js,ts}'
-  ],
+  collectCoverageFrom: ['src/**/*.{js,mjs,ts,svelte}', '!**/node_modules/**', '!**/vendor/**', '!**/*.spec.{js,ts}'],
   roots: ['test'],
   testEnvironment: 'jest-fixed-jsdom',
   transform: {
     '\\.[jt]sx?$': 'babel-jest'
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(svelte)/)'
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!(svelte)/)'],
   verbose: true
 };
 
