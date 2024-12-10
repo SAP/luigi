@@ -4,7 +4,7 @@ describe('Core WC Test', () => {
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://10.97.157.18:3000/#/home/core-wc');
+      cy.visit('http://127.0.0.1:3000/#/home/core-wc');
       stub = cy.stub();
     });
 
@@ -104,7 +104,7 @@ describe('Core WC Test', () => {
         .contains('getCurrentRoute')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('current route: /views/container/wc');
+          expect(stub.getCall(0)).to.be.calledWith('current route: /#/home/core-wc');
         });
     });
 
@@ -270,7 +270,7 @@ describe('Container WC Test', () => {
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://10.97.157.18:3000/views/container/wc');
+      cy.visit('http://127.0.0.1:3000/views/container/wc.html');
       stub = cy.stub();
     });
 
@@ -356,7 +356,7 @@ describe('Container WC Test', () => {
         .contains('getCurrentRoute')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('current route: /views/container/wc');
+          expect(stub.getCall(0)).to.be.calledWith('current route: /views/container/wc.html');
         });
     });
 

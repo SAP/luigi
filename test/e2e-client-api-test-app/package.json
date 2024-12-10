@@ -5,7 +5,7 @@
   "main": "public/index.html",
   "scripts": {
     "copy": "rm -rf .\\public\\assets && mkdirp public/assets && cp node_modules/@luigi-project/container/bundle.js node_modules/@luigi-project/core/*.* node_modules/@luigi-project/client/*.js node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css public/assets/",
-    "serve": "serve public",
+    "serve": "live-server --port=3000 --mount=\"/node_modules\":\"./node_modules\" ./public --no-browser",
     "start": "npm run copy && npm run serve",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "cypress-headless": "cypress run -c video=false",
@@ -19,7 +19,7 @@
     "@sap-theming/theming-base-content": "^11.22.0",
     "cross-spawn": "^7.0.6",
     "cypress": "^13.16.1",
-    "serve": "^14.2.4"
+    "live-server": "^1.2.2"
   },
   "devDependencies": {
     "mkdirp": "^3.0.1"
