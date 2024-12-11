@@ -1,11 +1,9 @@
-import { JSDOM } from 'jsdom';
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
 
 const chai = require('chai');
 const assert = chai.assert;
-const expect = chai.expect;
 const sinon = require('sinon');
 
 describe('Iframe-helpers', () => {
@@ -30,6 +28,7 @@ describe('Iframe-helpers', () => {
     ViewUrlDecorator.hasDecorators.returns(false);
     ViewUrlDecorator.applyDecorators.callsFake((url) => url);
   });
+
   afterEach(() => {
     if (document.createElement.restore) {
       document.createElement.restore();
@@ -518,40 +517,22 @@ describe('Iframe-helpers', () => {
     });
   });
 
-  xdescribe('enable/disable a11y of inactive iframe', () => {
-    const globalDocRef = global.document;
-    const dom = new JSDOM(
-      `<!DOCTYPE html>
-        <head>
-          <title>Mocked DOM</title>
-        </head>
-        <body>
-          <div class="divclass">
-            <span class="spanclass">I am some text</span>
-            <span tabindex="0" class="anotherspanclass">I am a text span with existing tabindex value</span>
-            <div class="iframectnclass" tabindex="0">
-            <iframe class="iframeclass"></iframe
-            </div>
-            <div class="anotherctnclass">
-            <a class="aclass" tabindex="0"></a>
-            <i class="iclass" tabindex="0"><i>
-            <button class="buttonclass" tabindex="-1"></button>
-            </div>
-          </div>
-        </body>
-      </html>`,
-      { url: 'http://localhost' }
-    );
-
-    beforeEach(() => {
-      delete global.document;
-      global.document = dom.window.document;
-    });
-
-    afterEach(() => {
-      delete global.document;
-      global.document = globalDocRef;
-    });
+  describe('enable/disable a11y of inactive iframe', () => {
+    const globalBodyRef = global.document.body;
+    const mockedHtml = `
+      <div class="divclass">
+        <span class="spanclass">I am some text</span>
+        <span tabindex="0" class="anotherspanclass">I am a text span with existing tabindex value</span>
+        <div class="iframectnclass" tabindex="0">
+          <iframe class="iframeclass"></iframe>
+        </div>
+        <div class="anotherctnclass">
+          <a class="aclass" tabindex="0"></a>
+          <i class="iclass" tabindex="0"><i>
+          <button class="buttonclass" tabindex="-1"></button>
+        </div>
+      </div>
+    `;
 
     const checkElementsInDisabledState = () => {
       assert.equal(document.querySelector('.spanclass').getAttribute('oldtab'), 'null');
@@ -579,24 +560,35 @@ describe('Iframe-helpers', () => {
       assert.isNull(document.querySelector('.buttonclass').getAttribute('oldtab'));
     };
 
+    beforeEach(() => {
+      document.body.innerHTML = mockedHtml;
+    });
+
+    afterEach(() => {
+      document.body.innerHTML = globalBodyRef;
+    });
+
     it('saves old tabindex value properly', () => {
-      let iframe = document.querySelector('.iframeclass');
+      const iframe = document.querySelector('.iframeclass');
+
       IframeHelpers.disableA11yOfInactiveIframe(iframe);
       checkElementsInDisabledState();
 
-      //test if oldtab and tabindex won't be overriden with new tabindex value -1 in a 2nd round
+      // test if oldtab and tabindex won't be overriden with new tabindex value -1 in a 2nd round
       IframeHelpers.disableA11yOfInactiveIframe(iframe);
       checkElementsInDisabledState();
     });
 
     it('enable a11y', () => {
-      let iframe = document.querySelector('.iframeclass');
+      const iframe = document.querySelector('.iframeclass');
+
       IframeHelpers.disableA11yOfInactiveIframe(iframe);
       checkElementsInDisabledState();
 
       IframeHelpers.enableA11yOfInactiveIframe();
       checkElementsInEnabledState();
-      //check if tabindex won't be overriden with new value
+
+      // check if tabindex won't be overriden with new value
       IframeHelpers.enableA11yOfInactiveIframe();
       checkElementsInEnabledState();
     });

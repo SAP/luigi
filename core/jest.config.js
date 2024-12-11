@@ -3,7 +3,7 @@ const config = {
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{js,mjs,ts,svelte}', '!**/node_modules/**', '!**/vendor/**', '!**/*.spec.{js,ts}'],
   roots: ['test'],
-  testEnvironment: 'jest-fixed-jsdom',
+  testEnvironment: 'jsdom',
   transform: {
     '\\.[jt]sx?$': 'babel-jest'
   },
