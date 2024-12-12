@@ -694,11 +694,6 @@
     @include small-button;
   }
 
-  .fd-menu .fd-menu__list .fd-menu__item .fd-menu__link {
-    background: transparent;
-    border: 0;
-  }
-
   .fd-menu .fd-menu__list .fd-menu__item .fd-top-nav__icon.no-icon {
     display: none;
   }

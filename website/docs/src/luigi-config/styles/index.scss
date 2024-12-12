@@ -190,11 +190,11 @@ $side-nav-width-mobile: 260px;
           }
 
           .fd-menu__link {
+            background-color: transparent;
+            border: 0;
 
             &.is-hover,
             &:hover {
-              background-color: transparent;
-
               .fd-menu__title {
                 color: $primary-color;
               }
@@ -202,9 +202,6 @@ $side-nav-width-mobile: 260px;
 
             &.is-selected,
             &[aria-selected=true] {
-              background-color: transparent;
-              border-bottom: none;
-
               .fd-menu__title {
                 color: $primary-color;
                 background-color: none;
