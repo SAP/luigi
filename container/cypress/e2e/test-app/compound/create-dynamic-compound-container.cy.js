@@ -92,10 +92,10 @@ describe('create luigi-compound-container dynamically', () => {
           )
           .should('exist')
           .shadow()
-          .find('section')
-          .should('contain.text', 'This is a luigi micro frontend, based on web components.');
+          .should('not.exist'); // ShadowRoot in 'closed' mode
       });
   });
+
   it('luigi compound container invalid JSON in context property', () => {
     const scriptCode = `
         <script>
@@ -175,6 +175,7 @@ describe('create luigi-compound-container dynamically', () => {
       .shadow()
       .should('not.exist');
   });
+
   it('luigi compound container with no shadow dom', () => {
     const scriptCode = `
         <script>
