@@ -161,7 +161,11 @@ class panelHeader extends LuigiElement {
       loadStylesSync: true
     };
     this.addEventListener('update', (ev) => {
-      this.$titleCmp.innerHTML = ev.detail;
+      const $titleCmp = this._shadowRoot.querySelector('#titleCmp');
+
+      if ($titleCmp) {
+        $titleCmp.innerHTML = ev.detail;
+      }
     });
   }
 
