@@ -181,7 +181,7 @@ export default class extends HTMLElement {
         text: 'uxManager().showAlert() test',
         type: 'info'
       });
-    })
+    });
 
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
     this.$publishEventBtn.addEventListener('click', () => {
