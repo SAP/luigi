@@ -137,7 +137,7 @@
                           }}
                           class="fd-menu__link"
                         >
-                          <div class="lui-product-switch__icon">
+                          <div class="lui-product-switch__icon fd-product-switch__icon sap-icon">
                             {#if hasOpenUIicon(productSwitcherItem)}
                               <i
                                 class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem)
@@ -159,7 +159,7 @@
                           </div>
                         </a>
                       {:else}
-                        <div class="lui-product-switch__icon">
+                        <div class="lui-product-switch__icon fd-product-switch__icon sap-icon">
                           {#if hasOpenUIicon(productSwitcherItem)}
                             <i
                               class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem)
@@ -212,5 +212,9 @@
     [class*='sap-icon'] {
       color: var(--sapShell_InteractiveTextColor, #d1e8ff);
     }
+  }
+
+  .fd-product-switch__item .fd-menu__link {
+    display: block;
   }
 </style>
