@@ -160,6 +160,12 @@ describe('Compound Container Tests', () => {
               expect(stub.getCall(0)).to.be.calledWith(
                 'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
               );
+              //Test if context property on luigi compound container is also updated
+              cy.get('#cc-ctx')
+                .invoke('html')
+                .then((innerHtml) => {
+                  expect(innerHtml).to.include('{"newContextData":"some data"}');
+                });
             });
         });
     });
@@ -170,7 +176,7 @@ describe('Compound Container Tests', () => {
       const alertMessages = [
         'UPDATE_TOP_NAVIGATION_REQUEST event received',
         'some goBackValue',
-        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
       ];
 
       cy.get(containerSelector)
@@ -192,7 +198,7 @@ describe('Compound Container Tests', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith('uxManager().showAlert() test');
         });
     });
 
@@ -246,7 +252,7 @@ describe('Compound Container Tests', () => {
     });
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -257,7 +263,7 @@ describe('Compound Container Tests', () => {
     });
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')

@@ -120,6 +120,13 @@ describe('Iframe Container Test', () => {
                   'have.been.calledWith',
                   'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
                 );
+
+                //Test if context property on luigi container is also updated
+                cy.get('#container-ctx')
+                  .invoke('html')
+                  .then((innerHtml) => {
+                    expect(innerHtml).to.include('{"myContext":"some context data"}');
+                  });
               });
           });
       });
