@@ -19,6 +19,7 @@
       compound web component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
+    <span id="cc-ctx" style="display: none"></span>
 
     <!-- base scenario compound container-->
     <span>Below is a compound container example for testing functionality</span>
@@ -319,6 +320,9 @@
 
       document.querySelector('#luigi-update-context').addEventListener('click', () => {
         compoundContainer.updateContext({ newContextData: 'some data' });
+        document.querySelector('#cc-ctx').innerHTML = JSON.stringify(
+          compoundContainer.context,
+        );
       });
     </script>
   </body>
