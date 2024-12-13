@@ -246,7 +246,7 @@ describe('Compound Container Tests', () => {
     });
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -257,7 +257,7 @@ describe('Compound Container Tests', () => {
     });
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')

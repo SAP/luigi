@@ -5,7 +5,7 @@ class LuigiElement extends HTMLElement {
   constructor() {
     super();
     this._shadowRoot = this.attachShadow({
-      mode: 'closed',
+      mode: 'open',
       delegatesFocus: false
     });
     this.__initialized = false;
@@ -157,7 +157,7 @@ class timer extends LuigiElement {
   constructor() {
     super();
     this.luigiConfig = {
-      styleSources: ['./button.css', './input.css', './step-input.css', './icon.css'],
+      styleSources: ['button.css', 'input.css', 'step-input.css', 'icon.css'],
       loadStylesSync: true
     };
   }

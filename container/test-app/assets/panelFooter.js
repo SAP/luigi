@@ -5,7 +5,7 @@ class LuigiElement extends HTMLElement {
   constructor() {
     super();
     this._shadowRoot = this.attachShadow({
-      mode: 'closed',
+      mode: 'open',
       delegatesFocus: false
     });
     this.__initialized = false;
@@ -157,7 +157,7 @@ class panelFooter extends LuigiElement {
   constructor() {
     super();
     this.luigiConfig = {
-      styleSources: ['./layout-panel.css'],
+      styleSources: ['layout-panel.css'],
       loadStylesSync: true
     };
   }
