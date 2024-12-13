@@ -88,8 +88,7 @@ describe('create luigi-compound-container dynamically', () => {
           .get('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f6173736574732f6d61696e2e6a73')
           .should('exist')
           .shadow()
-          .find('section')
-          .should('contain.text', 'This is a luigi micro frontend, based on web components.');
+          .should('not.exist'); // ShadowRoot in 'closed' mode
       });
   });
 
