@@ -3,7 +3,7 @@ export default class extends HTMLElement {
     super();
     const template = document.createElement('template');
 
-    template.innerHTML = /*html*/`
+    template.innerHTML = /*html*/ `
       <style>
         .unnamedslotcnt {
           width: 40%;
@@ -33,17 +33,18 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = this._shadowRoot.querySelector('p');
 
-    this.addEventListener('changeColor', event => {
+    this.addEventListener('changeColor', (event) => {
       console.log(event.detail);
       let c1 = event.detail.color1;
       let c2 = event.detail.color2;
-      this.shadowRoot.querySelector('.unnamedslotcnt').setAttribute('style',
-        `background: linear-gradient(120deg, rgba(${c1},1) 10%, rgba(${c2},1) 68%);`);
+      this.shadowRoot
+        .querySelector('.unnamedslotcnt')
+        .setAttribute('style', `background: linear-gradient(120deg, rgba(${c1},1) 10%, rgba(${c2},1) 68%);`);
     });
   }
 
   set context(ctx) {
-    if(this.$paragraph) {
+    if (this.$paragraph) {
       this.$paragraph.innerHTML = ctx.title;
     }
   }
