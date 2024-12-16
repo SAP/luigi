@@ -17,7 +17,7 @@ describe('Core WC Test', () => {
 
       cy.get(containerSelector)
         .shadow()
-        .contains('Click me')
+        .contains('getCurrentLocale(), getActiveFeatureToggles, getCurrentTheme()')
         .click()
         .then(() => {
           cy.get('.fd-message-strip--information')
@@ -279,7 +279,7 @@ describe('Container WC Test', () => {
 
       cy.get(containerSelector)
         .shadow()
-        .contains('Click me')
+        .contains('getCurrentLocale(), getActiveFeatureToggles, getCurrentTheme()')
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentLocale()=en');

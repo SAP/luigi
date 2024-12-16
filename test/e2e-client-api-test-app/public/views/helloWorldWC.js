@@ -11,7 +11,7 @@ export default class WCElement extends HTMLElement {
     template.innerHTML = `<section><p>Hello World!</p></section>`;
 
     const templateBtn = document.createElement('template');
-    templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
+    templateBtn.innerHTML = '<button id="aButton">getCurrentLocale(), getActiveFeatureToggles, getCurrentTheme()</button>';
 
     const showAlertBtn = document.createElement('template');
     showAlertBtn.innerHTML = '<button id="showAlert">showAlert</button>';
