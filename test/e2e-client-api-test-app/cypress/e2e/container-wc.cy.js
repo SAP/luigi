@@ -96,7 +96,7 @@ describe('Core WC Test', () => {
         });
     });
 
-    xit('getCurrentRoute', () => {
+    it('getCurrentRoute', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -104,7 +104,7 @@ describe('Core WC Test', () => {
         .contains('getCurrentRoute')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('current route: /#/home/core-wc');
+          expect(stub.getCall(0)).to.be.calledWith('current route: /home/core-wc');
         });
     });
 
