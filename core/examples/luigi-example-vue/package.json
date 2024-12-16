@@ -8,7 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@luigi-project/client": "^2.14.0",
+    "@luigi-project/client": "^2.18.0",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0"
   },
