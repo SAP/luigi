@@ -285,6 +285,7 @@ $side-nav-width-mobile: 260px;
 
         &:before {
           margin-top: 0 !important;
+          transform: translateX(-4px);
         }
       }
 
@@ -295,6 +296,16 @@ $side-nav-width-mobile: 260px;
             border-bottom-color: $primary-color;
           }
         }
+      }
+
+      &:focus::after {
+        height: 34px;
+        inset: -2px 0 auto 0;
+      }
+
+      &.luigi-search__button:focus::after,
+      &.luigi-menu__button:focus::after {
+        top: 2px;
       }
     }
 
