@@ -246,7 +246,7 @@ class LifecycleManager extends LuigiClientBase {
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
     if (disableTpcCheck) {
-      document.head.setAttribute('disable-tpc-check');
+      document.head.setAttribute('disable-tpc-check', 'true');
     }
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
