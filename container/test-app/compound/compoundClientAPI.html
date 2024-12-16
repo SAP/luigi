@@ -78,7 +78,7 @@
       const compoundContainer = document.getElementById('dashboard');
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
-        console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        console.debug('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
 
       compoundContainer.compoundConfig = {
