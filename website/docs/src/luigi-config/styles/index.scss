@@ -298,14 +298,25 @@ $side-nav-width-mobile: 260px;
         }
       }
 
-      &:focus::after {
+      &:not(.lui-burger):focus::after {
         height: 34px;
         inset: -2px 0 auto 0;
       }
 
-      &.luigi-search__button:focus::after,
-      &.luigi-menu__button:focus::after {
-        top: 2px;
+      &:has(.sap-icon--search),
+      &:has(.sap-icon--overflow) {
+        height: 36px;
+        margin: 0;
+
+        > i {
+          line-height: 16px;
+          margin: 0;
+        }
+
+        &:focus::after,
+        &:focus::after {
+          top: 2px;
+        }
       }
     }
 

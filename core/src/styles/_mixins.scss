@@ -24,13 +24,3 @@
     );
   }
 }
-
-@mixin small-button() {
-  height: 36px;
-  margin: 0;
-
-  > i {
-    line-height: 16px;
-    margin: 0;
-  }
-}

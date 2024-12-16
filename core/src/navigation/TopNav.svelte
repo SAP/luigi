@@ -417,7 +417,7 @@
                 <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                   <div class="fd-shellbar-collapse--control" aria-expanded="false" aria-haspopup="true" role="button">
                     <button
-                      class="fd-shellbar__button fd-button fd-button--transparent luigi-menu__button"
+                      class="fd-shellbar__button fd-button fd-button--transparent"
                       aria-controls="overflowPopover"
                       aria-expanded={dropDownStates.overflowPopover || false}
                       aria-haspopup="true"
@@ -483,7 +483,7 @@
                                   <span
                                     class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node)
                                       ? getSapIconStr(node.icon)
-                                      : 'no-icon'}"
+                                      : ''}"
                                   >
                                     {#if !hasOpenUIicon(node)}
                                       <img src={node.icon} alt={node.altText ? node.altText : ''} />
@@ -690,14 +690,6 @@
 {/if}
 
 <style lang="scss">
-  .fd-shellbar .fd-shellbar__group--actions .fd-button.fd-shellbar__button.luigi-menu__button {
-    @include small-button;
-  }
-
-  .fd-menu .fd-menu__list .fd-menu__item .fd-top-nav__icon.no-icon {
-    display: none;
-  }
-
   /*Remove Safari bug with blue outlines of dropdowns in the shellbar*/
   .fd-shellbar:focus {
     outline: none;
