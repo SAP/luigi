@@ -160,6 +160,12 @@ describe('Compound Container Tests', () => {
               expect(stub.getCall(0)).to.be.calledWith(
                 'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
               );
+              //Test if context property on luigi compound container is also updated
+              cy.get('#cc-ctx')
+                .invoke('html')
+                .then((innerHtml) => {
+                  expect(innerHtml).to.include('{"newContextData":"some data"}');
+                });
             });
         });
     });

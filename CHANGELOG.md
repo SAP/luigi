@@ -25,6 +25,28 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.18.2] (2024-12-16)
+
+#### :bug: Fixed
+* [#4068](https://github.com/SAP/luigi/pull/4068) Fixes 'setAttribute' issue in Luigi Client ([@walmazacn](https://github.com/walmazacn))
+* [#4065](https://github.com/SAP/luigi/pull/4065) BtpLayout: Backdrop fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4058](https://github.com/SAP/luigi/pull/4058) Wrong order of productswitcher item ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.18.1] (2024-11-29)
+
+#### :bug: Fixed
+* [#4028](https://github.com/SAP/luigi/pull/4028) Auth expiration check reset ([@hardl](https://github.com/hardl))
+* [#4024](https://github.com/SAP/luigi/pull/4024) Fixes accessibility issue in navigation ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+
 ## [v2.18.0] (2024-11-05)
 
 #### :rocket: Added
@@ -1894,3 +1916,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
 [v2.17.0]: https://github.com/SAP/luigi/compare/v2.16.0...v2.17.0
 [v2.18.0]: https://github.com/SAP/luigi/compare/v2.17.0...v2.18.0
+[v2.18.1]: https://github.com/SAP/luigi/compare/v2.18.0...v2.18.1
+[v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2

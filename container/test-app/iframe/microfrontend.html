@@ -44,6 +44,7 @@
       <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
       <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
+      <button onclick="testGetHistoryState()">test history state</button>
       <button onclick="testGetContext()">Get Context</button>
 
       <button onclick="testSetCurrentLocale()">test set current locale</button>
@@ -132,6 +133,13 @@
 
       function testHideLoadingIndicator() {
         LuigiClient.uxManager().hideLoadingIndicator();
+      }
+
+      function testGetHistoryState() {
+        LuigiClient.sendCustomMessage({
+          id: 'my.historyMessage',
+          ...{ state: window.history.state },
+        });
       }
 
       function testGetContext() {

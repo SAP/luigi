@@ -120,6 +120,38 @@ describe('Iframe Container Test', () => {
                   'have.been.calledWith',
                   'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
                 );
+
+                //Test if context property on luigi container is also updated
+                cy.get('#container-ctx')
+                  .invoke('html')
+                  .then((innerHtml) => {
+                    expect(innerHtml).to.include('{"myContext":"some context data"}');
+                  });
+              });
+          });
+      });
+  });
+
+  it('update viewUrl', () => {
+    cy.on('window:alert', stub);
+
+    cy.get('#update-view-url')
+      .click()
+      .then(() => {
+        cy.get(containerSelector)
+          .shadow()
+          .get('iframe')
+          .then((iframe) => {
+            const $body = iframe.contents().find('body');
+
+            cy.wrap($body)
+              .contains('test history state')
+              .click()
+              .then(() => {
+                cy.wrap(stub).should(
+                  'have.been.calledWith',
+                  'Custom message received: {"id":"my.historyMessage","_metaData":{},"data":{"state":{"luigiInduced":true}}}'
+                );
               });
           });
       });
