@@ -28,7 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [v2.18.3] (2024-12-17)
 
 #### :bug: Fixed
-* [#4071](https://github.com/SAP/luigi/pull/4071) Fixes input focus issue in documentation ([@walmazacn](https://github.com/walmazacn))
+* [#4071](https://github.com/SAP/luigi/pull/4071) Fixes input focus in search field ([@walmazacn](https://github.com/walmazacn))
 
 
 
