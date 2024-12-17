@@ -121,7 +121,7 @@ $side-nav-width-mobile: 260px;
 
     [title=Blog] {
       span {
-        margin-right: 1.2rem;
+        margin-right: 1.3rem;
       }
     }
 
@@ -269,7 +269,7 @@ $side-nav-width-mobile: 260px;
       max-height: none;
       height: 61px;
       padding-bottom: 41px;
-      margin-bottom: -33px;
+      margin-bottom: -36px;
 
       span {
         &:not(.fd-top-nav__icon) {
@@ -332,7 +332,7 @@ $side-nav-width-mobile: 260px;
     @media screen and (min-width: 1024px) {
       .fd-button.fd-shellbar__button {
         height: 69px;
-        margin-bottom: -41px;
+        margin-bottom: -40px;
 
         span:not(.fd-top-nav__icon) {
           padding-bottom: 42px;
