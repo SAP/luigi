@@ -119,8 +119,10 @@ $side-nav-width-mobile: 260px;
       margin-right: .95rem;
     }
 
-    [title=Blog] span {
-      margin-right: 1.2rem;
+    [title=Blog] {
+      span {
+        margin-right: 1.2rem;
+      }
     }
 
     .fd-shellbar__title {
