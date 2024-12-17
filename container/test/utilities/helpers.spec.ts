@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GenericHelperFunctions } from '../../src/utilities/helpers';
 
 describe('GenericHelpers', () => {

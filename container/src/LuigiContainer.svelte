@@ -1,6 +1,5 @@
 <svelte:options
   customElement={{
-    tag: null,
     shadow: 'none',
     props: {
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
@@ -43,6 +42,7 @@
             if (name === 'context') {
               this.updateContext(JSON.parse(newValue));
             }
+
             if (name === 'auth-data') {
               ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
             }
@@ -68,149 +68,165 @@
   import { GenericHelperFunctions } from './utilities/helpers';
 
   /* eslint-disable */
-  export let activeFeatureToggleList: string[];
-  export let allowRules: string[];
-  export let anchor: string;
-  export let authData: any;
-  export let clientPermissions: any;
-  export let context: string;
-  export let deferInit: boolean;
-  export let dirtyStatus: boolean;
-  export let documentTitle: string;
-  export let hasBack: boolean;
-  export let label: string;
-  export let locale: string;
-  export let noShadow: boolean;
-  export let nodeParams: any;
-  export let pathParams: any;
-  export let sandboxRules: string[];
-  export let searchParams: any;
-  export let skipCookieCheck: 'false' | 'true';
-  export let skipInitCheck: boolean;
-  export let theme: string;
-  export let userSettings: any;
-  export let viewurl: string;
-  export let webcomponent: any;
+  interface Props {
+    activeFeatureToggleList: string[];
+    allowRules: string[];
+    anchor: string;
+    authData: any;
+    clientPermissions: any;
+    context: string;
+    deferInit: boolean;
+    dirtyStatus: boolean;
+    documentTitle: string;
+    hasBack: boolean;
+    label: string;
+    locale: string;
+    noShadow: boolean;
+    nodeParams: any;
+    pathParams: any;
+    sandboxRules: string[];
+    searchParams: any;
+    skipCookieCheck: 'false' | 'true';
+    skipInitCheck: boolean;
+    theme: string;
+    userSettings: any;
+    viewurl: string;
+    webcomponent: any;
+  }
   /* eslint-enable */
 
-  const iframeHandle: IframeHandle = {};
-  let mainComponent: ContainerElement;
-  let containerInitialized = false;
+  let {
+    activeFeatureToggleList,
+    allowRules,
+    anchor,
+    authData,
+    clientPermissions,
+    context = $bindable(),
+    deferInit,
+    dirtyStatus,
+    documentTitle,
+    hasBack,
+    label,
+    locale,
+    noShadow,
+    nodeParams,
+    pathParams,
+    sandboxRules,
+    searchParams,
+    skipCookieCheck,
+    skipInitCheck,
+    theme,
+    userSettings,
+    viewurl,
+    webcomponent
+  }: Props = $props();
 
   const webcomponentService = new WebComponentService();
-
-  // Only needed for get rid of "unused export property" svelte compiler warnings
-  export const unwarn = () => {
-    return (
-      activeFeatureToggleList &&
-      allowRules &&
-      anchor &&
-      authData &&
-      clientPermissions &&
-      dirtyStatus &&
-      documentTitle &&
-      hasBack &&
-      locale &&
-      noShadow &&
-      nodeParams &&
-      pathParams &&
-      sandboxRules &&
-      searchParams &&
-      skipCookieCheck &&
-      skipInitCheck &&
-      theme &&
-      userSettings
-    );
-  };
+  const iframeHandle: IframeHandle = $state({});
+  let mainComponent: ContainerElement = $state();
+  let containerInitialized = $state(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
-    if (!containerInitialized) {
-      thisComponent.sendCustomMessage = (id: string, data?: object) => {
-        ContainerAPI.sendCustomMessage(
-          id,
-          thisComponent.getNoShadow() ? thisComponent : mainComponent,
-          !!webcomponent,
-          iframeHandle,
-          data
-        );
-      };
-
-      thisComponent.updateContext = (contextObj: object, internal?: object) => {
-        context = contextObj;
-        if (webcomponent) {
-          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
-        } else {
-          ContainerAPI.updateContext(contextObj, internal, iframeHandle);
-        }
-      };
-
-      thisComponent.closeAlert = (id: string, dismissKey: string) => {
-        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
-      };
-
-      containerService.registerContainer(thisComponent);
-      webcomponentService.thisComponent = thisComponent;
-
-      const ctx = GenericHelperFunctions.resolveContext(context);
-
-      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
-        if (viewUrl?.length) {
-          ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
-        }
-      };
-
-      if (webcomponent && webcomponent != 'false') {
-        if (!thisComponent.getNoShadow()) {
-          mainComponent.innerHTML = '';
-          const shadow = thisComponent.attachShadow({ mode: 'open' });
-          shadow.append(mainComponent);
-        } else {
-          // removing mainComponent
-          thisComponent.innerHTML = '';
-        }
-        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
-        webcomponentService.renderWebComponent(
-          viewurl,
-          thisComponent.getNoShadow() ? thisComponent : mainComponent,
-          ctx,
-          typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
-        );
-      } else {
-        if (!thisComponent.getNoShadow()) {
-          // removeing mainComponent
-          thisComponent.innerHTML = '';
-          const shadow = thisComponent.attachShadow({ mode: 'open' });
-          shadow.append(mainComponent);
-        }
-      }
-      if (skipInitCheck) {
-        thisComponent.initialized = true;
-        setTimeout(() => {
-          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        });
-      } else if (webcomponent) {
-        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (
-            !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
-          ) {
-            thisComponent.initialized = true;
-            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-          }
-        });
-      }
-      containerInitialized = true;
-      thisComponent.containerInitialized = true;
+    if (containerInitialized) {
+      return;
     }
+
+    thisComponent.sendCustomMessage = (id: string, data?: object) => {
+      ContainerAPI.sendCustomMessage(
+        id,
+        thisComponent.getNoShadow() ? thisComponent : mainComponent,
+        !!webcomponent,
+        iframeHandle,
+        data
+      );
+    };
+
+    thisComponent.updateContext = (contextObj: object, internal?: object) => {
+      context = contextObj;
+
+      if (webcomponent) {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+      } else {
+        ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+      }
+    };
+
+    thisComponent.closeAlert = (id: string, dismissKey: string) => {
+      ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+    };
+
+    containerService.registerContainer(thisComponent);
+    webcomponentService.thisComponent = thisComponent;
+
+    const ctx = GenericHelperFunctions.resolveContext(context);
+
+    thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
+      if (viewUrl?.length) {
+        ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
+      }
+    };
+
+    if (webcomponent && webcomponent != 'false') {
+      if (!thisComponent.getNoShadow()) {
+        mainComponent.innerHTML = '';
+
+        const shadow = thisComponent.attachShadow({ mode: 'open' });
+
+        shadow.append(mainComponent);
+      } else {
+        // removing mainComponent
+        thisComponent.innerHTML = '';
+      }
+
+      const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+
+      webcomponentService.renderWebComponent(
+        viewurl,
+        thisComponent.getNoShadow() ? thisComponent : mainComponent,
+        ctx,
+        typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
+      );
+    } else {
+      if (!thisComponent.getNoShadow()) {
+        // removing mainComponent
+        thisComponent.innerHTML = '';
+
+        const shadow = thisComponent.attachShadow({ mode: 'open' });
+
+        shadow.append(mainComponent);
+      }
+    }
+
+    if (skipInitCheck) {
+      thisComponent.initialized = true;
+      setTimeout(() => {
+        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+      });
+    } else if (webcomponent) {
+      (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+        if (
+          !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
+        ) {
+          thisComponent.initialized = true;
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        }
+      });
+    }
+
+    containerInitialized = true;
+    thisComponent.containerInitialized = true;
   };
 
   onMount(async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const thisComponent: any = mainComponent.parentNode;
+
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
     };
+
     if (!deferInit) {
       initialize(thisComponent);
     }
@@ -240,7 +256,7 @@
         title={label}
         allow={getAllowRules(allowRules)}
         sandbox={sandboxRules ? sandboxRules.join(' ') : undefined}
-      />
+      ></iframe>
     {/if}
   {/if}
 </main>

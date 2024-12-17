@@ -1,6 +1,5 @@
 <svelte:options
   customElement={{
-    tag: null,
     shadow: 'none',
     props: {
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
@@ -44,6 +43,7 @@
         return () =>
           console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
+
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
@@ -69,74 +69,84 @@
   import { GenericHelperFunctions } from './utilities/helpers';
 
   /* eslint-disable */
-  export let activeFeatureToggleList: string[];
-  export let anchor: string;
-  export let clientPermissions: any;
-  export let compoundConfig: any;
-  export let context: string;
-  export let deferInit: boolean;
-  export let dirtyStatus: boolean;
-  export let documentTitle: string;
-  export let hasBack: boolean;
-  export let locale: string;
-  export let noShadow: boolean;
-  export let nodeParams: any;
-  export let pathParams: any;
-  export let searchParams: any;
-  export let skipInitCheck: boolean;
-  export let theme: string;
-  export let userSettings: any;
-  export let viewurl: string;
-  export let webcomponent: any;
+  interface Props {
+    activeFeatureToggleList: string[];
+    anchor: string;
+    clientPermissions: any;
+    compoundConfig: any;
+    context: string;
+    deferInit: boolean;
+    dirtyStatus: boolean;
+    documentTitle: string;
+    hasBack: boolean;
+    locale: string;
+    noShadow: boolean;
+    nodeParams: any;
+    pathParams: any;
+    searchParams: any;
+    skipInitCheck: boolean;
+    theme: string;
+    userSettings: any;
+    viewurl: string;
+    webcomponent: any;
+  }
   /* eslint-enable */
 
-  let containerInitialized = false;
-  let mainComponent: ContainerElement;
-  let eventBusElement: ContainerElement;
+  let {
+    activeFeatureToggleList,
+    anchor,
+    clientPermissions,
+    compoundConfig,
+    context = $bindable(),
+    deferInit = $bindable(),
+    dirtyStatus,
+    documentTitle,
+    hasBack,
+    locale,
+    noShadow,
+    nodeParams,
+    pathParams,
+    searchParams,
+    skipInitCheck,
+    theme,
+    userSettings,
+    viewurl,
+    webcomponent
+  }: Props = $props();
 
-  const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
-
-  // Only needed for get rid of "unused export property" svelte compiler warnings
-  export const unwarn = () => {
-    return (
-      activeFeatureToggleList &&
-      anchor &&
-      clientPermissions &&
-      dirtyStatus &&
-      documentTitle &&
-      hasBack &&
-      locale &&
-      noShadow &&
-      nodeParams &&
-      pathParams &&
-      searchParams &&
-      skipInitCheck &&
-      theme &&
-      userSettings
-    );
-  };
+  const containerService = new ContainerService();
+  let eventBusElement: ContainerElement = $state();
+  let mainComponent: ContainerElement = $state();
+  let containerInitialized = $state(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
     if (!compoundConfig || containerInitialized) {
       return;
     }
+
     thisComponent.updateContext = (contextObj: object, internal?: object) => {
       const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
+
       rootElement._luigi_mfe_webcomponent.context = contextObj;
       context = contextObj;
 
       const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
+
       if (compoundChildrenQueryElement) {
         const compoundChildren = compoundChildrenQueryElement.querySelectorAll('[lui_web_component]');
+
         compoundChildren?.forEach((item) => {
           const ctx = item.context || {};
+
           item.context = Object.assign(ctx, contextObj);
         });
       }
     };
+
     const ctx = GenericHelperFunctions.resolveContext(context);
+
     deferInit = false;
 
     const node = {
@@ -144,18 +154,23 @@
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     };
+
     if (!thisComponent.getNoShadow()) {
       mainComponent.innerHTML = '';
+
       const shadow = thisComponent.attachShadow({ mode: 'open' });
+
       shadow.append(mainComponent);
     } else {
       // removing mainComponent
       thisComponent.innerHTML = '';
     }
+
     webcomponentService
       .renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx)
       .then((compCnt: ContainerElement) => {
         eventBusElement = compCnt;
+
         if (skipInitCheck || !node.viewUrl) {
           thisComponent.initialized = true;
           setTimeout(() => {
@@ -166,6 +181,7 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
+
     containerInitialized = true;
     thisComponent.containerInitialized = true;
   };
@@ -180,6 +196,7 @@
     thisComponent.init = () => {
       initialize(thisComponent);
     };
+
     if (!deferInit) {
       initialize(thisComponent);
     }
@@ -189,7 +206,7 @@
   });
 </script>
 
-<main bind:this={mainComponent} />
+<main bind:this={mainComponent}></main>
 
 <style>
   main {

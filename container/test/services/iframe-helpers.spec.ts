@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getAllowRules } from '../../src/services/iframe-helpers';
 
 describe('getAllowRules function', () => {
