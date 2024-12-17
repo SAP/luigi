@@ -76,9 +76,6 @@
   content: "\65";
 }
 
-
-
-
 $primary-color: #2deb8a;
 $secondary-color: #3c4553;
 $light-gray: #e6e6e6;
@@ -193,11 +190,11 @@ $side-nav-width-mobile: 260px;
           }
 
           .fd-menu__link {
+            background-color: transparent;
+            border: 0;
 
             &.is-hover,
             &:hover {
-              background-color: transparent;
-
               .fd-menu__title {
                 color: $primary-color;
               }
@@ -205,9 +202,6 @@ $side-nav-width-mobile: 260px;
 
             &.is-selected,
             &[aria-selected=true] {
-              background-color: transparent;
-              border-bottom: none;
-
               .fd-menu__title {
                 color: $primary-color;
                 background-color: none;
@@ -265,22 +259,19 @@ $side-nav-width-mobile: 260px;
       border-radius: 0;
       background: none;
       max-height: none;
-      height: 69px;
+      height: 61px;
       padding-bottom: 41px;
-      margin-bottom: -41px;
+      margin-bottom: -33px;
 
       span {
-
         &:not(.fd-top-nav__icon) {
           color: white;
           font-size: 18px;
           color: #fff;
-          padding-bottom: 37px;
-          // margin-bottom: -41px;
+          padding-bottom: 29px;
           border-bottom: 4px solid transparent;
           transition: all .2s ease;
         }
-
       }
 
       i {
@@ -288,13 +279,13 @@ $side-nav-width-mobile: 260px;
         margin-top: -1.3rem;
       }
 
-
       .fd-top-nav__icon {
         line-height: 0;
-        margin-top: -3rem;
-        
+        margin-top: -2.5rem;
+
         &:before {
           margin-top: 0 !important;
+          transform: translateX(-4px);
         }
       }
 
@@ -304,6 +295,42 @@ $side-nav-width-mobile: 260px;
           &:not(.fd-top-nav__icon) {
             border-bottom-color: $primary-color;
           }
+        }
+      }
+
+      &:not(.lui-burger):focus::after {
+        height: 34px;
+        inset: -2px 0 auto 0;
+      }
+
+      &:has(.sap-icon--search),
+      &:has(.sap-icon--overflow) {
+        height: 36px;
+        margin: 0;
+
+        > i {
+          line-height: 16px;
+          margin: 0;
+        }
+
+        &:focus::after,
+        &:focus::after {
+          top: 2px;
+        }
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .fd-button.fd-shellbar__button {
+        height: 69px;
+        margin-bottom: -41px;
+
+        span:not(.fd-top-nav__icon) {
+          padding-bottom: 37px;
+        }
+
+        .fd-top-nav__icon {
+          margin-top: -3rem;
         }
       }
     }
@@ -390,13 +417,12 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-top-nav__icon {
-
     font-size: 24px;
     line-height: 1;
     transition: color .3s ease;
     color: white;
 
-    &:before {
+    &:not(.sap-icon--search):before {
       font-family: 'icon-font' !important;
       content: attr(data-icon);
       font-style: normal !important;
@@ -416,15 +442,15 @@ $side-nav-width-mobile: 260px;
   }
 
   .sap-icon--twitter::before {
-    content: "\62";
+    content: "\62" !important;
   }
 
   .sap-icon--slack::before {
-    content: "\63";
+    content: "\63" !important;
   }
 
   .sap-icon--github::before {
-    content: "\61";
+    content: "\61" !important;
   }
 
   .fd-nested-list {
@@ -542,16 +568,22 @@ $side-nav-width-mobile: 260px;
       color: black;
       z-index: 20;
       transition: left 0.1s linear;
-      background-color: white;
+      background-color: white !important;
       padding: 15px;
-      border-radius: 50%;
+      border-radius: 5px 5px 0 0 !important;
       box-shadow: rgba(137, 165, 199, 0.42) 0px 1px 26px 0px;
       cursor: pointer;
       margin: 0;
 
       &:before {
-        content: "\e1c0";
-        transition: transform 0.4s ease;
+        display: none;
+      }
+      i {
+        color: $secondary-color !important;
+        margin: 0 !important;
+      }
+      &:hover i {
+        color: $primary-color !important;
       }
     }
 
