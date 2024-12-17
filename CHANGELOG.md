@@ -25,6 +25,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.18.3] (2024-12-17)
+
+#### :bug: Fixed
+* [#4071](https://github.com/SAP/luigi/pull/4071) Fixes input focus issue in documentation ([@walmazacn](https://github.com/walmazacn))
+
+
+
 ## [v2.18.2] (2024-12-16)
 
 #### :bug: Fixed
@@ -1918,3 +1925,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.18.0]: https://github.com/SAP/luigi/compare/v2.17.0...v2.18.0
 [v2.18.1]: https://github.com/SAP/luigi/compare/v2.18.0...v2.18.1
 [v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2
+[v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
