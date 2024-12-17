@@ -114,7 +114,15 @@ $side-nav-width-mobile: 260px;
     z-index: 2;
 
     span {
-      font-weight: 600;
+      font-weight: 600;    
+      margin-left: 1rem;
+      margin-right: .95rem;
+    }
+
+    [title=Blog] {
+      span {
+        margin-right: 1.3rem;
+      }
     }
 
     .fd-shellbar__title {
@@ -127,7 +135,7 @@ $side-nav-width-mobile: 260px;
 
     @media screen and (min-width: 1024px) {
       height: $height-shellbar;
-      padding: 4px 32px !important;
+      padding: 0px 26px 0 17px!important;
     }
   }
 
@@ -261,7 +269,7 @@ $side-nav-width-mobile: 260px;
       max-height: none;
       height: 61px;
       padding-bottom: 41px;
-      margin-bottom: -33px;
+      margin-bottom: -36px;
 
       span {
         &:not(.fd-top-nav__icon) {
@@ -281,7 +289,8 @@ $side-nav-width-mobile: 260px;
 
       .fd-top-nav__icon {
         line-height: 0;
-        margin-top: -2.5rem;
+        margin-top: -3.25rem;
+        margin-right: 0;
 
         &:before {
           margin-top: 0 !important;
@@ -309,8 +318,9 @@ $side-nav-width-mobile: 260px;
         margin: 0;
 
         > i {
-          line-height: 16px;
+          line-height: 12px;
           margin: 0;
+          color: white;
         }
 
         &:focus::after,
@@ -323,10 +333,10 @@ $side-nav-width-mobile: 260px;
     @media screen and (min-width: 1024px) {
       .fd-button.fd-shellbar__button {
         height: 69px;
-        margin-bottom: -41px;
+        margin-bottom: -40px;
 
         span:not(.fd-top-nav__icon) {
-          padding-bottom: 37px;
+          padding-bottom: 42px;
         }
 
         .fd-top-nav__icon {
@@ -420,7 +430,7 @@ $side-nav-width-mobile: 260px;
     font-size: 24px;
     line-height: 1;
     transition: color .3s ease;
-    color: white;
+    color: white!important;
 
     &:not(.sap-icon--search):before {
       font-family: 'icon-font' !important;
