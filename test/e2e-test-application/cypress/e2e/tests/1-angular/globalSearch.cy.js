@@ -5,20 +5,20 @@ describe('Global Search', () => {
 
   describe('Open search field ', () => {
     it('Click on field', () => {
-      // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      // Input should be not visible and blurred
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible').should('not.have.focus');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
-      // Input should be visible
-      cy.get('input[data-testid="luigi-search-input"]').should('be.visible');
+      // Input should be visible and focused
+      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').should('have.focus');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
-      // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      // Input should be not visible and blurred
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible').should('not.have.focus');
     });
   });
 
