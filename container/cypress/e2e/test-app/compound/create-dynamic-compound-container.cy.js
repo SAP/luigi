@@ -95,6 +95,7 @@ describe('create luigi-compound-container dynamically', () => {
           .should('not.exist'); // ShadowRoot in 'closed' mode
       });
   });
+
   it('luigi compound container invalid JSON in context property', () => {
     const scriptCode = `
         <script>
@@ -172,6 +173,7 @@ describe('create luigi-compound-container dynamically', () => {
 
     cy.get('luigi-compound-container').shadow().should('not.exist');
   });
+
   it('luigi compound container with no shadow dom', () => {
     const scriptCode = `
         <script>

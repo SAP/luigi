@@ -146,9 +146,7 @@ export class GlobalSearchHelperClass {
       this.calcSearchResultItemSelected(keyCode);
     } else if (GenericHelpers.isFunction(this.search.searchProvider.onEscape) && keyCode === KEYCODE_ESC) {
       this.clearAriaSelected(this.customSearchItemRendererSlotContainer);
-      setTimeout(() => {
-        this.setFocusOnGlobalSearchFieldDesktop(inputElement);
-      });
+      setTimeout(() => this.setFocusOnGlobalSearchFieldDesktop(inputElement));
       this.search.searchProvider.onEscape();
     }
   }
@@ -169,11 +167,9 @@ export class GlobalSearchHelperClass {
   }
 
   toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, customSearchItemRendererSlot) {
-    if (!isSearchFieldVisible)
-      setTimeout(() => {
-        this.setFocusOnGlobalSearchFieldDesktop();
-      });
-    else {
+    if (!isSearchFieldVisible) {
+      setTimeout(() => this.setFocusOnGlobalSearchFieldDesktop());
+    } else {
       displaySearchResult = false;
     }
 
