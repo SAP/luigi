@@ -168,7 +168,7 @@ export class GlobalSearchHelperClass {
 
   toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, customSearchItemRendererSlot) {
     if (!isSearchFieldVisible) {
-      setTimeout(() => this.setFocusOnGlobalSearchFieldDesktop());
+      setTimeout(() => this.setFocusOnGlobalSearchFieldDesktop(inputElem));
     } else {
       displaySearchResult = false;
     }
