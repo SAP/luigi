@@ -108,11 +108,11 @@ describe('GenericHelpers', () => {
       consoleErrorSpy.mockRestore();
     });
 
-    it('should return undefined for unsupported input types', () => {
+    it('should return false for unsupported input types', () => {
       const unsupportedValue = 42; // Number
       // @ts-ignore
       const result = GenericHelperFunctions.checkWebcomponentValue(unsupportedValue);
-      expect(result).toStrictEqual(undefined);
+      expect(result).toStrictEqual(false);
     });
   });
 
