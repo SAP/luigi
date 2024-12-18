@@ -181,7 +181,7 @@ export default class extends HTMLElement {
         text: 'uxManager().showAlert() test',
         type: 'info'
       });
-    })
+    });
 
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
     this.$publishEventBtn.addEventListener('click', () => {
@@ -359,7 +359,7 @@ export default class extends HTMLElement {
             type: 'info'
           });
         });
-        this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
+      this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
