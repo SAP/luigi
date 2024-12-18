@@ -121,10 +121,11 @@
     webcomponent
   }: Props = $props();
 
-  const webcomponentService = new WebComponentService();
-  const iframeHandle: IframeHandle = $state({});
-  let mainComponent: ContainerElement = $state();
   let containerInitialized = $state(false);
+  let mainComponent: ContainerElement;
+
+  const iframeHandle: IframeHandle = $state({});
+  const webcomponentService = new WebComponentService();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {

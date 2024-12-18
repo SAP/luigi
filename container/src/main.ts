@@ -13,5 +13,8 @@ if (!customElements.get('luigi-container')) {
 }
 
 if (!customElements.get('luigi-compound-container')) {
-  customElements.define('luigi-compound-container', (LuigiCompoundContainer as Component).element as CustomElementConstructor);
+  customElements.define(
+    'luigi-compound-container',
+    (LuigiCompoundContainer as Component).element as CustomElementConstructor
+  );
 }

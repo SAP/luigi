@@ -114,11 +114,12 @@
     webcomponent
   }: Props = $props();
 
-  const webcomponentService = new WebComponentService();
-  const containerService = new ContainerService();
-  let eventBusElement: ContainerElement = $state();
-  let mainComponent: ContainerElement = $state();
   let containerInitialized = $state(false);
+  let mainComponent: ContainerElement;
+  let eventBusElement: ContainerElement;
+
+  const containerService = new ContainerService();
+  const webcomponentService = new WebComponentService();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {

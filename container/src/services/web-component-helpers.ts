@@ -67,11 +67,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   createCompoundItemContainer(layoutConfig: any): HTMLDivElement {
     if (typeof (this.rendererObject.use as RendererUseProps).createCompoundItemContainer === 'function') {
       // @ts-ignore
-      return this.rendererObject.use.createCompoundItemContainer(
-        layoutConfig,
-        this.config,
-        this.superRenderer
-      );
+      return this.rendererObject.use.createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundItemContainer(layoutConfig);
     }
@@ -81,7 +77,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attachCompoundItem(compoundCnt: any, compoundItemCnt: any): void {
     if ((this.rendererObject.use as RendererUseProps).attachCompoundItem) {
-      ((this.rendererObject.use as RendererUseProps) as any).attachCompoundItem(
+      (this.rendererObject.use as RendererUseProps as any).attachCompoundItem(
         compoundCnt,
         compoundItemCnt,
         this.superRenderer

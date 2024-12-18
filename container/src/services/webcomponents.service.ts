@@ -476,7 +476,10 @@ export class WebComponentService {
     if (this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!this.containerService.getContainerManager()._registerWebcomponent) {
-        this.containerService.getContainerManager()._registerWebcomponent = (srcString: string, el: CustomElementConstructor) => {
+        this.containerService.getContainerManager()._registerWebcomponent = (
+          srcString: string,
+          el: CustomElementConstructor
+        ) => {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
