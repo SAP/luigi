@@ -362,15 +362,11 @@ export default class WCElement extends HTMLElement {
 
     this.$getCurrentRoute = this._shadowRoot.querySelector('#getCurrentRoute');
     this.$getCurrentRoute.addEventListener('click', () => {
-      if (typeof this.LuigiClient.linkManager().getCurrentRoute() === 'string') {
-        alert('current route: ' + this.LuigiClient.linkManager().getCurrentRoute());
-      } else {
-        this.LuigiClient.linkManager()
-          .getCurrentRoute()
-          .then((result) => {
-            alert('current route: ' + result);
-          });
-      }
+      this.LuigiClient.linkManager()
+        .getCurrentRoute()
+        .then((result) => {
+          alert('current route: ' + result);
+        });
     });
 
     this.$navigateToIntent = this._shadowRoot.querySelector('#navigateToIntent');
