@@ -118,7 +118,7 @@ $side-nav-width-mobile: 260px;
       margin-right: .95rem;
     }
 
-    :not(.fd-shellbar__action--mobile) {
+    .fd-shellbar__action:not(.fd-shellbar__action--mobile) {
       span {
         margin-left: 1rem; 
       }
