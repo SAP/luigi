@@ -47,7 +47,14 @@ describe('WebComponentService', function() {
 
     beforeEach(() => {
       window.Luigi = {
-        navigation: 'mock1',
+        navigation: () => {
+          return new Object({
+            mockValue: 'mock',
+            getCurrentRoute: () => {
+              return 'mockRoute';
+            }
+          });
+        },
         ux: 'mock2',
         i18n: () => LuigiI18N
       };
@@ -67,13 +74,17 @@ describe('WebComponentService', function() {
       expect(container.children.length).to.equal(0);
     });
 
-    it('check dom injection', () => {
+    it('check dom injection', async () => {
       container.appendChild(itemPlaceholder);
       WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
 
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(extendedContext.context);
-      expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
+      expect(expectedCmp.LuigiClient.linkManager).to.be.a('function');
+      expect(expectedCmp.LuigiClient.linkManager().mockValue).to.equal('mock');
+      expect(expectedCmp.LuigiClient.linkManager().getCurrentRoute()).to.be.a('promise');
+      const route = await expectedCmp.LuigiClient.linkManager().getCurrentRoute();
+      expect(route).to.equal('mockRoute');
       expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
       expect(expectedCmp.LuigiClient.getCurrentLocale()).to.equal(window.Luigi.i18n().getCurrentLocale());
       expect(expectedCmp.LuigiClient.getCurrentLocale).to.be.a('function');
