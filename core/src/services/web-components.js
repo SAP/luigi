@@ -64,7 +64,21 @@ class WebComponentSvcClass {
       wc.extendedContext.clientPermissions = wc.extendedContext.currentNode.clientPermissions;
     }
     const clientAPI = {
-      linkManager: window.Luigi.navigation,
+      linkManager: () => {
+        const lm = window.Luigi.navigation();
+        return new Proxy(lm, {
+          get(target, prop) {
+            if (prop === target.getCurrentRoute.name) {
+              return () => {
+                return new Promise((resolve) => {
+                  resolve(target.getCurrentRoute());
+                });
+              }
+            }
+            return target[prop];
+          }
+        });
+      },
       uxManager: window.Luigi.ux,
       getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
