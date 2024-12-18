@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
-    "@luigi-project/client": "2.18.0",
-    "@luigi-project/core": "2.18.0",
+    "@luigi-project/client": "2.18.3",
+    "@luigi-project/core": "2.18.3",
     "esbuild": "^0.18.20",
     "hast-util-has-property": "3.0.0",
     "lodash.orderby": "^4.6.0",
