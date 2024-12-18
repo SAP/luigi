@@ -62,7 +62,6 @@
     "sirv-cli": "^2.0.0",
     "svelte": "^5.14.4",
     "svelte-check": "^4.1.1",
-    "svelte-preprocess": "^6.0.3",
     "tslib": "2.6.1",
     "typescript": "^5.5.0",
     "typescript-eslint": "^8.18.1"

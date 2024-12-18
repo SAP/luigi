@@ -69,9 +69,10 @@ describe('create luigi-compound-container dynamically', () => {
                 }]
             };
             content.appendChild(wc);
-            </script>
-       `;
+        </script>
+    `;
     const stub = cy.stub();
+
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', scriptCode);
@@ -88,7 +89,7 @@ describe('create luigi-compound-container dynamically', () => {
       .then(($innerContainer) => {
         cy.wrap($innerContainer)
           .get(
-            'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6c756967692d77632d6d66652f6d61696e2e6a73'
+            'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6c75696769776562636f6d706f6e656e746d662f6d61696e2e6a73'
           )
           .should('exist')
           .shadow()
@@ -167,10 +168,10 @@ describe('create luigi-compound-container dynamically', () => {
             </script>
        `;
     const stub = cy.stub();
+
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', scriptCode);
-
     cy.get('luigi-compound-container').shadow().should('not.exist');
   });
 
@@ -245,6 +246,7 @@ describe('create luigi-compound-container dynamically', () => {
             </script>
        `;
     const stub = cy.stub();
+
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', scriptCode);

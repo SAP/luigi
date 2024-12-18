@@ -1,13 +1,15 @@
-import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
-import autoPreprocess from 'svelte-preprocess';
+import typescript from '@rollup/plugin-typescript';
 import copy from 'rollup-plugin-copy';
+import livereload from 'rollup-plugin-livereload';
+import svelte from 'rollup-plugin-svelte';
+
+import svelteConfig from './svelte.config.js';
 
 const production = !process.env.ROLLUP_WATCH;
+
 if (production) {
   console.log('Production BUILD');
 }
@@ -22,6 +24,7 @@ function serve() {
   return {
     writeBundle() {
       if (server) return;
+
       server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true
@@ -42,16 +45,7 @@ export default [
       file: 'public/bundle.js'
     },
     plugins: [
-      svelte({
-        compilerOptions: {
-          customElement: true,
-          // enable run-time checks when not in production
-          dev: !production
-        },
-        preprocess: autoPreprocess({
-          sourceMap: true
-        })
-      }),
+      svelte(svelteConfig),
       typescript({
         sourceMap: true,
         inlineSources: true
@@ -66,11 +60,13 @@ export default [
           resolveDynamicImport(specifier, importer) {
             const moduleInfo = this.getModuleInfo(importer);
             let index;
+
             for (index = specifier.start; index >= 0; index--) {
               if (moduleInfo.code.charAt(index) === '(') {
                 break;
               }
             }
+
             if (
               moduleInfo.code
                 .substr(index, specifier.end - index)
@@ -82,6 +78,7 @@ export default [
                 moduleInfo.code.substr(specifier.start, specifier.end - specifier.start)
               );
             }
+
             return null;
           },
           renderDynamicImport({ customResolution }) {
@@ -91,6 +88,7 @@ export default [
                 right: ')'
               };
             }
+
             return null;
           }
         };
@@ -119,12 +117,11 @@ export default [
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production &&
-        terser({
-          format: {
-            comments: '/.*webpackIgnore.*/'
-          }
-        })
+      production && terser({
+        format: {
+          comments: '/.*webpackIgnore.*/'
+        }
+      })
     ],
     watch: {
       clearScreen: false
