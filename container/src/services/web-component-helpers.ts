@@ -71,17 +71,15 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundItemContainer(layoutConfig);
     }
+
     return super.createCompoundItemContainer(layoutConfig);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attachCompoundItem(compoundCnt: any, compoundItemCnt: any): void {
-    if ((this.rendererObject.use as RendererUseProps).attachCompoundItem) {
-      (this.rendererObject.use as RendererUseProps as any).attachCompoundItem(
-        compoundCnt,
-        compoundItemCnt,
-        this.superRenderer
-      );
+    if (typeof (this.rendererObject.use as RendererUseProps).attachCompoundItem === 'function') {
+      // @ts-ignore
+      this.rendererObject.use.attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
     } else if (this.superRenderer) {
       this.superRenderer.attachCompoundItem(compoundCnt, compoundItemCnt);
     } else {
