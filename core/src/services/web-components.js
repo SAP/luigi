@@ -75,7 +75,7 @@ class WebComponentSvcClass {
                 });
                 pm.toString = () => {
                   return target.getCurrentRoute();
-                }
+                };
                 return pm;
               };
             }
