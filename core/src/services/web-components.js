@@ -70,9 +70,13 @@ class WebComponentSvcClass {
           get(target, prop) {
             if (prop === target.getCurrentRoute.name) {
               return () => {
-                return new Promise((resolve) => {
+                const pm = new Promise((resolve) => {
                   resolve(target.getCurrentRoute());
                 });
+                pm.toString = () => {
+                  return target.getCurrentRoute();
+                };
+                return pm;
               };
             }
             return target[prop];
