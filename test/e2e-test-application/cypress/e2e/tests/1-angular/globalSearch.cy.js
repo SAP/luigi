@@ -5,20 +5,20 @@ describe('Global Search', () => {
 
   describe('Open search field ', () => {
     it('Click on field', () => {
-      // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      // Input should be not visible and blurred
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible').should('not.have.focus');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
-      // Input should be visible
-      cy.get('input[data-testid="luigi-search-input"]').should('be.visible');
+      // Input should be visible and focused
+      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').should('have.focus');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
-      // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
+      // Input should be not visible and blurred
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible').should('not.have.focus');
     });
   });
 
@@ -55,9 +55,7 @@ describe('Global Search', () => {
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
       // Type Luigi in search input textbox
-      cy.get('input[data-testid="luigi-search-input"]')
-        .should('be.visible')
-        .type('De');
+      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').type('De');
 
       // We should get 5 results
       cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
@@ -71,14 +69,10 @@ describe('Global Search', () => {
       cy.get('button[data-testid="luigi-search-btn-desktop"]').click();
 
       // Type Luigi in search input textbox
-      cy.get('input[data-testid="luigi-search-input"]')
-        .should('be.visible')
-        .type('Overview');
+      cy.get('input[data-testid="luigi-search-input"]').should('be.visible').type('Overview');
 
       // Click on first result
-      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
-        .contains('Overview')
-        .click();
+      cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list').contains('Overview').click();
 
       // Url should be changed
       cy.expectPathToBe('/overview');
