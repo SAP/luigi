@@ -8,7 +8,6 @@ source $BASE_DIR/../scripts/shared/bashHelpers.sh
 echo ""
 echo "Client API Test App"
 cd "$BASE_DIR/e2e-client-api-test-app"
-npm install
 killWebserver 3000
 npm run start &
 WS_FID_PID=$!
