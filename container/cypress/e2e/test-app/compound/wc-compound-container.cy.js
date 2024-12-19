@@ -276,9 +276,9 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      // Set up a spy on console.info
+      // Set up a spy on console.log
       cy.window().then((win) => {
-        cy.spy(win.console, 'info').as('consoleInfoSpy');
+        cy.spy(win.console, 'log').as('consoleLogSpy');
       });
 
       cy.get(containerSelector)
@@ -287,7 +287,7 @@ describe('Compound Container Tests', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('sendInput');
-          cy.get('@consoleInfoSpy').should(
+          cy.get('@consoleLogSpy').should(
             'be.calledWith',
             'dataConverter(): Received Custom Message from "input1" MF My own event data'
           );
