@@ -479,7 +479,7 @@ export interface LuigiClient {
   getClientPermissions(): () => Object;
 
   /**
-   * Post-processes actions or data after they have been loaded or updated.
+   * Post-processing actions or data after they've been loaded or updated.
    * @memberof LuigiClient
    */
   __postProcess: () => void;
@@ -492,14 +492,14 @@ export interface LuigiClient {
   attCnt: () => number;
 
   /**
-   * Callback method that is triggered after loading or when an error occurs.
+   * Callback function called after loading or if an error occurs while loading.
    * @param {boolean} isError indicates if there was an error
    * @memberof LuigiClient
    */
   afterLoadOrError: (isError: boolean) => void;
 
   /**
-   * Callback function that is triggered when an attribute changes.
+   * Callback function that is called when an attribute changes.
    * @param {string} name The name of the attribute that changed
    * @param {string} oldValue The old value of the attribute
    * @param {string} newValue The new value of the attribute
