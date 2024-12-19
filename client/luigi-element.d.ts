@@ -336,6 +336,15 @@ export declare interface LinkManager {
    * @returns {boolean} indicating if there is a preserved view you can return to
    */
   hasBack: () => boolean;
+
+  /**
+   * Gets the luigi route associated with the current micro frontend.
+   * @returns {promise} a promise which resolves to a String value specifying the current luigi route
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().getCurrentRoute();
+   */
+  getCurrentRoute: () => Promise<string>;
 }
 
 export declare class LuigiElement extends HTMLElement {
