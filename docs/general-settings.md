@@ -289,7 +289,7 @@ theming: {
 ```
 
 <!-- add-attribute:class:warning -->
-> **NOTE:** Add the following line to HEAD section of your `index.html` file for the Luigi application to be sure the Horizon theme is displayed correctly
+> **NOTE:** The Horizon theme stylesheet needs to be included. In the HEAD section of your application's `index.html` file, add:
 ```html
 <link rel="stylesheet" href="<PATH/TO/LUIGI/PACKAGE/luigi_horizon.css" />
 ```
