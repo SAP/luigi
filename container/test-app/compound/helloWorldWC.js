@@ -181,7 +181,7 @@ export default class extends HTMLElement {
         text: 'uxManager().showAlert() test',
         type: 'info'
       });
-    })
+    });
 
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
     this.$publishEventBtn.addEventListener('click', () => {
@@ -359,7 +359,7 @@ export default class extends HTMLElement {
             type: 'info'
           });
         });
-        this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
+      this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
@@ -394,6 +394,8 @@ export default class extends HTMLElement {
 
   set context(ctx) {
     this.ctx = ctx;
-    this.$paragraph.innerHTML = ctx.title;
+    if (this.$paragraph && ctx.title) {
+      this.$paragraph.innerHTML = ctx.title;
+    }
   }
 }
