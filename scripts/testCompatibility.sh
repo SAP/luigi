@@ -53,6 +53,7 @@ cd $BASE_DIR/../
 source $BASE_DIR/shared/bashHelpers.sh
 
 declare -a APP_FOLDERS=(
+  "/test/e2e-client-api-test-app"
   "/test/e2e-test-application"
   "/test/e2e-js-test-application"
   "/test/e2e-test-application/externalMf"
@@ -60,18 +61,21 @@ declare -a APP_FOLDERS=(
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
+  3000 # e2e-client-api-test-app
   4200 # e2e-test-application
   4500 # e2e-js-test-application
   8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
+  "public" # e2e-client-api-test-app
   "dist" # e2e-test-application
   "public" # e2e-js-test-application
   "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
+  "/index.html" # e2e-client-api-test-app
   "/luigi-core/luigi.js" # e2e-test-application
   "/index.html" # e2e-js-test-application
   "/customUserSettingsMf.html" # externalMf
@@ -145,7 +149,7 @@ verifyInstallation() {
 
     echoe "Installing all packages and symlink cross dependencies"
     cd "$LUIGI_DIR"
-    npm run bootstrap 
+    npm run bootstrap
 
     echoe "Bundling packages"
     npm run bundle
