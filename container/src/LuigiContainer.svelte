@@ -7,7 +7,7 @@
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
       authData: { type: 'Object', reflect: false, attribute: 'auth-data' },
       clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
+      context: { type: 'String', reflect: true, attribute: 'context' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
       documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
@@ -40,7 +40,9 @@
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
-              this.updateContext(JSON.parse(newValue));
+              if (oldValue !== newValue) {
+                this.updateContext(JSON.parse(newValue));
+              }
             }
 
             if (name === 'auth-data') {
@@ -144,7 +146,7 @@
     };
 
     thisComponent.updateContext = (contextObj: object, internal?: object) => {
-      context = contextObj;
+      context = JSON.stringify(contextObj);
 
       if (webcomponent) {
         (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;

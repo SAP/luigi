@@ -14,7 +14,7 @@
         reflect: false,
         attribute: 'compound-config'
       },
-      context: { type: 'String', reflect: false, attribute: 'context' },
+      context: { type: 'String', reflect: true, attribute: 'context' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
       documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
@@ -48,7 +48,9 @@
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
-            this.updateContext(JSON.parse(newValue));
+            if (oldValue !== newValue) {
+              this.updateContext(JSON.parse(newValue));
+            }
           }
         }
 
@@ -131,7 +133,7 @@
       const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
 
       rootElement._luigi_mfe_webcomponent.context = contextObj;
-      context = contextObj;
+      context = JSON.stringify(contextObj);
 
       const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
 
