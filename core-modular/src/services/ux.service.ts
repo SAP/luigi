@@ -1,3 +1,4 @@
+import type { LuigiContainer } from '@luigi-project/container';
 import type { Luigi } from '../luigi';
 
 export interface AlertSettings {
@@ -5,7 +6,11 @@ export interface AlertSettings {
   type?: string;
   links?: Link[];
   closeAfter?: number;
-  id?: number;
+  id?: string;
+}
+
+export interface ProcessedAlertSettings {
+  settings: AlertSettings;
 }
 
 export interface Link {
@@ -23,15 +28,28 @@ export class UxService {
   constructor(private luigi: Luigi) {}
 
   processAlerts(alertSettings: any): any {
-    // TODO
-    console.log('processAlerts');
-    return alertSettings;
+    const settings = {
+      settings: alertSettings
+    };
+    return settings;
   }
 
-  handleAlerts(alertSettings: AlertSettings, openFromClient: boolean, containerElement: any) {
-    // TODO processAlerts
+  handleAlerts(alertSettings: AlertSettings, openFromClient: boolean, containerElement: HTMLElement) {
+    alertSettings = this.processAlerts(alertSettings);
     this.luigi._connector?.renderAlert(alertSettings, openFromClient, containerElement).then((resolve) => {
-      containerElement.closeAlert(resolve, 'dismisskey');
+      const { containerElement, alertSettings, dismissKey } = resolve;
+      this.handleAlertDismiss(containerElement, alertSettings, dismissKey);
     });
   }
+
+  handleAlertDismiss = (containerElement: LuigiContainer, alertSettings: ProcessedAlertSettings, dismissKey: any) => {
+    const alertId = alertSettings.settings.id;
+    if (alertId) {
+      if (dismissKey) {
+        containerElement.closeAlert(alertId, dismissKey);
+      } else {
+        containerElement.closeAlert(alertId, ''); //TODO LuigiContainer dismissKey sollte optional sein
+      }
+    }
+  };
 }

@@ -21,6 +21,7 @@ export class Luigi {
   _app: any;
   _ui = UI;
   _comm = Communication;
+  _ux = UX;
 
   bootstrap(connector: LuigiConnector): void {
     this._app = mount(App, {

@@ -3,8 +3,6 @@ import type { Luigi } from './luigi';
 import { NavigationService, type ModalSettings } from './services/navigation.service';
 import { LuigiCompoundContainer, LuigiContainer } from '@luigi-project/container';
 
-import type { AlertSettings } from './services/ux.service';
-
 const createContainer = (node: any, luigi: Luigi): HTMLElement => {
   if (node.compound) {
     const lcc: LuigiCompoundContainer = document.createElement('luigi-compound-container') as LuigiCompoundContainer;

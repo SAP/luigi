@@ -1,6 +1,6 @@
 import type { Luigi } from '../luigi';
 import { UxService } from '../services/ux.service';
-import type { AlertSettings } from '../services/ux.service';
+import type { AlertSettings, Link, ProcessedAlertSettings } from '../services/ux.service';
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 
 export class UX {
@@ -13,10 +13,16 @@ export class UX {
   }
 
   showAlert = (alertSettings: AlertSettings) => {
-    if (!alertSettings.id) {
-      alertSettings.id = GenericHelpers.getRandomId();
-    }
-    const processedAlerts = this.uxService.processAlerts(alertSettings);
-    return this.luigi._connector?.renderAlert(alertSettings, false);
+    return new Promise((resolve) => {
+      if (!alertSettings.id) {
+        //TODO closeAlert will eine id als string
+        alertSettings.id = GenericHelpers.getRandomId().toString();
+      }
+      const processedAlerts = this.uxService.processAlerts(alertSettings);
+      this.luigi._connector?.renderAlert(processedAlerts, false).then((res) => {
+        const { alertSettings, dismissKey } = res;
+        resolve(dismissKey || alertSettings.settings.id);
+      });
+    });
   };
 }
