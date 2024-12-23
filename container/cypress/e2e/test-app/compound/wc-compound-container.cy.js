@@ -4,7 +4,12 @@ describe('Compound Container Tests', () => {
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:8080/compound/compoundClientAPI.html');
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
+        onBeforeLoad(win) {
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log').as('consoleLogSpy');
+        }
+      });
       stub = cy.stub();
     });
 
@@ -250,6 +255,7 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
 
@@ -261,6 +267,7 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsDrawer-wc');
         });
     });
+
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
 
@@ -275,11 +282,6 @@ describe('Compound Container Tests', () => {
 
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
-
-      // Set up a spy on console.log
-      cy.window().then((win) => {
-        cy.spy(win.console, 'log').as('consoleLogSpy');
-      });
 
       cy.get(containerSelector)
         .shadow()
