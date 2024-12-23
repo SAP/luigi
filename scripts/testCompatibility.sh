@@ -261,7 +261,7 @@ verifyAndStartWebserver() {
       echoe "Stepping out"
       cd ..
     fi
-    if [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
+    if [ "${APP_FOLDERS[$i]}" != "/test/e2e-client-api-test-app" ] && [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
       runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
     else
       npm run dev &
