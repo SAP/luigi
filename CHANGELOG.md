@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.19.0] (2024-12-23)
+
+#### :rocket: Added
+* [#4078](https://github.com/SAP/luigi/pull/4078) Mitigation of potential backwards compatibility issue ([@hardl](https://github.com/hardl))
+* [#4077](https://github.com/SAP/luigi/pull/4077) getCurrentRoute in web component client api ([@hardl](https://github.com/hardl))
+
+
+
+
+
 ## [v2.18.3] (2024-12-17)
 
 #### :bug: Fixed
@@ -1926,3 +1936,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.18.1]: https://github.com/SAP/luigi/compare/v2.18.0...v2.18.1
 [v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2
 [v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
+[v2.19.0]: https://github.com/SAP/luigi/compare/v2.18.3...v2.19.0
