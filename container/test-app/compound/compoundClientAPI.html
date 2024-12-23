@@ -201,7 +201,7 @@
       );
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
         if (event.detail.id !== 'timer') {
-          alert(event.detail.id);
+          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
         }
       });
 
