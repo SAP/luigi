@@ -64,10 +64,28 @@ class WebComponentSvcClass {
       wc.extendedContext.clientPermissions = wc.extendedContext.currentNode.clientPermissions;
     }
     const clientAPI = {
-      linkManager: window.Luigi.navigation,
+      linkManager: () => {
+        const lm = window.Luigi.navigation();
+        return new Proxy(lm, {
+          get(target, prop) {
+            if (prop === target.getCurrentRoute.name) {
+              return () => {
+                const pm = new Promise((resolve) => {
+                  resolve(target.getCurrentRoute());
+                });
+                pm.toString = () => {
+                  return target.getCurrentRoute();
+                };
+                return pm;
+              };
+            }
+            return target[prop];
+          }
+        });
+      },
       uxManager: window.Luigi.ux,
       getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: ev => {
+      publishEvent: (ev) => {
         if (eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
@@ -87,7 +105,7 @@ class WebComponentSvcClass {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
         }
       },
-      getNodeParams: shouldDesanitise => {
+      getNodeParams: (shouldDesanitise) => {
         if (isSpecialMf) {
           return {};
         }
@@ -97,7 +115,7 @@ class WebComponentSvcClass {
         }
         return wc.extendedContext.nodeParams;
       },
-      setAnchor: anchor => {
+      setAnchor: (anchor) => {
         if (!isSpecialMf) {
           window.Luigi.routing().setAnchor(anchor);
         }
@@ -108,7 +126,7 @@ class WebComponentSvcClass {
       getUserSettings: async () => {
         return await this.getUserSettingsForWc(eventBusElement._luigi_node);
       },
-      setViewGroupData: data => {
+      setViewGroupData: (data) => {
         const vg = NavigationHelpers.findViewGroup(eventBusElement._luigi_node);
         if (vg) {
           const vgSettings = NavigationHelpers.getViewGroupSettings(vg);
@@ -158,7 +176,7 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
         this.dynamicImport(i18nViewUrl)
-          .then(module => {
+          .then((module) => {
             try {
               if (!window.customElements.get(wc_id)) {
                 let cmpClazz = module.default;
@@ -178,7 +196,7 @@ class WebComponentSvcClass {
               reject(e);
             }
           })
-          .catch(err => reject(err));
+          .catch((err) => reject(err));
       } else {
         console.warn(`View URL '${i18nViewUrl}' not allowed to be included`);
         reject(`View URL '${i18nViewUrl}' not allowed`);
@@ -360,9 +378,9 @@ class WebComponentSvcClass {
    * @param {IntersectionObserver} observer
    */
   intersectionObserverCallback(entries, observer) {
-    const intersectingEntries = entries.filter(entry => entry.isIntersecting);
+    const intersectingEntries = entries.filter((entry) => entry.isIntersecting);
 
-    intersectingEntries.forEach(intersectingEntry => {
+    intersectingEntries.forEach((intersectingEntry) => {
       const compoundItemContainer = intersectingEntry.target;
       const wcContainerData = this.wcContainerData.get(compoundItemContainer);
 
@@ -439,7 +457,7 @@ class WebComponentSvcClass {
       renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, {
         context
       });
-      renderer.createCompoundItemContainer = layoutConfig => {
+      renderer.createCompoundItemContainer = (layoutConfig) => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
           cnt.setAttribute('slot', layoutConfig.slot);
@@ -488,8 +506,8 @@ class WebComponentSvcClass {
 
     wc_container._luigi_node = navNode;
 
-    return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
+    return new Promise((resolve) => {
+      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then((compoundContainer) => {
         const ebListeners = {};
 
         compoundContainer.eventBus = {
@@ -498,7 +516,7 @@ class WebComponentSvcClass {
             const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
 
             listeners.push(...(ebListeners['*.' + event.type] || []));
-            listeners.forEach(listenerInfo => {
+            listeners.forEach((listenerInfo) => {
               const target =
                 listenerInfo.wcElement || compoundContainer.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
               if (target) {
@@ -573,7 +591,7 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (wc.userSettingsGroup) {
         const userSettingsGroupName = wc.userSettingsGroup;
-        LuigiConfig.readUserSettings().then(storedUserSettingsData => {
+        LuigiConfig.readUserSettings().then((storedUserSettingsData) => {
           const hasUserSettings =
             userSettingsGroupName && typeof storedUserSettingsData === 'object' && storedUserSettingsData !== null;
 

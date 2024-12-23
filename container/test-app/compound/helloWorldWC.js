@@ -394,6 +394,8 @@ export default class extends HTMLElement {
 
   set context(ctx) {
     this.ctx = ctx;
-    this.$paragraph.innerHTML = ctx.title;
+    if (this.$paragraph && ctx.title) {
+      this.$paragraph.innerHTML = ctx.title;
+    }
   }
 }

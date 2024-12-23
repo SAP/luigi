@@ -12,12 +12,12 @@
     "public"
   ],
   "scripts": {
-    "build": "npm run sync-event-typings && npm run generate-cem  && rollup -c",
+    "build": "npm run sync-event-typings && npm run generate-cem && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
     "dev": "rollup -c -w",
-    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js public/bundle.js.map  examples/ || COPY public\\* test-app\\",
+    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js public/bundle.js.map examples/ || COPY public\\* test-app\\",
     "copyLuigiClient": "cp ../client/public/luigi-client.js test-app/iframe",
     "copyLuigiElement": "cp ../client/public/luigi-element.js test-app/compound",
     "serve": "npm run build && npm run copyLuigiClient && npm run copyLuigiElement && npm run copyBundle && sirv -D -c test-app --no-clear",
@@ -31,7 +31,6 @@
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
     "generate-cem": "node generateCEM.js"
-
   },
   "devDependencies": {
     "@babel/node": "7.22.10",

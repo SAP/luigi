@@ -8,7 +8,7 @@ const sinon = require('sinon');
 const expect = chai.expect;
 const assert = chai.assert;
 
-describe('WebComponentService', function() {
+describe('WebComponentService', function () {
   let customElementsGetSpy;
   let customElementsDefineSpy;
 
@@ -22,7 +22,7 @@ describe('WebComponentService', function() {
     customElementsDefineSpy.mockRestore();
   });
 
-  describe('generate web component id', function() {
+  describe('generate web component id', function () {
     const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
     it('check determinism', () => {
@@ -38,7 +38,7 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('attach web component', function() {
+  describe('attach web component', function () {
     const sb = sinon.createSandbox();
     let container;
     let itemPlaceholder;
@@ -46,7 +46,14 @@ describe('WebComponentService', function() {
 
     beforeEach(() => {
       window.Luigi = {
-        navigation: 'mock1',
+        navigation: () => {
+          return new Object({
+            mockValue: 'mock',
+            getCurrentRoute: () => {
+              return 'mockRoute';
+            }
+          });
+        },
         ux: 'mock2',
         i18n: () => LuigiI18N
       };
@@ -66,13 +73,17 @@ describe('WebComponentService', function() {
       expect(container.children.length).to.equal(0);
     });
 
-    it('check dom injection', () => {
+    it('check dom injection', async () => {
       container.appendChild(itemPlaceholder);
       WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
 
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(extendedContext.context);
-      expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
+      expect(expectedCmp.LuigiClient.linkManager).to.be.a('function');
+      expect(expectedCmp.LuigiClient.linkManager().mockValue).to.equal('mock');
+      expect(expectedCmp.LuigiClient.linkManager().getCurrentRoute()).to.be.a('promise');
+      const route = await expectedCmp.LuigiClient.linkManager().getCurrentRoute();
+      expect(route).to.equal('mockRoute');
       expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
       expect(expectedCmp.LuigiClient.getCurrentLocale()).to.equal(window.Luigi.i18n().getCurrentLocale());
       expect(expectedCmp.LuigiClient.getCurrentLocale).to.be.a('function');
@@ -107,14 +118,14 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('register web component from url', function() {
+  describe('register web component from url', function () {
     const sb = sinon.createSandbox();
 
     afterEach(() => {
       sb.restore();
     });
 
-    it('check resolve', done => {
+    it('check resolve', (done) => {
       let definedId;
       sb.stub(WebComponentService, 'dynamicImport').returns(
         new Promise((resolve, reject) => {
@@ -125,7 +136,7 @@ describe('WebComponentService', function() {
         define: (id, clazz) => {
           definedId = id;
         },
-        get: id => {
+        get: (id) => {
           return undefined;
         }
       };
@@ -138,7 +149,7 @@ describe('WebComponentService', function() {
       });
     });
 
-    it('check reject', done => {
+    it('check reject', (done) => {
       let definedId;
       sb.stub(WebComponentService, 'dynamicImport').returns(
         new Promise((resolve, reject) => {
@@ -157,25 +168,25 @@ describe('WebComponentService', function() {
           assert.fail('should not be here');
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           expect(definedId).to.be.undefined;
           done();
         });
     });
 
-    it('check reject due to not-allowed url', done => {
+    it('check reject due to not-allowed url', (done) => {
       WebComponentService.registerWCFromUrl('http://luigi-project.io/mfe.js', 'id')
         .then(() => {
           assert.fail('should not be here');
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           done();
         });
     });
   });
 
-  describe('render web component', function() {
+  describe('render web component', function () {
     const container = document.createElement('div');
     const ctx = { someValue: true };
     const viewUrl = 'someurl';
@@ -184,7 +195,7 @@ describe('WebComponentService', function() {
 
     beforeEach(() => {
       sb.stub(WebComponentService, 'dynamicImport').returns(
-        new Promise(resolve => {
+        new Promise((resolve) => {
           resolve({ default: {} });
         })
       );
@@ -194,7 +205,7 @@ describe('WebComponentService', function() {
       sb.restore();
     });
 
-    it('check attachment of already existing wc', done => {
+    it('check attachment of already existing wc', (done) => {
       customElementsDefineSpy.mockReturnValue();
       customElementsGetSpy.mockReturnValue(true);
 
@@ -211,7 +222,7 @@ describe('WebComponentService', function() {
       WebComponentService.renderWebComponent(viewUrl, container, ctx, node);
     });
 
-    it('check invocation of custom function', done => {
+    it('check invocation of custom function', (done) => {
       customElementsDefineSpy.mockReturnValue();
       customElementsGetSpy.mockReturnValue(false);
 
@@ -234,7 +245,7 @@ describe('WebComponentService', function() {
       delete window.luigiWCFn;
     });
 
-    it('check creation and attachment of new wc', done => {
+    it('check creation and attachment of new wc', (done) => {
       customElementsDefineSpy.mockReturnValue();
       customElementsGetSpy.mockReturnValue(false);
 
@@ -250,7 +261,7 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('check valid wc url', function() {
+  describe('check valid wc url', function () {
     const sb = sinon.createSandbox();
 
     afterEach(() => {
@@ -287,7 +298,7 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('check includeSelfRegisteredWCFromUrl', function() {
+  describe('check includeSelfRegisteredWCFromUrl', function () {
     const sb = sinon.createSandbox();
     const node = {
       webcomponent: {
@@ -309,7 +320,7 @@ describe('WebComponentService', function() {
 
     it('check if script tag is added', () => {
       let element;
-      sb.stub(document.body, 'appendChild').callsFake(el => {
+      sb.stub(document.body, 'appendChild').callsFake((el) => {
         element = el;
       });
 
@@ -324,14 +335,14 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('check createCompoundContainerAsync', function() {
+  describe('check createCompoundContainerAsync', function () {
     const sb = sinon.createSandbox();
 
     afterEach(() => {
       sb.restore();
     });
 
-    it('check compound container created', done => {
+    it('check compound container created', (done) => {
       const renderer = new DefaultCompoundRenderer();
       sb.spy(renderer);
       WebComponentService.createCompoundContainerAsync(renderer).then(
@@ -339,14 +350,14 @@ describe('WebComponentService', function() {
           assert(renderer.createCompoundContainer.calledOnce, 'createCompoundContainer called once');
           done();
         },
-        e => {
+        (e) => {
           assert.fail('should not be here');
           done();
         }
       );
     });
 
-    it('check nesting mfe created', done => {
+    it('check nesting mfe created', (done) => {
       const renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = 'mfe.js';
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
@@ -359,7 +370,7 @@ describe('WebComponentService', function() {
           assert(WebComponentService.initWC.calledOnce, 'initWC called once');
           done();
         },
-        e => {
+        (e) => {
           assert.fail('should not be here');
           done();
         }
@@ -379,7 +390,7 @@ describe('WebComponentService', function() {
             source: '*',
             name: eventName,
             action: 'update',
-            dataConverter: data => {
+            dataConverter: (data) => {
               return 'new text: ' + data;
             }
           }
@@ -399,7 +410,7 @@ describe('WebComponentService', function() {
                 source: eventEmitter,
                 name: eventName,
                 action: 'update',
-                dataConverter: data => {
+                dataConverter: (data) => {
                   return 'new text: ' + data;
                 }
               }
@@ -436,14 +447,14 @@ describe('WebComponentService', function() {
       delete globalThis.IntersectionObserver;
     });
 
-    it('render flat compound', done => {
+    it('render flat compound', (done) => {
       const wc_container = document.createElement('div');
 
       sb.spy(WebComponentService, 'renderWebComponent');
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
       WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
-        .then(compoundCnt => {
+        .then((compoundCnt) => {
           expect(wc_container.children.length).to.equal(1);
 
           // eventbus test
@@ -461,12 +472,12 @@ describe('WebComponentService', function() {
 
           done();
         })
-        .catch(reason => {
+        .catch((reason) => {
           done(reason);
         });
     });
 
-    it('render nested compound', done => {
+    it('render nested compound', (done) => {
       const wc_container = document.createElement('div');
       const node = JSON.parse(JSON.stringify(navNode));
       node.viewUrl = 'mfe.js';
@@ -482,7 +493,7 @@ describe('WebComponentService', function() {
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
       WebComponentService.renderWebComponentCompound(node, wc_container, extendedContext).then(
-        compoundCnt => {
+        (compoundCnt) => {
           expect(WebComponentService.registerWCFromUrl.callCount).to.equal(3);
           expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(0);
           // eventbus test
@@ -517,7 +528,7 @@ describe('WebComponentService', function() {
         language: { language: 'de', time: '12h', date: '' }
       };
       sb.stub(LuigiConfig, 'readUserSettings').resolves(storedUserSettingsData);
-      WebComponentService.getUserSettingsForWc(wc).then(userSettings => {
+      WebComponentService.getUserSettingsForWc(wc).then((userSettings) => {
         expect(userSettings).to.deep.equal({ language: 'de', time: '12h', date: '' });
       });
     });
@@ -528,7 +539,7 @@ describe('WebComponentService', function() {
         userSettingsGroup: 'language'
       };
       sb.stub(LuigiConfig, 'readUserSettings').resolves();
-      WebComponentService.getUserSettingsForWc(wc).then(userSettings => {
+      WebComponentService.getUserSettingsForWc(wc).then((userSettings) => {
         expect(userSettings).equal(null);
       });
     });
@@ -739,7 +750,7 @@ describe('WebComponentService', function() {
         mockRegisterWcFromUrl.mockRestore();
       });
 
-      it('passes on isLazyLoading in case wc already exists', done => {
+      it('passes on isLazyLoading in case wc already exists', (done) => {
         customElementsGetSpy.mockReturnValue(true);
 
         mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
@@ -750,7 +761,7 @@ describe('WebComponentService', function() {
         WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
       });
 
-      it('passes on isLazyLoading in case of custom function', done => {
+      it('passes on isLazyLoading in case of custom function', (done) => {
         customElementsGetSpy.mockReturnValue(false);
         mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
           expect(isLazyLoading).to.equal(true);
@@ -765,7 +776,7 @@ describe('WebComponentService', function() {
         WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
       });
 
-      it('passes on isLazyLoading in case of new wc', done => {
+      it('passes on isLazyLoading in case of new wc', (done) => {
         customElementsGetSpy.mockReturnValue(false);
         mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
           expect(isLazyLoading).to.equal(true);
@@ -806,7 +817,7 @@ describe('WebComponentService', function() {
                 source: '*',
                 name: 'emitterId',
                 action: 'update',
-                dataConverter: data => {
+                dataConverter: (data) => {
                   return 'new text: ' + data;
                 }
               }
@@ -826,7 +837,7 @@ describe('WebComponentService', function() {
                     source: 'emitterId',
                     name: 'emitterId',
                     action: 'update',
-                    dataConverter: data => {
+                    dataConverter: (data) => {
                       return 'new text: ' + data;
                     }
                   }
@@ -855,7 +866,7 @@ describe('WebComponentService', function() {
         delete globalThis.IntersectionObserver;
       });
 
-      it('renders a flat compound with lazy loading', done => {
+      it('renders a flat compound with lazy loading', (done) => {
         WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
           .then(() => {
             expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
@@ -866,12 +877,12 @@ describe('WebComponentService', function() {
             expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
             done();
           })
-          .catch(reason => {
+          .catch((reason) => {
             done(reason);
           });
       });
 
-      it('renders a nested compound', done => {
+      it('renders a nested compound', (done) => {
         const mockInitWc = jest.spyOn(WebComponentService, 'initWC').mockReturnValue();
 
         navNode.viewUrl = 'mfe.js';
@@ -889,12 +900,12 @@ describe('WebComponentService', function() {
             mockInitWc.mockRestore();
             done();
           })
-          .catch(reason => {
+          .catch((reason) => {
             done(reason);
           });
       });
 
-      it('passes intersectionRootMargin to IntersectionObserver', done => {
+      it('passes intersectionRootMargin to IntersectionObserver', (done) => {
         WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
           .then(() => {
             // expect(globalThis.IntersectionObserver.options).to.be.an('object');
@@ -903,7 +914,7 @@ describe('WebComponentService', function() {
             expect(intersectionObserverInstance.options.rootMargin).to.equal('50px');
             done();
           })
-          .catch(reason => {
+          .catch((reason) => {
             done(reason);
           });
       });
