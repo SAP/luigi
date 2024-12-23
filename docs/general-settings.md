@@ -262,29 +262,36 @@ You can set the following values:
 
 ### theming
 - **description**: a configuration element that allows you to specify a list of themes that are available on the website. The children elements are:
-    * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`.
+    * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark', 'sap_horizon']`.
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
     * **useFioriScrollbars** (optional) if set to `true`, Fiori theming variables are applied to all scrollbars in luigi core app.
     * **variables** (optional) can either be a string set to `fiori` to get all CSS variables from the `fiori` theme, or an object with a property called `file` where you can declare your own CSS variables. The variables should be defined in a JSON file which starts with a `root` key. An example of how a CSS variables file should look like can be found [here](https://github.com/SAP/theming-base-content/blob/master/content/Base/baseLib/sap_horizon/variables.json).
 - **example**:
 ```javascript
-theming : {
-    themes: () => [
-      { id: 'light', name: 'Fiori3 Light' },
-      { id: 'dark', name: 'Fiori3 Dark' }
-    ],
-    defaultTheme: 'light'
-    nodeViewURLDecorator: {
-       queryStringParameter: {
-         keyName: 'sap-theme'
-         // optional
-          value: themeId => {
-            return themeId;
-         }
-       }
-     }
+theming: {
+  themes: () => [
+    { id: 'light', name: 'Fiori3 Light' },
+    { id: 'dark', name: 'Fiori3 Dark' },
+    { id: 'sap_horizon', name: 'Morning Horizon' }
+  ],
+  defaultTheme: 'light',
+  nodeViewURLDecorator: {
+    queryStringParameter: {
+      keyName: 'sap-theme',
+      // optional
+      value: themeId => {
+        return themeId;
+      }
+    }
   }
+}
+```
+
+<!-- add-attribute:class:warning -->
+> **NOTE:** The Horizon theme stylesheet needs to be included. In the HEAD section of your application's `index.html` file, add:
+```html
+<link rel="stylesheet" href="<PATH/TO/LUIGI/PACKAGE/luigi_horizon.css" />
 ```
 
 ### webcomponentCreationInterceptor
