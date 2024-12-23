@@ -1,13 +1,16 @@
 describe('Compound Container Tests', () => {
   describe('LuigiClient API - LuigiCompoundContainer', () => {
     const containerSelector = '[data-test-id="luigi-client-api-test-compound-01"]';
+    let consoleLog;
     let stub;
 
     beforeEach(() => {
       cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
         onBeforeLoad(win) {
           // Set up a spy on console.log
-          cy.stub(win.console, 'log').as('consoleLogSpy');
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
         }
       });
       stub = cy.stub();
@@ -283,17 +286,12 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      cy.get(containerSelector)
-        .shadow()
-        .contains('Publish event')
-        .click()
-        .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('sendInput');
-          cy.get('@consoleLogSpy').should(
-            'be.calledWith',
-            'dataConverter(): Received Custom Message from "input1" MF My own event data'
-          );
-        });
+      cy.get(containerSelector).shadow().contains('Publish event').click();
+
+      cy.should(() => {
+        expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
+        expect(consoleLog).to.equal('dataConverter(): Received Custom Message from "input1" MF My own event data');
+      });
     });
 
     it('LuigiClient API uxManagerChainRequests', () => {

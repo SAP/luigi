@@ -169,10 +169,6 @@ class panelHeader extends LuigiElement {
     });
   }
 
-  afterInit(ctx) {
-    console.debug('after init', ctx);
-  }
-
   render(ctx) {
     return html`
       <style>

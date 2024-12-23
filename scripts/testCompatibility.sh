@@ -53,10 +53,10 @@ cd $BASE_DIR/../
 source $BASE_DIR/shared/bashHelpers.sh
 
 declare -a APP_FOLDERS=(
-  "/test/e2e-client-api-test-app"
-  "/test/e2e-test-application"
-  "/test/e2e-js-test-application"
-  "/test/e2e-test-application/externalMf"
+  "test/e2e-client-api-test-app"
+  "test/e2e-test-application"
+  "test/e2e-js-test-application"
+  "test/e2e-test-application/externalMf"
 )
 
 # Used for setting up webserver and killing them
@@ -183,7 +183,7 @@ checkoutLuigiToTestfolder() {
   echoe "Checking out selected release tag $TAG"
   git checkout tags/$TAG
   for FOLDER in "${APP_FOLDERS[@]}"; do
-    echoe "Installing app $FOLDER"
+    echoe "Installing app $FOLDER in $LUIGI_DIR_TESTING"
     cd $LUIGI_DIR_TESTING/$FOLDER
     npm i
   done
@@ -256,12 +256,12 @@ verifyAndStartWebserver() {
   for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
-    if [ "${APP_FOLDERS[$i]}" == "/test/e2e-test-application/externalMf" ]; then
+    if [ "${APP_FOLDERS[$i]}" == "test/e2e-test-application/externalMf" ]; then
       # required for starting externalMF, otherwise webserver tries to start on /test/e2e-test-application/externalMf/externalMf
       echoe "Stepping out"
       cd ..
     fi
-    if [ "${APP_FOLDERS[$i]}" != "/test/e2e-client-api-test-app" ] && [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
+    if [ "${APP_FOLDERS[$i]}" != "test/e2e-client-api-test-app" ] && [ "${APP_FOLDERS[$i]}" != "test/e2e-js-test-application" ]; then
       runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
     else
       npm run dev &
@@ -271,7 +271,7 @@ verifyAndStartWebserver() {
 
 startE2eTestrunner() {
   echoe "Starting e2e test headless"
-  cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
+  cd $LUIGI_DIR_TESTING/${APP_FOLDERS[1]}
 
   if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
     echo "Running compatibility tests with recording"
