@@ -9,8 +9,8 @@ describe('Compound Container Tests', () => {
         onBeforeLoad(win) {
           // Set up a spy on console.log
           cy.stub(win.console, 'log', (value) => {
-            consoleLog = value
-          })
+            consoleLog = value;
+          });
         }
       });
       stub = cy.stub();
@@ -286,10 +286,7 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      cy.get(containerSelector)
-        .shadow()
-        .contains('Publish event')
-        .click();
+      cy.get(containerSelector).shadow().contains('Publish event').click();
 
       cy.should(() => {
         expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
