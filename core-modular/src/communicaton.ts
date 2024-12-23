@@ -14,5 +14,9 @@ export const Communication = {
       const uxService = new UxService(luigi);
       uxService.handleAlerts(event.detail.data.data.settings, true, containerElement);
     });
+    containerElement.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event: any) => {
+      const uxService = new UxService(luigi);
+      uxService.handleConfirmationModalRequest(event.detail.settings);
+    });
   }
 };

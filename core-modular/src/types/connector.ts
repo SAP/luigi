@@ -1,5 +1,5 @@
 import type { ModalSettings, LeftNavData, Node, TopNavData, TabNavData } from '../services/navigation.service';
-import type { AlertSettings } from '../services/ux.service';
+import type { AlertSettings, ConfirmationModalSettings } from '../services/ux.service';
 
 export interface LuigiConnector {
   renderMainLayout(): void;
@@ -15,6 +15,12 @@ export interface LuigiConnector {
   renderTabNav(data: TabNavData): void;
 
   renderAlert(alertSettings: AlertSettings, openFromClient: boolean, containerElement?: HTMLElement): Promise<any>;
+
+  renderConfirmationModal(
+    confirmationModalSettings: ConfirmationModalSettings,
+    openFromClient: boolean,
+    containerElement?: HTMLElement
+  ): Promise<any>;
 }
 
 export type { Node };

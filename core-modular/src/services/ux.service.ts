@@ -24,6 +24,13 @@ export interface ProcessedTextAndLinks {
   links: Link[];
 }
 
+export interface ConfirmationModalSettings {
+  type?: string;
+  header?: string;
+  body?: string;
+  buttonConfirm?: string;
+  buttonDismiss?: string;
+}
 export class UxService {
   constructor(private luigi: Luigi) {}
 
@@ -52,4 +59,11 @@ export class UxService {
       }
     }
   };
+
+  handleConfirmationModalRequest(confirmationModalSettings: ConfirmationModalSettings) {
+    // @ts-ignore
+    this.luigi._connector?.renderConfirmationModal(confirmationModalSettings).then((resolve) => {
+      console.log('confirmation Modal closed with', resolve);
+    });
+  }
 }
