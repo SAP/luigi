@@ -271,7 +271,7 @@ verifyAndStartWebserver() {
 
 startE2eTestrunner() {
   echoe "Starting e2e test headless"
-  cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
+  cd $LUIGI_DIR_TESTING/${APP_FOLDERS[1]}
 
   if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
     echo "Running compatibility tests with recording"
