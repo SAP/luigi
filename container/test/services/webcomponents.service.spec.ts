@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Events } from '../../src/constants/communication';
 import { ContainerService, containerService } from '../../src/services/container.service';
 import { WebComponentService } from '../../src/services/webcomponents.service';
@@ -170,7 +171,7 @@ describe('createClientAPI', () => {
       { slug: 'Sales-settings', params: null },
       { slug: null, params: { project: 'pr2', user: 'john' } },
       { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
-    ])('test linkManager navigateToIntent', data => {
+    ])('test linkManager navigateToIntent', (data) => {
       let payloadLink = `#?intent=${data.slug}`;
 
       if (data.params && Object.keys(data.params)?.length) {
@@ -295,10 +296,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromClosestContext()
-        .navigate(route);
+      clientAPI.linkManager().fromClosestContext().navigate(route);
 
       // assert
       const expectedPayload = {
@@ -321,10 +319,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromContext({ test: 'data' })
-        .navigate(route);
+      clientAPI.linkManager().fromContext({ test: 'data' }).navigate(route);
 
       // assert
       const expectedPayload = {
@@ -347,10 +342,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromVirtualTreeRoot()
-        .navigate(route);
+      clientAPI.linkManager().fromVirtualTreeRoot().navigate(route);
 
       // assert
       const expectedPayload = {
@@ -382,7 +374,7 @@ describe('createClientAPI', () => {
         fromVirtualTreeRoot: false,
         nodeParams: {}
       };
-      return currentRoutePromise.then(result => {
+      return currentRoutePromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
@@ -402,10 +394,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const currentRoutePromise = clientAPI
-        .linkManager()
-        .fromParent()
-        .getCurrentRoute();
+      const currentRoutePromise = clientAPI.linkManager().fromParent().getCurrentRoute();
 
       // assert
       const expectedPayload = {
@@ -415,7 +404,7 @@ describe('createClientAPI', () => {
         fromVirtualTreeRoot: false,
         nodeParams: {}
       };
-      return currentRoutePromise.then(result => {
+      return currentRoutePromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
@@ -436,10 +425,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .withParams({ params: 'some params' })
-        .navigate(route);
+      clientAPI.linkManager().withParams({ params: 'some params' }).navigate(route);
 
       // assert
       const expectedPayload = {
@@ -515,7 +501,7 @@ describe('createClientAPI', () => {
       const pathExistsPromise = clientAPI.linkManager().pathExists();
 
       // Simulate asynchronous behavior
-      return pathExistsPromise.then(result => {
+      return pathExistsPromise.then((result) => {
         // Check if the dispatch function was called with the correct arguments
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.PATH_EXISTS_REQUEST,
@@ -541,8 +527,8 @@ describe('createClientAPI', () => {
 
       // Simulate asynchronous behavior
       return pathExistsPromise
-        .then(result => {})
-        .catch(error => {
+        .then((result) => {})
+        .catch((error) => {
           // Check if the dispatch function was called with the correct arguments
           expect(service.containerService.dispatch).toHaveBeenCalledWith(
             Events.PATH_EXISTS_REQUEST,
@@ -614,7 +600,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      return confirmationModalPromise.then(result => {
+      return confirmationModalPromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.SHOW_CONFIRMATION_MODAL_REQUEST,
           service.thisComponent,
@@ -1192,7 +1178,7 @@ describe('initWC', () => {
       origin: documentOrigin,
       pathname: '/another-page'
     };
-    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation(url => urlSpyMockData);
+    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => urlSpyMockData);
 
     // Act
     service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
@@ -1472,7 +1458,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl =>
+    service.dynamicImport = jest.fn((viewUrl) =>
       Promise.resolve({
         default: class InValidWebComponent {},
         valid: class ValidWebComponent extends HTMLElement {}
@@ -1500,7 +1486,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl =>
+    service.dynamicImport = jest.fn((viewUrl) =>
       Promise.resolve({
         default: class InValidWebComponent {},
         valid: class ValidWebComponent extends HTMLElement {}
@@ -1532,7 +1518,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl => Promise.reject(new Error('Dynamic import error')));
+    service.dynamicImport = jest.fn((viewUrl) => Promise.reject(new Error('Dynamic import error')));
 
     // act
     let result;
@@ -1735,7 +1721,7 @@ describe('renderWebComponent', () => {
         selfRegistered: false
       }
     };
-    service.registerWCFromUrl = jest.fn(viewUrl => Promise.resolve());
+    service.registerWCFromUrl = jest.fn((viewUrl) => Promise.resolve());
 
     // Call the function to be tested
     service.renderWebComponent(mockedViewURL, wc_container, context, node);
