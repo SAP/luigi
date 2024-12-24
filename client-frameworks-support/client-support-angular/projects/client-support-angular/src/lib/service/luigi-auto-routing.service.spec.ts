@@ -55,7 +55,7 @@ describe('LuigiAutoRoutingService', () => {
         },
         complete: () => {
           expect(count).toBe(1);
-        },
+        }
       });
     });
   });
