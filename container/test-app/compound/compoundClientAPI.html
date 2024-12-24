@@ -19,6 +19,7 @@
       compound web component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
+    <span id="cc-ctx" style="display: none"></span>
 
     <!-- base scenario compound container-->
     <span>Below is a compound container example for testing functionality</span>
@@ -77,7 +78,7 @@
       const compoundContainer = document.getElementById('dashboard');
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
-        console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        console.debug('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
 
       compoundContainer.compoundConfig = {
@@ -103,7 +104,7 @@
         },
         children: [
           {
-            viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js',
+            viewUrl: '../assets/panelHeader.js',
             context: {
               title: 'My Awesome Grid 000',
               description: 'Really awesome',
@@ -135,27 +136,27 @@
             },
           },
           {
-            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            viewUrl: '../assets/mfeMain.js',
             context: {
               label: 'Another web component',
             },
           },
           {
             id: 'timerMFE',
-            viewUrl: 'https://luigiwebcomponents.gitlab.io/util/timer.js',
+            viewUrl: '../assets/timer.js',
             context: {
               min: 2,
               fontScale: '0.5',
             },
           },
           {
-            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            viewUrl: '../assets/mfeMain.js',
             context: {
               label: 'My Label',
             },
           },
           {
-            viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelFooter.js',
+            viewUrl: '../assets/panelFooter.js',
             context: {
               footer: 'This is the end of awesomeness',
             },
@@ -171,13 +172,16 @@
         console.log(event.detail);
         window.location.hash = event.detail.link;
       });
-      compoundContainer.addEventListener(MFEventID.GO_BACK_REQUEST, event => {
+      compoundContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
         console.log(event.detail);
         alert(event.detail.goBackValue);
       });
-      compoundContainer.addEventListener(MFEventID.UPDATE_TOP_NAVIGATION_REQUEST, event => {
-        alert("UPDATE_TOP_NAVIGATION_REQUEST event received");
-      });
+      compoundContainer.addEventListener(
+        MFEventID.UPDATE_TOP_NAVIGATION_REQUEST,
+        (event) => {
+          alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
+        },
+      );
       compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
         console.log(event.detail);
         alert(event.detail.text);
@@ -197,7 +201,7 @@
       );
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
         if (event.detail.id !== 'timer') {
-          alert(event.detail.id);
+          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
         }
       });
 
@@ -316,6 +320,9 @@
 
       document.querySelector('#luigi-update-context').addEventListener('click', () => {
         compoundContainer.updateContext({ newContextData: 'some data' });
+        document.querySelector('#cc-ctx').innerHTML = JSON.stringify(
+          compoundContainer.context,
+        );
       });
     </script>
   </body>

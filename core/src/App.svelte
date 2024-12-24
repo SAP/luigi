@@ -1823,6 +1823,7 @@
   {/if}
 
   {#if btpToolLayout}
+    <Backdrop disable={disableBackdrop}></Backdrop>
     <div class="lui-core-layout">
       <div class="fd-tool-layout fd-tool-layout--sticky">
         <div class="fd-tool-layout__container">

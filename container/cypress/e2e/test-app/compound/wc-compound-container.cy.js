@@ -1,10 +1,18 @@
 describe('Compound Container Tests', () => {
   describe('LuigiClient API - LuigiCompoundContainer', () => {
     const containerSelector = '[data-test-id="luigi-client-api-test-compound-01"]';
+    let consoleLog;
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:8080/compound/compoundClientAPI.html');
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
+        onBeforeLoad(win) {
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
+        }
+      });
       stub = cy.stub();
     });
 
@@ -160,6 +168,12 @@ describe('Compound Container Tests', () => {
               expect(stub.getCall(0)).to.be.calledWith(
                 'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
               );
+              //Test if context property on luigi compound container is also updated
+              cy.get('#cc-ctx')
+                .invoke('html')
+                .then((innerHtml) => {
+                  expect(innerHtml).to.include('{"newContextData":"some data"}');
+                });
             });
         });
     });
@@ -170,7 +184,7 @@ describe('Compound Container Tests', () => {
       const alertMessages = [
         'UPDATE_TOP_NAVIGATION_REQUEST event received',
         'some goBackValue',
-        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
       ];
 
       cy.get(containerSelector)
@@ -192,7 +206,7 @@ describe('Compound Container Tests', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith('uxManager().showAlert() test');
         });
     });
 
@@ -244,9 +258,10 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -255,9 +270,10 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsDrawer-wc');
         });
     });
+
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')
@@ -270,22 +286,12 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      // Set up a spy on console.log
-      cy.window().then((win) => {
-        cy.spy(win.console, 'log').as('consoleLogSpy');
-      });
+      cy.get(containerSelector).shadow().contains('Publish event').click();
 
-      cy.get(containerSelector)
-        .shadow()
-        .contains('Publish event')
-        .click()
-        .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('sendInput');
-          cy.get('@consoleLogSpy').should(
-            'be.calledWith',
-            'dataConverter(): Received Custom Message from "input1" MF My own event data'
-          );
-        });
+      cy.should(() => {
+        expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
+        expect(consoleLog).to.equal('dataConverter(): Received Custom Message from "input1" MF My own event data');
+      });
     });
 
     it('LuigiClient API uxManagerChainRequests', () => {

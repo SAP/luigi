@@ -27,16 +27,13 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test showAlert')
           .click()
           .then(() => {
-            cy.wrap(stub).should(
-              'have.been.calledWith',
-              'show-alert-request message received: {\"isTrusted\":true}'
-            );
+            cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
           });
       });
   });
@@ -47,17 +44,14 @@ describe('Iframe Container Test', () => {
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
-      .then(iframe => {
+      .then((iframe) => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test goBack')
           .click()
           .then(() => {
             console.log(cy.wrap(stub));
-            cy.wrap(stub).should(
-              'have.been.calledWith',
-              'navigate-back-request'
-            );
+            cy.wrap(stub).should('have.been.calledWith', 'navigate-back-request');
           });
       });
   });
@@ -112,6 +106,38 @@ describe('Iframe Container Test', () => {
                 cy.wrap(stub).should(
                   'have.been.calledWith',
                   'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
+                );
+
+                //Test if context property on luigi container is also updated
+                cy.get('#container-ctx')
+                  .invoke('html')
+                  .then((innerHtml) => {
+                    expect(innerHtml).to.include('{"myContext":"some context data"}');
+                  });
+              });
+          });
+      });
+  });
+
+  it('update viewUrl', () => {
+    cy.on('window:alert', stub);
+
+    cy.get('#update-view-url')
+      .click()
+      .then(() => {
+        cy.get(containerSelector)
+          .shadow()
+          .get('iframe')
+          .then((iframe) => {
+            const $body = iframe.contents().find('body');
+
+            cy.wrap($body)
+              .contains('test history state')
+              .click()
+              .then(() => {
+                cy.wrap(stub).should(
+                  'have.been.calledWith',
+                  'Custom message received: {"id":"my.historyMessage","_metaData":{},"data":{"state":{"luigiInduced":true}}}'
                 );
               });
           });

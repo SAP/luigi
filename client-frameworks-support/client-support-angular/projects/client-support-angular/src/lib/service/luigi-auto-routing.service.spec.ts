@@ -9,7 +9,7 @@ import { LuigiAutoRoutingService } from './luigi-auto-routing.service';
 import { LuigiContextService } from './luigi-context.service';
 
 describe('LuigiAutoRoutingService', () => {
-  const mockedSnapshot: ActivatedRouteSnapshot = {data: {} as any} as ActivatedRouteSnapshot;
+  const mockedSnapshot: ActivatedRouteSnapshot = { data: {} as any } as ActivatedRouteSnapshot;
   let service: LuigiAutoRoutingService;
 
   beforeEach(() => {
@@ -44,11 +44,7 @@ describe('LuigiAutoRoutingService', () => {
       const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
       const notAnEvent = new Object();
       const wrongEvent = new CustomEvent('wrongEvent');
-      const events$ = of(
-        notAnEvent,
-        event,
-        wrongEvent
-      ) as unknown as Observable<Event>;
+      const events$ = of(notAnEvent, event, wrongEvent) as unknown as Observable<Event>;
       const filterResult$ = service.doFilter()(events$);
       let count = 0;
 
@@ -65,11 +61,11 @@ describe('LuigiAutoRoutingService', () => {
   });
 
   describe('doSubscription', () => {
-    it('doSubscription should take a NavigationEnd event and not do anything if the navigation was to no route with Luigi data', () => {
+    it('doSubscription should take a NavigationEnd event and do nothing if the navigation was no route with Luigi data', () => {
       const doSubscriptionSpy = spyOn(LuigiAutoRoutingService.prototype, 'doSubscription').and.callThrough();
       const navigateSpy = jasmine.createSpy('navigate');
       const linkManagerSpy = spyOn(Client, 'linkManager').and.returnValue({
-        withoutSync: () => navigateSpy,
+        withoutSync: () => navigateSpy
       } as unknown as Client.LinkManager);
       const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
 
