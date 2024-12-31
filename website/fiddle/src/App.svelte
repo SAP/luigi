@@ -239,7 +239,7 @@
                     </div>
                   {/if}
                   {#each versions || [] as version}
-                    <a class="fd-link" href="#top" target="_blank" rel="noreferrer" on:click={switchVersion(version)}>
+                    <a class="fd-link" href="#top" target="_blank" rel="noopener noreferrer" on:click={switchVersion(version)}>
                       {version}
                     </a><br />
                   {/each}
@@ -249,10 +249,10 @@
           </button>
         </span>
         <span>
-          <a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank" rel="noreferrer">
+          <a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank" rel="noopener noreferrer">
             Privacy Policy &nbsp&nbsp
           </a>
-          <a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank" rel="noreferrer">
+          <a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank" rel="noopener noreferrer">
             Legal
           </a>
         </span>
