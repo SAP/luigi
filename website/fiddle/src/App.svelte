@@ -49,7 +49,7 @@
     const core = document.createElement('script');
     core.setAttribute('src', coreBasePath + '/luigi.js');
     document.head.appendChild(core);
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       window.loadInterval = setInterval(() => {
         if (window.Luigi) {
           clearInterval(window.loadInterval);
@@ -193,23 +193,22 @@
           <div class="fd-bar__element">
             <button
               class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-              on:click={resetConfig}
-            >Reset</button>
+              on:click={resetConfig}>Reset</button
+            >
           </div>
           <div class="fd-bar__element lui-mobile-hide">
             <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
           </div>
           <div class="fd-bar__element lui-mobile-show">
-            <button
-              class="fd-dialog__decisive-button fd-button fd-button--compact"
-              on:click={saveConfigTA}
-            >Apply</button>
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfigTA}
+              >Apply</button
+            >
           </div>
           <div class="fd-bar__element">
             <button
               class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-              on:click={closeConfig}
-            >Cancel</button>
+              on:click={closeConfig}>Cancel</button
+            >
           </div>
         </div>
       </footer>
@@ -222,12 +221,14 @@
     <div class="fd-action-bar__header">
       <div class="title-wrapper">
         <img alt="Luigi" src="./img/luigi.png" />
-        <span class="lui-mobile-hide">powered by Luigi
+        <span class="lui-mobile-hide"
+          >powered by Luigi
           <button
             class="fd-button fd-button--compact btn-primary"
             on:click|preventDefault|stopPropagation={chooseVersion}
           >
-            <span class="lui-mobile-hide">v{luigiVersion + (customVersion ? ' (CDN)' : '')}
+            <span class="lui-mobile-hide"
+              >v{luigiVersion + (customVersion ? ' (CDN)' : '')}
               {#if showVersions}
                 <div class="lui-version-chooser">
                   {#if !versions}
@@ -239,7 +240,13 @@
                     </div>
                   {/if}
                   {#each versions || [] as version}
-                    <a class="fd-link" href="#top" target="_blank" rel="noopener noreferrer" on:click={switchVersion(version)}>
+                    <a
+                      class="fd-link"
+                      href="#top"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      on:click={switchVersion(version)}
+                    >
                       {version}
                     </a><br />
                   {/each}
@@ -249,10 +256,20 @@
           </button>
         </span>
         <span>
-          <a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank" rel="noopener noreferrer">
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/privacy.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Privacy Policy &nbsp&nbsp
           </a>
-          <a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank" rel="noopener noreferrer">
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/impressum.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Legal
           </a>
         </span>

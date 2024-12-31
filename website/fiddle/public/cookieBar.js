@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var cAcc = false;
   if (localStorage) {
     cAcc = localStorage.getItem('cookiesAccepted');

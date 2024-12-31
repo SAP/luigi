@@ -1,5 +1,5 @@
-(function() {
-  setTimeout(function() {
+(function () {
+  setTimeout(function () {
     try {
       let aPrivacyPolicy = document.createElement('a');
       const linkTextPrivacyPolicy = document.createTextNode('Privacy Policy');
