@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var cAcc = false;
   if (localStorage) {
     cAcc = localStorage.getItem('cookiesAccepted');
@@ -12,6 +12,7 @@
     priv_link.appendChild(document.createTextNode('Read our Privacy Statement'));
     priv_link.setAttribute('href', 'https://www.sap.com/about/legal/impressum.html');
     priv_link.setAttribute('target', '_blank');
+    priv_link.setAttribute('rel', 'noopener noreferrer');
     cookiebar.appendChild(priv_link);
 
     var closeBtn = document.createElement('button');

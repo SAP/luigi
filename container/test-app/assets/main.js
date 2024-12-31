@@ -5262,7 +5262,7 @@ const metadata$1 = {
      * Defines the unique identifier (icon name) of each <code>ui5-icon</code>.
      * <br><br>
      * To browse all available icons, see the
-     * <ui5-link target="_blank" href="https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html" class="api-table-content-cell-link">Icon Explorer</ui5-link>.
+     * <ui5-link target="_blank" rel="noopener noreferrer" href="https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html" class="api-table-content-cell-link">Icon Explorer</ui5-link>.
      * <br><br>
      * Example:
      * <br>
@@ -5569,7 +5569,7 @@ const metadata$2 = {
      * <br>
      * <pre>ui5-button icon="palette"</pre>
      *
-     * See all the available icons in the <ui5-link target="_blank" href="https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html" class="api-table-content-cell-link">Icon Explorer</ui5-link>.
+     * See all the available icons in the <ui5-link target="_blank" rel="noopener noreferrer" href="https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html" class="api-table-content-cell-link">Icon Explorer</ui5-link>.
      *
      * @type {string}
      * @defaultvalue ""
