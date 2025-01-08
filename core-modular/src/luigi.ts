@@ -6,12 +6,14 @@ import type { LuigiConnector } from './types/connector';
 import { UI } from './ui';
 import { Communication } from './communicaton';
 import { UX } from './core-api/ux';
+import { Ux } from './ux';
 
 const _init = () => {
   const luigi = (window as any).Luigi;
   Routing.init(luigi);
   UI.init(luigi);
   Communication.init(luigi);
+  Ux.init(luigi);
 };
 
 export class Luigi {
@@ -21,7 +23,7 @@ export class Luigi {
   _app: any;
   _ui = UI;
   _comm = Communication;
-  _ux = UX;
+  _ux = Ux;
 
   bootstrap(connector: LuigiConnector): void {
     this._app = mount(App, {
