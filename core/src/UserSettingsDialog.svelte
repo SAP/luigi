@@ -321,7 +321,7 @@
                     <a tabindex="-1" class="fd-list__link" href="#">
                       {#if userSettingsGroupProperty[1].icon}
                         {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                          <span class="fd-list__thumbnail">
+                          <span class="fd-list__thumbnail {userSettingsGroupProperty[1].iconClassAttribute || ''}">
                             <i role="presentation" class={getSapIconStr(userSettingsGroupProperty[1].icon)} />
                           </span>
                         {:else}
