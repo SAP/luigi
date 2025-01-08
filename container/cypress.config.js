@@ -7,6 +7,11 @@ module.exports = defineConfig({
     viewportWidth: 1250,
     viewportHeight: 790,
     chromeWebSecurity: false,
-    supportFile: false
+    supportFile: 'cypress/support/e2e.js',
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config)
+
+      return config
+    }
   }
 });

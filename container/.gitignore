@@ -13,4 +13,7 @@
 /public/**/*.ts
 
 /coverage
+/e2e-coverage
+/instrumented
+/.nyc_output
 .DS_Store
