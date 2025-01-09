@@ -96,9 +96,9 @@ export class ContainerAPIFunctions {
    * Send a message to the microfrontend notifying the alert has been closed
    * @param id the id of the alert being closed
    * @param dismissKey the dismiss key being sent if any (optional)
-   * @param iframeHandle the handle of the iframe to send the message to
+   * @param iframeHandle the handle of the iframe to send the message to (optional)
    */
-  closeAlert(id: string, iframeHandle: IframeHandle, dismissKey?: string) {
+  closeAlert(id: string, dismissKey?: string, iframeHandle?: IframeHandle) {
     const message = dismissKey ? { id, dismissKey } : { id };
     containerService.sendCustomMessageToIframe(iframeHandle, message, LuigiInternalMessageID.ALERT_CLOSED);
   }
