@@ -1,10 +1,11 @@
-(function() {
-  setTimeout(function() {
+(function () {
+  setTimeout(function () {
     try {
       let aPrivacyPolicy = document.createElement('a');
       const linkTextPrivacyPolicy = document.createTextNode('Privacy Policy');
       aPrivacyPolicy.appendChild(linkTextPrivacyPolicy);
       aPrivacyPolicy.href = 'https://www.sap.com/about/legal/privacy.html';
+      aPrivacyPolicy.rel = 'noopener noreferrer';
       aPrivacyPolicy.target = '_blank';
       const parent = document.getElementsByClassName('lui-side-nav__footer--text')[0];
       const child = document.getElementsByClassName('lui-side-nav__footer--text')[0].firstChild;
@@ -14,6 +15,7 @@
       const linkTextLegal = document.createTextNode('Legal');
       aLegal.appendChild(linkTextLegal);
       aLegal.href = 'https://www.sap.com/about/legal/impressum.html';
+      aLegal.rel = 'noopener noreferrer';
       aLegal.target = '_blank';
       document.getElementsByClassName('lui-side-nav__footer--text')[0].appendChild(aLegal);
     } catch (e) {
