@@ -80,7 +80,7 @@
         const profileNavData = {
           items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
         };
-        if (hasUserSettings) {
+        if (userSettings) {
           const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
           profileNavData['settings'] = {
             ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
