@@ -26,8 +26,8 @@ WS_FID_PID=$!
 npm run start &
 EXAMPLES_FID_PID=$!
 
-# sleep for 3 seconds to wait for both servers to be fired up
-sleep 3
+# sleep for 30 seconds to wait for both servers to be fired up
+sleep 30
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests with recording"
@@ -43,4 +43,3 @@ kill $WS_FID_PID
 kill $EXAMPLES_FID_PID
 
 exit $?
-
