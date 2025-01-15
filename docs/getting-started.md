@@ -55,7 +55,7 @@ Luigi consists of two main parts:
 * [API](luigi-core-api.md) - functions to help with almost every part of your app: navigation, authorization, adding a [search box](luigi-core-api.md#globalsearch), configuring a light/dark [theme](luigi-core-api.md#theming) and others.
 
 <!-- add-attribute:class:success -->
->**NOTE:** You can also use [Luigi Container](luigi-container.md) to embed a Luigi micro frontend into any existing application without it being a Luigi Core app. 
+>**NOTE:** You can also use [Luigi Container](luigi-container.md) or [Luigi Compound Container](luigi-container.md#compound-container) to embed a Luigi micro frontend into any existing application without it being a Luigi Core app. 
 
 **Luigi Client** - refers to Luigi options related to micro frontends:
 * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
