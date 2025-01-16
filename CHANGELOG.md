@@ -25,6 +25,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.19.1] (2025-01-16)
+
+#### :bug: Fixed
+* [#4110](https://github.com/SAP/luigi/pull/4110) Fix: usersettings profile entry when set in afterInit ([@hardl](https://github.com/hardl))
+* [#4102](https://github.com/SAP/luigi/pull/4102) Fix: iconClassAttribute for sap-icons ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.19.0] (2024-12-23)
 
 #### :rocket: Added
@@ -1937,3 +1946,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2
 [v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
 [v2.19.0]: https://github.com/SAP/luigi/compare/v2.18.3...v2.19.0
+[v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
