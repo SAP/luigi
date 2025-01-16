@@ -69,38 +69,40 @@
   export function setProfileNavData() {
     if (!navProfileListenerInstalled) {
       StateHelpers.doOnStoreChange(store, async () => {
-        const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
-        //check if the User Settings schema exist
-        const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
-        const userSettings = userSettingsConfig
-          ? userSettingsConfig
-          : await LuigiConfig.getConfigValueAsync('settings.userSettings');
-        hasUserSettings = Boolean(userSettings);
-        //check if Settings dropdown is enabled for navigation in Shellbar
-        const profileNavData = {
-          items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
-        };
-        if (hasUserSettings) {
-          const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
-          profileNavData['settings'] = {
-            ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
-            ...userSettingsProfileMenuEntry
+        setTimeout(async () => {
+          const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
+          //check if the User Settings schema exist
+          const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
+          const userSettings = userSettingsConfig
+            ? userSettingsConfig
+            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
+          hasUserSettings = Boolean(userSettings);
+          //check if Settings dropdown is enabled for navigation in Shellbar
+          const profileNavData = {
+            items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
           };
-        }
-        profileNavData['logout'] = {
-          ...TOP_NAV_DEFAULTS.logout,
-          ...logoutItem
-        };
-        isProfileLogoutItem = Boolean(logoutItem);
-        profileLogoutFnDefined = false;
-        AuthLayerSvc.setProfileLogoutFn(null);
-        if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
-          // TODO: PROFNAVLOGOUT: three smiliar implementations.
-          // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
-          profileLogoutFnDefined = true;
-          AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
-        }
-        profileNav = profileNavData;
+          if (userSettings) {
+            const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
+            profileNavData['settings'] = {
+              ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
+              ...userSettingsProfileMenuEntry
+            };
+          }
+          profileNavData['logout'] = {
+            ...TOP_NAV_DEFAULTS.logout,
+            ...logoutItem
+          };
+          isProfileLogoutItem = Boolean(logoutItem);
+          profileLogoutFnDefined = false;
+          AuthLayerSvc.setProfileLogoutFn(null);
+          if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
+            // TODO: PROFNAVLOGOUT: three smiliar implementations.
+            // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
+            profileLogoutFnDefined = true;
+            AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
+          }
+          profileNav = profileNavData;
+        });
       }, ['navigation.profile']);
       navProfileListenerInstalled = true;
     }
