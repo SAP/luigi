@@ -140,10 +140,31 @@ export default class extends HTMLElement {
 
     this.$showAlert = this._shadowRoot.querySelector('#showAlert');
     this.$showAlert.addEventListener('click', () => {
-      this.LuigiClient.uxManager().showAlert({
-        text: 'uxManager().showAlert() test',
-        type: 'info'
-      });
+      let dt = new Date();
+      let time = dt.getMilliseconds() + '';
+      time = time.substr(time.length - 3);
+      const settings = {
+        id: 1234566,
+        text:
+          'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
+          time,
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: {
+            text: "Don't show this again",
+            dismissKey: 'neverShowItAgain'
+          }
+        },
+        closeAfter: 300000
+      };
+      this.LuigiClient.uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          console.log('Callback called on wc', param);
+        });
     });
 
     this.$paragraph = this._shadowRoot.querySelector('p');

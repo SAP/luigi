@@ -233,7 +233,21 @@ export class WebComponentService {
       uxManager: () => {
         return {
           showAlert: (alertSettings) => {
-            this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+            return new Promise((resolve) => {
+              this.containerService.dispatch(
+                Events.ALERT_REQUEST,
+                this.thisComponent,
+                alertSettings,
+                (data) => {
+                  if (data.dismissKey) {
+                    resolve(data.dismissKey);
+                  } else {
+                    resolve(data.id);
+                  }
+                },
+                'callback'
+              );
+            });
           },
           showConfirmationModal: (settings) => {
             return new Promise((resolve, reject) => {

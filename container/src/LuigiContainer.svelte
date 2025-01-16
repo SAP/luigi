@@ -146,7 +146,7 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey: string) => {
-        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+        ContainerAPI.closeAlert(id, dismissKey, iframeHandle, thisComponent.getNoShadow() ? thisComponent : mainComponent, !!webcomponent);
       };
 
       containerService.registerContainer(thisComponent);
