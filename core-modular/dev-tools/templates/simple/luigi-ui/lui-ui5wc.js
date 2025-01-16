@@ -40,7 +40,7 @@ function renderProductSwitcherItems(productSwitcherConfig) {
   productSwitchPopover.setAttribute('id', 'productswitch-popover');
   productSwitchPopover.setAttribute('placement', 'Bottom');
   productSwitchPopover.appendChild(productSwitch);
-  productSwitcherConfig.items?.forEach(item => {
+  productSwitcherConfig.items?.forEach((item) => {
     const productSwitchItem = document.createElement('ui5-product-switch-item');
     item.altText && productSwitchItem.setAttribute('alt', item.altText);
     item.label && productSwitchItem.setAttribute('title-text', item.label);
@@ -51,7 +51,8 @@ function renderProductSwitcherItems(productSwitcherConfig) {
       productSwitchItem.setAttribute('luigi-route', item.link);
     } else if (item.externalLink?.url) {
       productSwitchItem.setAttribute('luigi-external-route', item.externalLink.url);
-      item.externalLink.sameWindow ?? productSwitchItem.setAttribute('luigi-external-route-samewindow', item.externalLink.sameWindow);
+      item.externalLink.sameWindow ??
+        productSwitchItem.setAttribute('luigi-external-route-samewindow', item.externalLink.sameWindow);
     }
     productSwitch.appendChild(productSwitchItem);
   });
@@ -60,7 +61,7 @@ function renderProductSwitcherItems(productSwitcherConfig) {
 }
 
 function onProductSwitcherClick(event) {
-  const popover = document.getElementById("productswitch-popover");
+  const popover = document.getElementById('productswitch-popover');
   if (popover.open) {
     popover.open = false;
   } else {
@@ -71,7 +72,7 @@ function onProductSwitcherClick(event) {
 }
 
 const replacePlaceholdersWithUI5Links = (text, linksObj) => {
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   container.innerHTML = text;
 
   for (const key in linksObj) {
@@ -79,12 +80,12 @@ const replacePlaceholdersWithUI5Links = (text, linksObj) => {
     const linkData = linksObj[key];
 
     if (container.innerHTML.includes(linkKey)) {
-      const ui5Link = document.createElement("ui5-link");
+      const ui5Link = document.createElement('ui5-link');
       ui5Link.setAttribute('luigiAlertLink', key);
       ui5Link.innerText = linkData.text;
       container.innerHTML = container.innerHTML.replace(linkKey, ui5Link.outerHTML);
     }
-  };
+  }
 
   return container.innerHTML;
 };
@@ -109,34 +110,34 @@ const connector = {
     }
   },
 
-  renderTopNav: topNavData => {
+  renderTopNav: (topNavData) => {
     const shellbar = document.querySelector('.tool-layout > ui5-shellbar');
     shellbar.setAttribute('primary-title', topNavData.appTitle);
 
     if (topNavData.productSwitcher) {
       console.log('testesafasdf');
-      shellbar.removeEventListener("product-switch-click", onProductSwitcherClick);
+      shellbar.removeEventListener('product-switch-click', onProductSwitcherClick);
       shellbar.setAttribute('show-product-switch', '');
       renderProductSwitcherItems(topNavData.productSwitcher);
-      shellbar.addEventListener("product-switch-click", onProductSwitcherClick);
-      [...document.querySelectorAll("ui5-toggle-button")].forEach(el => {
-        el.addEventListener("click", event => {
+      shellbar.addEventListener('product-switch-click', onProductSwitcherClick);
+      [...document.querySelectorAll('ui5-toggle-button')].forEach((el) => {
+        el.addEventListener('click', (event) => {
           const toggleButton = event.target;
-          toggleButton.icon = toggleButton.pressed ? "sap-icon://da-2" : "sap-icon://da";
+          toggleButton.icon = toggleButton.pressed ? 'sap-icon://da-2' : 'sap-icon://da';
         });
       });
       const items = document.querySelector('ui5-product-switch').querySelectorAll('[luigi-route]');
       if (items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           item.addEventListener('click', () => {
             globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
-            document.getElementById("productswitch-popover").open = false;
+            document.getElementById('productswitch-popover').open = false;
           });
         });
       }
       const itemsExternalLink = document.querySelector('ui5-product-switch').querySelectorAll('[luigi-external-route]');
       if (itemsExternalLink) {
-        itemsExternalLink.forEach(item => {
+        itemsExternalLink.forEach((item) => {
           item.addEventListener('click', () => {
             const sameWindow = item.getAttribute('luigi-external-route-samewindow');
             window.open(item.getAttribute('luigi-external-route'), sameWindow ? '_self' : '_blank').focus();
@@ -169,7 +170,7 @@ const connector = {
       // shellbar.addEventListener('profile-click', Profile)
       shellbar.innerHTML = html;
 
-      (topNavData.topNodes || []).forEach(item => {
+      (topNavData.topNodes || []).forEach((item) => {
         addShellbarItem(shellbar, item);
       });
       // ...
@@ -179,8 +180,8 @@ const connector = {
         shellbar.querySelector('img[slot=logo]').setAttribute('src', topNavData.logo);
       }
       if (topNavData.topNodes !== shellbar._lastTopNavData.topNodes) {
-        shellbar.querySelectorAll('ui5-shellbar-item').forEach(item => item.remove());
-        (topNavData.topNodes || []).forEach(item => {
+        shellbar.querySelectorAll('ui5-shellbar-item').forEach((item) => item.remove());
+        (topNavData.topNodes || []).forEach((item) => {
           addShellbarItem(shellbar, item);
         });
       }
@@ -188,7 +189,7 @@ const connector = {
 
     shellbar._lastTopNavData = topNavData;
   },
-  renderLeftNav: leftNavData => {
+  renderLeftNav: (leftNavData) => {
     const sidenav = document.querySelector('ui5-side-navigation');
     const burger = document.getElementById('toggle');
     if (sidenav && burger) {
@@ -201,7 +202,7 @@ const connector = {
 
       let html = '';
       if (leftNavData.items) {
-        leftNavData.items.forEach(item => {
+        leftNavData.items.forEach((item) => {
           if (item.node) {
             html += `<ui5-side-navigation-item
                                     text="${item.node.label}"
@@ -214,10 +215,11 @@ const connector = {
                                     text="${item.category.label}"
                                     icon="${item.category.icon}"
                                     category-uid="${leftNavData.basePath + ':' + item.category.id}"
-                                    ${readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''
-              }>`;
+                                    ${
+                                      readExpandedState(leftNavData.basePath + ':' + item.category.id) ? 'expanded' : ''
+                                    }>`;
 
-            item.category.nodes.forEach(item => {
+            item.category.nodes.forEach((item) => {
               html += `<ui5-side-navigation-sub-item
                                     text="${item.node.label}"
                                     icon="${item.node.icon}"
@@ -236,7 +238,7 @@ const connector = {
 
       const items = sidenav.querySelectorAll('[luigi-route]');
       if (items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           item.addEventListener('click', () => {
             globalThis.Luigi.navigation().navigate(item.getAttribute('luigi-route'));
           });
@@ -244,7 +246,7 @@ const connector = {
       }
 
       if (!sidenav._observer) {
-        sidenav._observer = new MutationObserver(mutations => {
+        sidenav._observer = new MutationObserver((mutations) => {
           mutations.forEach(function (mutation) {
             if (mutation.type === 'attributes') {
               const uid = mutation.target.getAttribute('category-uid');
@@ -261,8 +263,8 @@ const connector = {
       }
       const categories = sidenav.querySelectorAll('[category-uid]');
       if (categories) {
-        categories.forEach(item => {
-          item.addEventListener('click', event => {
+        categories.forEach((item) => {
+          item.addEventListener('click', (event) => {
             if (event instanceof CustomEvent) {
               event.target.toggleAttribute('expanded');
             }
@@ -315,7 +317,8 @@ const connector = {
     tabcontainer?.addEventListener('tab-select', (event) => {
       const customEvent = event;
       const selectedTab = customEvent.detail.tab;
-      if (selectedTab.getAttribute('luigi-route')) globalThis.Luigi.navigation().navigate(selectedTab.getAttribute('luigi-route'));
+      if (selectedTab.getAttribute('luigi-route'))
+        globalThis.Luigi.navigation().navigate(selectedTab.getAttribute('luigi-route'));
     });
     tabNavData.items.forEach((item) => {
       const tab = document.createElement('ui5-tab');
@@ -347,41 +350,42 @@ const connector = {
         success: 'Positive',
         warning: 'Critical',
         error: 'Negative'
-      }
+      };
       const messageStrip = document.createElement('ui5-message-strip');
       messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.settings.type]}`);
-      messageStrip.innerHTML = replacePlaceholdersWithUI5Links(alertSettings.settings.text, alertSettings.settings.links);
+      messageStrip.innerHTML = replacePlaceholdersWithUI5Links(
+        alertSettings.settings.text,
+        alertSettings.settings.links
+      );
 
       if (openFromClient) containerElement.openFromClient = true;
 
       alertContainer?.appendChild(messageStrip);
-      const luigiAlertLinks = messageStrip.querySelectorAll('[luigiAlertLink]')
-      luigiAlertLinks?.forEach(luigiAlertLink => {
+      const luigiAlertLinks = messageStrip.querySelectorAll('[luigiAlertLink]');
+      luigiAlertLinks?.forEach((luigiAlertLink) => {
         luigiAlertLink.addEventListener('click', (event) => {
           event.preventDefault();
           const linkKey = luigiAlertLink.getAttribute('luigiAlertLink');
           containerElement.handleAlertLinksClick(containerElement, messageStrip, alertSettings, linkKey, resolve);
         });
-
-      })
+      });
       messageStrip.addEventListener('close', () => {
-        resolve({containerElement, alertSettings});
+        resolve({ containerElement, alertSettings });
         alertContainer.removeChild(messageStrip);
       });
 
       if (alertSettings.settings.closeAfter) {
         setTimeout(() => {
-          resolve({containerElement, alertSettings});
+          resolve({ containerElement, alertSettings });
           if (messageStrip.parentElement === alertContainer) {
             alertContainer.removeChild(messageStrip);
           }
-        }, alertSettings.settings.closeAfter)
+        }, alertSettings.settings.closeAfter);
       }
-    })
+    });
   },
-  renderConfirmationModal(settings){
-    return new Promise((resolve)=> {
-
+  renderConfirmationModal(settings) {
+    return new Promise((resolve) => {
       const iconMapping = {
         confirmation: 'None',
         information: 'Information',
@@ -389,23 +393,23 @@ const connector = {
         error: 'Critical',
         success: 'Positive'
       };
-      "None" | "Positive" | "Critical" | "Negative" | "Information"
+      'None' | 'Positive' | 'Critical' | 'Negative' | 'Information';
 
-      if(!settings || settings=={})
-      settings = {
-        "icon": "question-mark",
-        "header": "Confirmation",
-        "body": "Are you sure you want to do this?",
-        "buttonDismiss": "No",
-        "buttonConfirm": "Yes",
-        "type": "confirmation"
-      }
+      if (!settings || settings == {})
+        settings = {
+          icon: 'question-mark',
+          header: 'Confirmation',
+          body: 'Are you sure you want to do this?',
+          buttonDismiss: 'No',
+          buttonConfirm: 'Yes',
+          type: 'confirmation'
+        };
       const dialog = document.createElement('ui5-dialog');
       dialog.classList.add('lui-confirmation-modal');
       dialog.setAttribute('header-text', settings?.header);
-      dialog.setAttribute('state', `${iconMapping[settings.icon || 'confirmation']}`)
-      
-      const text = document.createElement('p')
+      dialog.setAttribute('state', `${iconMapping[settings.icon || 'confirmation']}`);
+
+      const text = document.createElement('p');
       text.innerHTML = settings.body || '';
       dialog.appendChild(text);
 
@@ -413,13 +417,13 @@ const connector = {
       ui5Toolbar.setAttribute('slot', 'footer');
       const ui5ToolBarBtnConfirm = document.createElement('ui5-toolbar-button');
       settings.buttonConfirm && ui5ToolBarBtnConfirm.setAttribute('text', settings.buttonConfirm);
-      ui5ToolBarBtnConfirm.addEventListener('click', ()=>{
+      ui5ToolBarBtnConfirm.addEventListener('click', () => {
         resolve(true);
         document.body.removeChild(dialog);
       });
       const ui5ToolBarBtnDismiss = document.createElement('ui5-toolbar-button');
       settings.buttonDismiss && ui5ToolBarBtnDismiss.setAttribute('text', settings.buttonDismiss);
-      ui5ToolBarBtnDismiss.addEventListener('click', ()=>{
+      ui5ToolBarBtnDismiss.addEventListener('click', () => {
         resolve(false);
         document.body.removeChild(dialog);
       });
