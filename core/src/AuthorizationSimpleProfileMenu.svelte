@@ -76,7 +76,6 @@
           const userSettings = userSettingsConfig
             ? userSettingsConfig
             : await LuigiConfig.getConfigValueAsync('settings.userSettings');
-          hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
             items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
@@ -102,6 +101,7 @@
             AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
           }
           profileNav = profileNavData;
+          hasUserSettings = Boolean(userSettings);
         });
       }, ['navigation.profile']);
       navProfileListenerInstalled = true;
