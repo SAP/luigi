@@ -105,6 +105,9 @@ export default class extends HTMLElement {
     const customMessageDiv = document.createElement('template');
     customMessageDiv.innerHTML = '<div id="customMessageDiv">Received Custom Message: </div>';
 
+    const closeAlertResponse = document.createElement('template');
+    closeAlertResponse.innerHTML = '<span id="closeAlertResponse"></span>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -137,6 +140,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
+    this._shadowRoot.appendChild(closeAlertResponse.content.cloneNode(true));
 
     this.$showAlert = this._shadowRoot.querySelector('#showAlert');
     this.$showAlert.addEventListener('click', () => {
@@ -144,10 +148,7 @@ export default class extends HTMLElement {
       let time = dt.getMilliseconds() + '';
       time = time.substr(time.length - 3);
       const settings = {
-        id: 1234566,
-        text:
-          'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
-          time,
+        text: 'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}',
         type: 'info',
         links: {
           goToHome: { text: 'homepage', url: '/overview' },
@@ -163,7 +164,7 @@ export default class extends HTMLElement {
       this.LuigiClient.uxManager()
         .showAlert(settings)
         .then((param) => {
-          console.log('Callback called on wc', param);
+          this._shadowRoot.querySelector('#closeAlertResponse').innerHTML = 'Callback called on wc ' + param;
         });
     });
 

@@ -18,6 +18,8 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
+  alertResolvers: Record<string, Function> = {};
+  alertIndex = 0;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -233,20 +235,10 @@ export class WebComponentService {
       uxManager: () => {
         return {
           showAlert: (alertSettings) => {
+            alertSettings.id = this.alertIndex++;
             return new Promise((resolve) => {
-              this.containerService.dispatch(
-                Events.ALERT_REQUEST,
-                this.thisComponent,
-                alertSettings,
-                (data) => {
-                  if (data.dismissKey) {
-                    resolve(data.dismissKey);
-                  } else {
-                    resolve(data.id);
-                  }
-                },
-                'callback'
-              );
+              this.alertResolvers[alertSettings.id] = resolve;
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
             });
           },
           showConfirmationModal: (settings) => {
@@ -711,5 +703,26 @@ export class WebComponentService {
           this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
         });
     });
+  }
+
+  /**
+   * Resolves an alert by invoking the corresponding resolver function for the given alert ID.
+   * This method attempts to resolve an alert associated with the specified `id` by calling its resolver function,
+   * if one exists in the `alertResolvers` object. If the resolver exists, it is invoked with `dismissKey` as its argument,
+   * and then the resolver is removed from the `alertResolvers` object to avoid future invocations. If no resolver is found
+   * for the provided `id`, a message is logged to the console indicating that no matching promise is in the list.
+   * @param {string} id - The unique identifier for the alert to resolve.
+   * @param {dismissKey} [dismissKey=true] - An optional key or value passed to the resolver. Defaults to `true` if not provided.
+   *
+   * @returns {void}
+   *
+   */
+  resolveAlert(id, dismissKey = true) {
+    if (this.alertResolvers[id]) {
+      this.alertResolvers[id](dismissKey);
+      this.alertResolvers[id] = undefined;
+    } else {
+      console.log('Promise is not in the list.');
+    }
   }
 }

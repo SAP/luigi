@@ -98,21 +98,8 @@ export class ContainerAPIFunctions {
    * @param dismissKey the dismiss key being sent if any
    * @param iframeHandle the handle of the iframe to send the message to
    */
-  closeAlert(
-    id: string,
-    dismissKey: string,
-    iframeHandle: IframeHandle,
-    mainComponent?: ContainerElement,
-    isWebcomponent?: boolean
-  ) {
-    if (isWebcomponent && mainComponent._luigi_mfe_webcomponent) {
-      containerService.dispatch(LuigiInternalMessageID.ALERT_CLOSED, mainComponent._luigi_mfe_webcomponent, {
-        id,
-        dismissKey
-      });
-    } else {
-      containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
-    }
+  closeAlert(id: string, dismissKey: string, iframeHandle: IframeHandle) {
+    containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
   }
 }
 
