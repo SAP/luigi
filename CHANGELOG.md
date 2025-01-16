@@ -25,6 +25,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.19.2] (2025-01-16)
+
+#### :bug: Fixed
+* [#4114](https://github.com/SAP/luigi/pull/4114) switch visibility of usersettings entry after prep of all data ([@hardl](https://github.com/hardl))
+
+
+
 ## [v2.19.1] (2025-01-16)
 
 #### :bug: Fixed
@@ -1947,3 +1954,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
 [v2.19.0]: https://github.com/SAP/luigi/compare/v2.18.3...v2.19.0
 [v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
+[v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
