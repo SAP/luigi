@@ -28,22 +28,24 @@
     <script>
       function showAlert() {
         const settings = {
-          text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}",
+          text: 'Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}',
           type: 'info',
           links: {
             goToHome: { text: 'homepage', url: '/home' },
             goToOtherProject: { text: 'other project', url: '/home/c2' },
             relativePath: { text: 'relative hide side nav', url: 'c3' },
-            neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
+            neverShowItAgain: {
+              text: 'Never show it again',
+              dismissKey: 'neverShowItAgain',
+            },
           },
-          closeAfter: 30000
+          closeAfter: 30000,
         };
-        LuigiClient
-        .uxManager()
-        .showAlert(settings)
-        .then((dismissKey) => {
-            console.log('ALERT CLOSED: ', dismissKey)
-        });
+        LuigiClient.uxManager()
+          .showAlert(settings)
+          .then((dismissKey) => {
+            console.log('ALERT CLOSED: ', dismissKey);
+          });
       }
 
       let div = document.createElement('div');

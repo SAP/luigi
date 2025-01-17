@@ -342,42 +342,39 @@ const connector = {
   },
 
   renderAlert(alertSettings, alertHandler) {
-      const alertContainer = document.querySelector('.luigi-alert--overlay');
-      const alertTypeMap = {
-        info: 'Information',
-        success: 'Positive',
-        warning: 'Critical',
-        error: 'Negative'
-      };
-      const messageStrip = document.createElement('ui5-message-strip');
-      messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.type]}`);
-      messageStrip.innerHTML = replacePlaceholdersWithUI5Links(
-        alertSettings.text,
-        alertSettings.links
-      );
+    const alertContainer = document.querySelector('.luigi-alert--overlay');
+    const alertTypeMap = {
+      info: 'Information',
+      success: 'Positive',
+      warning: 'Critical',
+      error: 'Negative'
+    };
+    const messageStrip = document.createElement('ui5-message-strip');
+    messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.type]}`);
+    messageStrip.innerHTML = replacePlaceholdersWithUI5Links(alertSettings.text, alertSettings.links);
 
-      alertContainer?.appendChild(messageStrip);
-      const luigiAlertLinks = messageStrip.querySelectorAll('[luigiAlertLink]');
-      luigiAlertLinks?.forEach((luigiAlertLink) => {
-        luigiAlertLink.addEventListener('click', (event) => {
-          event.preventDefault();
-          const linkKey = luigiAlertLink.getAttribute('luigiAlertLink');
-          alertHandler.link(linkKey) && alertContainer.removeChild(messageStrip);
-        });
+    alertContainer?.appendChild(messageStrip);
+    const luigiAlertLinks = messageStrip.querySelectorAll('[luigiAlertLink]');
+    luigiAlertLinks?.forEach((luigiAlertLink) => {
+      luigiAlertLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        const linkKey = luigiAlertLink.getAttribute('luigiAlertLink');
+        alertHandler.link(linkKey) && alertContainer.removeChild(messageStrip);
       });
-      messageStrip.addEventListener('close', () => {
+    });
+    messageStrip.addEventListener('close', () => {
+      alertHandler.close(true);
+      alertContainer.removeChild(messageStrip);
+    });
+
+    if (alertSettings.closeAfter) {
+      setTimeout(() => {
         alertHandler.close(true);
-        alertContainer.removeChild(messageStrip);
-      });
-
-      if (alertSettings.closeAfter) {
-        setTimeout(() => {
-          alertHandler.close(true);
-          if (messageStrip.parentElement === alertContainer) {
-            alertContainer.removeChild(messageStrip);
-          }
-        }, alertSettings.closeAfter);
-      }
+        if (messageStrip.parentElement === alertContainer) {
+          alertContainer.removeChild(messageStrip);
+        }
+      }, alertSettings.closeAfter);
+    }
   },
   renderConfirmationModal(settings) {
     return new Promise((resolve) => {

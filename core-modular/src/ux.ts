@@ -52,7 +52,7 @@ export const Ux = {
 
     const alertHandler = {
       openFromClient,
-      close: () => {        
+      close: () => {
         containerElement.closeAlert(alertSettings.id);
       },
       link: (linkKey: string) => {
@@ -68,10 +68,9 @@ export const Ux = {
         }
         return false;
       }
-    }
+    };
     Ux.luigi._connector?.renderAlert(alertSettings, alertHandler);
   },
-
 
   handleConfirmationModalRequest: (confirmationModalSettings: ConfirmationModalSettings) => {
     // @ts-ignore
