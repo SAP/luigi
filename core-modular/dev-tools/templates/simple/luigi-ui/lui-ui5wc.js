@@ -1,5 +1,5 @@
-/** @typedef {import('../../../src/types/connector').LuigiConnector} LuigiConnector */
-/** @typedef {import('../../../src/luigi').Luigi} Luigi */
+/** @typedef {import('../../../../src/types/connector').LuigiConnector} LuigiConnector */
+/** @typedef {import('../../../../src/luigi').Luigi} Luigi */
 
 function storeExpandedState(uid, expanded) {
   const stored = localStorage.getItem('luigi.preferences.navigation.expandedCategories');
@@ -341,10 +341,8 @@ const connector = {
     });
   },
 
-  renderAlert(alertSettings, openFromClient, containerElement) {
-    console.log('containerElement', containerElement);
-    return new Promise((resolve) => {
-      let alertContainer = document.querySelector('.luigi-alert--overlay');
+  renderAlert(alertSettings, alertHandler) {
+      const alertContainer = document.querySelector('.luigi-alert--overlay');
       const alertTypeMap = {
         info: 'Information',
         success: 'Positive',
@@ -352,13 +350,11 @@ const connector = {
         error: 'Negative'
       };
       const messageStrip = document.createElement('ui5-message-strip');
-      messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.settings.type]}`);
+      messageStrip.setAttribute('design', `${alertTypeMap[alertSettings.type]}`);
       messageStrip.innerHTML = replacePlaceholdersWithUI5Links(
-        alertSettings.settings.text,
-        alertSettings.settings.links
+        alertSettings.text,
+        alertSettings.links
       );
-
-      if (openFromClient) containerElement.openFromClient = true;
 
       alertContainer?.appendChild(messageStrip);
       const luigiAlertLinks = messageStrip.querySelectorAll('[luigiAlertLink]');
@@ -366,23 +362,22 @@ const connector = {
         luigiAlertLink.addEventListener('click', (event) => {
           event.preventDefault();
           const linkKey = luigiAlertLink.getAttribute('luigiAlertLink');
-          containerElement.handleAlertLinksClick(containerElement, messageStrip, alertSettings, linkKey, resolve);
+          alertHandler.link(linkKey) && alertContainer.removeChild(messageStrip);
         });
       });
       messageStrip.addEventListener('close', () => {
-        resolve({ containerElement, alertSettings });
+        alertHandler.close(true);
         alertContainer.removeChild(messageStrip);
       });
 
-      if (alertSettings.settings.closeAfter) {
+      if (alertSettings.closeAfter) {
         setTimeout(() => {
-          resolve({ containerElement, alertSettings });
+          alertHandler.close(true);
           if (messageStrip.parentElement === alertContainer) {
             alertContainer.removeChild(messageStrip);
           }
-        }, alertSettings.settings.closeAfter);
+        }, alertSettings.closeAfter);
       }
-    });
   },
   renderConfirmationModal(settings) {
     return new Promise((resolve) => {

@@ -16,12 +16,26 @@ export class UX {
         //TODO closeAlert will eine id als string
         alertSettings.id = GenericHelpers.getRandomId().toString();
       }
-      const processedAlerts = Ux.processAlerts(alertSettings);
-      // @ts-ignore
-      this.luigi._connector?.renderAlert(processedAlerts, false).then((res) => {
-        const { alertSettings, dismissKey } = res;
-        resolve(dismissKey || alertSettings.settings.id);
-      });
+      const handler = {
+        openFromClient: false,
+        close: () => {
+          resolve(true);
+        },
+        link: (linkKey: string) => {
+          if (alertSettings.links) {
+            const link = alertSettings.links[linkKey];
+            if (link) {
+              link.url && Ux.luigi?.navigation().navigate(link.url);
+              if (link.dismissKey) {
+                resolve(link.dismissKey);
+                return true;
+              }
+            }
+          }
+          return false;
+        }
+      };
+      this.luigi._connector?.renderAlert(alertSettings, handler);
     });
   };
 
