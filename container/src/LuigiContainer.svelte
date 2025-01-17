@@ -145,12 +145,12 @@
         }
       };
 
-      thisComponent.closeAlert = (id: string, dismissKey: string) => {
-        //check if thisComponent is in dom
-        if(thisComponent.isConnected){
-          if(webcomponent){
+      thisComponent.closeAlert = (id: string, dismissKey?: string) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
             webcomponentService.resolveAlert(id, dismissKey);
-          }else{
+          } else {
             ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
           }
         }
