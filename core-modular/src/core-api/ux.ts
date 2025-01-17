@@ -1,22 +1,49 @@
 import type { Luigi } from '../luigi';
-import { UxService } from '../services/ux.service';
-import type { AlertSettings } from '../services/ux.service';
+
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
+import { Ux, type AlertSettings, type ProcessedAlertSettings, type ConfirmationModalSettings } from '../ux';
 
 export class UX {
   luigi: Luigi;
-  uxService: UxService;
 
   constructor(luigi: Luigi) {
     this.luigi = luigi;
-    this.uxService = new UxService(luigi);
   }
 
   showAlert = (alertSettings: AlertSettings) => {
-    if (!alertSettings.id) {
-      alertSettings.id = GenericHelpers.getRandomId();
-    }
-    const processedAlerts = this.uxService.processAlerts(alertSettings);
-    return this.luigi._connector?.renderAlert(alertSettings, false);
+    return new Promise((resolve) => {
+      if (!alertSettings.id) {
+        //TODO closeAlert will eine id als string
+        alertSettings.id = GenericHelpers.getRandomId().toString();
+      }
+      const handler = {
+        openFromClient: false,
+        close: () => {
+          resolve(true);
+        },
+        link: (linkKey: string) => {
+          if (alertSettings.links) {
+            const link = alertSettings.links[linkKey];
+            if (link) {
+              link.url && Ux.luigi?.navigation().navigate(link.url);
+              if (link.dismissKey) {
+                resolve(link.dismissKey);
+                return true;
+              }
+            }
+          }
+          return false;
+        }
+      };
+      this.luigi._connector?.renderAlert(alertSettings, handler);
+    });
+  };
+
+  showConfirmationModal = (settings: ConfirmationModalSettings) => {
+    return new Promise((resolve) => {
+      this.luigi._connector?.renderConfirmationModal(settings, false).then((res) => {
+        resolve(res);
+      });
+    });
   };
 }

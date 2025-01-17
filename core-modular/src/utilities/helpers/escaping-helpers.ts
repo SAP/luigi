@@ -1,4 +1,4 @@
-import type { AlertSettings, Link, ProcessedTextAndLinks } from '../../services/ux.service';
+import type { Link, ProcessedTextAndLinks } from '../../ux';
 
 // Helper methods that deal with character escaping.
 class EscapingHelpersClass {
