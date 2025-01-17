@@ -245,6 +245,29 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('closeAlert via xButton after navigate away', () => {
+      //expectation promise will not fullfilled
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+          // Simulate navigate away and luigi-container is not in dom anymore
+          cy.get('luigi-container').invoke('remove');
+
+          cy.get('#closeAlert').click();
+          
+          // Expect 
+          // Callback is not fullfilled which means luigi-container isn't connected to dom
+          cy.get('#callbackCloseAlert').should('not.exist');
+        });
+    });
+
     it('closeAlert via dismissButton', () => {
       cy.on('window:alert', stub);
 
