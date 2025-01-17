@@ -167,7 +167,7 @@ export default class extends HTMLElement {
           this._shadowRoot.querySelector('#closeAlertResponse').innerHTML = 'Callback called on wc ' + param;
           const span = document.createElement('span');
           span.setAttribute('id', 'callbackCloseAlert');
-          span.innerHTML='Callback called on wc ' + param;
+          span.innerHTML = 'Callback called on wc ' + param;
           document.body.appendChild(span);
         });
     });

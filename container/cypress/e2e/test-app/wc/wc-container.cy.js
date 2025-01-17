@@ -261,8 +261,8 @@ describe('Web Container Test', () => {
           cy.get('luigi-container').invoke('remove');
 
           cy.get('#closeAlert').click();
-          
-          // Expect 
+
+          // Expect
           // Callback is not fullfilled which means luigi-container isn't connected to dom
           cy.get('#callbackCloseAlert').should('not.exist');
         });
