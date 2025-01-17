@@ -11,7 +11,7 @@ describe('Navigation', () => {
     //Check Dialog is open
     cy.get('.lui-usersettings-dialog').should('exist');
 
-    //Check we have 5 left bar items
+    //Check we have 6 left bar items
     cy.get('.lui-us-list')
       .find('[data-testid="us-navigation-item"]')
       .should('have.length', 6);
@@ -37,6 +37,28 @@ describe('Navigation', () => {
     clearStorage();
     cy.visitLoggedIn('/');
     openSettingsDialogBox();
+  });
+
+  it('check iconClassAttribute', () => {
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(0) // User Account
+      .get('span')
+      .should('have.class', 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail lui-avatar-space');
+
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(1) // Language & Region
+      .get('span')
+      .should('have.class', 'fd-image--s fd-list__thumbnail');  // default value, no iconClassAttribute specified
+    
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(2) // Privacy
+      .get('span')
+      .should('have.class', 'SAP-icon-iconClassAttribute-Test');
+
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(3) // Theming
+      .get('span')
+      .should('have.class', 'fd-list__thumbnail');  // default value, no iconClassAttribute specified
   });
 
   describe('User Account Configuration', () => {
