@@ -536,7 +536,7 @@ A function that notifies the microfrontend that the opened alert has been closed
 #### Parameters
 
 *   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
-*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the key specifying which dismiss link was clicked on the alert message
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key specifying which dismiss link was clicked on the alert message (optional)
 
 #### Examples
 
