@@ -40,9 +40,12 @@ export class UX {
 
   showConfirmationModal = (settings: ConfirmationModalSettings) => {
     return new Promise((resolve) => {
-      this.luigi.getEngine()._connector?.renderConfirmationModal(settings, false).then((res) => {
-        resolve(res);
-      });
+      this.luigi
+        .getEngine()
+        ._connector?.renderConfirmationModal(settings, false)
+        .then((res) => {
+          resolve(res);
+        });
     });
   };
 }

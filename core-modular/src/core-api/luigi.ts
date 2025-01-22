@@ -5,9 +5,7 @@ import { UX } from './ux';
 export class Luigi {
   config: any;
 
-
-  constructor(private engine: LuigiEngine) {
-  }
+  constructor(private engine: LuigiEngine) {}
 
   getEngine() {
     return this.engine;

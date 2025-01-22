@@ -8,7 +8,6 @@ import { CommunicationModule } from './modules/communicaton-module';
 import { UX } from './core-api/ux';
 import { UXModule } from './modules/ux-module';
 
-
 export class LuigiEngine {
   config: any;
 
@@ -31,5 +30,5 @@ export class LuigiEngine {
     UIModule.init(luigi);
     CommunicationModule.init(luigi);
     UXModule.init(luigi);
-  };
+  }
 }
