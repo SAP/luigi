@@ -1,4 +1,5 @@
-import type { Luigi } from '../luigi';
+import type { Luigi } from '../core-api/luigi';
+
 export interface TopNavData {
   appTitle: string;
   logo: string;

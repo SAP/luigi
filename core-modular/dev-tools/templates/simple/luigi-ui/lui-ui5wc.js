@@ -429,4 +429,4 @@ const connector = {
 };
 
 // eslint-disable-next-line no-undef
-Luigi.bootstrap(connector);
+Luigi.getEngine().bootstrap(connector);

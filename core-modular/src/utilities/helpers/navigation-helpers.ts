@@ -1,4 +1,4 @@
-export const Helpers = {
+export const NavigationHelpers = {
     normalizePath: (raw: string) => {
         if(!raw || raw.length <= 0) {
             return raw;

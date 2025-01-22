@@ -1,7 +1,6 @@
-import type { Luigi } from '../luigi';
-
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
-import { Ux, type AlertSettings, type ProcessedAlertSettings, type ConfirmationModalSettings } from '../ux';
+import { type AlertSettings, type ProcessedAlertSettings, type ConfirmationModalSettings } from '../modules/ux-module';
+import type { Luigi } from './luigi';
 
 export class UX {
   luigi: Luigi;
@@ -25,7 +24,7 @@ export class UX {
           if (alertSettings.links) {
             const link = alertSettings.links[linkKey];
             if (link) {
-              link.url && Ux.luigi?.navigation().navigate(link.url);
+              link.url && this.luigi?.navigation().navigate(link.url);
               if (link.dismissKey) {
                 resolve(link.dismissKey);
                 return true;
@@ -35,13 +34,13 @@ export class UX {
           return false;
         }
       };
-      this.luigi._connector?.renderAlert(alertSettings, handler);
+      this.luigi.getEngine()._connector?.renderAlert(alertSettings, handler);
     });
   };
 
   showConfirmationModal = (settings: ConfirmationModalSettings) => {
     return new Promise((resolve) => {
-      this.luigi._connector?.renderConfirmationModal(settings, false).then((res) => {
+      this.luigi.getEngine()._connector?.renderConfirmationModal(settings, false).then((res) => {
         resolve(res);
       });
     });

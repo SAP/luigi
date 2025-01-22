@@ -1,4 +1,4 @@
-import type { Link, ProcessedTextAndLinks } from '../../ux';
+import type { Link, ProcessedTextAndLinks } from '../../modules/ux-module';
 
 // Helper methods that deal with character escaping.
 class EscapingHelpersClass {

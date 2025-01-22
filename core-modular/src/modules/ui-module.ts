@@ -1,7 +1,7 @@
-import { Helpers } from './helpers';
-import type { Luigi } from './luigi';
-import { NavigationService, type ModalSettings } from './services/navigation.service';
+import { NavigationHelpers } from '../utilities/helpers/navigation-helpers';
+import { NavigationService, type ModalSettings } from '../services/navigation.service';
 import { LuigiCompoundContainer, LuigiContainer } from '@luigi-project/container';
+import type { Luigi } from '../core-api/luigi';
 
 const createContainer = (node: any, luigi: Luigi): HTMLElement => {
   if (node.compound) {
@@ -11,7 +11,7 @@ const createContainer = (node: any, luigi: Luigi): HTMLElement => {
     lcc.compoundConfig = node.compound;
     lcc.context = node.context;
     (lcc as any).viewGroup = node.viewGroup;
-    luigi._comm.addListeners(lcc, luigi);
+    luigi.getEngine()._comm.addListeners(lcc, luigi);
     return lcc;
   } else {
     const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
@@ -19,35 +19,35 @@ const createContainer = (node: any, luigi: Luigi): HTMLElement => {
     lc.webcomponent = node.webcomponent;
     lc.context = node.context;
     (lc as any).viewGroup = node.viewGroup;
-    luigi._comm.addListeners(lc, luigi);
+    luigi.getEngine()._comm.addListeners(lc, luigi);
     return lc;
   }
 };
 
-export const UI = {
+export const UIModule = {
   navService: undefined,
   init: (luigi: Luigi) => {
     console.log('Init UI...');
-    luigi._connector?.renderMainLayout();
+    luigi.getEngine()._connector?.renderMainLayout();
     const navService = new NavigationService(luigi);
-    const path = Helpers.normalizePath(location.hash);
+    const path = NavigationHelpers.normalizePath(location.hash);
     const redirect = navService.shouldRedirect(path);
     if (redirect) {
       luigi.navigation().navigate(redirect);
       return;
     }
 
-    luigi._connector?.renderTopNav(navService.getTopNavData());
-    luigi._connector?.renderLeftNav(navService.getLeftNavData(path));
-    luigi._connector?.renderTabNav(navService.getTabNavData(path));
+    luigi.getEngine()._connector?.renderTopNav(navService.getTopNavData());
+    luigi.getEngine()._connector?.renderLeftNav(navService.getLeftNavData(path));
+    luigi.getEngine()._connector?.renderTabNav(navService.getTabNavData(path));
 
     const currentNode = navService.getCurrentNode(path);
     if (currentNode) {
-      UI.updateMainContent(currentNode, luigi);
+      UIModule.updateMainContent(currentNode, luigi);
     }
   },
   updateMainContent: (currentNode: any, luigi: Luigi) => {
-    const containerWrapper = luigi._connector?.getContainerWrapper();
+    const containerWrapper = luigi.getEngine()._connector?.getContainerWrapper();
     if (currentNode && containerWrapper) {
       let viewGroupContainer: any;
       containerWrapper.childNodes.forEach((element: any) => {
@@ -72,6 +72,6 @@ export const UI = {
   },
   openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
     const lc = createContainer(node, luigi);
-    const modalHandle = luigi._connector?.renderModal(lc, modalSettings, onCloseCallback);
+    const modalHandle = luigi.getEngine()._connector?.renderModal(lc, modalSettings, onCloseCallback);
   }
 };

@@ -1,8 +1,8 @@
 import Events from '@luigi-project/container';
-import type { Luigi } from './luigi';
-import { Ux } from './ux';
+import { UXModule } from './ux-module';
+import type { Luigi } from '../core-api/luigi';
 
-export const Communication = {
+export const CommunicationModule = {
   init: (luigi: Luigi) => {
     console.log('Init communication...');
   },
@@ -11,10 +11,10 @@ export const Communication = {
       luigi.navigation().navigate((event as any).detail.link);
     });
     containerElement.addEventListener(Events.ALERT_REQUEST, (event: any) => {
-      Ux.processAlert(event.detail.data.data.settings, true, containerElement);
+      UXModule.processAlert(event.detail.data.data.settings, true, containerElement);
     });
     containerElement.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event: any) => {
-      Ux.handleConfirmationModalRequest(event.detail.settings);
+      UXModule.handleConfirmationModalRequest(event.detail.settings);
     });
   }
 };

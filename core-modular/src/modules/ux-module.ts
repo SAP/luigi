@@ -1,6 +1,4 @@
-import { NavigationService } from './services/navigation.service';
-import { Luigi } from './luigi';
-import type { LuigiContainer } from '@luigi-project/container';
+import type { Luigi } from '../core-api/luigi';
 
 export interface AlertSettings {
   text?: string;
@@ -39,14 +37,14 @@ export interface ConfirmationModalSettings {
   buttonDismiss?: string;
 }
 
-export const Ux = {
+export const UXModule = {
   luigi: undefined as Luigi | undefined,
   init: (luigi: Luigi) => {
     console.log('ux init...');
-    Ux.luigi = luigi;
+    UXModule.luigi = luigi;
   },
   processAlert: (alertSettings: AlertSettings, openFromClient: boolean, containerElement: any) => {
-    if (!Ux.luigi) {
+    if (!UXModule.luigi) {
       throw new Error('Luigi is not initialized.');
     }
 
@@ -59,7 +57,7 @@ export const Ux = {
         if (alertSettings.links) {
           const link = alertSettings.links[linkKey];
           if (link) {
-            link.url && Ux.luigi?.navigation().navigate(link.url);
+            link.url && UXModule.luigi?.navigation().navigate(link.url);
             if (link.dismissKey) {
               containerElement.closeAlert(alertSettings.id, link.dismissKey);
               return true;
@@ -69,7 +67,7 @@ export const Ux = {
         return false;
       }
     };
-    Ux.luigi._connector?.renderAlert(alertSettings, alertHandler);
+    UXModule.luigi.getEngine()._connector?.renderAlert(alertSettings, alertHandler);
   },
 
   handleConfirmationModalRequest: (confirmationModalSettings: ConfirmationModalSettings) => {
