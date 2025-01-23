@@ -78,17 +78,14 @@ export const UXModule = {
     if (!UXModule.luigi) {
       throw new Error('Luigi is not initialized.');
     }
-    UXModule.luigi.getEngine()._connector?.renderConfirmationModal(
-      confirmationModalSettings,
-      {
-        // TODO: container does not have a "notifyConfirmationModalClosed" function yet
-        confirm() {
-          console.log('confirmation Modal confirmed');
-        },
-        dismiss() {
-          console.log('confirmation Modal dismissed');
-        },
+    UXModule.luigi.getEngine()._connector?.renderConfirmationModal(confirmationModalSettings, {
+      // TODO: container does not have a "notifyConfirmationModalClosed" function yet
+      confirm() {
+        console.log('confirmation Modal confirmed');
+      },
+      dismiss() {
+        console.log('confirmation Modal dismissed');
       }
-    );
+    });
   }
 };

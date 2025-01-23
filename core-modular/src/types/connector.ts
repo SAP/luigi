@@ -1,5 +1,10 @@
 import type { ModalSettings, LeftNavData, Node, TopNavData, TabNavData } from '../services/navigation.service';
-import type { AlertHandler, AlertSettings, ConfirmationModalHandler, ConfirmationModalSettings } from '../modules/ux-module';
+import type {
+  AlertHandler,
+  AlertSettings,
+  ConfirmationModalHandler,
+  ConfirmationModalSettings
+} from '../modules/ux-module';
 
 export interface LuigiConnector {
   renderMainLayout(): void;

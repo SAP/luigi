@@ -377,54 +377,53 @@ const connector = {
     }
   },
   renderConfirmationModal(settings, handler) {
-    
-      const iconMapping = {
-        confirmation: 'None',
-        information: 'Information',
-        warning: 'Negative',
-        error: 'Critical',
-        success: 'Positive'
+    const iconMapping = {
+      confirmation: 'None',
+      information: 'Information',
+      warning: 'Negative',
+      error: 'Critical',
+      success: 'Positive'
+    };
+    'None' | 'Positive' | 'Critical' | 'Negative' | 'Information';
+
+    if (!settings || settings == {})
+      settings = {
+        icon: 'question-mark',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonDismiss: 'No',
+        buttonConfirm: 'Yes',
+        type: 'confirmation'
       };
-      'None' | 'Positive' | 'Critical' | 'Negative' | 'Information';
+    const dialog = document.createElement('ui5-dialog');
+    dialog.classList.add('lui-confirmation-modal');
+    dialog.setAttribute('header-text', settings?.header);
+    dialog.setAttribute('state', `${iconMapping[settings.icon || 'confirmation']}`);
 
-      if (!settings || settings == {})
-        settings = {
-          icon: 'question-mark',
-          header: 'Confirmation',
-          body: 'Are you sure you want to do this?',
-          buttonDismiss: 'No',
-          buttonConfirm: 'Yes',
-          type: 'confirmation'
-        };
-      const dialog = document.createElement('ui5-dialog');
-      dialog.classList.add('lui-confirmation-modal');
-      dialog.setAttribute('header-text', settings?.header);
-      dialog.setAttribute('state', `${iconMapping[settings.icon || 'confirmation']}`);
+    const text = document.createElement('p');
+    text.innerHTML = settings.body || '';
+    dialog.appendChild(text);
 
-      const text = document.createElement('p');
-      text.innerHTML = settings.body || '';
-      dialog.appendChild(text);
-
-      const ui5Toolbar = document.createElement('ui5-toolbar');
-      ui5Toolbar.setAttribute('slot', 'footer');
-      const ui5ToolBarBtnConfirm = document.createElement('ui5-toolbar-button');
-      settings.buttonConfirm && ui5ToolBarBtnConfirm.setAttribute('text', settings.buttonConfirm);
-      ui5ToolBarBtnConfirm.addEventListener('click', () => {
-        handler.confirm();
-        document.body.removeChild(dialog);
-      });
-      const ui5ToolBarBtnDismiss = document.createElement('ui5-toolbar-button');
-      settings.buttonDismiss && ui5ToolBarBtnDismiss.setAttribute('text', settings.buttonDismiss);
-      ui5ToolBarBtnDismiss.addEventListener('click', () => {
-        handler.dismiss();
-        document.body.removeChild(dialog);
-      });
-      ui5Toolbar.appendChild(ui5ToolBarBtnConfirm);
-      ui5Toolbar.appendChild(ui5ToolBarBtnDismiss);
-      dialog.appendChild(ui5Toolbar);
-      document.body.appendChild(dialog);
-      dialog.open = true;
-    },
+    const ui5Toolbar = document.createElement('ui5-toolbar');
+    ui5Toolbar.setAttribute('slot', 'footer');
+    const ui5ToolBarBtnConfirm = document.createElement('ui5-toolbar-button');
+    settings.buttonConfirm && ui5ToolBarBtnConfirm.setAttribute('text', settings.buttonConfirm);
+    ui5ToolBarBtnConfirm.addEventListener('click', () => {
+      handler.confirm();
+      document.body.removeChild(dialog);
+    });
+    const ui5ToolBarBtnDismiss = document.createElement('ui5-toolbar-button');
+    settings.buttonDismiss && ui5ToolBarBtnDismiss.setAttribute('text', settings.buttonDismiss);
+    ui5ToolBarBtnDismiss.addEventListener('click', () => {
+      handler.dismiss();
+      document.body.removeChild(dialog);
+    });
+    ui5Toolbar.appendChild(ui5ToolBarBtnConfirm);
+    ui5Toolbar.appendChild(ui5ToolBarBtnDismiss);
+    dialog.appendChild(ui5Toolbar);
+    document.body.appendChild(dialog);
+    dialog.open = true;
+  }
 };
 
 // eslint-disable-next-line no-undef
