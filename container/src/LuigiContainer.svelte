@@ -145,7 +145,7 @@
         }
       };
 
-      thisComponent.closeAlert = (id: string, dismissKey: string) => {
+      thisComponent.closeAlert = (id: string, dismissKey?: string) => {
         ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
       };
 
