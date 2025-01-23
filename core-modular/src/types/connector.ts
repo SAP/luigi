@@ -1,5 +1,5 @@
 import type { ModalSettings, LeftNavData, Node, TopNavData, TabNavData } from '../services/navigation.service';
-import type { AlertHandler, AlertSettings, ConfirmationModalSettings } from '../modules/ux-module';
+import type { AlertHandler, AlertSettings, ConfirmationModalHandler, ConfirmationModalSettings } from '../modules/ux-module';
 
 export interface LuigiConnector {
   renderMainLayout(): void;
@@ -18,9 +18,8 @@ export interface LuigiConnector {
 
   renderConfirmationModal(
     confirmationModalSettings: ConfirmationModalSettings,
-    openFromClient: boolean,
-    containerElement?: HTMLElement
-  ): Promise<any>;
+    containerHandler: ConfirmationModalHandler
+  ): void;
 }
 
 export type { Node };

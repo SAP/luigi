@@ -376,8 +376,8 @@ const connector = {
       }, alertSettings.closeAfter);
     }
   },
-  renderConfirmationModal(settings) {
-    return new Promise((resolve) => {
+  renderConfirmationModal(settings, handler) {
+    
       const iconMapping = {
         confirmation: 'None',
         information: 'Information',
@@ -410,13 +410,13 @@ const connector = {
       const ui5ToolBarBtnConfirm = document.createElement('ui5-toolbar-button');
       settings.buttonConfirm && ui5ToolBarBtnConfirm.setAttribute('text', settings.buttonConfirm);
       ui5ToolBarBtnConfirm.addEventListener('click', () => {
-        resolve(true);
+        handler.confirm();
         document.body.removeChild(dialog);
       });
       const ui5ToolBarBtnDismiss = document.createElement('ui5-toolbar-button');
       settings.buttonDismiss && ui5ToolBarBtnDismiss.setAttribute('text', settings.buttonDismiss);
       ui5ToolBarBtnDismiss.addEventListener('click', () => {
-        resolve(false);
+        handler.dismiss();
         document.body.removeChild(dialog);
       });
       ui5Toolbar.appendChild(ui5ToolBarBtnConfirm);
@@ -424,8 +424,7 @@ const connector = {
       dialog.appendChild(ui5Toolbar);
       document.body.appendChild(dialog);
       dialog.open = true;
-    });
-  }
+    },
 };
 
 // eslint-disable-next-line no-undef

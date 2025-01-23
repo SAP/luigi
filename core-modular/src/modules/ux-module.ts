@@ -36,6 +36,10 @@ export interface ConfirmationModalSettings {
   buttonConfirm?: string;
   buttonDismiss?: string;
 }
+export interface ConfirmationModalHandler {
+  confirm(): void;
+  dismiss(): void;
+}
 
 export const UXModule = {
   luigi: undefined as Luigi | undefined,
@@ -70,10 +74,21 @@ export const UXModule = {
     UXModule.luigi.getEngine()._connector?.renderAlert(alertSettings, alertHandler);
   },
 
-  handleConfirmationModalRequest: (confirmationModalSettings: ConfirmationModalSettings) => {
-    // @ts-ignore
-    this.luigi._connector?.renderConfirmationModal(confirmationModalSettings).then((resolve) => {
-      console.log('confirmation Modal closed with', resolve);
-    });
+  handleConfirmationModalRequest: (confirmationModalSettings: ConfirmationModalSettings, containerElement: any) => {
+    if (!UXModule.luigi) {
+      throw new Error('Luigi is not initialized.');
+    }
+    UXModule.luigi.getEngine()._connector?.renderConfirmationModal(
+      confirmationModalSettings,
+      {
+        // TODO: container does not have a "notifyConfirmationModalClosed" function yet
+        confirm() {
+          console.log('confirmation Modal confirmed');
+        },
+        dismiss() {
+          console.log('confirmation Modal dismissed');
+        },
+      }
+    );
   }
 };

@@ -14,7 +14,7 @@ export const CommunicationModule = {
       UXModule.processAlert(event.detail.data.data.settings, true, containerElement);
     });
     containerElement.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event: any) => {
-      UXModule.handleConfirmationModalRequest(event.detail.settings);
+      UXModule.handleConfirmationModalRequest(event.detail.settings, containerElement);
     });
   }
 };
