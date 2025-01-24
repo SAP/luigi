@@ -38,6 +38,7 @@
         updateContext = notInitFn('updateContext');
         updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
+        notifyAlertClosed = notInitFn('notifyAlertClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
@@ -146,8 +147,12 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey?: string) => {
-        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+        thisComponent.notifyAlertClosed(id, dismissKey);
       };
+
+      thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
+        ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+      }
 
       containerService.registerContainer(thisComponent);
       webcomponentService.thisComponent = thisComponent;
