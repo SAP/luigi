@@ -61,7 +61,7 @@ export default class extends LuigiElement {
     });
     this.$button8 = this._shadowRoot.querySelector('#setViewGroupData');
     this.$button8.addEventListener('click', () => {
-      const data = {vg: 'some data'};
+      const data = { vg: 'some data' };
       this.LuigiClient.setViewGroupData(data);
       console.log('setViewGroupData has been called with ' + JSON.stringify(data));
     });
