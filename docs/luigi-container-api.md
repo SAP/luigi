@@ -532,6 +532,7 @@ Returns **void**
 ### closeAlert
 
 A function that notifies the microfrontend that the opened alert has been closed.
+This function is deprecated, please use `notifyAlertClosed`.
 
 #### Parameters
 
