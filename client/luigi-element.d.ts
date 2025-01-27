@@ -109,12 +109,6 @@ export declare interface UxManager {
   getDirtyStatus: () => boolean;
 
   /**
-   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
-   * @memberof uxManager
-   */
-  addBackdrop: () => void;
-
-  /**
    * Removes the backdrop.
    * @memberof uxManager
    */
