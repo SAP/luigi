@@ -47,11 +47,14 @@
     <button id="luigi-client-init-button" style="margin: 25px 0 10px">
       this.LuigiClient.luigiClientInit();
     </button>
-    <div style="border: solid 1px red; height: 100px">
+    <div style="border: solid 1px red; height: 150px">
       <luigi-compound-container
         id="luigi-client-init-test"
         webcomponent="true"
         context='{"content":" -- luigi-client-init-test --"}'
+        anchor="testAnchorCompound"
+        user-settings='{"language":"it", "date":""}'
+        theme="sap_fiori_3"
         defer-init="false"
       ></luigi-compound-container>
     </div>
@@ -314,6 +317,10 @@
         children: [
           {
             viewUrl: './compound/luigi-client-init-wc/luigi-client-init-wc.js',
+            layoutConfig: {
+              row: '1',
+              column: '1 / -1',
+            },
           },
         ],
       };
