@@ -147,11 +147,18 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey?: string) => {
-        thisComponent.notifyAlertClosed(id, dismissKey);
+        thisComponent.notifyAlertClosed(id, dismissKey);        
       };
 
       thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
-        ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.resolveAlert(id, dismissKey);
+          } else {
+            ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+          }
+        }
       }
 
       containerService.registerContainer(thisComponent);
