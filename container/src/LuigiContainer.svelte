@@ -146,7 +146,14 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey?: string) => {
-        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.resolveAlert(id, dismissKey);
+          } else {
+            ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+          }
+        }
       };
 
       containerService.registerContainer(thisComponent);

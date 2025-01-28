@@ -168,7 +168,7 @@ describe('Web Container Test', () => {
     });
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -179,7 +179,7 @@ describe('Web Container Test', () => {
     });
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')
@@ -195,7 +195,7 @@ describe('Web Container Test', () => {
       const alertMessages = [
         'UPDATE_TOP_NAVIGATION_REQUEST event received',
         'some goBackValue',
-        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
       ];
 
       cy.get(containerSelector)
@@ -217,7 +217,76 @@ describe('Web Container Test', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+    });
+
+    it('closeAlert via xButton', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+      cy.get('#closeAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc true');
+        });
+    });
+
+    it('closeAlert via xButton after navigate away', () => {
+      //expectation promise will not fullfilled
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+          // Simulate navigate away and luigi-container is not in dom anymore
+          cy.get('luigi-container').invoke('remove');
+
+          cy.get('#closeAlert').click();
+
+          // Expect
+          // Callback is not fullfilled which means luigi-container isn't connected to dom
+          cy.get('#callbackCloseAlert').should('not.exist');
+        });
+    });
+
+    it('closeAlert via dismissButton', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+      cy.get('#dismissAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc neverShowItAgain from wc');
         });
     });
 
