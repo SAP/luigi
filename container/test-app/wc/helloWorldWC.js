@@ -105,6 +105,9 @@ export default class extends HTMLElement {
     const customMessageDiv = document.createElement('template');
     customMessageDiv.innerHTML = '<div id="customMessageDiv">Received Custom Message: </div>';
 
+    const closeAlertResponse = document.createElement('template');
+    closeAlertResponse.innerHTML = '<span id="closeAlertResponse"></span>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -137,13 +140,36 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
+    this._shadowRoot.appendChild(closeAlertResponse.content.cloneNode(true));
 
     this.$showAlert = this._shadowRoot.querySelector('#showAlert');
     this.$showAlert.addEventListener('click', () => {
-      this.LuigiClient.uxManager().showAlert({
-        text: 'uxManager().showAlert() test',
-        type: 'info'
-      });
+      let dt = new Date();
+      let time = dt.getMilliseconds() + '';
+      time = time.substr(time.length - 3);
+      const settings = {
+        text: 'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}',
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: {
+            text: "Don't show this again",
+            dismissKey: 'neverShowItAgain'
+          }
+        },
+        closeAfter: 300000
+      };
+      this.LuigiClient.uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          this._shadowRoot.querySelector('#closeAlertResponse').innerHTML = 'Callback called on wc ' + param;
+          const span = document.createElement('span');
+          span.setAttribute('id', 'callbackCloseAlert');
+          span.innerHTML = 'Callback called on wc ' + param;
+          document.body.appendChild(span);
+        });
     });
 
     this.$paragraph = this._shadowRoot.querySelector('p');
