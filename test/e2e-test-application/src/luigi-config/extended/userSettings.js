@@ -71,6 +71,7 @@ class UserSettings {
       label: 'Privacy',
       title: 'Privacy',
       icon: 'private',
+      iconClassAttribute: 'SAP-icon-iconClassAttribute-Test',
       settings: {
         policy: {
           type: 'string',
@@ -88,7 +89,7 @@ class UserSettings {
     theming: {
       label: 'Theming',
       title: 'Theming',
-      icon: 'private',
+      icon: 'palette',
       viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
       settings: {
         theme: {

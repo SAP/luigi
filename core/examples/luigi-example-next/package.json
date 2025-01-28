@@ -9,9 +9,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "@luigi-project/client": "^2.18.0",
-    "@luigi-project/core": "^2.18.0",
-    "next": "^14.2.20",
+    "@luigi-project/client": "^2.19.0",
+    "@luigi-project/core": "^2.19.0",
+    "next": "^14.2.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }
