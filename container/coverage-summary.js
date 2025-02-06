@@ -18,12 +18,12 @@ try {
   console.log('<p style="color:red">Source file for e2e tests not found!</p>');
 }
 
-const fileList = unitData ? Object.keys(unitData).filter(key => key !== 'total') : [];
-const sortedList = fileList.map(item => item.split('\\').pop()).sort();
+const fileList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
+const sortedList = fileList.map((item) => item.split('\\').pop()).sort();
 const parseData = (data, name) => {
   return Object.entries(
     Object.keys(data)
-      .filter(key => key.includes(name))
+      .filter((key) => key.includes(name))
       .reduce((obj, key) => data[key], {})
   );
 };
@@ -121,9 +121,8 @@ function buildHtml() {
 
     return table;
   };
-  const totalTable = unitTotal && e2eTotal
-    ? buildTable(unitTotal, e2eTotal)
-    : '<p>Not enough data to show results :(</p>';
+  const totalTable =
+    unitTotal && e2eTotal ? buildTable(unitTotal, e2eTotal) : '<p>Not enough data to show results :(</p>';
   let fileData = '';
 
   if (unitData && e2eData) {
@@ -131,7 +130,7 @@ function buildHtml() {
       const headline = `<h2>Stats for '${sortedList[i]}'</h2>`;
       const unitOutput = parseData(unitData, `\\${sortedList[i]}`);
       const e2eOutput = parseData(e2eData, `\\${sortedList[i]}`);
-      let table = '<p>Not enough data for this file :(</p>'
+      let table = '<p>Not enough data for this file :(</p>';
 
       if (unitOutput && e2eOutput) {
         table = buildTable(unitOutput, e2eOutput);
@@ -200,7 +199,7 @@ function buildHtml() {
     <head>${header}</head>
     <body>${body}</body>
   </html>`;
-};
+}
 
 const html = buildHtml();
 
