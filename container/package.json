@@ -29,10 +29,11 @@
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "nyc-instrument": "npx nyc instrument --compact=false ./src ./instrumented --delete --complete-copy",
-    "nyc-report": "npx nyc report --reporter=lcov --reporter=text",
+    "nyc-report": "npx nyc report --reporter=json-summary --reporter=lcov --reporter=text --report-dir=e2e-coverage",
     "release": "node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
+    "coverage-summary": "node coverage-summary.js > coverage-summary.html",
     "generate-cem": "node generateCEM.js"
   },
   "devDependencies": {
@@ -57,6 +58,7 @@
     "cypress": "^13.17.0",
     "eslint": "^9.14.0",
     "eslint-plugin-svelte": "^2.46.0",
+    "file-system": "^2.2.2",
     "github-api": "^3.4.0",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
