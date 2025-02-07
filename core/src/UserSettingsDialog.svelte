@@ -160,7 +160,7 @@
       UserSettingsHelper.hideUserSettingsIframe();
 
       if (selectedUserSettingGroupData.webcomponent) {
-        renderWebComponent({...selectedUserSettingGroupData});
+        renderWebComponent({ ...selectedUserSettingGroupData });
 
         return;
       }
