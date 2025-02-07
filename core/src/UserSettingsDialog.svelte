@@ -9,6 +9,7 @@
   } from './utilities/helpers';
   import { MessagesListeners } from './services/messages-listeners';
   import { ViewUrlDecorator } from './services/viewurl-decorator';
+  import { WebComponentService } from './services/web-components';
   import UserSettingsEditor from './UserSettingsEditor.svelte';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
@@ -157,6 +158,13 @@
     }
     if (selectedUserSettingGroupData.viewUrl) {
       UserSettingsHelper.hideUserSettingsIframe();
+
+      if (selectedUserSettingGroupData.webcomponent) {
+        renderWebComponent({...selectedUserSettingGroupData});
+
+        return;
+      }
+
       if (customIframes.hasOwnProperty(selectedUserSettingGroupKey)) {
         UserSettingsHelper.getUserSettingsIframesInDom().forEach((iframe) => {
           if (iframe.userSettingsGroup === selectedUserSettingGroupKey) {
@@ -177,14 +185,44 @@
     }
   }
 
+  function renderWebComponent(groupData) {
+    const wcContainer = document.querySelector('.wcUserSettingsCtn');
+
+    if (!wcContainer) {
+      return;
+    }
+
+    wcContainer.innerHTML = '';
+
+    const wcContext = groupData.context;
+    const wcConfig = groupData.webcomponent;
+
+    WebComponentService.renderWebComponent(
+      groupData.viewUrl,
+      wcContainer,
+      GenericHelpers.isObject(wcContext) ? { context: wcContext } : {},
+      GenericHelpers.isObject(wcConfig) ? { webcomponent: wcConfig } : {}
+    );
+
+    displayWCEditor();
+  }
+
+  function displayWCEditor() {
+    document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
+    document.querySelector('.usersettingseditor').style.display = 'none';
+    document.querySelector('.wcUserSettingsCtn').style.display = 'block';
+  }
+
   function displayCustomEditor() {
     document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
     document.querySelector('.usersettingseditor').style.display = 'none';
+    document.querySelector('.wcUserSettingsCtn').style.display = 'none';
   }
 
   function diplayUserSettingsEditor() {
     document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
     document.querySelector('.usersettingseditor').style.display = 'block';
+    document.querySelector('.wcUserSettingsCtn').style.display = 'none';
   }
 
   const updateSettingsObject = (event) => {
@@ -390,6 +428,7 @@
           {/if}
         </div>
         <div class="iframeUserSettingsCtn iframe-wrapper" />
+        <div class="wcUserSettingsCtn wc-wrapper" />
       </div>
     </div>
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
@@ -495,6 +534,7 @@
     margin-right: 0.75rem;
   }
 
+  .wcUserSettingsCtn,
   .iframeUserSettingsCtn {
     position: relative;
     width: 100%;

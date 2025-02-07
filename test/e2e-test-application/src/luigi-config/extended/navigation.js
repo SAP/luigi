@@ -535,4 +535,11 @@ class Navigation {
   };
 }
 
-export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
+const navConfig = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
+
+export const navigation = {
+  ...navConfig,
+  validWebcomponentUrls: [
+    'https\:\/\/luigiwebcomponents\.gitlab\.io\/.?'
+  ]
+};
