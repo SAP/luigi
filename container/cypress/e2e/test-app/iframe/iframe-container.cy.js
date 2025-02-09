@@ -65,16 +65,16 @@ describe('Iframe Container Test', () => {
           .then(() => {
             cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
           });
-        });
-        
-      cy.contains('Close Alert using notifyAlertClosed').click();
-      cy.wait(500);
-      cy.get(containerSelector)
+      });
+
+    cy.contains('Close Alert using notifyAlertClosed').click();
+    cy.wait(500);
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then((iframe) => {
         const $body = iframe.contents().find('body');
-        cy.wrap($body).contains('Callback called on iframe neverShowItAgain')
+        cy.wrap($body).contains('Callback called on iframe neverShowItAgain');
       });
   });
 

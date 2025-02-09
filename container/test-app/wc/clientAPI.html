@@ -105,16 +105,16 @@
         });
         dismissButton.appendChild(buttonText);
         const closeButton = document.createElement('button');
-        if(alertSettings.settings.notifyAlertClosed){
-          closeButton.innerHTML = 'Close Alert using notifyAlertClosed'
-        }else{
+        if (alertSettings.settings.notifyAlertClosed) {
+          closeButton.innerHTML = 'Close Alert using notifyAlertClosed';
+        } else {
           closeButton.innerHTML = 'Close Alert';
         }
         closeButton.setAttribute('id', 'closeAlert');
         closeButton.addEventListener('click', () => {
-          if(alertSettings.settings.notifyAlertClosed){
-            luigiContainer.notifyAlertClosed(alertSettings.settings.id);  
-          }else{
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(alertSettings.settings.id);
+          } else {
             luigiContainer.closeAlert(alertSettings.settings.id);
           }
           popup.style.display = 'none';

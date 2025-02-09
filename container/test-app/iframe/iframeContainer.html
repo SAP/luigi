@@ -87,9 +87,9 @@
         popup.appendChild(text);
 
         var dismissButton = document.createElement('BUTTON');
-        if(alertSettings.settings.notifyAlertClosed){
+        if (alertSettings.settings.notifyAlertClosed) {
           var buttonText = document.createTextNode('Close Alert using notifyAlertClosed');
-        }else{
+        } else {
           var buttonText = document.createTextNode('Close Alert');
         }
         dismissButton.addEventListener('click', () => {
@@ -97,10 +97,12 @@
             'Dismiss clicked core side. Sending close message to mf of id =',
             alertSettings.settings.id,
           );
-          if(alertSettings.settings.notifyAlertClosed){
-            luigiContainer.notifyAlertClosed(alertSettings.settings.id, 'neverShowItAgain');
-          }
-          else{
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(
+              alertSettings.settings.id,
+              'neverShowItAgain',
+            );
+          } else {
             luigiContainer.closeAlert(alertSettings.settings.id, 'neverShowItAgain');
           }
           popup.style.display = 'none';

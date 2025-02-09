@@ -62,7 +62,9 @@
       <button onclick="testShowAlert()">test show alert</button>
       <button onclick="testGetToken()">test get token</button>
       <button onclick="testShowAlert()">test showAlert</button>
-      <button onclick="testShowAlertWithNotifyAlertClosed()">test showAlert with notifyAlertClosed</button>
+      <button onclick="testShowAlertWithNotifyAlertClosed()">
+        test showAlert with notifyAlertClosed
+      </button>
       <button onclick="goBack()">test goBack()</button>
 
       <button onclick="openAsModal()">test openAsModal()</button>
@@ -250,9 +252,9 @@
           .showAlert(settings)
           .then((param) => {
             const span = document.createElement('span');
-          // span.setAttribute('id', 'callbackCloseAlert');
-          span.innerHTML = 'Callback called on iframe ' + param;
-          document.body.appendChild(span);
+            // span.setAttribute('id', 'callbackCloseAlert');
+            span.innerHTML = 'Callback called on iframe ' + param;
+            document.body.appendChild(span);
             console.log('Callback called on microfrontend', param);
           });
       }
@@ -295,7 +297,7 @@
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
 
-      function getNodeParams(){
+      function getNodeParams() {
         let nodeParams = LuigiClient.getNodeParams();
         console.log('nodeParams', nodeParams);
       }
