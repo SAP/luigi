@@ -51,6 +51,33 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('showAlert with notifyAlertClosed', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test showAlert with notifyAlertClosed')
+          .click()
+          .then(() => {
+            cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
+          });
+        });
+        
+      cy.contains('Close Alert using notifyAlertClosed').click();
+      cy.wait(500);
+      cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body).contains('Callback called on iframe neverShowItAgain')
+      });
+  });
+
   it('goBack', () => {
     cy.on('window:alert', stub);
 

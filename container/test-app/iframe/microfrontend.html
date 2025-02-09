@@ -62,11 +62,13 @@
       <button onclick="testShowAlert()">test show alert</button>
       <button onclick="testGetToken()">test get token</button>
       <button onclick="testShowAlert()">test showAlert</button>
+      <button onclick="testShowAlertWithNotifyAlertClosed()">test showAlert with notifyAlertClosed</button>
       <button onclick="goBack()">test goBack()</button>
 
       <button onclick="openAsModal()">test openAsModal()</button>
       <button onclick="openAsDrawer()">test openAsDrawer()</button>
       <button onclick="openAsSplitview()">test openAsSplitview()</button>
+      <button onclick="getNodeParams()">test node params</button>
     </div>
 
     <script>
@@ -223,6 +225,38 @@
           });
       }
 
+      function testShowAlertWithNotifyAlertClosed() {
+        let dt = new Date();
+        let time = dt.getMilliseconds() + '';
+        time = time.substr(time.length - 3);
+        const settings = {
+          text:
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
+            time,
+          type: 'info',
+          links: {
+            goToHome: { text: 'homepage', url: '/overview' },
+            goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+            relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+            neverShowItAgain: {
+              text: "Don't show this again",
+              dismissKey: 'neverShowItAgain',
+            },
+          },
+          notifyAlertClosed: true,
+          closeAfter: 300000,
+        };
+        LuigiClient.uxManager()
+          .showAlert(settings)
+          .then((param) => {
+            const span = document.createElement('span');
+          // span.setAttribute('id', 'callbackCloseAlert');
+          span.innerHTML = 'Callback called on iframe ' + param;
+          document.body.appendChild(span);
+            console.log('Callback called on microfrontend', param);
+          });
+      }
+
       function updateFn(context) {
         // report-navigation-completed-request will be detected since
         // context update is tied to navigation being completed
@@ -260,6 +294,11 @@
       setTimeout(function () {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
+
+      function getNodeParams(){
+        let nodeParams = LuigiClient.getNodeParams();
+        console.log('nodeParams', nodeParams);
+      }
     </script>
   </body>
 </html>
