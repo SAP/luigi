@@ -240,7 +240,7 @@ describe('Iframe Container Test', () => {
           });
       });
   });
-  
+
   it('getCoreSearchParams', () => {
     cy.get(containerSelector)
       .shadow()

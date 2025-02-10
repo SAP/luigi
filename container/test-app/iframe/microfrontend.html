@@ -193,13 +193,15 @@
 
       function testGetPathParams() {
         const pathParams = LuigiClient.getPathParams();
-        document.querySelector('#result').innerHTML = `pathParams: ${JSON.stringify(pathParams)}`
+        document.querySelector('#result').innerHTML =
+          `pathParams: ${JSON.stringify(pathParams)}`;
       }
 
       function testGetCoreSearchParams() {
         const searchParams = LuigiClient.getCoreSearchParams();
         console.log('searchParmas', searchParams);
-        document.querySelector('#result').innerHTML = `searchParams: ${JSON.stringify(searchParams)}`
+        document.querySelector('#result').innerHTML =
+          `searchParams: ${JSON.stringify(searchParams)}`;
       }
 
       function testGetToken() {
