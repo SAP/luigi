@@ -571,7 +571,7 @@ Returns **void**
 
 **Meta**
 
-*   **since**: 1.0.0
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### init
 
