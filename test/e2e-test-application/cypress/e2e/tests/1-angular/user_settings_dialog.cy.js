@@ -344,7 +344,7 @@ describe('Navigation', () => {
     it('Ctx update after storing user settings data using custom messages', () => {
       let $iframeBody;
       cy.get('[data-testid="us-navigation-item"]')
-        .eq(5)
+        .eq(4)
         .click();
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
@@ -361,6 +361,20 @@ describe('Navigation', () => {
           .contains('Yellow')
           .should('have.class', 'active');
       });
+    });
+
+    it('Should hide iframe container and show WC container', () => {
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(5)
+        .click();
+      cy.get('.iframeUserSettingsCtn').should('not.be.visible');
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('p')
+        .should('contain.text', 'WC says hello world!');
     });
   });
 });
