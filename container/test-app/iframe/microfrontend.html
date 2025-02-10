@@ -41,6 +41,7 @@
       <button onclick="testCustom()">test custom message</button>
       <button onclick="testAddSearchParams()">Test add search params</button>
       <button onclick="testAddNodeParams()">Test add node params</button>
+      <button onclick="testGetNodeParams()">Test get node params</button>
       <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
       <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
@@ -67,6 +68,7 @@
       <button onclick="openAsModal()">test openAsModal()</button>
       <button onclick="openAsDrawer()">test openAsDrawer()</button>
       <button onclick="openAsSplitview()">test openAsSplitview()</button>
+      <span id="result"></span>
     </div>
 
     <script>
@@ -109,6 +111,12 @@
 
       function testAddNodeParams() {
         LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
+      }
+
+      function testGetNodeParams() {
+        const nodeParams = LuigiClient.getNodeParams();
+        document.querySelector('#result').innerHTML =
+          `nodeParams: ${JSON.stringify(nodeParams)}`;
       }
 
       function testShowConfirmationModal() {
@@ -226,7 +234,6 @@
       function updateFn(context) {
         // report-navigation-completed-request will be detected since
         // context update is tied to navigation being completed
-        console.log('context updated', context);
         if (context.title) {
           document.getElementById('title').innerHTML = context.title;
         }
