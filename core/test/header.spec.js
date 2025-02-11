@@ -422,5 +422,87 @@ describe('Header', function() {
       headerService.updateTitle(component);
       assert.equal(document.title, 'Luigi Two');
     });
+
+    it('set appSwitcherItems with selection conditions, update title', () => {
+      const headerSettings = {
+        title: 'Luigi',
+        subTitle: 'one'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+      const items = [
+        {
+          title: 'Luigi One',
+          subTitle: 'project one',
+          link: '/projects/pr1'
+        },
+        {
+          title: 'Luigi Two',
+          subTitle: 'project two',
+          link: '/projects/pr2',
+          selectionConditions: {
+            route: '/something/else',
+            contextCriteria: [{
+              key: 'some.key',
+              value: 'value'
+            },{
+              key: 'some.otherkey',
+              value: 'value'
+            }]
+          },
+        }
+      ];
+      const pathData = [
+        {
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'something' }]
+        },
+        {
+          pathSegment: 'something',
+          children: [
+            {
+              pathSegment: 'else'
+            }
+          ]
+        },
+        {
+          pathSegment: 'else'
+        }
+      ];
+
+      component.set({
+        appSwitcherItems: items
+      });
+      component.set({
+        pathData: pathData
+      });
+      headerService.updateTitle(component);
+      assert.notEqual(document.title, 'Luigi Two');
+      
+      pathData._context = {
+        some: {
+          key: 'value'
+        }
+      }
+      component.set({
+        pathData: pathData
+      });
+      
+      headerService.updateTitle(component);
+      assert.notEqual(document.title, 'Luigi Two');
+
+      pathData._context = {
+        some: {
+          key: 'value',
+          otherkey: 'value'
+        }
+      }
+      component.set({
+        pathData: pathData
+      });
+      
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'Luigi Two');
+    });
   });
 });
