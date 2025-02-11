@@ -61,6 +61,8 @@
       <button onclick="testCheckPathExists()">test check path exists</button>
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
+      <button onclick="testGetPathParams()">test get path params</button>
+      <button onclick="testGetCoreSearchParams()">test get core search params</button>
       <button onclick="testGetToken()">test get token</button>
       <button onclick="testShowAlert()">test showAlert</button>
       <button onclick="goBack()">test goBack()</button>
@@ -194,6 +196,19 @@
 
       function testSetDirtyStatus() {
         LuigiClient.uxManager().setDirtyStatus(true);
+      }
+
+      function testGetPathParams() {
+        const pathParams = LuigiClient.getPathParams();
+        document.querySelector('#result').innerHTML =
+          `pathParams: ${JSON.stringify(pathParams)}`;
+      }
+
+      function testGetCoreSearchParams() {
+        const searchParams = LuigiClient.getCoreSearchParams();
+        console.log('searchParmas', searchParams);
+        document.querySelector('#result').innerHTML =
+          `searchParams: ${JSON.stringify(searchParams)}`;
       }
 
       function testGetToken() {

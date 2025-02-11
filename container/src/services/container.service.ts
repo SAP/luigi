@@ -125,7 +125,9 @@ export class ContainerService {
                       }
                     },
                     authData: targetCnt.authData || {},
-                    nodeParams: targetCnt.nodeParams || {}
+                    nodeParams: targetCnt.nodeParams || {},
+                    searchParams: targetCnt.searchParams || {},
+                    pathParams: targetCnt.pathParams || {}
                   },
                   event.origin
                 );

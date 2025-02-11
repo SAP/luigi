@@ -241,4 +241,34 @@ describe('Iframe Container Test', () => {
           });
       });
   });
+
+  it('getPathParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get path params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('pathParams: {"path":"param"}');
+          });
+      });
+  });
+
+  it('getCoreSearchParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get core search params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('searchParams: {"search":"param"}');
+          });
+      });
+  });
 });
