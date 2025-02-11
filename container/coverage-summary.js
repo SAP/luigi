@@ -40,7 +40,7 @@ function buildHtml() {
     for (let i = 0; i < unitStats.length; i++) {
       const total = getParamValue(i, 'total');
       const covered = getParamValue(i, 'covered');
-      const skipped =getParamValue(i, 'skipped');
+      const skipped = getParamValue(i, 'skipped');
       const pct = getParamValue(i, 'pct');
 
       unionStats.push([unitStats[i][0], { total, covered, skipped, pct }]);
