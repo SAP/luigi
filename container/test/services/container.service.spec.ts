@@ -96,6 +96,7 @@ describe('getContainerManager messageListener', () => {
       authData: {},
       searchParams: {},
       pathParams: {},
+      nodeParams: {},
       context: {},
       internal: {
         thirdPartyCookieCheck: {

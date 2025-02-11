@@ -34,6 +34,7 @@
 
       luigiContainer.searchParams = { search: 'param' };
       luigiContainer.pathParams = { path: 'param' };
+      luigiContainer.nodeParams = { node: 'params' };
 
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
