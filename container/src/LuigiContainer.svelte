@@ -38,6 +38,7 @@
         updateContext = notInitFn('updateContext');
         updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
+        notifyAlertClosed = notInitFn('notifyAlertClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
@@ -146,15 +147,19 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey?: string) => {
+        thisComponent.notifyAlertClosed(id, dismissKey);        
+      };
+
+      thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
         // check if thisComponent is in dom
         if (thisComponent.isConnected) {
           if (webcomponent) {
             webcomponentService.resolveAlert(id, dismissKey);
           } else {
-            ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+            ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
           }
         }
-      };
+      }
 
       containerService.registerContainer(thisComponent);
       webcomponentService.thisComponent = thisComponent;
