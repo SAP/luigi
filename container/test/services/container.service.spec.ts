@@ -94,6 +94,7 @@ describe('getContainerManager messageListener', () => {
     // Define the message to send and target Origin
     const message = {
       authData: {},
+      nodeParams: {},
       context: {},
       internal: {
         thirdPartyCookieCheck: {

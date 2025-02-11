@@ -32,6 +32,8 @@
         '[data-test-id="iframe-based-container-test"]',
       );
 
+      luigiContainer.nodeParams = { node: 'params' };
+
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
         window.location.hash = event.detail.link;

@@ -226,4 +226,19 @@ describe('Iframe Container Test', () => {
         });
       });
   });
+
+  it('getNodeParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('Test get node params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('nodeParams: {"node":"params"}');
+          });
+      });
+  });
 });
