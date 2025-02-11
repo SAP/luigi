@@ -29,7 +29,27 @@ const parseData = (data, name) => {
 };
 
 function buildHtml() {
+  const buildUnionStats = (unitStats, e2eStats) => {
+    const getParamValue = (index, param) => {
+      return Number(unitStats[index][1][param]) < Number(e2eStats[index][1][param])
+        ? e2eStats[index][1][param]
+        : unitStats[index][1][param];
+    };
+    const unionStats = [];
+
+    for (let i = 0; i < unitStats.length; i++) {
+      const total = getParamValue(i, 'total');
+      const covered = getParamValue(i, 'covered');
+      const skipped =getParamValue(i, 'skipped');
+      const pct = getParamValue(i, 'pct');
+
+      unionStats.push([unitStats[i][0], { total, covered, skipped, pct }]);
+    }
+
+    return unionStats;
+  };
   const buildTable = (unitStats, e2eStats) => {
+    const unionStats = buildUnionStats(unitStats, e2eStats);
     let unitHighlight = '';
     let e2eHighlight = '';
 
@@ -115,6 +135,37 @@ function buildHtml() {
             <td>${e2eStats[3][1].skipped}</td>
             <td>${e2eStats[3][1].pct}%</td>
           </tr>
+          <tr class="headline">
+            <td colspan="5">&laquo; combined results &raquo;</td>
+          </tr>
+          <tr class="combined">
+            <td>${unionStats[0][0]}</td>
+            <td>${unionStats[0][1].total}</td>
+            <td>${unionStats[0][1].covered}</td>
+            <td>${unionStats[0][1].skipped}</td>
+            <td>${unionStats[0][1].pct}%</td>
+          </tr>
+          <tr class="combined">
+            <td>${unionStats[1][0]}</td>
+            <td>${unionStats[1][1].total}</td>
+            <td>${unionStats[1][1].covered}</td>
+            <td>${unionStats[1][1].skipped}</td>
+            <td>${unionStats[1][1].pct}%</td>
+          </tr>
+          <tr class="combined">
+            <td>${unionStats[2][0]}</td>
+            <td>${unionStats[2][1].total}</td>
+            <td>${unionStats[2][1].covered}</td>
+            <td>${unionStats[2][1].skipped}</td>
+            <td>${unionStats[2][1].pct}%</td>
+          </tr>
+          <tr class="combined">
+            <td>${unionStats[3][0]}</td>
+            <td>${unionStats[3][1].total}</td>
+            <td>${unionStats[3][1].covered}</td>
+            <td>${unionStats[3][1].skipped}</td>
+            <td>${unionStats[3][1].pct}%</td>
+          </tr>
         </tbody>
       </table>
     `;
@@ -176,15 +227,22 @@ function buildHtml() {
         font-style: italic;
         text-align: left;
       }
+      .headline {
+        border-top: 2px solid black;
+      }
       .headline td {
         background: #eee;
         font-style: normal;
         letter-spacing: 1px;
         text-align: center;
+        text-indent: 20%;
         text-transform: uppercase;
       }
       .highlighted td:not(:first-child) {
         background: #e6f5d0;
+      }
+      .combined td:not(:first-child) {
+        background:rgb(242, 223, 149);
       }
     </style>
   `;
