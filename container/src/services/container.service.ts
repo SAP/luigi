@@ -124,7 +124,10 @@ export class ContainerService {
                         disabled: targetCnt.skipCookieCheck === 'true'
                       }
                     },
-                    authData: targetCnt.authData || {}
+                    authData: targetCnt.authData || {},
+                    nodeParams: targetCnt.nodeParams || {},
+                    searchParams: targetCnt.searchParams || {},
+                    pathParams: targetCnt.pathParams || {}
                   },
                   event.origin
                 );
