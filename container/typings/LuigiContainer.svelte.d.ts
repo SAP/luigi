@@ -245,13 +245,25 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * A function that notifies the microfrontend that the opened alert has been closed.
+   * This function is deprecated, please use `notifyAlertClosed`.
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message (optional)
    * @example
    * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
    * @since 1.0.0
+   * @deprecated
    */
   closeAlert(id: string, dismissKey?: string): void;
+
+  /**
+   * A function that notifies the microfrontend that the opened alert has been closed.
+   * @param id the id of the opened alert
+   * @param dismissKey the key specifying which dismiss link was clicked on the alert message (optional)
+   * @example
+   * containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  notifyAlertClosed(id: string, dismissKey?: string): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute.

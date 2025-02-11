@@ -322,4 +322,129 @@ describe('Compound Container Tests', () => {
         });
     });
   });
+
+  describe('LuigiClient API - LuigiElement (compound child)', () => {
+    const buttonSelector = '[id="luigi-client-init-button"]';
+    const containerSelector = '[id="luigi-client-init-test"]';
+    let consoleLog;
+    let stub;
+
+    beforeEach(() => {
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
+        onBeforeLoad(win) {
+          // Clear logs in window console
+          if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+            win.console.clear();
+          }
+
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
+        }
+      });
+      cy.get(buttonSelector).click();
+      stub = cy.stub();
+    });
+
+    it('LuigiClient API - addNodeParams', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('addNodeParams')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('addNodeParams has been called with no effect');
+        });
+    });
+
+    it('LuigiClient API - getNodeParams', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getNodeParams')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getNodeParams: {}');
+        });
+    });
+
+    it('LuigiClient API - getCurrentTheme', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getCurrentTheme')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getCurrentTheme: sap_fiori_3');
+        });
+    });
+
+    it('LuigiClient API - getDirtyStatus', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getDirtyStatus')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getDirtyStatus: false');
+        });
+    });
+
+    it('LuigiClient API - removeBackdrop', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('removeBackdrop')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('removeBackdrop has been called');
+        });
+    });
+
+    it('LuigiClient API - getAnchor', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getAnchor')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getAnchor: testAnchorCompound');
+        });
+    });
+
+    it('LuigiClient API - getUserSettings', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getUserSettings')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getUserSettings: {"language":"it","date":""}');
+        });
+    });
+
+    it('LuigiClient API - setViewGroupData', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setViewGroupData')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('setViewGroupData has been called with {"vg":"some data"}');
+        });
+    });
+
+    it('LuigiClient API - navigateToIntent', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('navigateToIntent')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('navigateToIntent has been called with "sales-setting"');
+        });
+    });
+
+    it('LuigiClient API - fromParent', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('fromParent')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('fromParent has been called');
+        });
+    });
+  });
 });

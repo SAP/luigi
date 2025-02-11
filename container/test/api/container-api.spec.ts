@@ -214,7 +214,7 @@ describe('Container Service', () => {
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
-      containerAPI.closeAlert(id, dismissKey, iframeHandle);
+      containerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
 
       expect(spy).toHaveBeenCalledWith(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
     });
@@ -228,7 +228,7 @@ describe('Container Service', () => {
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
-      containerAPI.closeAlert(id, undefined, iframeHandle);
+      containerAPI.notifyAlertClosed(id, undefined, iframeHandle);
 
       expect(spy).toHaveBeenCalledWith(iframeHandle, { id }, LuigiInternalMessageID.ALERT_CLOSED);
     });
