@@ -65,6 +65,9 @@
       <button onclick="testGetCoreSearchParams()">test get core search params</button>
       <button onclick="testGetToken()">test get token</button>
       <button onclick="testShowAlert()">test showAlert</button>
+      <button onclick="testShowAlertWithNotifyAlertClosed()">
+        test showAlert with notifyAlertClosed
+      </button>
       <button onclick="goBack()">test goBack()</button>
 
       <button onclick="openAsModal()">test openAsModal()</button>
@@ -242,6 +245,38 @@
         LuigiClient.uxManager()
           .showAlert(settings)
           .then((param) => {
+            console.log('Callback called on microfrontend', param);
+          });
+      }
+
+      function testShowAlertWithNotifyAlertClosed() {
+        let dt = new Date();
+        let time = dt.getMilliseconds() + '';
+        time = time.substr(time.length - 3);
+        const settings = {
+          text:
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
+            time,
+          type: 'info',
+          links: {
+            goToHome: { text: 'homepage', url: '/overview' },
+            goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+            relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+            neverShowItAgain: {
+              text: "Don't show this again",
+              dismissKey: 'neverShowItAgain',
+            },
+          },
+          notifyAlertClosed: true,
+          closeAfter: 300000,
+        };
+        LuigiClient.uxManager()
+          .showAlert(settings)
+          .then((param) => {
+            const span = document.createElement('span');
+            // span.setAttribute('id', 'callbackCloseAlert');
+            span.innerHTML = 'Callback called on iframe ' + param;
+            document.body.appendChild(span);
             console.log('Callback called on microfrontend', param);
           });
       }
