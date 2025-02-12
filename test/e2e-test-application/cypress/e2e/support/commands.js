@@ -1,5 +1,11 @@
 import defaultLuigiConfig from '../configs/default';
 
+let consoleLog;
+
+Cypress.Commands.add('checkConsoleLog', (value) => {
+  expect(consoleLog).to.equal(value);
+});
+
 const setAcceptedCookies = win => {
   win.localStorage.setItem('cookiesAccepted', 'true');
 };
@@ -54,7 +60,17 @@ Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiC
 
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
-    onBeforeLoad: win => {
+    onBeforeLoad(win) {
+      // Clear logs in window console
+      if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+        win.console.clear();
+      }
+
+      // Set up a spy on console.log
+      cy.stub(win.console, 'log', (value) => {
+        consoleLog = value;
+      });
+
       win.localStorage.clear();
       win.sessionStorage.clear();
       setAcceptedCookies(win);

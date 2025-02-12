@@ -278,9 +278,34 @@ class WebComponentSvcClass {
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
+    const ebListeners = {};
 
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
+    wc_container.eventBus = {
+      listeners: ebListeners,
+      onPublishEvent: (event, srcNodeId) => {
+        const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
+
+        listeners.push(...(ebListeners['*.' + event.type] || []));
+        listeners.forEach((listenerInfo) => {
+          const target =
+            listenerInfo.wcElement || wc_container.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+
+          if (target) {
+            target.dispatchEvent(
+              new CustomEvent(listenerInfo.action, {
+                detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
+              })
+            );
+          } else {
+            console.debug('Could not find event target', listenerInfo);
+          }
+        });
+      }
+    };
+
+    registerEventListeners(ebListeners, node, nodeId, wc_container);
 
     if (window.customElements.get(wc_id)) {
       this.attachWC(

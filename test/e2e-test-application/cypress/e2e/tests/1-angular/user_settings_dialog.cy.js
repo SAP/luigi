@@ -12,7 +12,7 @@ describe('Navigation', () => {
     cy.get('.lui-usersettings-dialog').should('exist');
 
     //Check we have 6 left bar items
-    cy.get('.lui-us-list').find('[data-testid="us-navigation-item"]').should('have.length', 6);
+    cy.get('.lui-us-list').find('[data-testid="us-navigation-item"]').should('have.length', 7);
   };
 
   const saveSettings = () => {
@@ -297,6 +297,19 @@ describe('Navigation', () => {
         .shadow()
         .find('p')
         .should('contain.text', 'WC says hello world!');
+    });
+
+    it('Should show WC container and publish event', () => {
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      cy.get('.wcUserSettingsCtn')
+        .children()
+        .first()
+        .shadow()
+        .find('button')
+        .click();
+
+      cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from WC');
+      cy.checkConsoleLog('dataConverter(): Received Custom Message from WC - Hello from WC');
     });
   });
 });

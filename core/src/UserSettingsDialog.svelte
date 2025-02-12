@@ -195,13 +195,16 @@
     wcContainer.innerHTML = '';
 
     const wcContext = groupData.context;
+    const wcEvents = groupData.eventListeners;
     const wcConfig = groupData.webcomponent;
+    const wcLabel = groupData.label;
 
     WebComponentService.renderWebComponent(
       groupData.viewUrl,
       wcContainer,
       GenericHelpers.isObject(wcContext) ? { context: wcContext } : {},
-      GenericHelpers.isObject(wcConfig) ? { webcomponent: wcConfig } : {}
+      GenericHelpers.isObject(wcConfig) ? { eventListeners: wcEvents, webcomponent: wcConfig } : {},
+      wcLabel ? wcLabel.replace(/ /g, '').toLowerCase() : null
     );
 
     displayWCEditor();
@@ -604,6 +607,7 @@
 
     /*micro frontend and iframe wrappers inside the right-side dialog body*/
     .mf-wrapper,
+    .wc-wrapper,
     .iframe-wrapper {
       height: 100%;
     }
