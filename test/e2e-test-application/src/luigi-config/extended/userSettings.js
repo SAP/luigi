@@ -131,13 +131,11 @@ class UserSettings {
           name: 'buttonPressed',
           action: 'update',
           dataConverter: (data) => {
-            console.log(
-              'dataConverter(): Received Custom Message from WC - ' + data,
-            );
+            console.log('dataConverter(): Received Custom Message from WC - ' + data);
             return data;
-          },
-        },
-      ],
+          }
+        }
+      ]
     }
   };
 }

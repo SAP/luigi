@@ -301,12 +301,7 @@ describe('Navigation', () => {
 
     it('Should show WC container and publish event', () => {
       cy.get('[data-testid="us-navigation-item"]').eq(6).click();
-      cy.get('.wcUserSettingsCtn')
-        .children()
-        .first()
-        .shadow()
-        .find('button')
-        .click();
+      cy.get('.wcUserSettingsCtn').children().first().shadow().find('button').click();
 
       cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from WC');
       cy.checkConsoleLog('dataConverter(): Received Custom Message from WC - Hello from WC');
