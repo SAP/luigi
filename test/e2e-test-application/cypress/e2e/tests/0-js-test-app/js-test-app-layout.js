@@ -1,5 +1,9 @@
+import defaultLuigiConfig from '../../configs/default';
+
 describe('addBackdrop, removeBackdrop', () => {
+  let newConfig;
   beforeEach(() => {
+    newConfig = structuredClone(defaultLuigiConfig);
     newConfig.tag = 'addBackdrop';
   });
   it('addBackDrop', () => {

@@ -45,6 +45,7 @@ describe('JS-TEST-APP with BTP layout', () => {
   describe('addBackdrop, removeBackdrop btpLayout', () => {
     let newConfig;
     beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'addBackdrop';
     });
     it('addBackDrop, removeBackdrop', () => {
