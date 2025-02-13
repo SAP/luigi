@@ -74,7 +74,8 @@ function buildHtml() {
       e2eHighlight = 'highlighted';
     }
 
-    const summary = unionStats ? `
+    const summary = unionStats
+      ? `
       <tr class="headline">
         <td colspan="5">&laquo; combined results &raquo;</td>
       </tr>
@@ -106,7 +107,8 @@ function buildHtml() {
         <td>${unionStats[3][1].skipped}</td>
         <td>${unionStats[3][1].pct}%</td>
       </tr>
-    ` : '';
+    `
+      : '';
     const table = `
       <table>
         <thead>
