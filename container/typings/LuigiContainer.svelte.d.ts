@@ -261,7 +261,7 @@ export default class LuigiContainer extends HTMLElement {
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message (optional)
    * @example
    * containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.6.0
    */
   notifyAlertClosed(id: string, dismissKey?: string): void;
 
