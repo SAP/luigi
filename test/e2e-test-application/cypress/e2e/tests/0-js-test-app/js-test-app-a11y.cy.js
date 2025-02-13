@@ -210,4 +210,35 @@ describe('JS-TEST-APP 4', () => {
       cy.get('.lui-moreItems .fd-navigation__list-item.lui-nav-entry .fd-navigation__link').should('have.focus');
     });
   });
+
+  describe('Shellbar logo gets focused first', ()=>{
+    let newConfig;
+    beforeEach(()=>{
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.navigation.addNavHrefs= true;
+    });
+    it('Shellbar logo gets focused first', ()=>{
+      cy.visitTestApp('/home', newConfig);
+      cy.window().then((win) => {
+        win.focus();
+      });
+      cy.get('body').click();
+      cy.tab();
+      cy.get('.fd-shellbar__logo').should('have.focus');
+    });
+    it('Shellbar logo gets focused first with btpLayout', ()=>{
+      newConfig.settings.btpToolLayout = true;
+      newConfig.settings.experimental = {
+        btpToolLayout: true
+      };
+      cy.visitTestApp('/home', newConfig);
+      cy.window().then((win) => {
+        win.focus();
+      });
+      cy.get('body').click();
+      cy.tab();
+      cy.tab();
+      cy.get('.fd-shellbar__logo').should('have.focus');
+    });
+  });
 });
