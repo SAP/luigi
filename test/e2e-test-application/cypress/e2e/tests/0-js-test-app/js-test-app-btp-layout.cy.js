@@ -43,6 +43,7 @@ describe('JS-TEST-APP with BTP layout', () => {
   });
 
   describe('addBackdrop, removeBackdrop btpLayout', () => {
+    let newConfig;
     beforeEach(() => {
       newConfig.tag = 'addBackdrop';
     });
