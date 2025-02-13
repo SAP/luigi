@@ -18,7 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  alertResolvers: Record<string, Function> = {};
+  alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
 
   constructor() {

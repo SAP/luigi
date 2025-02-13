@@ -20,7 +20,7 @@ try {
 
 const fileList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
 const sortedList = fileList.map((item) => item.split('\\').pop()).sort();
-const parseData = (data, name) => {
+const parseTestData = (data, name) => {
   return Object.entries(
     Object.keys(data)
       .filter((key) => key.includes(name))
@@ -29,27 +29,40 @@ const parseData = (data, name) => {
 };
 
 function buildHtml() {
-  const buildUnionStats = (unitStats, e2eStats) => {
-    const getParamValue = (index, param) => {
-      return Number(unitStats[index][1][param]) < Number(e2eStats[index][1][param])
-        ? e2eStats[index][1][param]
-        : unitStats[index][1][param];
-    };
+  const buildCombinedResults = () => {
     const unionStats = [];
 
-    for (let i = 0; i < unitStats.length; i++) {
-      const total = getParamValue(i, 'total');
-      const covered = getParamValue(i, 'covered');
-      const skipped = getParamValue(i, 'skipped');
-      const pct = getParamValue(i, 'pct');
+    for (let x = 0; x < 4; x++) {
+      let total = 0;
+      let covered = 0;
+      let skipped = 0;
 
-      unionStats.push([unitStats[i][0], { total, covered, skipped, pct }]);
+      for (let y = 0; y < sortedList.length; y++) {
+        const unitParsedData = parseTestData(unitData, `\\${sortedList[y]}`);
+        const e2eParsedData = parseTestData(e2eData, `\\${sortedList[y]}`);
+        const getParamValue = (index, param) => {
+          const unitStats = unitParsedData.filter((item) => item[0] === unitTotal[x][0]);
+          const e2eStats = e2eParsedData.filter((item) => item[0] === unitTotal[x][0]);
+
+          return Number(unitStats[index][1][param]) < Number(e2eStats[index][1][param])
+            ? Number(e2eStats[index][1][param])
+            : Number(unitStats[index][1][param]);
+        };
+
+        total = total + getParamValue(0, 'total');
+        covered = covered + getParamValue(0, 'covered');
+        skipped = skipped + getParamValue(0, 'skipped');
+      }
+
+      const pct = !isNaN(covered / total) ? Math.floor((covered / total) * 100) : 0;
+
+      unionStats.push([unitTotal[x][0], { total, covered, skipped, pct }]);
     }
 
     return unionStats;
   };
-  const buildTable = (unitStats, e2eStats) => {
-    const unionStats = buildUnionStats(unitStats, e2eStats);
+  const buildTable = (unitStats, e2eStats, combinedResults) => {
+    const unionStats = combinedResults ? buildCombinedResults() : null;
     let unitHighlight = '';
     let e2eHighlight = '';
 
@@ -61,6 +74,39 @@ function buildHtml() {
       e2eHighlight = 'highlighted';
     }
 
+    const summary = unionStats ? `
+      <tr class="headline">
+        <td colspan="5">&laquo; combined results &raquo;</td>
+      </tr>
+      <tr class="combined">
+        <td>${unionStats[0][0]}</td>
+        <td>${unionStats[0][1].total}</td>
+        <td>${unionStats[0][1].covered}</td>
+        <td>${unionStats[0][1].skipped}</td>
+        <td>${unionStats[0][1].pct}%</td>
+      </tr>
+      <tr class="combined">
+        <td>${unionStats[1][0]}</td>
+        <td>${unionStats[1][1].total}</td>
+        <td>${unionStats[1][1].covered}</td>
+        <td>${unionStats[1][1].skipped}</td>
+        <td>${unionStats[1][1].pct}%</td>
+      </tr>
+      <tr class="combined">
+        <td>${unionStats[2][0]}</td>
+        <td>${unionStats[2][1].total}</td>
+        <td>${unionStats[2][1].covered}</td>
+        <td>${unionStats[2][1].skipped}</td>
+        <td>${unionStats[2][1].pct}%</td>
+      </tr>
+      <tr class="combined">
+        <td>${unionStats[3][0]}</td>
+        <td>${unionStats[3][1].total}</td>
+        <td>${unionStats[3][1].covered}</td>
+        <td>${unionStats[3][1].skipped}</td>
+        <td>${unionStats[3][1].pct}%</td>
+      </tr>
+    ` : '';
     const table = `
       <table>
         <thead>
@@ -135,37 +181,7 @@ function buildHtml() {
             <td>${e2eStats[3][1].skipped}</td>
             <td>${e2eStats[3][1].pct}%</td>
           </tr>
-          <tr class="headline">
-            <td colspan="5">&laquo; combined results &raquo;</td>
-          </tr>
-          <tr class="combined">
-            <td>${unionStats[0][0]}</td>
-            <td>${unionStats[0][1].total}</td>
-            <td>${unionStats[0][1].covered}</td>
-            <td>${unionStats[0][1].skipped}</td>
-            <td>${unionStats[0][1].pct}%</td>
-          </tr>
-          <tr class="combined">
-            <td>${unionStats[1][0]}</td>
-            <td>${unionStats[1][1].total}</td>
-            <td>${unionStats[1][1].covered}</td>
-            <td>${unionStats[1][1].skipped}</td>
-            <td>${unionStats[1][1].pct}%</td>
-          </tr>
-          <tr class="combined">
-            <td>${unionStats[2][0]}</td>
-            <td>${unionStats[2][1].total}</td>
-            <td>${unionStats[2][1].covered}</td>
-            <td>${unionStats[2][1].skipped}</td>
-            <td>${unionStats[2][1].pct}%</td>
-          </tr>
-          <tr class="combined">
-            <td>${unionStats[3][0]}</td>
-            <td>${unionStats[3][1].total}</td>
-            <td>${unionStats[3][1].covered}</td>
-            <td>${unionStats[3][1].skipped}</td>
-            <td>${unionStats[3][1].pct}%</td>
-          </tr>
+          ${summary}
         </tbody>
       </table>
     `;
@@ -173,14 +189,14 @@ function buildHtml() {
     return table;
   };
   const totalTable =
-    unitTotal && e2eTotal ? buildTable(unitTotal, e2eTotal) : '<p>Not enough data to show results :(</p>';
+    unitTotal && e2eTotal ? buildTable(unitTotal, e2eTotal, true) : '<p>Not enough data to show results :(</p>';
   let fileData = '';
 
   if (unitData && e2eData) {
     for (let i = 0; i < sortedList.length; i++) {
       const headline = `<h2>Stats for '${sortedList[i]}'</h2>`;
-      const unitOutput = parseData(unitData, `\\${sortedList[i]}`);
-      const e2eOutput = parseData(e2eData, `\\${sortedList[i]}`);
+      const unitOutput = parseTestData(unitData, `\\${sortedList[i]}`);
+      const e2eOutput = parseTestData(e2eData, `\\${sortedList[i]}`);
       let table = '<p>Not enough data for this file :(</p>';
 
       if (unitOutput && e2eOutput) {
@@ -231,7 +247,7 @@ function buildHtml() {
         border-top: 2px solid black;
       }
       .headline td {
-        background: #eee;
+        background: rgb(238, 238, 238);
         font-style: normal;
         letter-spacing: 1px;
         text-align: center;
@@ -239,10 +255,10 @@ function buildHtml() {
         text-transform: uppercase;
       }
       .highlighted td:not(:first-child) {
-        background: #e6f5d0;
+        background: rgb(230, 245, 208);
       }
       .combined td:not(:first-child) {
-        background:rgb(242, 223, 149);
+        background: rgb(242, 223, 149);
       }
     </style>
   `;
