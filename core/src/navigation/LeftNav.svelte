@@ -253,7 +253,7 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler);
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, navHeader);
     }
   };
 

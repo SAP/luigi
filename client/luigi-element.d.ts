@@ -61,7 +61,59 @@ export declare interface NodeParams {
   [key: string]: string;
 }
 
+export declare interface UserSettings {
+  [key: string]: number | string | boolean;
+}
+
+/**
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
+
+/**
+ * Returns the current user settings.
+ * @returns {Object} current user settings
+ * @memberof Lifecycle
+ */
+export function getUserSettings(): UserSettings;
+export type getUserSettings = () => UserSettings;
+
+/**
+ * Allows you to change node labels within the same view group, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+ * @param {Object} value a data object containing the view group name and desired label
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+ */
+export function setViewGroupData(value: Object): void;
+export type setViewGroupData = (value: Object) => void;
+
 export declare interface UxManager {
+  /**
+   * Gets the current theme.
+   * @returns {*} current themeObj
+   * @memberof uxManager
+   */
+  getCurrentTheme: () => any;
+
+  /**
+   * Gets the dirty status, which is set by the Client.
+   * @returns {boolean} dirty status
+   * @memberof uxManager
+   */
+  getDirtyStatus: () => boolean;
+
+  /**
+   * Removes the backdrop.
+   * @memberof uxManager
+   */
+  removeBackdrop: () => void;
+
   /**
    * Hides the app loading indicator.
    * @memberof uxManager
@@ -213,6 +265,23 @@ export declare interface LinkManager {
   ) => void;
 
   /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @memberof LuigiNavigation
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
+   */
+  navigateToIntent: (semanticSlug: string, params?: Object) => void;
+
+  /**
    * Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -270,6 +339,15 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
   fromContext: (navigationContext: string) => this;
+
+  /**
+   * Enables navigating to sibling nodes without knowing the absolute path
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  fromParent: () => this;
 
   /**
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
