@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title></title>
@@ -40,7 +40,7 @@
     </style>
   </head>
 
-  <body style="-webkit-font-smoothing: antialiased;">
+  <body style="-webkit-font-smoothing: antialiased">
     <div id="routeCnt"></div>
     <div id="imgCnt"></div>
     <div id="textCnt">
@@ -62,6 +62,12 @@
         onclick="LuigiClient.linkManager().openAsSplitView('/home/one');"
       >
         Open <code>/home/one</code> as split view
+      </button>
+      <button class="addBackdrop" onclick="LuigiClient.uxManager().addBackdrop()">
+        add backdrop
+      </button>
+      <button class="removeBackdrop" onclick="LuigiClient.uxManager().removeBackdrop()">
+        remove backdrop
       </button>
     </div>
 
@@ -115,14 +121,14 @@
       function vgDataUpdate() {
         LuigiClient.setViewGroupData({
           foo: 'Luigi rocks',
-          bar: '(' + Math.round(Math.random() * 100) + ')'
+          bar: '(' + Math.round(Math.random() * 100) + ')',
         });
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
 
       // fallback visibility if no initlistener called for 3 seconds
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
 
