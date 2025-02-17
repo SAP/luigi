@@ -21,11 +21,14 @@ try {
 const unitList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
 const e2eList = e2eData ? Object.keys(e2eData).filter((key) => key !== 'total') : [];
 const fileList = new Set(unitList);
-e2eList.forEach((item) => { 
+e2eList.forEach((item) => {
   fileList.add(item);
 });
 const zeroVals = {
-  total: 0, covered: 0, skipped: 0, pct: 0,
+  total: 0,
+  covered: 0,
+  skipped: 0,
+  pct: 0
 };
 fileList.forEach((filename) => {
   if (!unitData[filename]) {
@@ -34,7 +37,7 @@ fileList.forEach((filename) => {
       statements: zeroVals,
       functions: zeroVals,
       branches: zeroVals
-    }
+    };
   }
   if (!e2eData[filename]) {
     e2eData[filename] = {
@@ -42,10 +45,12 @@ fileList.forEach((filename) => {
       statements: zeroVals,
       functions: zeroVals,
       branches: zeroVals
-    }
+    };
   }
 });
-const sortedList = Array.from(fileList).map((item) => item.split('\\').pop()).sort();
+const sortedList = Array.from(fileList)
+  .map((item) => item.split('\\').pop())
+  .sort();
 const parseTestData = (data, name) => {
   return Object.entries(
     Object.keys(data)
