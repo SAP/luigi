@@ -226,6 +226,10 @@
             },
             {
               "kind": "method",
+              "name": "notifyAlertClosed"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
