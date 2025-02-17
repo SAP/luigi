@@ -160,7 +160,7 @@
       UserSettingsHelper.hideUserSettingsIframe();
 
       if (selectedUserSettingGroupData.webcomponent) {
-        renderWebComponent({ ...selectedUserSettingGroupData });
+        renderWebComponent({ ...selectedUserSettingGroupData }, selectedUserSettingGroupKey);
 
         return;
       }
@@ -185,7 +185,7 @@
     }
   }
 
-  function renderWebComponent(groupData) {
+  function renderWebComponent(groupData, selectedUserSettingGroupKey) {
     const wcContainer = document.querySelector('.wcUserSettingsCtn');
 
     if (!wcContainer) {
@@ -194,7 +194,15 @@
 
     wcContainer.innerHTML = '';
 
-    const wcContext = groupData.context;
+    const ebListeners = {};
+    wcContainer.eventBus = {
+      listeners: ebListeners,
+      onPublishEvent: (event, srcNodeId) => {
+        let userSettingsGroupKey = srcNodeId;
+        storedUserSettings[userSettingsGroupKey] = event.detail;
+      }
+    };
+    const wcContext = { ...groupData.context, userSettingsdata: storedUserSettings[selectedUserSettingGroupKey] };
     const wcEvents = groupData.eventListeners;
     const wcConfig = groupData.webcomponent;
     const wcLabel = groupData.label;

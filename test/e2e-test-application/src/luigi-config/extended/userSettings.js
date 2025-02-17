@@ -124,18 +124,7 @@ class UserSettings {
       viewUrl: '/assets/sampleWC.js',
       webcomponent: {
         selfRegistered: false
-      },
-      eventListeners: [
-        {
-          source: 'custom3',
-          name: 'buttonPressed',
-          action: 'update',
-          dataConverter: (data) => {
-            console.log('dataConverter(): Received Custom Message from WC - ' + data);
-            return data;
-          }
-        }
-      ]
+      }
     }
   };
 }
