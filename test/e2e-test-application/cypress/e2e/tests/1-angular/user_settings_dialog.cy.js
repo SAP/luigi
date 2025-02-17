@@ -299,12 +299,100 @@ describe('Navigation', () => {
         .should('contain.text', 'WC says hello world!');
     });
 
-    it('Should show WC container and publish event', () => {
+    it('Test custom usersettings webcomponent', () => {
       cy.get('[data-testid="us-navigation-item"]').eq(6).click();
-      cy.get('.wcUserSettingsCtn').children().first().shadow().find('button').click();
+      //Check custom3 webcomponent
+      cy.get('[data-testid="us-navigation-item"]').eq(6).should('have.class', 'is-selected');
 
-      cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from WC');
-      cy.checkConsoleLog('dataConverter(): Received Custom Message from WC - Hello from WC');
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#green').click();
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('have.class', 'active');
+
+      //Save Settings
+      saveSettings();
+
+      //Re-open Setting Dialog Box
+      openSettingsDialogBox();
+
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#red').click();
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
+
+      //Save Settings
+      saveSettings();
+
+      //Re-open Setting Dialog Box
+      openSettingsDialogBox();
+
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
     });
   });
 });

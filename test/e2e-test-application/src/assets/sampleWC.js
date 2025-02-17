@@ -1,7 +1,7 @@
 import { LuigiElement } from '/luigi-client/luigi-element.js';
 export default class extends LuigiElement {
   constructor() {
-    super();
+    super({ openShadow: true });
     let themeColor;
     const template = document.createElement('template');
 
@@ -18,7 +18,6 @@ export default class extends LuigiElement {
     `;
 
     // Event Listener setzen
-    // this._shadowRoot = this.attachShadow({ mode: 'open', delegatesFocus: false });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$buttonRed = this._shadowRoot.querySelector('#red');
@@ -28,6 +27,8 @@ export default class extends LuigiElement {
       console.log('this.$buttonGreen', this.$buttonGreen);
       this.$buttonGreen.style.fontSize = '30px';
       this.$buttonRed.style.fontSize = '13px';
+      this.$buttonGreen.classList.add('active');
+      this.$buttonRed.classList.remove('active');
       this.LuigiClient.publishEvent(
         new CustomEvent('luigi.updateUserSettings', { detail: { themeWC: this.themeColor } })
       );
@@ -36,6 +37,8 @@ export default class extends LuigiElement {
       this.themeColor = 'red';
       this.$buttonGreen.style.fontSize = '13px';
       this.$buttonRed.style.fontSize = '30px';
+      this.$buttonGreen.classList.remove('active');
+      this.$buttonRed.classList.add('active');
       this.LuigiClient.publishEvent(
         new CustomEvent('luigi.updateUserSettings', { detail: { themeWC: this.themeColor } })
       );
@@ -46,8 +49,12 @@ export default class extends LuigiElement {
     console.log('afterInit', ctx);
     if (ctx.userSettingsdata.themeWC === 'green') {
       this._shadowRoot.querySelector('#green').style.fontSize = '30px';
+      this._shadowRoot.querySelector('#green').classList.add('active');
+      this._shadowRoot.querySelector('#red').classList.remove('active');
     } else if (ctx.userSettingsdata.themeWC === 'red') {
       this._shadowRoot.querySelector('#red').style.fontSize = '30px';
+      this._shadowRoot.querySelector('#green').classList.remove('active');
+      this._shadowRoot.querySelector('#red').classList.add('active');
     }
   }
 
