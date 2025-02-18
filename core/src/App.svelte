@@ -1965,6 +1965,33 @@
       </div>
     </div>
   {:else}
+    {#if !isHeaderDisabled}
+      <TopNav
+        hideSearchComponent={hideGlobalSearch}
+        pathData={navigationPath}
+        {pathParams}
+        on:handleClick={handleNavClick}
+        on:resizeTabNav={onResizeTabNav}
+        on:toggleSearch={toggleSearch}
+        on:closeSearchResult={closeSearchResult}
+        on:handleSearchNavigation={handleSearchNavigation}
+        bind:isSearchFieldVisible
+        bind:displaySearchResult
+        bind:searchResult
+        bind:inputElem
+        bind:customSearchItemRendererSlot
+        {burgerTooltip}
+      />
+    {/if}
+    {#if !(hideNav || hideSideNav)}
+      <LeftNav
+        pathData={navigationPath}
+        {pathParams}
+        on:handleClick={handleNavClick}
+        on:resizeTabNav={onResizeTabNav}
+        {burgerTooltip}
+      />
+    {/if}
     <Backdrop disable={disableBackdrop}>
       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
       <div
@@ -2003,39 +2030,14 @@
         </div>
       </div>
     {/if}
-    {#if !isHeaderDisabled}
-      <TopNav
-        hideSearchComponent={hideGlobalSearch}
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-        on:resizeTabNav={onResizeTabNav}
-        on:toggleSearch={toggleSearch}
-        on:closeSearchResult={closeSearchResult}
-        on:handleSearchNavigation={handleSearchNavigation}
-        bind:isSearchFieldVisible
-        bind:displaySearchResult
-        bind:searchResult
-        bind:inputElem
-        bind:customSearchItemRendererSlot
-        {burgerTooltip}
-      />
-    {/if}
+
     {#if !hideNav}
       <GlobalNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
       {#if breadcrumbsEnabled}
         <Breadcrumb pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
       {/if}
     {/if}
-    {#if !(hideNav || hideSideNav)}
-      <LeftNav
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-        on:resizeTabNav={onResizeTabNav}
-        {burgerTooltip}
-      />
-    {/if}
+
     {#if tabNav && !hideNav}
       <TabNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} {resizeTabNavToggle} />
     {/if}
