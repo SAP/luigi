@@ -133,7 +133,8 @@
           buttonDismiss: 'No',
         };
 
-        LuigiClient.uxManager().showConfirmationModal(settings)
+        LuigiClient.uxManager()
+          .showConfirmationModal(settings)
           .then(() => {
             LuigiClient.uxManager().notifyConfirmationModalClosed(true);
           })
