@@ -640,4 +640,59 @@ describe('JS-TEST-APP 2', () => {
       });
     });
   });
+
+  describe('SAP Horizon', ()=>{
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.tag = 'sapHorizon';
+      newConfig.settings.responsiveNavigation = 'Fiori3',
+      newConfig.settings.profileType = 'Fiori3',
+      newConfig.settings.experimental= {
+         profileMenuFiori3: true
+      }
+      newConfig.navigation.profile = {
+        logout: {
+          label: 'Sign Out',
+          icon: "sys-cancel"
+        },
+        staticUserInfoFn: () => {
+          return new Promise(resolve => {
+            resolve({
+              name: 'Static User',
+              initials: 'LU',
+              email: 'other.luigi.user@example.com',
+              description: 'Luigi Developer'
+            });
+          });
+        }
+      }
+    });
+    it('Initials background color with sap horizon and Fiori3 with profileType Fiori3', ()=>{
+      cy.visitTestApp('/home/one', newConfig);
+      cy.get('#app[configversion="sapHorizon"]');
+      cy.get('[data-testid="luigi-topnav-profile-initials"]').then(($el) => {
+        const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
+        expect(bgColor).to.equal('rgb(40, 110, 180)');
+      });
+      cy.get('link[href="/node_modules/@luigi-project/core/luigi.css"]').then(($link) => {
+        if ($link.length) {
+          $link.remove();
+        }
+      });
+      cy.document().then((doc) => {
+        const link = doc.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "/node_modules/@luigi-project/core/luigi_horizon.css";
+        doc.head.appendChild(link);
+      });
+      cy.wait(500);
+      
+      cy.get('[data-testid="luigi-topnav-profile-initials"]').then(($el) => {
+        const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
+        expect(bgColor).to.equal('rgb(209, 239, 255)');
+      });
+    })
+  })
 });
