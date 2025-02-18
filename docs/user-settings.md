@@ -155,6 +155,18 @@ language: {
 }
 ```
 
+#### webcomponent
+
+- **type** object (optional)
+- **description** enables usage of webcomponent instead of a custom micro frontend. It is possible to use both local and external webcomponents what needs to be specified in [`viewURL`](#viewurl) parameter.
+  In case of external URL, the `validWebcomponentUrls` parameter has to be added to [navigation configuration](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=validwebcomponenturls).
+
+```javascript
+webcomponent: {
+  selfRegistered: false
+}
+```
+
 ## Write a custom editor
 
 This user setting group will be displayed by the default editor, under the form of a user setting dialog.
