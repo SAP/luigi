@@ -156,6 +156,9 @@ export class ContainerService {
               case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
                 this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
+              case LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED:
+                this.dispatch(Events.CONFIRMATION_MODAL_CLOSED, targetCnt, event.data.data);
+                break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;

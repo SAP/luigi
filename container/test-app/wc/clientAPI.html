@@ -163,6 +163,9 @@
             }
           },
         );
+        luigiContainer.addEventListener(MFEventID.CONFIRMATION_MODAL_CLOSED, (event) => {
+          console.log(MFEventID.CONFIRMATION_MODAL_CLOSED, event);
+        });
         luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
           if (event.detail.id !== 'timer') {
             alert(event.detail.data);

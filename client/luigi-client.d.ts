@@ -201,6 +201,13 @@ export declare interface UxManager {
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
 
   /**
+   * Sends a confirmation modal closed event.
+   * @memberof uxManager
+   * @param {boolean} confirmed boolean value if ok or cancel has been pressed
+   */
+  notifyConfirmationModalClosed: (confirmed: boolean) => void;
+
+  /**
    * Gets the current locale.
    * @returns {string} current locale
    * @memberof uxManager

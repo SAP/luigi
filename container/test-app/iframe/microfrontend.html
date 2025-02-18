@@ -132,7 +132,14 @@
           buttonConfirm: 'Yes',
           buttonDismiss: 'No',
         };
-        LuigiClient.uxManager().showConfirmationModal(settings);
+
+        LuigiClient.uxManager().showConfirmationModal(settings)
+          .then(() => {
+            LuigiClient.uxManager().notifyConfirmationModalClosed(true);
+          })
+          .catch(() => {
+            LuigiClient.uxManager().notifyConfirmationModalClosed(false);
+          });
       }
 
       function testShowLoadingIndicator() {

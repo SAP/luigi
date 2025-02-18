@@ -202,6 +202,9 @@
           }
         },
       );
+      compoundContainer.addEventListener(MFEventID.CONFIRMATION_MODAL_CLOSED, (event) => {
+        console.log(MFEventID.CONFIRMATION_MODAL_CLOSED, event);
+      });
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
         if (event.detail.id !== 'timer') {
           alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);

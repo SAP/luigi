@@ -627,6 +627,19 @@ describe('createClientAPI', () => {
       expect(confirmationModalPromise).rejects.toThrow('No data');
     });
 
+    it.each([true, false])('test uxManager notifyConfirmationModalClosed', (confirmed) => {
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().notifyConfirmationModalClosed(confirmed);
+
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
+    });
+
     it('test uxManager closeUserSettings', () => {
       service.thisComponent = document.createElement('div');
       const userSettings = {

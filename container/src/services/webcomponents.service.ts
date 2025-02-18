@@ -18,7 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  alertResolvers: Record<string, Function> = {};
+  alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
 
   constructor() {
@@ -257,6 +257,9 @@ export class WebComponentService {
                 'callback'
               );
             });
+          },
+          notifyConfirmationModalClosed: (confirmed) => {
+            this.dispatchLuigiEvent(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
           },
           getCurrentTheme: (): string | undefined => {
             return this.thisComponent.theme;

@@ -785,6 +785,19 @@
     });
   };
 
+  const notifyConfirmationModalClosed = (config) => {
+    if (!config?.client || !config?.target) {
+      return;
+    }
+
+    const message = {
+      msg: 'luigi.ux.confirmationModal.hide',
+      data: { confirmed: config.result }
+    };
+
+    IframeHelpers.sendMessageToIframe(config.target, message);
+  };
+
   const handleModalResult = (result) => {
     const { promise, openFromClient, targetIframe } = confirmationModal;
 
@@ -796,13 +809,11 @@
       promise.reject();
     }
 
-    if (openFromClient && targetIframe) {
-      const message = {
-        msg: 'luigi.ux.confirmationModal.hide',
-        data: { confirmed: result }
-      };
-      IframeHelpers.sendMessageToIframe(targetIframe, message);
-    }
+    notifyConfirmationModalClosed({
+      client: openFromClient,
+      target: targetIframe,
+      result
+    });
   };
 
   const shouldShowUnsavedChangesModal = (source) => {

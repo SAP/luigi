@@ -45,6 +45,11 @@ export namespace Events {
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
 
   /**
+   * Event passed to the micro frontend when confirmation modal is closed.
+   */
+  export const CONFIRMATION_MODAL_CLOSED = 'close-confirmation-modal-request';
+
+  /**
    * Event fired when the micro frontend requests to show a loading indicator.
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'show-loading-indicator-request';

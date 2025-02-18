@@ -1201,6 +1201,14 @@ LuigiClient
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
 
+#### notifyConfirmationModalClosed
+
+Sends a confirmation modal closed event.
+
+##### Parameters
+
+*   `confirmed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** boolean value if ok or cancel has been pressed
+
 #### showAlert
 
 Shows an alert.
