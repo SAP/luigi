@@ -21,8 +21,8 @@
     "@angular/platform-browser": "^14.2.12",
     "@angular/platform-browser-dynamic": "^14.2.12",
     "@angular/router": "^14.2.12",
-    "@luigi-project/client": "^2.0.0",
-    "@luigi-project/testing-utilities": "^2.0.0",
+    "@luigi-project/client": "^2.19.2",
+    "@luigi-project/testing-utilities": "^2.19.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.6"
