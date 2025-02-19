@@ -20,8 +20,8 @@ try {
   throw new Error(error);
 }
 
-const unitList = unitData ? Object.keys(unitData).filter(key => key !== 'total') : [];
-const e2eList = e2eData ? Object.keys(e2eData).filter(key => key !== 'total') : [];
+const unitList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
+const e2eList = e2eData ? Object.keys(e2eData).filter((key) => key !== 'total') : [];
 const fileList = new Set(unitList);
 const zeroVals = {
   covered: 0,
@@ -59,13 +59,13 @@ const sortedList = Array.from(fileList)
       return item.split('\\').pop();
     }
 
-    return item.split('/').pop()
+    return item.split('/').pop();
   })
   .sort();
 const parseTestData = (data, name) => {
   return Object.entries(
     Object.keys(data)
-      .filter(key => key.includes(name))
+      .filter((key) => key.includes(name))
       .reduce((obj, key) => data[key], {})
   );
 };
@@ -83,8 +83,8 @@ function buildHtml() {
         const unitParsedData = parseTestData(unitData, `${sortedList[y]}`);
         const e2eParsedData = parseTestData(e2eData, `${sortedList[y]}`);
         const getParamValue = (index, param) => {
-          const unitStats = unitParsedData.filter(item => item[0] === unitTotal[x][0]);
-          const e2eStats = e2eParsedData.filter(item => item[0] === unitTotal[x][0]);
+          const unitStats = unitParsedData.filter((item) => item[0] === unitTotal[x][0]);
+          const e2eStats = e2eParsedData.filter((item) => item[0] === unitTotal[x][0]);
 
           return Number(unitStats[index][1][param]) < Number(e2eStats[index][1][param])
             ? Number(e2eStats[index][1][param])
