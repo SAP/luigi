@@ -9,6 +9,7 @@ try {
   unitTotal = unitData ? Object.entries(unitData.total) : null;
 } catch (error) {
   console.log('<p style="color:red">Source file for unit tests not found!</p>');
+  throw new Error(error);
 }
 
 try {
@@ -16,45 +17,55 @@ try {
   e2eTotal = e2eData ? Object.entries(e2eData.total) : null;
 } catch (error) {
   console.log('<p style="color:red">Source file for e2e tests not found!</p>');
+  throw new Error(error);
 }
 
-const unitList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
-const e2eList = e2eData ? Object.keys(e2eData).filter((key) => key !== 'total') : [];
+const unitList = unitData ? Object.keys(unitData).filter(key => key !== 'total') : [];
+const e2eList = e2eData ? Object.keys(e2eData).filter(key => key !== 'total') : [];
 const fileList = new Set(unitList);
+const zeroVals = {
+  covered: 0,
+  pct: 0,
+  skipped: 0,
+  total: 0
+};
+
 e2eList.forEach((item) => {
   fileList.add(item);
 });
-const zeroVals = {
-  total: 0,
-  covered: 0,
-  skipped: 0,
-  pct: 0
-};
 fileList.forEach((filename) => {
   if (!unitData[filename]) {
     unitData[filename] = {
-      lines: zeroVals,
-      statements: zeroVals,
+      branches: zeroVals,
       functions: zeroVals,
-      branches: zeroVals
+      lines: zeroVals,
+      statements: zeroVals
     };
   }
+
   if (!e2eData[filename]) {
     e2eData[filename] = {
-      lines: zeroVals,
-      statements: zeroVals,
+      branches: zeroVals,
       functions: zeroVals,
-      branches: zeroVals
+      lines: zeroVals,
+      statements: zeroVals
     };
   }
 });
+
 const sortedList = Array.from(fileList)
-  .map((item) => item.split('\\').pop())
+  .map((item) => {
+    if (item.includes('\\')) {
+      return item.split('\\').pop();
+    }
+
+    return item.split('/').pop()
+  })
   .sort();
 const parseTestData = (data, name) => {
   return Object.entries(
     Object.keys(data)
-      .filter((key) => key.includes(name))
+      .filter(key => key.includes(name))
       .reduce((obj, key) => data[key], {})
   );
 };
@@ -69,11 +80,11 @@ function buildHtml() {
       let skipped = 0;
 
       for (let y = 0; y < sortedList.length; y++) {
-        const unitParsedData = parseTestData(unitData, `\\${sortedList[y]}`);
-        const e2eParsedData = parseTestData(e2eData, `\\${sortedList[y]}`);
+        const unitParsedData = parseTestData(unitData, `${sortedList[y]}`);
+        const e2eParsedData = parseTestData(e2eData, `${sortedList[y]}`);
         const getParamValue = (index, param) => {
-          const unitStats = unitParsedData.filter((item) => item[0] === unitTotal[x][0]);
-          const e2eStats = e2eParsedData.filter((item) => item[0] === unitTotal[x][0]);
+          const unitStats = unitParsedData.filter(item => item[0] === unitTotal[x][0]);
+          const e2eStats = e2eParsedData.filter(item => item[0] === unitTotal[x][0]);
 
           return Number(unitStats[index][1][param]) < Number(e2eStats[index][1][param])
             ? Number(e2eStats[index][1][param])
@@ -228,8 +239,8 @@ function buildHtml() {
   if (unitData && e2eData) {
     for (let i = 0; i < sortedList.length; i++) {
       const headline = `<h2>Stats for '${sortedList[i]}'</h2>`;
-      const unitOutput = parseTestData(unitData, `\\${sortedList[i]}`);
-      const e2eOutput = parseTestData(e2eData, `\\${sortedList[i]}`);
+      const unitOutput = parseTestData(unitData, `${sortedList[i]}`);
+      const e2eOutput = parseTestData(e2eData, `${sortedList[i]}`);
       let table = '<p>Not enough data for this file :(</p>';
 
       if (unitOutput && e2eOutput) {
