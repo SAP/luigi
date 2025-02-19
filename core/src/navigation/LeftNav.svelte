@@ -253,7 +253,7 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, navHeader);
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, {...navHeader, context: pathData._context});
     }
   };
 
@@ -682,6 +682,7 @@
                               on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
+                              onmouseup="event.target.blur()"
                             >
                               {#if node.icon}
                                 {#if isOpenUIiconName(node.icon)}
