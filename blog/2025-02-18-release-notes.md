@@ -11,9 +11,9 @@ You can read about the new features in Luigi v2.20 in the release notes below.
 <!-- Excerpt -->
 
 
-#### Client support angular library supports angular v19
+#### Client support angular library supports Angular v19
 
-The angular support library for Luigi Client supports now angular version 19.
+The angular support library for Luigi Client supports now Angular version 19.
 
 #### Appswitcher improvement
 
