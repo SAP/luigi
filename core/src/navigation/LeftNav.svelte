@@ -253,7 +253,7 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, {...navHeader, context: pathData._context});
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, { ...navHeader, context: pathData._context });
     }
   };
 
