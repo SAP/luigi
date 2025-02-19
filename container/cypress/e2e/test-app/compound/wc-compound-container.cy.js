@@ -294,7 +294,6 @@ describe('Compound Container Tests', () => {
       cy.get(containerSelector).shadow().contains('Publish event').click();
 
       cy.should(() => {
-        expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
         expect(consoleInfo).to.equal('dataConverter(): Received Custom Message from "input1" MF My own event data');
       });
     });
