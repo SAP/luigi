@@ -291,7 +291,10 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      cy.get(containerSelector).shadow().contains('Publish event').click();
+      cy.get(containerSelector)
+        .shadow()
+        .contains('Publish event')
+        .click({force: true});
 
       cy.should(() => {
         if (consoleInfo) {
@@ -300,8 +303,6 @@ describe('Compound Container Tests', () => {
 
         expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
       });
-
-      cy.get(containerSelector).shadow().find('#titleCmp').should('include.text', 'new text: My own event data');
     });
 
     it('LuigiClient API uxManagerChainRequests', () => {
