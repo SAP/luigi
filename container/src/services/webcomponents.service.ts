@@ -729,7 +729,7 @@ export class WebComponentService {
   /**
    * Responsible for notifying the microfrontend when modal has been closed
    *
-   * @param {*} confirmed the result of the modal being closed
+   * @param {boolean} confirmed the result of the modal being closed
    *
    * @returns {void}
    *
