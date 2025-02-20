@@ -258,9 +258,6 @@ export class WebComponentService {
               );
             });
           },
-          notifyConfirmationModalClosed: (confirmed) => {
-            this.dispatchLuigiEvent(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
-          },
           getCurrentTheme: (): string | undefined => {
             return this.thisComponent.theme;
           },
@@ -727,5 +724,9 @@ export class WebComponentService {
     } else {
       console.log('Promise is not in the list.');
     }
+  }
+
+  notifyConfirmationModalClosed(confirmed = true) {
+    this.dispatchLuigiEvent(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
   }
 }

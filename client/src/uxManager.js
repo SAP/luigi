@@ -116,18 +116,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Sends a confirmation modal closed event.
-   * @memberof uxManager
-   * @param {boolean} confirmed boolean value if ok or cancel has been pressed
-   */
-  notifyConfirmationModalClosed(confirmed) {
-    helpers.sendPostMessageToLuigiCore({
-      msg: 'luigi.ux.confirmationModal.hide',
-      data: { confirmed }
-    });
-  }
-
-  /**
    * @private
    * @memberof uxManager
    * @param {Object} modal confirmed boolean value if ok or cancel has been pressed

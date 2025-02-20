@@ -627,19 +627,6 @@ describe('createClientAPI', () => {
       expect(confirmationModalPromise).rejects.toThrow('No data');
     });
 
-    it.each([true, false])('test uxManager notifyConfirmationModalClosed', (confirmed) => {
-      // mock and spy on functions
-      service.containerService.dispatch = jest.fn();
-      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-
-      // act
-      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.uxManager().notifyConfirmationModalClosed(confirmed);
-
-      // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
-    });
-
     it('test uxManager closeUserSettings', () => {
       service.thisComponent = document.createElement('div');
       const userSettings = {
@@ -1811,5 +1798,21 @@ describe('resolveAlert', () => {
 
     // Restore the original console.log
     consoleSpy.mockRestore();
+  });
+});
+
+describe('notifyConfirmationModalClosed', () => {
+  it.each([true, false])('should dispatch LuigiEvent with modal result', (confirmed) => {
+    const service = new WebComponentService();
+
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    service.notifyConfirmationModalClosed(confirmed);
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
   });
 });

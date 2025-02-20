@@ -135,12 +135,8 @@
 
         LuigiClient.uxManager()
           .showConfirmationModal(settings)
-          .then(() => {
-            LuigiClient.uxManager().notifyConfirmationModalClosed(true);
-          })
-          .catch(() => {
-            LuigiClient.uxManager().notifyConfirmationModalClosed(false);
-          });
+          .then(() => console.log('Modal confirmed'))
+          .catch(() => console.log('Modal dissmissed'));
       }
 
       function testShowLoadingIndicator() {

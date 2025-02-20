@@ -412,14 +412,12 @@ export default class extends HTMLElement {
       this.LuigiClient.uxManager()
         .showConfirmationModal(settings)
         .then(() => {
-          this.LuigiClient.uxManager().notifyConfirmationModalClosed(true);
           this.LuigiClient.uxManager().showAlert({
             text: 'LuigiClient.uxManager().showConfirmationModal() - confirmed',
             type: 'info'
           });
         })
         .catch(() => {
-          this.LuigiClient.uxManager().notifyConfirmationModalClosed(false);
           this.LuigiClient.uxManager().showAlert({
             text: 'LuigiClient.uxManager().showConfirmationModal() - dissmissed',
             type: 'warning'
