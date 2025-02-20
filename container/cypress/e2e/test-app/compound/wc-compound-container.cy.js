@@ -291,15 +291,17 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      cy.get(containerSelector)
-        .shadow()
-        .contains('Publish event')
-        .click()
-        .then(() => {
+      cy.get(containerSelector).shadow().contains('Publish event').click();
+
+      cy.should(() => {
+        if (consoleInfo) {
           expect(consoleInfo).to.equal('dataConverter(): Received Custom Message from "input1" MF My own event data');
-          expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
-          cy.get('#titleCmp').should('include.text', 'new text: My own event data');
-        });
+        }
+
+        expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
+      });
+
+      cy.get(containerSelector).shadow().find('#titleCmp').should('include.text', 'new text: My own event data');
     });
 
     it('LuigiClient API uxManagerChainRequests', () => {
