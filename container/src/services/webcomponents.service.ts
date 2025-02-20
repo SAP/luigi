@@ -726,6 +726,14 @@ export class WebComponentService {
     }
   }
 
+  /**
+   * Responsible for notifying the microfrontend when modal has been closed
+   *
+   * @param {*} confirmed the result of the modal being closed
+   *
+   * @returns {void}
+   *
+   */
   notifyConfirmationModalClosed(confirmed = true) {
     this.dispatchLuigiEvent(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
   }
