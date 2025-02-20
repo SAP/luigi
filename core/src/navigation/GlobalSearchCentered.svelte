@@ -94,7 +94,7 @@
     <div
       class="luigi-search fd-shellbar__group"
       on:click|stopPropagation={() => {}}
-      aria-hidden={!isSearchFieldVisible}
+      inert={!isSearchFieldVisible}
       aria-haspopup="true"
     >
       <div class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field">
@@ -337,6 +337,26 @@
 
   :global(.fd-shellbar__group) {
     flex-grow: 1;
+  }
+
+  @media (max-width: 599px) {
+    :global(.lui-global-search-btn) {
+      display: inline-block;
+    }
+
+    :global(.lui-global-search-input) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 600px) {
+    :global(.lui-global-search-btn) {
+      display: none;
+    }
+
+    :global(.lui-global-search-input) {
+      display: inline-block;
+    }
   }
 
   @media (max-width: 599px) {
