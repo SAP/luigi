@@ -1,10 +1,16 @@
 import defaultLuigiConfig from '../configs/default';
 
-const setAcceptedCookies = win => {
+let consoleLog;
+
+Cypress.Commands.add('checkConsoleLog', (value) => {
+  expect(consoleLog).to.equal(value);
+});
+
+const setAcceptedCookies = (win) => {
   win.localStorage.setItem('cookiesAccepted', 'true');
 };
 
-const setLoggedIn = win => {
+const setLoggedIn = (win) => {
   const newTime = Date.now() + 6e4;
   const newLuigiAuth = {
     accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
@@ -18,7 +24,7 @@ const setLoggedIn = win => {
 
 Cypress.Commands.add('vistTestAppPathRouting', (path = '', config = defaultLuigiConfig) => {
   cy.visit(`http://localhost:4500${path}`, {
-    onLoad: win => {
+    onLoad: (win) => {
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
@@ -29,7 +35,7 @@ Cypress.Commands.add('vistTestAppPathRouting', (path = '', config = defaultLuigi
 
 Cypress.Commands.add('visitTestApp', (path = '/', config = defaultLuigiConfig) => {
   cy.visit(`http://localhost:4500/#${path}`, {
-    onLoad: win => {
+    onLoad: (win) => {
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
@@ -40,10 +46,10 @@ Cypress.Commands.add('visitTestApp', (path = '/', config = defaultLuigiConfig) =
 
 Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiConfig) => {
   cy.visit(`http://localhost:4500/#${path}`, {
-    onBeforeLoad: win => {
+    onBeforeLoad: (win) => {
       setLoggedIn(win);
     },
-    onLoad: win => {
+    onLoad: (win) => {
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
@@ -54,7 +60,17 @@ Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiC
 
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
-    onBeforeLoad: win => {
+    onBeforeLoad(win) {
+      // Clear logs in window console
+      if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+        win.console.clear();
+      }
+
+      // Set up a spy on console.log
+      cy.stub(win.console, 'log', (value) => {
+        consoleLog = value;
+      });
+
       win.localStorage.clear();
       win.sessionStorage.clear();
       setAcceptedCookies(win);
@@ -64,22 +80,14 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
 });
 
 Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, config) => {
-  cy.get('.fd-input')
-    .first()
-    .clear()
-    .type(email)
-    .should('have.value', email);
+  cy.get('.fd-input').first().clear().type(email).should('have.value', email);
 
-  cy.get('.fd-input')
-    .last()
-    .clear()
-    .type(password)
-    .should('have.value', password);
+  cy.get('.fd-input').last().clear().type(password).should('have.value', password);
 
   cy.get('.fd-button').click();
 
   if (config) {
-    cy.window().then(win => {
+    cy.window().then((win) => {
       win.Luigi.setConfig(config);
     });
   }
@@ -90,20 +98,16 @@ Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, con
   }
 });
 
-Cypress.Commands.add('goToUxManagerMethods', iframe => {
-  cy.wrap(iframe)
-    .contains('uxManager()')
-    .click();
+Cypress.Commands.add('goToUxManagerMethods', (iframe) => {
+  cy.wrap(iframe).contains('uxManager()').click();
 
   cy.expectPathToBe('/projects/pr1');
 
   cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods');
 });
 
-Cypress.Commands.add('goToLinkManagerMethods', iframe => {
-  cy.wrap(iframe)
-    .contains('linkManager()')
-    .click();
+Cypress.Commands.add('goToLinkManagerMethods', (iframe) => {
+  cy.wrap(iframe).contains('linkManager()').click();
 
   cy.expectPathToBe('/projects/pr2');
   cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods');
@@ -124,16 +128,11 @@ Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
     .click();
 
   // click an action
-  cy.get('[data-testid="luigi-contextswitcher-popover"]')
-    .contains(item)
-    .click();
+  cy.get('[data-testid="luigi-contextswitcher-popover"]').contains(item).click();
 });
 
 Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
-  return cy
-    .get(`${containerSelector} iframe`, getIframeOpts)
-    .eq(index)
-    .iframe();
+  return cy.get(`${containerSelector} iframe`, getIframeOpts).eq(index).iframe();
 });
 
 // More robust iframe retrival methods based on: https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
@@ -172,10 +171,7 @@ Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
 Cypress.Commands.add('getIframeWindow', () => {
   // get the iframe > contentwindow
   // and retry until the window content exists
-  return cy
-    .get('.iframeContainer > iframe')
-    .its('0.contentWindow')
-    .should('exist');
+  return cy.get('.iframeContainer > iframe').its('0.contentWindow').should('exist');
 });
 
 // Retrives the iframe > document > body
@@ -201,7 +197,7 @@ const isHashRoutingOn = () => {
 };
 
 Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
-  cy.location({ timeout }).should(location => {
+  cy.location({ timeout }).should((location) => {
     const useHashRouting = isHashRoutingOn();
     const actualPath = useHashRouting ? location.hash : location.pathname;
     const pathToCheck = useHashRouting ? '#' + pathWithoutHash : pathWithoutHash;
@@ -209,15 +205,12 @@ Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
   })
 );
 
-Cypress.Commands.add('splitViewButtons', iframeBody => {
-  return cy
-    .wrap(iframeBody)
-    .find('[data-testid="split-view-controls"]')
-    .find('button');
+Cypress.Commands.add('splitViewButtons', (iframeBody) => {
+  return cy.wrap(iframeBody).find('[data-testid="split-view-controls"]').find('button');
 });
 Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
   // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
-  cy.location().should(locationContext => {
+  cy.location().should((locationContext) => {
     const useHashRouting = isHashRoutingOn();
     const actualPath = useHashRouting ? locationContext.hash : locationContext.pathname;
     if (useHashRouting) {
@@ -252,7 +245,7 @@ Cypress.Commands.add(
             .click();
     });
  */
-Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
+Cypress.Commands.add('iframe', { prevSubject: 'element' }, ($iframe) => {
   Cypress.log({
     name: 'iframe',
     consoleProps() {
@@ -261,7 +254,7 @@ Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
       };
     }
   });
-  return new Cypress.Promise(resolve => {
+  return new Cypress.Promise((resolve) => {
     onIframeReady(
       $iframe,
       () => {
@@ -288,7 +281,7 @@ Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
         win.LuigiClient....
     });
  */
-Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, $iframe => {
+Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, ($iframe) => {
   Cypress.log({
     name: 'iframe',
     consoleProps() {
@@ -297,7 +290,7 @@ Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, $iframe => {
       };
     }
   });
-  return new Cypress.Promise(resolve => {
+  return new Cypress.Promise((resolve) => {
     onIframeReady(
       $iframe,
       () => {
@@ -362,7 +355,5 @@ function onIframeReady($iframe, successFn, errorFn) {
 }
 
 Cypress.Commands.add('getModalWindow', () => {
-  cy.get('[data-testid="modal-mf"] iframe')
-    .iframeWindow()
-    .its('0.contentWindow');
+  cy.get('[data-testid="modal-mf"] iframe').iframeWindow().its('0.contentWindow');
 });

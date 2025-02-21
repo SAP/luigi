@@ -109,7 +109,22 @@ class UserSettings {
       label: 'Custom 2',
       title: 'Custom 2',
       icon: 'private',
-      viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+      viewUrl: 'https://luigiwebcomponents.gitlab.io/helloworld.js',
+      context: {
+        title: 'WC says hello world!'
+      },
+      webcomponent: {
+        selfRegistered: false
+      }
+    },
+    custom3: {
+      label: 'Custom 3',
+      title: 'Custom 3',
+      icon: 'private',
+      viewUrl: '/assets/sampleWC.js',
+      webcomponent: {
+        selfRegistered: false
+      }
     }
   };
 }
