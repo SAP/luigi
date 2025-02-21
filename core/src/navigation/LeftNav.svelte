@@ -253,7 +253,7 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler);
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, navHeader);
     }
   };
 
@@ -338,7 +338,17 @@
           potentialSuperCat.entries.push(entry);
         }
       });
-      return converted;
+      return converted.filter((group) => {
+        if (group.entries && group.entries.length > 0) {
+          for (let index = 0; index < group.entries.length; index++) {
+            const [key, nodes] = group.entries[index];
+            if (nodes.filter((node) => !node.hideFromNav && node.label).length > 0) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
     } else {
       return entries;
     }

@@ -18,6 +18,8 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent!: ContainerElement;
+  alertResolvers: Record<string, ((value: unknown) => void) | undefined> = {};
+  alertIndex = 0;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -237,8 +239,13 @@ export class WebComponentService {
       },
       uxManager: () => {
         return {
-          showAlert: (alertSettings: object) => {
-            this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+          showAlert: (alertSettings: Record<string, any>) => {
+            alertSettings.id = this.alertIndex++;
+
+            return new Promise((resolve) => {
+              this.alertResolvers[alertSettings.id] = resolve;
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+            });
           },
           showConfirmationModal: (settings: object) => {
             return new Promise((resolve, reject) => {
@@ -744,5 +751,26 @@ export class WebComponentService {
           this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
         });
     });
+  }
+
+  /**
+   * Resolves an alert by invoking the corresponding resolver function for the given alert ID.
+   * This method attempts to resolve an alert associated with the specified `id` by calling its resolver function,
+   * if one exists in the `alertResolvers` object. If the resolver exists, it is invoked with `dismissKey` as its argument,
+   * and then the resolver is removed from the `alertResolvers` object to avoid future invocations. If no resolver is found
+   * for the provided `id`, a message is logged to the console indicating that no matching promise is in the list.
+   * @param {string} id - The unique identifier for the alert to resolve.
+   * @param {dismissKey} [dismissKey=true] - An optional key or value passed to the resolver. Defaults to `true` if not provided.
+   *
+   * @returns {void}
+   *
+   */
+  resolveAlert(id: string, dismissKey = true): void {
+    if (this.alertResolvers[id]) {
+      this.alertResolvers[id](dismissKey);
+      this.alertResolvers[id] = undefined;
+    } else {
+      console.log('Promise is not in the list.');
+    }
   }
 }

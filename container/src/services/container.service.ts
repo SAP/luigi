@@ -21,10 +21,10 @@ export class ContainerService {
    * @param msg the message to be sent
    * @param msgName the optional message name
    */
-  sendCustomMessageToIframe(iframeHandle: IframeHandle, msg: object, msgName?: string) {
+  sendCustomMessageToIframe(iframeHandle: IframeHandle | undefined, msg: object, msgName?: string) {
     const messageName = msgName || 'custom';
 
-    if (iframeHandle.iframe.contentWindow) {
+    if (iframeHandle?.iframe?.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
 
       if (messageName === 'custom') {
@@ -133,7 +133,10 @@ export class ContainerService {
                         disabled: targetCnt.skipCookieCheck === 'true'
                       }
                     },
-                    authData: targetCnt.authData || {}
+                    authData: targetCnt.authData || {},
+                    nodeParams: targetCnt.nodeParams || {},
+                    searchParams: targetCnt.searchParams || {},
+                    pathParams: targetCnt.pathParams || {}
                   },
                   event.origin
                 );

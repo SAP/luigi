@@ -1752,3 +1752,52 @@ describe('renderWebComponent', () => {
     expect(service.registerWCFromUrl).toHaveBeenCalled();
   });
 });
+
+describe('resolveAlert', () => {
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+    // Mock implementation for the alertResolvers map
+    service.alertResolvers = {};
+  });
+
+  it('should resolve the alert and remove the resolver from alertResolvers', () => {
+    const mockResolver = jest.fn();
+    const alertId = 'testAlert';
+    service.alertResolvers[alertId] = mockResolver;
+
+    service.resolveAlert(alertId, 'dismissKey');
+
+    // Ensure the resolver was called with the correct dismissKey
+    expect(mockResolver).toHaveBeenCalledWith('dismissKey');
+    // Ensure the resolver is removed from the alertResolvers
+    expect(service.alertResolvers[alertId]).toBeUndefined();
+  });
+
+  it('should resolve the alert with the default dismissKey (true) if none is provided', () => {
+    const mockResolver = jest.fn();
+    const alertId = 'testAlert';
+    service.alertResolvers[alertId] = mockResolver;
+
+    service.resolveAlert(alertId);
+
+    // Ensure the resolver was called with the default dismissKey
+    expect(mockResolver).toHaveBeenCalledWith(true);
+    // Ensure the resolver is removed from the alertResolvers
+    expect(service.alertResolvers[alertId]).toBeUndefined();
+  });
+
+  it('should log a message if the alert ID is not found', () => {
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const nonExistentAlertId = 'nonExistentAlert';
+
+    service.resolveAlert(nonExistentAlertId);
+
+    // Ensure a console log was called with the correct message
+    expect(consoleSpy).toHaveBeenCalledWith('Promise is not in the list.');
+
+    // Restore the original console.log
+    consoleSpy.mockRestore();
+  });
+});
