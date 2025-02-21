@@ -43,6 +43,11 @@
                 "glob": "luigi-client*.js",
                 "input": "node_modules/@luigi-project/client",
                 "output": "/luigi-client"
+              },
+              {
+                "glob": "luigi-element*.js",
+                "input": "node_modules/@luigi-project/client",
+                "output": "/luigi-client"
               }
             ],
             "styles": [

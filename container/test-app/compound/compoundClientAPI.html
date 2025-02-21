@@ -82,6 +82,9 @@
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
         console.debug('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        if (event.detail.id !== 'timer') {
+          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
+        }
       });
 
       compoundContainer.compoundConfig = {
@@ -202,12 +205,6 @@
           }
         },
       );
-      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
-        if (event.detail.id !== 'timer') {
-          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
-        }
-      });
-
       compoundContainer.addEventListener(
         MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
         (event) => {
