@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
-    "@luigi-project/client": "2.18.3",
-    "@luigi-project/core": "2.18.3",
-    "esbuild": "^0.18.20",
+    "@luigi-project/client": "2.19.2",
+    "@luigi-project/core": "2.19.2",
+    "esbuild": "^0.25.0",
     "hast-util-has-property": "3.0.0",
     "lodash.orderby": "^4.6.0",
     "rehype-raw": "^7.0.0",
@@ -43,7 +43,7 @@
     "@rollup/plugin-json": "^6.0.0",
     "@sveltejs/adapter-static": "^3.0.6",
     "@sveltejs/kit": "^2.8.5",
-    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@types/lodash.orderby": "^4.6.7",
     "algoliasearch": "^4.17.0",
     "hastscript": "^9.0.0",
@@ -59,8 +59,8 @@
     "svelte": "^4.2.19",
     "svelte-check": "^4.1.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.3",
-    "vitest": "^2.0.5"
+    "vite": "^5.4.14",
+    "vitest": "^2.1.9"
   },
   "engines": {
     "node": ">=18.19.1"

@@ -82,6 +82,52 @@
         });
       });
 
+      var alertSettings = {};
+
+      const showAnAlert = (alertSettings, luigiContainer) => {
+        var popup = document.createElement('div');
+        var text = document.createTextNode(alertSettings.settings.text);
+        popup.appendChild(text);
+
+        var dismissButton = document.createElement('BUTTON');
+        dismissButton.setAttribute('id', 'dismissAlert');
+        var buttonText = document.createTextNode('Dismiss Alert');
+        dismissButton.addEventListener('click', () => {
+          console.log(
+            'Dismiss clicked core side. Sending close message to mf of id =',
+            alertSettings.settings.id,
+          );
+          luigiContainer.closeAlert(
+            alertSettings.settings.id,
+            'neverShowItAgain from wc',
+          );
+          popup.style.display = 'none';
+        });
+        dismissButton.appendChild(buttonText);
+        const closeButton = document.createElement('button');
+        if (alertSettings.settings.notifyAlertClosed) {
+          closeButton.innerHTML = 'Close Alert using notifyAlertClosed';
+        } else {
+          closeButton.innerHTML = 'Close Alert';
+        }
+        closeButton.setAttribute('id', 'closeAlert');
+        closeButton.addEventListener('click', () => {
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(alertSettings.settings.id);
+          } else {
+            luigiContainer.closeAlert(alertSettings.settings.id);
+          }
+          popup.style.display = 'none';
+        });
+        popup.appendChild(dismissButton);
+        popup.appendChild(closeButton);
+
+        popup.style.visibility = 'visible';
+        popup.id = 'pop';
+        document.getElementsByTagName('body')[0].appendChild(popup);
+        return dismissButton;
+      };
+
       [...document.querySelectorAll('luigi-container')].forEach((luigiContainer) => {
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, (event) => {
           console.log(event.detail);
@@ -90,6 +136,9 @@
         luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
           console.log(event.detail);
           alert(event.detail.text);
+          const settings = event.detail;
+          alertSettings.settings = settings;
+          showAnAlert(alertSettings, luigiContainer);
         });
         luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
           console.log(event.detail);

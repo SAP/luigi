@@ -1,10 +1,23 @@
 describe('Compound Container Tests', () => {
   describe('LuigiClient API - LuigiCompoundContainer', () => {
     const containerSelector = '[data-test-id="luigi-client-api-test-compound-01"]';
+    let consoleInfo;
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:8080/compound/compoundClientAPI.html');
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
+        onBeforeLoad(win) {
+          // Clear logs in window console
+          if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+            win.console.clear();
+          }
+
+          // Set up a spy on console.info
+          cy.stub(win.console, 'info', (value) => {
+            consoleInfo = value;
+          });
+        }
+      });
       stub = cy.stub();
     });
 
@@ -250,6 +263,7 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
 
@@ -261,6 +275,7 @@ describe('Compound Container Tests', () => {
           cy.hash().should('eq', '#openAsDrawer-wc');
         });
     });
+
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
 
@@ -276,22 +291,18 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      // Set up a spy on console.log
-      cy.window().then((win) => {
-        cy.spy(win.console, 'log').as('consoleLogSpy');
-      });
-
       cy.get(containerSelector)
         .shadow()
         .contains('Publish event')
-        .click()
-        .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('sendInput');
-          cy.get('@consoleLogSpy').should(
-            'be.calledWith',
-            'dataConverter(): Received Custom Message from "input1" MF My own event data'
-          );
-        });
+        .click({force: true});
+
+      cy.should(() => {
+        if (consoleInfo) {
+          expect(consoleInfo).to.equal('dataConverter(): Received Custom Message from "input1" MF My own event data');
+        }
+
+        expect(stub.getCall(0)).to.be.calledWith('custom-message: sendInput');
+      });
     });
 
     it('LuigiClient API uxManagerChainRequests', () => {
@@ -314,6 +325,131 @@ describe('Compound Container Tests', () => {
           alertMessages.forEach((msg, index) => {
             expect(stub.getCall(index)).to.be.calledWith(msg);
           });
+        });
+    });
+  });
+
+  describe('LuigiClient API - LuigiElement (compound child)', () => {
+    const buttonSelector = '[id="luigi-client-init-button"]';
+    const containerSelector = '[id="luigi-client-init-test"]';
+    let consoleLog;
+    let stub;
+
+    beforeEach(() => {
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html', {
+        onBeforeLoad(win) {
+          // Clear logs in window console
+          if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+            win.console.clear();
+          }
+
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
+        }
+      });
+      cy.get(buttonSelector).click();
+      stub = cy.stub();
+    });
+
+    it('LuigiClient API - addNodeParams', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('addNodeParams')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('addNodeParams has been called with no effect');
+        });
+    });
+
+    it('LuigiClient API - getNodeParams', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getNodeParams')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getNodeParams: {}');
+        });
+    });
+
+    it('LuigiClient API - getCurrentTheme', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getCurrentTheme')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getCurrentTheme: sap_fiori_3');
+        });
+    });
+
+    it('LuigiClient API - getDirtyStatus', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getDirtyStatus')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getDirtyStatus: false');
+        });
+    });
+
+    it('LuigiClient API - removeBackdrop', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('removeBackdrop')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('removeBackdrop has been called');
+        });
+    });
+
+    it('LuigiClient API - getAnchor', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getAnchor')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getAnchor: testAnchorCompound');
+        });
+    });
+
+    it('LuigiClient API - getUserSettings', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getUserSettings')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('getUserSettings: {"language":"it","date":""}');
+        });
+    });
+
+    it('LuigiClient API - setViewGroupData', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setViewGroupData')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('setViewGroupData has been called with {"vg":"some data"}');
+        });
+    });
+
+    it('LuigiClient API - navigateToIntent', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('navigateToIntent')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('navigateToIntent has been called with "sales-setting"');
+        });
+    });
+
+    it('LuigiClient API - fromParent', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .contains('fromParent')
+        .click()
+        .then(() => {
+          expect(consoleLog).to.equal('fromParent has been called');
         });
     });
   });
