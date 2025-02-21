@@ -600,7 +600,7 @@
                   />
                 {:else}
                   <button
-                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
+                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-shellbar__avatar--circle"
                     aria-expanded="true"
                     aria-haspopup="true"
                     title={userInfo.name ? userInfo.name : undefined}

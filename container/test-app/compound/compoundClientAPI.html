@@ -47,11 +47,14 @@
     <button id="luigi-client-init-button" style="margin: 25px 0 10px">
       this.LuigiClient.luigiClientInit();
     </button>
-    <div style="border: solid 1px red; height: 100px">
+    <div style="border: solid 1px red; height: 150px">
       <luigi-compound-container
         id="luigi-client-init-test"
         webcomponent="true"
         context='{"content":" -- luigi-client-init-test --"}'
+        anchor="testAnchorCompound"
+        user-settings='{"language":"it", "date":""}'
+        theme="sap_fiori_3"
         defer-init="false"
       ></luigi-compound-container>
     </div>
@@ -79,6 +82,9 @@
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
         console.debug('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        if (event.detail.id !== 'timer') {
+          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
+        }
       });
 
       compoundContainer.compoundConfig = {
@@ -119,7 +125,7 @@
                 name: 'sendInput',
                 action: 'update',
                 dataConverter: (data) => {
-                  console.log(
+                  console.info(
                     'dataConverter(): Received Custom Message from "input1" MF ' + data,
                   );
                   return 'new text: ' + data;
@@ -199,12 +205,6 @@
           }
         },
       );
-      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
-        if (event.detail.id !== 'timer') {
-          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
-        }
-      });
-
       compoundContainer.addEventListener(
         MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
         (event) => {
@@ -314,6 +314,10 @@
         children: [
           {
             viewUrl: './compound/luigi-client-init-wc/luigi-client-init-wc.js',
+            layoutConfig: {
+              row: '1',
+              column: '1 / -1',
+            },
           },
         ],
       };

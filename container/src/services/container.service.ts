@@ -24,7 +24,7 @@ export class ContainerService {
   sendCustomMessageToIframe(iframeHandle: IframeHandle, msg: object, msgName?: string) {
     const messageName = msgName || 'custom';
 
-    if (iframeHandle.iframe.contentWindow) {
+    if (iframeHandle?.iframe?.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
       if (messageName === 'custom') {
         iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin);
@@ -119,7 +119,10 @@ export class ContainerService {
                   {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
                     context: targetCnt.context || {},
-                    authData: targetCnt.authData || {}
+                    authData: targetCnt.authData || {},
+                    nodeParams: targetCnt.nodeParams || {},
+                    searchParams: targetCnt.searchParams || {},
+                    pathParams: targetCnt.pathParams || {}
                   },
                   event.origin
                 );

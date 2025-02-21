@@ -512,11 +512,12 @@ Returns **void**
 ### closeAlert
 
 A function that notifies the microfrontend that the opened alert has been closed.
+This function is deprecated, please use `notifyAlertClosed`.
 
 #### Parameters
 
 *   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
-*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the key specifying which dismiss link was clicked on the alert message
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key specifying which dismiss link was clicked on the alert message (optional)
 
 #### Examples
 
@@ -529,6 +530,28 @@ Returns **void**
 **Meta**
 
 *   **since**: 1.0.0
+*   **deprecated**: This is deprecated.
+
+### notifyAlertClosed
+
+A function that notifies the microfrontend that the opened alert has been closed.
+
+#### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key specifying which dismiss link was clicked on the alert message (optional)
+
+#### Examples
+
+```javascript
+containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: 1.6.0
 
 ### init
 
