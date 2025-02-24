@@ -1,5 +1,10 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+  } from 'svelte';
   import { GenericHelpers } from '../utilities/helpers';
   import { GlobalSearchHelperClass } from '../utilities/helpers/global-search-helpers';
   import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
@@ -19,7 +24,9 @@
 
   onMount(async () => {
     search = globalSearchConfig;
-    cancelBtn = search.globalSearchCenteredCancelButton ? search.globalSearchCenteredCancelButton : cancelBtn;
+    cancelBtn = search.globalSearchCenteredCancelButton
+      ? search.globalSearchCenteredCancelButton
+      : cancelBtn;
     globalSearchHelper.setSearchPlaceholder(inputElem);
     globalSearchHelper.getCustomRenderer();
     globalSearchHelper.handleVisibilityGlobalSearch();
@@ -54,13 +61,18 @@
   }
 
   function searchBtnClicked() {
-    if (search && GenericHelpers.isFunction(search.searchProvider.onSearchBtnClick)) {
+    if (
+      search &&
+      GenericHelpers.isFunction(search.searchProvider.onSearchBtnClick)
+    ) {
       search.searchProvider.onSearchBtnClick();
     }
   }
 
   function renderClearBtn() {
-    inputElem && inputElem.value ? (displayClearSearchFieldBtn = true) : (displayClearSearchFieldBtn = false);
+    inputElem && inputElem.value
+      ? (displayClearSearchFieldBtn = true)
+      : (displayClearSearchFieldBtn = false);
   }
 
   function clearSearchField() {
@@ -74,7 +86,12 @@
   }
 
   function handleKeydown(result, event) {
-    globalSearchHelper.handleKeydown(result, event, inputElem, customSearchItemRendererSlotContainer);
+    globalSearchHelper.handleKeydown(
+      result,
+      event,
+      inputElem,
+      customSearchItemRendererSlotContainer,
+    );
   }
 
   export function onActionClick(searchResultItem) {
@@ -82,22 +99,31 @@
   }
 
   export function toggleSearch() {
-    globalSearchHelper.toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, customSearchItemRendererSlot);
+    globalSearchHelper.toggleSearch(
+      isSearchFieldVisible,
+      displaySearchResult,
+      inputElem,
+      customSearchItemRendererSlot,
+    );
   }
 </script>
 
 <svelte:window on:click={closeSearchResult} on:blur={closeSearchResult} />
 <div
-  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible ? 'lui-global-search-mobile--active' : ''}"
+  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible
+    ? 'lui-global-search-mobile--active'
+    : ''}"
 >
   <div class="fd-popover">
     <div
       class="luigi-search fd-shellbar__group"
       on:click|stopPropagation={() => {}}
-      inert={!isSearchFieldVisible}
+      aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
     >
-      <div class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field">
+      <div
+        class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field"
+      >
         {#if search && search.disableInputHandlers}
           <input
             type="text"
@@ -152,26 +178,41 @@
         >
           <nav class="fd-menu">
             {#if searchResult}
-              <ul class="fd-menu__list fd-menu__list--top" bind:this={customSearchItemRendererSlotContainer}>
+              <ul
+                class="fd-menu__list fd-menu__list--top"
+                bind:this={customSearchItemRendererSlotContainer}
+              >
                 {#each searchResult as result, index}
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={(event) => onSearchResultItemSelected(result, event)}
+                    on:click={(event) =>
+                      onSearchResultItemSelected(result, event)}
                     on:keyup={(event) => handleKeydown(result, event)}
                     tabindex="0"
                   >
                     {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-missing-attribute -->
-                      <a class="fd-menu__link" on:click|preventDefault={() => {}}>
+                      <a
+                        class="fd-menu__link"
+                        on:click|preventDefault={() => {}}
+                      >
                         <div class="fd-product-switch__text">
-                          <div class="fd-product-switch__title">{result.label}</div>
-                          <div class="fd-product-switch__subtitle">{result.description}</div>
+                          <div class="fd-product-switch__title">
+                            {result.label}
+                          </div>
+                          <div class="fd-product-switch__subtitle">
+                            {result.description}
+                          </div>
                         </div>
                       </a>
                     {:else}
-                      {@html renderCustomSearchItem(result, customSearchItemRendererSlotContainer, index)}
+                      {@html renderCustomSearchItem(
+                        result,
+                        customSearchItemRendererSlotContainer,
+                        index,
+                      )}
                     {/if}
                   </li>
                 {/each}
@@ -299,7 +340,7 @@
       padding-left: 1rem;
       padding-right: 0.25rem;
       .fd-shellbar__input-group {
-        margin-top: 6px;
+        // margin-top: 6px;
       }
     }
 
@@ -317,6 +358,7 @@
       .fd-shellbar__button {
         margin-top: 4px;
       }
+      
     }
     .lui-global-search-btn {
       right: 0;
@@ -338,34 +380,21 @@
   :global(.fd-shellbar__group) {
     flex-grow: 1;
   }
-
-  @media (max-width: 599px) {
-    :global(.lui-global-search-btn) {
-      display: inline-block;
-    }
-
-    :global(.lui-global-search-input) {
-      display: none;
-    }
-  }
-
-  @media (min-width: 600px) {
-    :global(.lui-global-search-btn) {
-      display: none;
-    }
-
-    :global(.lui-global-search-input) {
-      display: inline-block;
-    }
-  }
-
   @media (max-width: 599px) {
     :global(.fd-shellbar__logo) {
       display: none;
     }
 
-    :global(.fd-input-group.fd-shellbar__input-group.luigi-search-input-ctn.fd-shellbar__search-field) {
+    :global(
+        .fd-input-group.fd-shellbar__input-group.luigi-search-input-ctn.fd-shellbar__search-field
+      ) {
       min-width: 0;
     }
   }
+
+  @media (min-width: 600px) {
+    :global(.fd-shellbar__group.lui-global-search-cancel-btn.lui-global-search-cancel-btn--active) {
+      display: none;
+      }
+    }
 </style>
