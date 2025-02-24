@@ -180,7 +180,7 @@
           />
         {:else}
           <span
-            class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+            class="fd-avatar fd-avatar--xl fd-avatar--circle fd-user-menu__avatar"
             aria-label="Avatar"
           >
             {userInfo.initials ? userInfo.initials : ''}
