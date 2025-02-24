@@ -294,14 +294,14 @@
     .lui-global-search-input.lui-global-search-mobile--active {
       position: absolute;
       display: block;
-      //background-color: var(--sapShellColor, #354a5f);
+      background-color: var(--sapShellColor, #354a5f);
       width: calc(100% - 90px);
       left: 0;
       top: 0;
-      // height: 100%;
       z-index: 2;
       padding-left: 1rem;
       padding-right: 0.25rem;
+      height: 40px;
     }
 
     .lui-global-search-cancel-btn.lui-global-search-cancel-btn--active {
@@ -310,11 +310,12 @@
       right: 0;
       display: block;
       display: inline-block;
-      //background-color: var(--sapShellColor, #354a5f);
+      background-color: var(--sapShellColor, #354a5f);
       top: 0;
       z-index: 2;
       width: 90px;
-      // height: 100%;
+      height: 40px;
+      
       .fd-shellbar__button {
         margin-top: 4px;
       }
