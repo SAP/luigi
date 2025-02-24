@@ -363,5 +363,9 @@
     :global(.fd-shellbar__logo) {
       display: none;
     }
+
+    :global(.fd-input-group.fd-shellbar__input-group.luigi-search-input-ctn.fd-shellbar__search-field) {
+      min-width: 0;
+    }
   }
 </style>
