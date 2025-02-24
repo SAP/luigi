@@ -670,7 +670,6 @@
                             role="treeitem"
                             aria-selected={node === selectedNode}
                             aria-expanded="false"
-                            tabindex="-1"
                           >
                             <a
                               class="fd-navigation__link {node === selectedNode ? 'is-selected' : ''} lui-hideOnHover"
@@ -683,7 +682,9 @@
                               on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
-                              on:mouseup={(event) => { isSemiCollapsed && event.target.blur()}}
+                              on:mouseup={(event) => {
+                                isSemiCollapsed && event.target.blur();
+                              }}
                             >
                               {#if node.icon}
                                 {#if isOpenUIiconName(node.icon)}
