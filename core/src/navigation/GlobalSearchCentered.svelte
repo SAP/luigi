@@ -315,7 +315,7 @@
       z-index: 2;
       width: 90px;
       height: 40px;
-      
+
       .fd-shellbar__button {
         margin-top: 4px;
       }
