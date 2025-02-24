@@ -362,7 +362,7 @@ class Navigation {
         label: '+ New Environment (bottom)',
         link: '/create-environment',
         position: 'bottom', // top or bottom
-        clickHandler: node => {
+        clickHandler: (node) => {
           // called BEFORE route change
           return true; // route change will be done using link value (if defined)
           // return false // route change will not be done even if link attribute is defined
@@ -372,7 +372,7 @@ class Navigation {
         label: '+ New Project',
         link: '/projects',
         position: 'bottom',
-        clickHandler: node => {
+        clickHandler: (node) => {
           const p = addProject();
           Luigi.configChanged('navigation');
           Luigi.showAlert({
@@ -390,7 +390,7 @@ class Navigation {
         label: '\u2212 Remove Project',
         link: '/projects',
         position: 'bottom',
-        clickHandler: node => {
+        clickHandler: (node) => {
           const p = removeProject();
           Luigi.configChanged('navigation');
           Luigi.showAlert({
@@ -413,8 +413,8 @@ class Navigation {
     lazyloadOptions: true, // load options on click instead on page load
     options: () =>
       [...Array(10).keys()]
-        .filter(n => n !== 0)
-        .map(n => ({
+        .filter((n) => n !== 0)
+        .map((n) => ({
           label: 'Environment ' + n, // (i.e mapping between what the user sees and what is taken to replace the dynamic part for the dynamic node)
           pathValue: 'env' + n // will be used to replace dynamic part
         })),
@@ -426,7 +426,7 @@ class Navigation {
      * context (option) is not listed in available options,
      * or if options have not been fetched yet
      */
-    fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase()),
+    fallbackLabelResolver: (id) => id.replace(/\b\w/g, (l) => l.toUpperCase()),
     useFallbackLabelCache: true
   };
 
@@ -444,8 +444,8 @@ class Navigation {
     ];
 
     getAllProjectsSync()
-      .filter(project => project.id !== 'tabNav')
-      .forEach(project => {
+      .filter((project) => project.id !== 'tabNav')
+      .forEach((project) => {
         items.push({
           icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
           label: project.name,
@@ -477,8 +477,8 @@ class Navigation {
     ];
 
     getAllProjectsSync()
-      .filter(project => project.id !== 'tabNav')
-      .forEach(project => {
+      .filter((project) => project.id !== 'tabNav')
+      .forEach((project) => {
         items.push({
           icon: '',
           label: project.name,
@@ -496,7 +496,7 @@ class Navigation {
     },
     items: this.getProfileItems,
     staticUserInfoFn: () => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         resolve({
           name: 'Static User',
           initials: 'LU',
@@ -535,4 +535,9 @@ class Navigation {
   };
 }
 
-export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
+const navConfig = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
+
+export const navigation = {
+  ...navConfig,
+  validWebcomponentUrls: ['https://luigiwebcomponents.gitlab.io/.?']
+};

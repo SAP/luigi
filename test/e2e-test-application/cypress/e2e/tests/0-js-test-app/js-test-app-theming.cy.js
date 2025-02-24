@@ -34,10 +34,8 @@ describe('JS-TEST-APP 2', () => {
     it('Client get and set theme', () => {
       cy.visitTestApp('/theming', newConfig);
 
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .find('h2')
-          .contains('light');
+      cy.getIframeBody().then(($body) => {
+        cy.wrap($body).find('h2').contains('light');
       });
     });
 
@@ -49,7 +47,7 @@ describe('JS-TEST-APP 2', () => {
       };
       cy.visitTestApp('/', newConfig);
 
-      cy.get('iframe').should(ifr => {
+      cy.get('iframe').should((ifr) => {
         const url = new URL(ifr.attr('src'));
         expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
           '/examples/microfrontends/multipurpose.html?sap-theme=light'
@@ -61,14 +59,14 @@ describe('JS-TEST-APP 2', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
         queryStringParameter: {
           keyName: 'sap-theme',
-          value: themeId => {
+          value: (themeId) => {
             return themeId + 'LUIGI';
           }
         }
       };
       cy.visitTestApp('/', newConfig);
 
-      cy.get('iframe').should(ifr => {
+      cy.get('iframe').should((ifr) => {
         const url = new URL(ifr.attr('src'));
         expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
           '/examples/microfrontends/multipurpose.html?sap-theme=lightLUIGI'
@@ -123,7 +121,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
 
       cy.reload();
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
@@ -131,7 +129,7 @@ describe('JS-TEST-APP 2', () => {
 
     it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
       cy.visitTestApp('/', newConfig);
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
       cy.reload();
@@ -146,7 +144,7 @@ describe('JS-TEST-APP 2', () => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.responsiveNavigation = 'Fiori3';
       cy.visitTestApp('/', newConfig);
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.configChanged('settings');
       });
     });
@@ -162,7 +160,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
 
       cy.reload();
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
@@ -170,11 +168,11 @@ describe('JS-TEST-APP 2', () => {
 
     it('should execute Core API function collapseLeftSideNav() and open the nav in Fiori3 settings', () => {
       cy.visitTestApp('/', newConfig);
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
       cy.reload();
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
@@ -248,21 +246,15 @@ describe('JS-TEST-APP 2', () => {
     it('User settings dialog', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.ux().openUserSettings();
       });
       cy.get('.lui-usersettings-dialog').should('be.visible');
 
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
-        .eq(1)
-        .should('contain', 'Language & Region');
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
-        .eq(1)
-        .click();
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item').eq(1).should('contain', 'Language & Region');
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item').eq(1).click();
 
-      cy.get('[data-testid="lui-us-enum-0"]')
-        .eq(0)
-        .click();
+      cy.get('[data-testid="lui-us-enum-0"]').eq(0).click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
       cy.get('[data-testid="lui-us-input0"]').should('contain', 'Deutsch');
 
@@ -270,13 +262,9 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="lui-us-option0_1"]').click();
       cy.get('[data-testid="lui-us-input0"]').should('contain', 'English');
 
-      cy.get('[data-testid="lui-us-enum-0"]')
-        .eq(0)
-        .click();
+      cy.get('[data-testid="lui-us-enum-0"]').eq(0).click();
       cy.get('[data-testid="lui-us-enum-0"]').should('be.visible');
-      cy.get('[data-testid="lui-us-enum-0"]')
-        .eq(0)
-        .click();
+      cy.get('[data-testid="lui-us-enum-0"]').eq(0).click();
       cy.get('[data-testid="lui-us-option0_0"]').should('not.be.visible');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
@@ -286,18 +274,14 @@ describe('JS-TEST-APP 2', () => {
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
-      cy.window().then(win => {
+      cy.window().then((win) => {
         win.Luigi.ux().openUserSettings();
       });
 
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
-        .eq(2)
-        .should('contain', 'Theme');
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
-        .eq(2)
-        .click();
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item').eq(2).should('contain', 'Theme');
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item').eq(2).click();
 
-      cy.get('.iframeUserSettingsCtn iframe').should(ifr => {
+      cy.get('.iframeUserSettingsCtn iframe').should((ifr) => {
         expect(ifr[0].src).to.equal('http://localhost:4500/examples/microfrontends/customUserSettingsMf.html');
       });
     });
@@ -318,10 +302,8 @@ describe('JS-TEST-APP 2', () => {
 
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="bookmarkable-mf-1"]');
-      cy.window().then(win => {
-        win.Luigi.navigation()
-          .withParams({ mp: 'one' })
-          .openAsModal('/home/one');
+      cy.window().then((win) => {
+        win.Luigi.navigation().withParams({ mp: 'one' }).openAsModal('/home/one');
       });
 
       cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
@@ -335,14 +317,12 @@ describe('JS-TEST-APP 2', () => {
 
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="bookmarkable-mf-2"]');
-      cy.window().then(win => {
-        win.Luigi.navigation()
-          .withParams({ mp: 'one' })
-          .openAsModal('/home/one');
+      cy.window().then((win) => {
+        win.Luigi.navigation().withParams({ mp: 'one' }).openAsModal('/home/one');
       });
 
       cy.expectPathToBe('/home');
-      cy.location().should(location => {
+      cy.location().should((location) => {
         expect(location.search).to.eq('?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
       });
     });
@@ -414,7 +394,7 @@ describe('JS-TEST-APP 2', () => {
             breadcrumbs.appendChild(itemCmp);
           }
         });
-        breadcrumbs.addEventListener('click', event => {
+        breadcrumbs.addEventListener('click', (event) => {
           clickHandler(event.detail.item._item);
         });
         el.appendChild(breadcrumbs);
@@ -617,26 +597,67 @@ describe('JS-TEST-APP 2', () => {
       cy.visitTestApp('/home/one', newConfig);
       cy.get('#app[configversion="transferThemeVars"]');
 
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .contains('ApplyCSS')
-          .should('have.css', 'color')
-          .and('eq', 'rgb(0, 0, 0)');
-        cy.wrap($body)
-          .contains('ApplyCSS')
-          .should('have.css', 'color')
-          .and('not.equal', 'rgb(255, 0, 0)');
-        cy.wrap($body)
-          .contains('ApplyCSS')
-          .click();
-        cy.wrap($body)
-          .contains('ApplyCSS')
-          .should('have.css', 'color')
-          .and('not.equal', 'rgb(0, 0, 0)');
-        cy.wrap($body)
-          .contains('ApplyCSS')
-          .should('have.css', 'color')
-          .and('eq', 'rgb(255, 0, 0)');
+      cy.getIframeBody().then(($body) => {
+        cy.wrap($body).contains('ApplyCSS').should('have.css', 'color').and('eq', 'rgb(0, 0, 0)');
+        cy.wrap($body).contains('ApplyCSS').should('have.css', 'color').and('not.equal', 'rgb(255, 0, 0)');
+        cy.wrap($body).contains('ApplyCSS').click();
+        cy.wrap($body).contains('ApplyCSS').should('have.css', 'color').and('not.equal', 'rgb(0, 0, 0)');
+        cy.wrap($body).contains('ApplyCSS').should('have.css', 'color').and('eq', 'rgb(255, 0, 0)');
+      });
+    });
+  });
+
+  describe('SAP Horizon', () => {
+    let newConfig;
+
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.tag = 'sapHorizon';
+      (newConfig.settings.responsiveNavigation = 'Fiori3'),
+        (newConfig.settings.profileType = 'Fiori3'),
+        (newConfig.settings.experimental = {
+          profileMenuFiori3: true
+        });
+      newConfig.navigation.profile = {
+        logout: {
+          label: 'Sign Out',
+          icon: 'sys-cancel'
+        },
+        staticUserInfoFn: () => {
+          return new Promise((resolve) => {
+            resolve({
+              name: 'Static User',
+              initials: 'LU',
+              email: 'other.luigi.user@example.com',
+              description: 'Luigi Developer'
+            });
+          });
+        }
+      };
+    });
+    it('Initials background color with sap horizon and Fiori3 with profileType Fiori3', () => {
+      cy.visitTestApp('/home/one', newConfig);
+      cy.get('#app[configversion="sapHorizon"]');
+      cy.get('[data-testid="luigi-topnav-profile-initials"]').then(($el) => {
+        const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
+        expect(bgColor).to.equal('rgb(40, 110, 180)');
+      });
+      cy.get('link[href="/node_modules/@luigi-project/core/luigi.css"]').then(($link) => {
+        if ($link.length) {
+          $link.remove();
+        }
+      });
+      cy.document().then((doc) => {
+        const link = doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/node_modules/@luigi-project/core/luigi_horizon.css';
+        doc.head.appendChild(link);
+      });
+      cy.wait(500);
+
+      cy.get('[data-testid="luigi-topnav-profile-initials"]').then(($el) => {
+        const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
+        expect(bgColor).to.equal('rgb(209, 239, 255)');
       });
     });
   });
