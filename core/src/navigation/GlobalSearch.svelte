@@ -207,7 +207,7 @@
   }
 
   @media (max-width: 599px) {
-    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field){
+    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field) {
       min-width: 0;
     }
   }
