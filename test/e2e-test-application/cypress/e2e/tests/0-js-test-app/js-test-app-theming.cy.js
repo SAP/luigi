@@ -667,7 +667,6 @@ describe('JS-TEST-APP 2', () => {
         const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
         expect(bgColor).to.equal('rgb(209, 239, 255)');
       });
-
     });
   });
 });
