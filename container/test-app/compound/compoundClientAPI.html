@@ -203,6 +203,7 @@
           if (event.callback) {
             event.callback(val);
           }
+          luigiContainer.notifyConfirmationModalClosed(val);
         },
       );
       compoundContainer.addEventListener(MFEventID.CONFIRMATION_MODAL_CLOSED, (event) => {

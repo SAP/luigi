@@ -109,9 +109,9 @@ export class ContainerAPIFunctions {
    * @param iframeHandle the handle of the iframe to send the message to (optional)
    */
   notifyConfirmationModalClosed = (modalResult: boolean, iframeHandle?: IframeHandle) => {
-    const message = { confirmed: modalResult };
+    const message = { confirmed: modalResult, event: LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED };
 
-    containerService.sendCustomMessageToIframe(iframeHandle, message, LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED);
+    containerService.sendCustomMessageToIframe(iframeHandle, message);
   };
 }
 

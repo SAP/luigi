@@ -144,9 +144,12 @@
 
       luigiContainer.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event) => {
         console.log(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event);
+        const data = event.detail;
+        const val = confirm(data.body);
         alert(
-          'show-confirmation-modal message received: ' + JSON.stringify(event.detail),
+          'show-confirmation-modal message received: ' + JSON.stringify(data),
         );
+        luigiContainer.notifyConfirmationModalClosed(val);
       });
 
       luigiContainer.addEventListener(Events.CONFIRMATION_MODAL_CLOSED, (event) => {
