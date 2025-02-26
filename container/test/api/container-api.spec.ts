@@ -232,6 +232,10 @@ describe('Container Service', () => {
 
       expect(spy).toHaveBeenCalledWith(iframeHandle, { id }, LuigiInternalMessageID.ALERT_CLOSED);
     });
+  });
+
+  describe('notifyConfirmationModalClosed', () => {
+    const containerAPI = new ContainerAPIFunctions();
 
     it.each([true, false])('notifyConfirmationModalClosed method properly called', (result) => {
       // mock and spy
@@ -243,7 +247,7 @@ describe('Container Service', () => {
 
       containerAPI.notifyConfirmationModalClosed(result, iframeHandle);
 
-      expect(spy).toHaveBeenCalledWith(iframeHandle, { confirmed: result }, LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED);
+      expect(spy).toHaveBeenCalledWith(iframeHandle, { confirmed: result, event: LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED });
     });
   });
 
