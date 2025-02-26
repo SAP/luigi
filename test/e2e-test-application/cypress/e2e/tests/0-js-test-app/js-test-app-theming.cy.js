@@ -662,10 +662,12 @@ describe('JS-TEST-APP 2', () => {
       });
 
       cy.get('[data-testid="luigi-topnav-profile-initials"]').click();
+      cy.get('.lui-user-menu-fiori .fd-user-menu__avatar').should('have.class', 'fd-avatar--l');
       cy.get('.lui-user-menu-fiori .fd-user-menu__avatar').then(($el) => {
         const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
         expect(bgColor).to.equal('rgb(209, 239, 255)');
       });
+
     });
   });
 });
