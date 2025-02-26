@@ -173,13 +173,13 @@
       <div class="fd-user-menu__header">
         {#if userInfo.picture}
           <span
-            class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+            class="fd-avatar fd-avatar--l fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
             aria-label="Avatar"
             data-testid="luigi-topnav-profile-avatar"
             style="background-image:url('{userInfo.picture}')"
           />
         {:else}
-          <span class="fd-avatar fd-avatar--xl fd-avatar--circle fd-user-menu__avatar" aria-label="Avatar">
+          <span class="fd-avatar fd-avatar--l fd-avatar--circle fd-user-menu__avatar" aria-label="Avatar">
             {userInfo.initials ? userInfo.initials : ''}
           </span>
         {/if}
