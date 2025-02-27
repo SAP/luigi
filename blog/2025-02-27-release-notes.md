@@ -12,7 +12,7 @@ You can read about the new features in Luigi v2.21 in the release notes below.
 
 #### Webcomponent based micro frontends can now used in user settings dialog
 
-With this release it is possible to create and/or use web component based micro frontends in the user settings dialog. More informations can be found in our [docu](https://docs.luigi-project.io/docs/user-settings?section=webcomponent)
+With this release it is possible to display web component based micro frontends in the user settings dialog. More informations can be found in our [docu](https://docs.luigi-project.io/docs/user-settings?section=webcomponent)
 
 
 #### Bugfixes
