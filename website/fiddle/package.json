@@ -23,11 +23,11 @@
     "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
   },
   "dependencies": {
-    "@luigi-project/client": "2.20.0",
+    "@luigi-project/client": "2.21.0",
     "@luigi-project/container": "^1.6.0",
-    "@luigi-project/core": "2.20.0",
-    "@luigi-project/plugin-auth-oauth2": "^2.20.0",
-    "@luigi-project/plugin-auth-oidc": "^2.20.0",
+    "@luigi-project/core": "2.21.0",
+    "@luigi-project/plugin-auth-oauth2": "^2.21.0",
+    "@luigi-project/plugin-auth-oidc": "^2.21.0",
     "@luigi-project/plugin-auth-oidc-pkce": "^0.42.0",
     "@ui5/webcomponents": "^2.7.3",
     "@ui5/webcomponents-fiori": "^2.7.3",
