@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.0] (2025-02-27)
+
+#### :rocket: Added
+* [#4130](https://github.com/SAP/luigi/pull/4130) Web component based micro frontends in user settings ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#4163](https://github.com/SAP/luigi/pull/4163) Fix user menu popover initials bgColor ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.20.0] (2025-02-18)
 
 #### :rocket: Added
@@ -1970,3 +1983,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
 [v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
 [v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
+[v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0
