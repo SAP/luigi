@@ -245,8 +245,6 @@
     }
   }
 
-
-
   @media (min-width: 1440px) {
     :global(.lui-global-search) {
       margin-left: 3rem;
@@ -353,12 +351,14 @@
   }
 
   :global(.fd-input-group.fd-shellbar__input-group.luigi-search-input-ctn.fd-shellbar__search-field) {
-      max-width: none;
+    max-width: none;
   }
 
-  :global(.fd-input-group__addon.fd-shellbar__search-field-addon.fd-shellbar__search-cancel.fd-input-group__addon--button, 
-          .fd-input-group__addon.fd-shellbar__search-field-addon.fd-shellbar__search-submit.fd-input-group__addon--button) {
-      display: inherit;
+  :global(
+      .fd-input-group__addon.fd-shellbar__search-field-addon.fd-shellbar__search-cancel.fd-input-group__addon--button,
+      .fd-input-group__addon.fd-shellbar__search-field-addon.fd-shellbar__search-submit.fd-input-group__addon--button
+    ) {
+    display: inherit;
   }
 
   @media (min-width: 600px) {
