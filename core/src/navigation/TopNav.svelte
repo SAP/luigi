@@ -383,7 +383,8 @@
                         <BadgeCounter {node} />
                       </a>
                     {:else}
-                      <span class="fd-shellbar__button fd-button fd-button--transparent fd-separator" tabindex="-1"></span>
+                      <span class="fd-shellbar__button fd-button fd-button--transparent fd-separator" tabindex="-1"
+                      ></span>
                     {/if}
                   {:else}
                     <button
