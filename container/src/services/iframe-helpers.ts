@@ -8,7 +8,7 @@ export const getAllowRules = (allowRules: string[]) => {
   const rules = allowRules;
   rules.forEach((rule, index) => {
     rules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
-    rules[index] = (allowRules[index] as any).replaceAll('"', "'");
+    rules[index] = allowRules[index].replaceAll('"', "'");
   });
   return rules.join(' ');
 };

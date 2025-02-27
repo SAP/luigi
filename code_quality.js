@@ -1,5 +1,5 @@
 const gitChangedFiles = require('git-changed-files');
-const prettier = require('@prettier/sync');
+const prettier = require('prettier');
 const prettierConfig = require('./prettier_config.json');
 const codeQualityConfig = require('./package.json').codeQuality || {};
 const path = require('path');
@@ -107,16 +107,23 @@ const groupFilesByExtension = (files) => {
  * @param file: absolute class path
  * @param config: configuration that will be used to prettier the file.
  */
-const prettifyFile = (file, config) => {
+const prettifyFile = async (file, config) => {
   try {
-    const text = fs.readFileSync(file).toString();
-    if (prettier.check(text, config) || config?.excludedFiles?.includes(file)) {
+    if (config?.excludedFiles?.includes(file)) {
       return;
     }
 
-    console.log('Running prettier on the file: ' + file);
-    fs.writeFileSync(file, prettier.format(text, config));
-    return true;
+    const fileContent = fs.readFileSync(file).toString();
+    const isFormatted = await prettier.check(fileContent, config);
+
+    if (!isFormatted) {
+      console.log('Running prettier on the file: ' + file);
+      const format = await prettier.format(fileContent, config);
+      fs.writeFileSync(file, format);
+      return true;
+    }
+
+    return false;
   } catch (error) {
     console.log('Error in running prettier the file ' + file + ': \n' + error);
   }
@@ -140,8 +147,9 @@ const prettifyFiles = (filesByExtension) => {
       );
       return;
     }
-    files.forEach((file) => {
-      if (prettifyFile(file, config)) {
+    files.forEach(async (file) => {
+      const action = await prettifyFile(file, config);
+      if (action) {
         filesChanged++;
       }
     });

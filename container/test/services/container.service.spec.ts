@@ -1,5 +1,6 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
 import { Events } from '../../src/constants/communication';
+import type { IframeHandle, ContainerElement } from '../../src/constants/container.model';
 import { ContainerService } from '../../src/services/container.service';
 
 describe('getContainerManager messageListener', () => {
@@ -28,7 +29,7 @@ describe('getContainerManager messageListener', () => {
         dispatchEvent: (customEvent) => {
           dispatchedEvent = customEvent;
         }
-      };
+      } as ContainerElement;
     });
   });
 
@@ -93,6 +94,9 @@ describe('getContainerManager messageListener', () => {
     // Define the message to send and target Origin
     const message = {
       authData: {},
+      searchParams: {},
+      pathParams: {},
+      nodeParams: {},
       context: {},
       internal: {
         thirdPartyCookieCheck: {
@@ -419,13 +423,13 @@ describe('sendCustomMessageToIframe', () => {
 
   it('should send a custom message to the iframe', () => {
     // Arrange
-    const iframeHandle = {
+    const iframeHandle: IframeHandle = {
       iframe: {
         contentWindow: {
           postMessage: jest.fn()
         },
         src: 'https://example.com'
-      }
+      } as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
 
@@ -441,13 +445,13 @@ describe('sendCustomMessageToIframe', () => {
 
   it('should send a named message to the iframe', () => {
     // Arrange
-    const iframeHandle = {
+    const iframeHandle: IframeHandle = {
       iframe: {
         contentWindow: {
           postMessage: jest.fn()
         },
         src: 'https://example.com'
-      }
+      } as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
 
@@ -463,8 +467,8 @@ describe('sendCustomMessageToIframe', () => {
 
   it('should log an error if contentWindow is not available', () => {
     // Arrange
-    const iframeHandle = {
-      iframe: {}
+    const iframeHandle: IframeHandle = {
+      iframe: {} as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
 
@@ -507,7 +511,7 @@ describe('dispatch', () => {
 
   it('should execute the callback when provided', () => {
     // Arrange
-    const targetContainer = document.createElement('div');
+    const targetContainer = document.createElement('div') as unknown as ContainerElement;
     const eventName = 'customEvent';
     const eventData = { key: 'value' };
     targetContainer.dispatchEvent = jest.fn();
@@ -544,15 +548,15 @@ describe('getTargetContainer', () => {
       iframeHandle: {
         iframe: {
           contentWindow: 'source1'
-        }
-      }
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
     const mockContainer2 = {
       iframeHandle: {
         iframe: {
           contentWindow: 'source2'
-        }
-      }
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
 
     globalThis.__luigi_container_manager = {
@@ -576,15 +580,15 @@ describe('getTargetContainer', () => {
       iframeHandle: {
         iframe: {
           contentWindow: 'source1'
-        }
-      }
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
     const mockContainer2 = {
       iframeHandle: {
         iframe: {
           contentWindow: 'source2'
-        }
-      }
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
 
     globalThis.__luigi_container_manager = {

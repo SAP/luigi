@@ -12,12 +12,12 @@
     "public"
   ],
   "scripts": {
-    "build": "npm run sync-event-typings && npm run generate-cem  && rollup -c",
+    "build": "npm run sync-event-typings && npm run generate-cem && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
     "dev": "rollup -c -w",
-    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js public/bundle.js.map  examples/ || COPY public\\* test-app\\",
+    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js public/bundle.js.map examples/ || COPY public\\* test-app\\",
     "copyLuigiClient": "cp ../client/public/luigi-client.js test-app/iframe",
     "copyLuigiElement": "cp ../client/src/luigi-element.js test-app/compound",
     "serve": "npm run build && npm run copyLuigiClient && npm run copyLuigiElement && npm run copyBundle && sirv -D -c test-app --no-clear",
@@ -31,7 +31,6 @@
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
     "generate-cem": "node generateCEM.js"
-
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
@@ -46,6 +45,7 @@
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
+    "@typescript-eslint/typescript-estree": "^8.13.0",
     "chokidar-cli": "^3.0.0",
     "cli-color": "^2.0.4",
     "concurrently": "^7.6.0",
@@ -60,12 +60,11 @@
     "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-svelte": "7.2.2",
     "sirv-cli": "^2.0.0",
-    "svelte": "4.2.8",
+    "svelte": "4.2.19",
     "svelte-check": "3.5.0",
     "svelte-preprocess": "5.0.4",
     "tslib": "2.6.1",
     "typescript": "5.1.6",
-    "@typescript-eslint/typescript-estree": "^8.13.0",
     "typescript-eslint": "^8.13.0"
   },
   "engines": {

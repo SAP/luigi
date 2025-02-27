@@ -1,4 +1,5 @@
 import { Events } from '../constants/communication';
+import type { IframeHandle, ContainerElement } from '../constants/container.model';
 import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { GenericHelperFunctions } from '../utilities/helpers';
 
@@ -20,10 +21,10 @@ export class ContainerService {
    * @param msg the message to be sent
    * @param msgName the optional message name
    */
-  sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
+  sendCustomMessageToIframe(iframeHandle: IframeHandle, msg: object, msgName?: string) {
     const messageName = msgName || 'custom';
 
-    if (iframeHandle.iframe.contentWindow) {
+    if (iframeHandle?.iframe?.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
       if (messageName === 'custom') {
         iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin);
@@ -38,16 +39,22 @@ export class ContainerService {
   /**
    * Dispatch an event to the given target container
    * @param {string} msg the event message
-   * @param {HTMLElement} targetCnt the targeted HTML element onto which the event is dispatched
-   * @param {any} data custom data added to the event to be dispatched
+   * @param {ContainerElement} targetCnt the targeted HTML element onto which the event is dispatched
+   * @param {Object} data custom data added to the event to be dispatched
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: (any) => void, callbackName?: string): void {
+  dispatch(
+    msg: string,
+    targetCnt: ContainerElement,
+    data: object,
+    callback?: (arg?) => void,
+    callbackName?: string
+  ): void {
     const customEvent = new CustomEvent(msg, { detail: data });
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
-      (customEvent as any)[callbackName] = (data) => {
+      customEvent[callbackName] = (data) => {
         callback(data);
       };
     }
@@ -59,9 +66,9 @@ export class ContainerService {
    * Retrieves the target container based on the event source.
    *
    * @param event The event object representing the source of the container.
-   * @returns {Object| undefined} The target container object or undefined if not found.
+   * @returns {ContainerElement | undefined} The target container object or undefined if not found.
    */
-  getTargetContainer(event) {
+  getTargetContainer(event): ContainerElement | undefined {
     let cnt;
 
     globalThis.__luigi_container_manager.container.forEach((element) => {
@@ -117,7 +124,10 @@ export class ContainerService {
                         disabled: targetCnt.skipCookieCheck === 'true'
                       }
                     },
-                    authData: targetCnt.authData || {}
+                    authData: targetCnt.authData || {},
+                    nodeParams: targetCnt.nodeParams || {},
+                    searchParams: targetCnt.searchParams || {},
+                    pathParams: targetCnt.pathParams || {}
                   },
                   event.origin
                 );

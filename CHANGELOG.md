@@ -25,6 +25,88 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.0] (2025-02-27)
+
+#### :rocket: Added
+* [#4130](https://github.com/SAP/luigi/pull/4130) Web component based micro frontends in user settings ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#4163](https://github.com/SAP/luigi/pull/4163) Fix user menu popover initials bgColor ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.20.0] (2025-02-18)
+
+#### :rocket: Added
+* [#4144](https://github.com/SAP/luigi/pull/4144) Angular 19 support for client-support-angular library ([@walmazacn](https://github.com/walmazacn))
+* [#4137](https://github.com/SAP/luigi/pull/4137) Appswitcher enhancements ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#4149](https://github.com/SAP/luigi/pull/4149) Filter out empty nav groups ([@hardl](https://github.com/hardl))
+* [#4148](https://github.com/SAP/luigi/pull/4148) Fix: Wrong backgroundColor for profile initials ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4140](https://github.com/SAP/luigi/pull/4140) Accessibility tab order ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+## [v2.19.2] (2025-01-16)
+
+#### :bug: Fixed
+* [#4114](https://github.com/SAP/luigi/pull/4114) switch visibility of usersettings entry after prep of all data ([@hardl](https://github.com/hardl))
+
+
+
+## [v2.19.1] (2025-01-16)
+
+#### :bug: Fixed
+* [#4110](https://github.com/SAP/luigi/pull/4110) Fix: usersettings profile entry when set in afterInit ([@hardl](https://github.com/hardl))
+* [#4102](https://github.com/SAP/luigi/pull/4102) Fix: iconClassAttribute for sap-icons ([@hardl](https://github.com/hardl))
+
+
+
+
+## [v2.19.0] (2024-12-23)
+
+#### :rocket: Added
+* [#4078](https://github.com/SAP/luigi/pull/4078) Mitigation of potential backwards compatibility issue ([@hardl](https://github.com/hardl))
+* [#4077](https://github.com/SAP/luigi/pull/4077) getCurrentRoute in web component client api ([@hardl](https://github.com/hardl))
+
+
+
+
+
+## [v2.18.3] (2024-12-17)
+
+#### :bug: Fixed
+* [#4071](https://github.com/SAP/luigi/pull/4071) Fixes input focus in search field ([@walmazacn](https://github.com/walmazacn))
+
+
+
+## [v2.18.2] (2024-12-16)
+
+#### :bug: Fixed
+* [#4068](https://github.com/SAP/luigi/pull/4068) Fixes 'setAttribute' issue in Luigi Client ([@walmazacn](https://github.com/walmazacn))
+* [#4065](https://github.com/SAP/luigi/pull/4065) BtpLayout: Backdrop fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4058](https://github.com/SAP/luigi/pull/4058) Wrong order of productswitcher item ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.18.1] (2024-11-29)
+
+#### :bug: Fixed
+* [#4028](https://github.com/SAP/luigi/pull/4028) Auth expiration check reset ([@hardl](https://github.com/hardl))
+* [#4024](https://github.com/SAP/luigi/pull/4024) Fixes accessibility issue in navigation ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+
 ## [v2.18.0] (2024-11-05)
 
 #### :rocket: Added
@@ -1894,3 +1976,11 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
 [v2.17.0]: https://github.com/SAP/luigi/compare/v2.16.0...v2.17.0
 [v2.18.0]: https://github.com/SAP/luigi/compare/v2.17.0...v2.18.0
+[v2.18.1]: https://github.com/SAP/luigi/compare/v2.18.0...v2.18.1
+[v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2
+[v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
+[v2.19.0]: https://github.com/SAP/luigi/compare/v2.18.3...v2.19.0
+[v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
+[v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
+[v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
+[v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0

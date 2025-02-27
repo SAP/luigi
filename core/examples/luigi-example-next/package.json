@@ -5,13 +5,13 @@
   "scripts": {
     "copy:luigi-client": "cp node_modules/@luigi-project/client/luigi-client.js public",
     "dev": "npm run copy:luigi-client && next dev",
-    "build": "next build &&  npm run copy:luigi-client",
+    "build": "next build && npm run copy:luigi-client",
     "start": "next start"
   },
   "dependencies": {
-    "@luigi-project/client": "^2.14.0",
-    "@luigi-project/core": "^2.14.0",
-    "next": "14.2.10",
+    "@luigi-project/client": "^2.19.0",
+    "@luigi-project/core": "^2.19.0",
+    "next": "^14.2.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

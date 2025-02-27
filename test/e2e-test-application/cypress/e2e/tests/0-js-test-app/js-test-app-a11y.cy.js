@@ -87,16 +87,11 @@ describe('JS-TEST-APP 4', () => {
       cy.visitTestAppLoggedIn('/', newConfig);
       cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
       cy.get('[data-testid="settings-link"]').should('exist');
-      cy.get('[data-testid="settings-link"]')
-        .contains('Settings')
-        .click();
+      cy.get('[data-testid="settings-link"]').contains('Settings').click();
       cy.get('body').tab();
       cy.tab();
       cy.tab();
-      cy.get('.lui-us-navlist__item .fd-list__title')
-        .contains('Language & Region')
-        .focused()
-        .type('{enter}');
+      cy.get('.lui-us-navlist__item .fd-list__title').contains('Language & Region').focused().type('{enter}');
       cy.tab();
       cy.tab();
       cy.get('[data-testid="lui-us-enum-0"]').click(); //workaround; Does not work with 'enter' or 'space'
@@ -155,37 +150,19 @@ describe('JS-TEST-APP 4', () => {
     it('Left nav a11y', () => {
       cy.visitTestApp('/home', newConfig);
 
-      cy.get('.fd-navigation.fd-navigation--vertical')
-        .contains('Section one')
-        .click();
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('Node 1')
-        .should('not.be.visible');
+      cy.get('.fd-navigation.fd-navigation--vertical').contains('Section one').click();
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('not.be.visible');
       cy.tab();
       cy.tab();
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('My Cat')
-        .should('be.focused');
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('My Cat')
-        .focused()
-        .type('{enter}');
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('Node 1')
-        .should('be.visible');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('My Cat').should('be.focused');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('My Cat').focused().type('{enter}');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('be.visible');
       cy.tab();
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('Node 1')
-        .should('be.focused');
-      cy.get('.fd-navigation__list-item.lui-nav-entry')
-        .contains('Node 1')
-        .click();
-      cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('be.focused');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').click();
+      cy.getIframeBody({}, 0, '.iframeContainer').then((result) => {
         $iframeBody = result;
-        cy.wrap($iframeBody)
-          .find('#content')
-          .contains('Content of node 1')
-          .should('be.visible');
+        cy.wrap($iframeBody).find('#content').contains('Content of node 1').should('be.visible');
       });
     });
     it('More Btn in left nav', () => {
@@ -202,12 +179,41 @@ describe('JS-TEST-APP 4', () => {
       cy.get('.lui-nav-more .fd-navigation__link').should('not.have.focus');
       cy.tab();
       cy.get('.lui-nav-more .fd-navigation__link').should('have.focus');
-      cy.get('.lui-nav-more .fd-navigation__link')
-        .focused()
-        .type('{enter}');
+      cy.get('.lui-nav-more .fd-navigation__link').focused().type('{enter}');
       cy.get('.fd-navigation__list-container.fd-navigation__list-container--menu').should('be.visible');
       cy.tab();
       cy.get('.lui-moreItems .fd-navigation__list-item.lui-nav-entry .fd-navigation__link').should('have.focus');
+    });
+  });
+
+  describe('Shellbar logo gets focused first', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.navigation.addNavHrefs = true;
+    });
+    it('Shellbar logo gets focused first', () => {
+      cy.visitTestApp('/home', newConfig);
+      cy.window().then((win) => {
+        win.focus();
+      });
+      cy.get('body').click();
+      cy.tab();
+      cy.get('.fd-shellbar__logo').should('have.focus');
+    });
+    it('Shellbar logo gets focused first with btpLayout', () => {
+      newConfig.settings.btpToolLayout = true;
+      newConfig.settings.experimental = {
+        btpToolLayout: true
+      };
+      cy.visitTestApp('/home', newConfig);
+      cy.window().then((win) => {
+        win.focus();
+      });
+      cy.get('body').click();
+      cy.tab();
+      cy.tab();
+      cy.get('.fd-shellbar__logo').should('have.focus');
     });
   });
 });

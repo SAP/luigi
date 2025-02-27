@@ -62,11 +62,13 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { Events } from './constants/communication';
+  import type { ContainerElement } from './constants/container.model';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
-  import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
 
+  /* eslint-disable */
   export let activeFeatureToggleList: string[];
   export let anchor: string;
   export let clientPermissions: any;
@@ -86,10 +88,11 @@
   export let userSettings: any;
   export let viewurl: string;
   export let webcomponent: any;
+  /* eslint-enable */
 
   let containerInitialized = false;
-  let mainComponent: HTMLElement;
-  let eventBusElement: HTMLElement;
+  let mainComponent: ContainerElement;
+  let eventBusElement: ContainerElement;
 
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
@@ -114,13 +117,15 @@
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
     if (!compoundConfig || containerInitialized) {
       return;
     }
-    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+    thisComponent.updateContext = (contextObj: object, internal?: object) => {
       const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
       rootElement._luigi_mfe_webcomponent.context = contextObj;
+      context = contextObj;
 
       const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
       if (compoundChildrenQueryElement) {
@@ -149,14 +154,14 @@
     }
     webcomponentService
       .renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx)
-      .then((compCnt) => {
-        eventBusElement = compCnt as HTMLElement;
+      .then((compCnt: ContainerElement) => {
+        eventBusElement = compCnt;
         if (skipInitCheck || !node.viewUrl) {
           thisComponent.initialized = true;
           setTimeout(() => {
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           });
-        } else if ((eventBusElement as any).LuigiClient && !(eventBusElement as any).deferLuigiClientWCInit) {
+        } else if (eventBusElement.LuigiClient && !eventBusElement.deferLuigiClientWCInit) {
           thisComponent.initialized = true;
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
@@ -166,6 +171,7 @@
   };
 
   onMount(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const thisComponent: any =
       mainComponent.getRootNode() === document
         ? mainComponent.parentNode

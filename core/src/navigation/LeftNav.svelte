@@ -253,7 +253,7 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler);
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, { ...navHeader, context: pathData._context });
     }
   };
 
@@ -338,7 +338,17 @@
           potentialSuperCat.entries.push(entry);
         }
       });
-      return converted;
+      return converted.filter((group) => {
+        if (group.entries && group.entries.length > 0) {
+          for (let index = 0; index < group.entries.length; index++) {
+            const [key, nodes] = group.entries[index];
+            if (nodes.filter((node) => !node.hideFromNav && node.label).length > 0) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
     } else {
       return entries;
     }
@@ -672,6 +682,9 @@
                               on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
+                              on:mouseup={(event) => {
+                                isSemiCollapsed && event.target.blur();
+                              }}
                             >
                               {#if node.icon}
                                 {#if isOpenUIiconName(node.icon)}
