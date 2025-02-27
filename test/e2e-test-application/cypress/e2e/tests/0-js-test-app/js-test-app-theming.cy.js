@@ -635,6 +635,7 @@ describe('JS-TEST-APP 2', () => {
         }
       };
     });
+
     it('Initials background color with sap horizon and Fiori3 with profileType Fiori3', () => {
       cy.visitTestApp('/home/one', newConfig);
       cy.get('#app[configversion="sapHorizon"]');
@@ -656,6 +657,13 @@ describe('JS-TEST-APP 2', () => {
       cy.wait(500);
 
       cy.get('[data-testid="luigi-topnav-profile-initials"]').then(($el) => {
+        const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
+        expect(bgColor).to.equal('rgb(209, 239, 255)');
+      });
+
+      cy.get('[data-testid="luigi-topnav-profile-initials"]').click();
+      cy.get('.lui-user-menu-fiori .fd-user-menu__avatar').should('have.class', 'fd-avatar--l');
+      cy.get('.lui-user-menu-fiori .fd-user-menu__avatar').then(($el) => {
         const bgColor = getComputedStyle($el[0]).getPropertyValue('background-color').trim();
         expect(bgColor).to.equal('rgb(209, 239, 255)');
       });
