@@ -1972,64 +1972,66 @@
         {burgerTooltip}
       />
     {/if}
-    {#if !(hideNav || hideSideNav)}
-      <LeftNav
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-        on:resizeTabNav={onResizeTabNav}
-        {burgerTooltip}
-      />
-    {/if}
-    <Backdrop disable={disableBackdrop}>
-      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-      <div
-        class="fd-page iframeContainer"
-        class:lui-split-view={mfSplitView.displayed}
-        class:lui-collapsed={mfSplitView.collapsed}
-        tabindex="0"
-        use:init
-      >
-        <Backdrop area="main" disable={disableBackdrop} />
-        <div class="wcContainer" />
-      </div>
-      {#if mfSplitView.displayed}
-        <SplitView
-          splitViewSettings={mfSplitView.settings}
-          collapsed={mfSplitView.collapsed}
-          nodepath={mfSplitView.nodepath}
-          on:iframeCreated={splitViewIframeCreated}
-          on:statusChanged={splitViewStatusChanged}
-          on:wcCreated={splitViewWCCreated}
-          {disableBackdrop}
+    <div class="lui-content-wrapper">
+      {#if !(hideNav || hideSideNav)}
+        <LeftNav
+          pathData={navigationPath}
+          {pathParams}
+          on:handleClick={handleNavClick}
+          on:resizeTabNav={onResizeTabNav}
+          {burgerTooltip}
         />
       {/if}
-    </Backdrop>
-    {#if showLoadingIndicator}
-      <div class="fd-page spinnerContainer appSpinner fade-out" aria-hidden="false" aria-label="Loading">
+      <Backdrop disable={disableBackdrop}>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div
-          class="fd-busy-indicator fd-busy-indicator--m"
-          aria-hidden="false"
-          aria-label="Loading"
-          data-testid="luigi-loading-spinner"
+          class="fd-page iframeContainer"
+          class:lui-split-view={mfSplitView.displayed}
+          class:lui-collapsed={mfSplitView.collapsed}
+          tabindex="0"
+          use:init
         >
-          <div class="fd-busy-indicator__circle" />
-          <div class="fd-busy-indicator__circle" />
-          <div class="fd-busy-indicator__circle" />
+          <Backdrop area="main" disable={disableBackdrop} />
+          <div class="wcContainer" />
         </div>
-      </div>
-    {/if}
-
-    {#if !hideNav}
-      <GlobalNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
-      {#if breadcrumbsEnabled}
-        <Breadcrumb pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
+        {#if mfSplitView.displayed}
+          <SplitView
+            splitViewSettings={mfSplitView.settings}
+            collapsed={mfSplitView.collapsed}
+            nodepath={mfSplitView.nodepath}
+            on:iframeCreated={splitViewIframeCreated}
+            on:statusChanged={splitViewStatusChanged}
+            on:wcCreated={splitViewWCCreated}
+            {disableBackdrop}
+          />
+        {/if}
+      </Backdrop>
+      {#if showLoadingIndicator}
+        <div class="fd-page spinnerContainer appSpinner fade-out" aria-hidden="false" aria-label="Loading">
+          <div
+            class="fd-busy-indicator fd-busy-indicator--m"
+            aria-hidden="false"
+            aria-label="Loading"
+            data-testid="luigi-loading-spinner"
+          >
+            <div class="fd-busy-indicator__circle" />
+            <div class="fd-busy-indicator__circle" />
+            <div class="fd-busy-indicator__circle" />
+          </div>
+        </div>
       {/if}
-    {/if}
 
-    {#if tabNav && !hideNav}
-      <TabNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} {resizeTabNavToggle} />
-    {/if}
+      {#if !hideNav}
+        <GlobalNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
+        {#if breadcrumbsEnabled}
+          <Breadcrumb pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
+        {/if}
+      {/if}
+
+      {#if tabNav && !hideNav}
+        <TabNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} {resizeTabNavToggle} />
+      {/if}
+    </div>
   {/if}
 </div>
 
@@ -2042,6 +2044,17 @@
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
     --luigi__horizontal-nav--height: 2.75rem;
+  }
+
+  #app:not(.btp-layout) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .lui-content-wrapper {
+    flex: 1;
+    position: relative;
   }
 
   .fd-tool-layout {
@@ -2121,11 +2134,11 @@
 
   :global(.lui-breadcrumb) .iframeContainer,
   :global(.lui-breadcrumb) .spinnerContainer {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: var(--luigi__breadcrumb--height);
   }
 
   :global(.lui-breadcrumb #tabsContainer) {
-    top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
+    top: var(--luigi__breadcrumb--height);
   }
 
   :global(.lui-breadcrumb .fd-tool-layout #tabsContainer) {
@@ -2134,14 +2147,14 @@
 
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
-      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+      var(--luigi__breadcrumb--height) +
         var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
     );
   }
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
-    top: $topNavHeight;
+    top: 0;
     left: var(--luigi__left-sidenav--width);
     bottom: 0;
     right: 0;
@@ -2238,7 +2251,7 @@
 
   :global(.iframeContainer.iframeContainerTabNav) {
     top: calc(
-      var(--luigi__shellbar--height) + var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+      var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
     );
   }
   :global(.fd-tool-layout .lui-main-content .iframeContainer.iframeContainerTabNav) {
@@ -2250,7 +2263,7 @@
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
-    top: var(--luigi__shellbar--height);
+    top: 0;
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav.lui-tab-header__active) {
@@ -2300,7 +2313,7 @@
   }
 
   .no-top-nav {
-    --luigi__shellbar--height: 0px;
+    --luigi__shellbar--height: 0;
   }
 
   :global(body.lui-simpleSlideInNav) {
@@ -2684,7 +2697,7 @@
   /*this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine*/
   @media (min-width: $desktopMaxWidth) {
     :global(.fd-shellbar__action--desktop) {
-      display: inline-block;
+      display: inline-flex;
     }
     :global(.fd-shellbar__action--mobile) {
       display: none;
@@ -2696,7 +2709,7 @@
       display: none;
     }
     :global(.fd-shellbar__action--mobile) {
-      display: inline-block;
+      display: inline-flex;
     }
   }
 </style>
