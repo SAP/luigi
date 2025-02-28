@@ -2147,8 +2147,7 @@
 
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
-      var(--luigi__breadcrumb--height) +
-        var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+      var(--luigi__breadcrumb--height) + var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
     );
   }
   .iframeContainer,
@@ -2250,9 +2249,7 @@
   }
 
   :global(.iframeContainer.iframeContainerTabNav) {
-    top: calc(
-      var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
-    );
+    top: calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height)));
   }
   :global(.fd-tool-layout .lui-main-content .iframeContainer.iframeContainerTabNav) {
     top: var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height));

@@ -734,11 +734,11 @@
     }
 
     .fd-shellbar__group .fd-shellbar__action .fd-shellbar__button {
-      padding: 0 .325rem;
+      padding: 0 0.325rem;
     }
 
     .fd-shellbar__group .fd-shellbar__action .fd-shellbar__button:has(.fd-counter) {
-      padding-left: .325rem;
+      padding-left: 0.325rem;
     }
   }
 

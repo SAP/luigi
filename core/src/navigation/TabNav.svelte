@@ -714,9 +714,7 @@
   }
 
   .luigi-tabsContainerHeader .fd-popover__body {
-    max-height: calc(
-      100vh - calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height)))
-    );
+    max-height: calc(100vh - calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))));
     overflow-y: auto;
   }
 
