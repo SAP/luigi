@@ -1,5 +1,5 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
-import { Events } from '../../src/constants/communication';
+import { Events, LuigiEvent } from '../../src/constants/communication';
 import type { IframeHandle, ContainerElement } from '../../src/constants/container.model';
 import { ContainerService } from '../../src/services/container.service';
 
@@ -494,7 +494,7 @@ describe('dispatch', () => {
     jest.resetAllMocks();
   });
 
-  it('should dispatch a custom event to the target container, no Callback', () => {
+  it('should dispatch a Luigi event to the target container, no Callback', () => {
     // Arrange
     const targetContainer = document.createElement('div');
     const eventName = 'customEvent';
@@ -505,7 +505,7 @@ describe('dispatch', () => {
     service.dispatch(eventName, targetContainer, eventData);
 
     // Assert
-    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    const dispatchedEvent = new LuigiEvent(eventName, eventData);
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
   });
 

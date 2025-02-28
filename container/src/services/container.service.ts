@@ -1,4 +1,4 @@
-import { Events } from '../constants/communication';
+import { Events, LuigiEvent } from '../constants/communication';
 import type { IframeHandle, ContainerElement } from '../constants/container.model';
 import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { GenericHelperFunctions } from '../utilities/helpers';
@@ -51,7 +51,7 @@ export class ContainerService {
     callback?: (arg?) => void,
     callbackName?: string
   ): void {
-    const customEvent = new CustomEvent(msg, { detail: data });
+    const customEvent = new LuigiEvent(msg, data);
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       customEvent[callbackName] = (data) => {
