@@ -36,6 +36,17 @@ export class ContainerService {
     }
   }
 
+  dispatchWithPayload(
+    msg: string,
+    targetCnt: ContainerElement,
+    data: object,
+    payload: object,
+    callback?: (arg?) => void,
+    callbackName?: string
+  ): void {
+    this.dispatch(msg, targetCnt, data, callback, callbackName, payload);
+  }
+
   /**
    * Dispatch an event to the given target container
    * @param {string} msg the event message
@@ -49,16 +60,17 @@ export class ContainerService {
     targetCnt: ContainerElement,
     data: object,
     callback?: (arg?) => void,
-    callbackName?: string
+    callbackName?: string,
+    payload?: object
   ): void {
-    const customEvent = new LuigiEvent(msg, data);
+    const customEvent = new LuigiEvent(msg, data, payload);
 
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       customEvent[callbackName] = (data) => {
         callback(data);
       };
     }
-
+    // TODO: remove console.log('DISPATCH', customEvent.type, customEvent.payload);
     targetCnt.dispatchEvent(customEvent);
   }
 
@@ -136,7 +148,7 @@ export class ContainerService {
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
               case LuigiInternalMessageID.ALERT_REQUEST:
-                this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.ALERT_REQUEST, targetCnt, event, event.data?.data?.settings);
                 break;
               case LuigiInternalMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
