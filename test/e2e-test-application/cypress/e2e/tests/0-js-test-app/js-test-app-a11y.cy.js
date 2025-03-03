@@ -216,4 +216,77 @@ describe('JS-TEST-APP 4', () => {
       cy.get('.fd-shellbar__logo').should('have.focus');
     });
   });
+
+  describe('User menu popover does not close when mark the user email', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.settings.responsiveNavigation= 'Fiori3';
+      newConfig.settings.profileType= 'Fiori3';
+      newConfig
+      newConfig.settings.experimental = {
+        profileMenuFiori3: true
+      };
+      newConfig.navigation.profile = {
+        logout: {
+          label: 'Sign Out',
+          icon: "sys-cancel"
+        },
+        items: [{
+          label: 'Luigi in Github',
+          link: '/simple'
+        }],
+        staticUserInfoFn: () => {
+          return new Promise(resolve => {
+            resolve({
+              name: 'Static User',
+              initials: 'LU',
+              email: 'other.luigi.user@example.com',
+              description: 'Luigi Developer'
+            });
+          });
+        }
+      }
+      newConfig.tag='usermenustayopen'
+    });
+    it('User menu popover does not close when mark the user email in classic theme', ()=>{
+      cy.visitTestApp('/home', newConfig);
+      cy.get('#app[configversion="usermenustayopen"]');
+      cy.get('#profilePopover').should('not.be.visible');
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.get('#profilePopover').should('be.visible');
+      cy.get('[data-testid="luigi-topnav-profile-description"]').click();
+      cy.wait(500);
+      cy.get('#profilePopover').should('be.visible');
+      cy.get('.iframeContainer').click();
+      cy.get('#profilePopover').should('not.be.visible');
+      
+    });
+    it('User menu popover does not close when mark the user email in sap horizon theme', ()=>{
+      newConfig.settings.btpToolLayout = true;
+      newConfig.settings.experimental = {
+        btpToolLayout: true,
+        profileMenuFiori3: true
+      };
+      newConfig.settings.profileType='Fiori3';
+      cy.visitTestApp('/home', newConfig);
+      cy.document().then((doc) => {
+        const link = doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/node_modules/@luigi-project/core/luigi_horizon.css';
+        doc.head.appendChild(link);
+      });
+      cy.wait(500);
+      cy.get('#app[configversion="usermenustayopen"]');
+      cy.get('#profilePopover').should('not.be.visible');
+      cy.get('[data-testid="luigi-topnav-profile"]').click();
+      cy.get('#profilePopover').should('be.visible');
+      cy.get('[data-testid="luigi-topnav-profile-description"]').click();
+      cy.wait(500);
+      cy.get('#profilePopover').should('be.visible');
+      cy.get('.iframeContainer').click();
+      cy.get('#profilePopover').should('not.be.visible');
+      
+    });
+  });
 });
