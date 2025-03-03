@@ -221,23 +221,25 @@ describe('JS-TEST-APP 4', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
-      newConfig.settings.responsiveNavigation= 'Fiori3';
-      newConfig.settings.profileType= 'Fiori3';
-      newConfig
+      newConfig.settings.responsiveNavigation = 'Fiori3';
+      newConfig.settings.profileType = 'Fiori3';
+      newConfig;
       newConfig.settings.experimental = {
         profileMenuFiori3: true
       };
       newConfig.navigation.profile = {
         logout: {
           label: 'Sign Out',
-          icon: "sys-cancel"
+          icon: 'sys-cancel'
         },
-        items: [{
-          label: 'Luigi in Github',
-          link: '/simple'
-        }],
+        items: [
+          {
+            label: 'Luigi in Github',
+            link: '/simple'
+          }
+        ],
         staticUserInfoFn: () => {
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             resolve({
               name: 'Static User',
               initials: 'LU',
@@ -246,10 +248,10 @@ describe('JS-TEST-APP 4', () => {
             });
           });
         }
-      }
-      newConfig.tag='usermenustayopen'
+      };
+      newConfig.tag = 'usermenustayopen';
     });
-    it('User menu popover does not close when mark the user email in classic theme', ()=>{
+    it('User menu popover does not close when mark the user email in classic theme', () => {
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="usermenustayopen"]');
       cy.get('#profilePopover').should('not.be.visible');
@@ -260,15 +262,14 @@ describe('JS-TEST-APP 4', () => {
       cy.get('#profilePopover').should('be.visible');
       cy.get('.iframeContainer').click();
       cy.get('#profilePopover').should('not.be.visible');
-      
     });
-    it('User menu popover does not close when mark the user email in sap horizon theme', ()=>{
+    it('User menu popover does not close when mark the user email in sap horizon theme', () => {
       newConfig.settings.btpToolLayout = true;
       newConfig.settings.experimental = {
         btpToolLayout: true,
         profileMenuFiori3: true
       };
-      newConfig.settings.profileType='Fiori3';
+      newConfig.settings.profileType = 'Fiori3';
       cy.visitTestApp('/home', newConfig);
       cy.document().then((doc) => {
         const link = doc.createElement('link');
@@ -286,7 +287,6 @@ describe('JS-TEST-APP 4', () => {
       cy.get('#profilePopover').should('be.visible');
       cy.get('.iframeContainer').click();
       cy.get('#profilePopover').should('not.be.visible');
-      
     });
   });
 });

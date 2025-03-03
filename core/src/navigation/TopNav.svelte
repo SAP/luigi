@@ -616,7 +616,8 @@
               <div
                 class="fd-popover__body fd-popover__body--right"
                 aria-hidden={!(dropDownStates.profilePopover || false)}
-                id="profilePopover" on:click|stopPropagation
+                id="profilePopover"
+                on:click|stopPropagation
               >
                 <Authorization
                   on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
@@ -660,7 +661,8 @@
                 <div
                   class="fd-popover__body fd-popover__body--right"
                   aria-hidden={!(dropDownStates.profilePopover || false)}
-                  id="profilePopover" on:click|stopPropagation
+                  id="profilePopover"
+                  on:click|stopPropagation
                 >
                   <AuthorizationSimpleProfileMenu
                     on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
