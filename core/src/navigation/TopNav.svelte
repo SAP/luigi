@@ -711,7 +711,7 @@
   }
 
   .fd-shellbar {
-    min-height: $topNavHeight;
+    height: $topNavHeight;
     box-shadow: var(--sapContent_HeaderShadow);
 
     .fd-avatar.is-focus:after,
@@ -719,26 +719,8 @@
       border-color: var(--fdShellbar_Button_Outline_Color);
     }
 
-    .fd-shellbar__group {
-      flex: auto;
-      min-height: $topNavHeight;
-    }
-
-    .fd-shellbar__group--actions {
-      flex-wrap: wrap;
-    }
-
-    .fd-shellbar__group .fd-shellbar__action {
-      align-items: center;
-      min-height: $topNavHeight;
-    }
-
-    .fd-shellbar__group .fd-shellbar__action .fd-shellbar__button {
-      padding: 0 0.325rem;
-    }
-
-    .fd-shellbar__group .fd-shellbar__action .fd-shellbar__button:has(.fd-counter) {
-      padding-left: 0.325rem;
+    .fd-shellbar__group .fd-shellbar__action.fd-shellbar__action .fd-shellbar__button {
+      padding: 0 0.325rem 0 0.325rem;
     }
   }
 
@@ -801,17 +783,11 @@
     cursor: pointer;
   }
 
-  .fd-shellbar__action--show-always {
-    display: inline-flex;
-  }
-
   .fd-separator {
     pointer-events: none;
   }
 
   .lui-shellbar-wrapper {
-    align-items: flex-start;
     column-gap: 2rem;
-    height: auto;
   }
 </style>

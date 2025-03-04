@@ -1413,12 +1413,12 @@
   }
 
   :global(.lui-breadcrumb) .fd-app__sidebar {
-    top: var(--luigi__breadcrumb--height);
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
   .fd-app__sidebar {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: $topNavHeight;
     left: 0;
     bottom: 0;
     z-index: 1;

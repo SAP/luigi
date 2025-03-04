@@ -214,11 +214,6 @@
     }
   }
 
-  .fd-shellbar__action {
-    align-items: center;
-    min-height: $topNavHeight;
-  }
-
   .fd-product-switch__item .fd-menu__link {
     display: block;
   }
