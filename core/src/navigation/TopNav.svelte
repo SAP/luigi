@@ -585,6 +585,7 @@
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
               <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
               <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                 {#if userInfo.picture}
                   <button
@@ -616,6 +617,7 @@
                 class="fd-popover__body fd-popover__body--right"
                 aria-hidden={!(dropDownStates.profilePopover || false)}
                 id="profilePopover"
+                on:click|stopPropagation
               >
                 <Authorization
                   on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
@@ -628,6 +630,7 @@
             <div class="fd-user-menu">
               <div class="fd-popover">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                   <div class={userInfo.picture ? 'fd-shellbar__button--user-menu' : ''}>
                     <button
@@ -659,6 +662,7 @@
                   class="fd-popover__body fd-popover__body--right"
                   aria-hidden={!(dropDownStates.profilePopover || false)}
                   id="profilePopover"
+                  on:click|stopPropagation
                 >
                   <AuthorizationSimpleProfileMenu
                     on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
