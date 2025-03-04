@@ -11,7 +11,7 @@ export const CommunicationModule = {
       luigi.navigation().navigate((event as any).detail.link);
     });
     containerElement.addEventListener(Events.ALERT_REQUEST, (event: any) => {
-      UXModule.processAlert(event.detail.data.data.settings, true, containerElement);
+      UXModule.processAlert(event.payload, true, containerElement);
     });
     containerElement.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event: any) => {
       UXModule.handleConfirmationModalRequest(event.detail.settings, containerElement);
