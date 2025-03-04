@@ -18,6 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
+  modalResolver: (value: unknown) => void;
   alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
 
@@ -243,6 +244,7 @@ export class WebComponentService {
           },
           showConfirmationModal: (settings) => {
             return new Promise((resolve, reject) => {
+              this.modalResolver = resolve;
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
@@ -727,14 +729,17 @@ export class WebComponentService {
   }
 
   /**
-   * Responsible for notifying the microfrontend when modal has been closed
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
    *
    * @param {boolean} confirmed the result of the modal being closed
    *
-   * @returns {void}
-   *
    */
   notifyConfirmationModalClosed(confirmed = true) {
-    this.dispatchLuigiEvent(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
+    if (this.modalResolver) {
+      this.modalResolver(confirmed);
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
+    }
   }
 }

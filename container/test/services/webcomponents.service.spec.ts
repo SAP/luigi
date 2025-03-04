@@ -1804,15 +1804,16 @@ describe('resolveAlert', () => {
 describe('notifyConfirmationModalClosed', () => {
   it.each([true, false])('should dispatch LuigiEvent with modal result', (confirmed) => {
     const service = new WebComponentService();
+    const mockResolver = jest.fn();
 
     // mock and spy on functions
-    service.containerService.dispatch = jest.fn();
-    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    service.modalResolver = mockResolver;
 
     // act
     service.notifyConfirmationModalClosed(confirmed);
 
     // assert
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.CONFIRMATION_MODAL_CLOSED, { confirmed });
+    expect(mockResolver).toHaveBeenCalledWith(confirmed);
+    expect(service.modalResolver).toBeUndefined();
   });
 });

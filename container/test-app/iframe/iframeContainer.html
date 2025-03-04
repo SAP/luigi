@@ -150,10 +150,6 @@
         luigiContainer.notifyConfirmationModalClosed(val);
       });
 
-      luigiContainer.addEventListener(Events.CONFIRMATION_MODAL_CLOSED, (event) => {
-        console.log(Events.CONFIRMATION_MODAL_CLOSED, event);
-      });
-
       luigiContainer.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, (event) => {
         console.log(Events.SHOW_LOADING_INDICATOR_REQUEST, event);
         alert(
