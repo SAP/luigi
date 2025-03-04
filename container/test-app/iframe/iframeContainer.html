@@ -122,6 +122,7 @@
 
       luigiContainer.addEventListener(Events.ALERT_REQUEST, (event) => {
         console.log('params:', Events.ALERT_REQUEST, event);
+        console.log('payload', event.payload);
         alert('show-alert-request message received: ' + JSON.stringify(event.detail));
         console.log(event.detail.data.data);
         alertSettings = event.detail.data.data;
