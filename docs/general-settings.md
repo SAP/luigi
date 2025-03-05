@@ -139,10 +139,14 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 <!-- add-attribute:class:warning -->
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 
+### desktopMaxWidth
+- **type**: number
+- **description**: this optional parameter allows you to set custom breakpoint in pixels when mobile styles are enabled.
+- **default**: by default, the value `900` is taken from Luigi constants.
+
 ### expandCategoryByNavigation
 - **type**: boolean
 - **description** if you have a [category](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=category) set to `collapsible`, you can set this parameter to `true` in order to expand the category when navigating to one of its children.
-
 
 ### featureToggles.queryStringParam
 - **description**: allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality.
@@ -153,10 +157,10 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ### header.altText
 - **type**: string
 - **description**: adds the HTML `alt` attribute to the logo image.
-- **example**: 
+- **example**:
 ```
  header: {  object / function / Promise
-    logo: 'path/to/image.png', 
+    logo: 'path/to/image.png',
     altText: 'alternative text'
   },
 ```
@@ -166,11 +170,10 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 - **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
 - **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
 
-
 ### header.favicon
 - **type**: icon
 - **description**: defines the favicon. It requires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
-- **example**: 
+- **example**:
 ```
  header: {  object / function / Promise
     favicon: 'path/to/favicon.ico'
@@ -180,7 +183,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ### header.logo
 - **type**: icon
 - **description**: defines the top left navigation logo. It has a fixed height of 28px.
-- **example**: 
+- **example**:
 ```
  header: {  object / function / Promise
     logo: 'path/to/image.png'
@@ -201,7 +204,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ### header.title
 - **type**: string
 - **description**: defines the top left navigation title.
-- **example**: 
+- **example**:
 ```
  header: {  object / function / Promise
     title: 'Luigi Demo'
