@@ -144,7 +144,7 @@ function buildHtml() {
   /**
    * Helper function to build the HTML table for the given data
    * @param {object} unitStats data chunk for unit test to be parsed
-   * @param {object} e2eStats data chunk for unit test to be parsed
+   * @param {object} e2eStats data chunk for e2e test to be parsed
    * @param {boolean} combinedResults to include combined results or not
    */
   const buildTable = (unitStats, e2eStats, combinedResults) => {
