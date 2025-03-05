@@ -301,7 +301,7 @@ describe('Web Container Test', () => {
           cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal() - confirmed');
         });
     });
 

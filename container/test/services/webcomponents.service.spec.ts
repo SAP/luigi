@@ -1800,3 +1800,20 @@ describe('resolveAlert', () => {
     consoleSpy.mockRestore();
   });
 });
+
+describe('notifyConfirmationModalClosed', () => {
+  it.each([true, false])('should dispatch LuigiEvent with modal result', (confirmed) => {
+    const service = new WebComponentService();
+    const mockResolver = jest.fn();
+
+    // mock and spy on functions
+    service.modalResolver = mockResolver;
+
+    // act
+    service.notifyConfirmationModalClosed(confirmed);
+
+    // assert
+    expect(mockResolver).toHaveBeenCalledWith(confirmed);
+    expect(service.modalResolver).toBeUndefined();
+  });
+});

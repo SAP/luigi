@@ -20,7 +20,8 @@ export namespace Events {
   export const ALERT_REQUEST = 'show-alert-request';
 
   /**
-   * Event fired when the micro frontend requests to close an alert.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
    */
   export const ALERT_CLOSED = 'close-alert-request';
 
