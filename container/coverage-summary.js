@@ -4,24 +4,45 @@ let unitTotal;
 let e2eData;
 let e2eTotal;
 
+/**
+ * Fetching source code coverage stats for unit tests - error is shown in case of failure
+ */
 try {
   unitData = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+  /**
+   * Code coverage data for unit tests - total stats only
+   */
   unitTotal = unitData ? Object.entries(unitData.total) : null;
 } catch (error) {
   console.log('<p style="color:red">Source file for unit tests not found!</p>');
   throw new Error(error);
 }
 
+/**
+ * Fetching source code coverage stats for e2e tests - error is shown in case of failure
+ */
 try {
   e2eData = JSON.parse(fs.readFileSync('e2e-coverage/coverage-summary.json', 'utf8'));
+  /**
+   * Code coverage data for e2e tests - total stats only
+   */
   e2eTotal = e2eData ? Object.entries(e2eData.total) : null;
 } catch (error) {
   console.log('<p style="color:red">Source file for e2e tests not found!</p>');
   throw new Error(error);
 }
 
+/**
+ * Refined code coverage data for unit tests - without total stats
+ */
 const unitList = unitData ? Object.keys(unitData).filter((key) => key !== 'total') : [];
+/**
+ * Refined code coverage data for e2e tests - without total stats
+ */
 const e2eList = e2eData ? Object.keys(e2eData).filter((key) => key !== 'total') : [];
+/**
+ * List of files for further processing
+ */
 const fileList = new Set(unitList);
 const zeroVals = {
   covered: 0,
@@ -30,6 +51,9 @@ const zeroVals = {
   total: 0
 };
 
+/**
+ * Making sure both data for unit and e2e tests have the same files
+ */
 e2eList.forEach((item) => {
   fileList.add(item);
 });
@@ -53,6 +77,9 @@ fileList.forEach((filename) => {
   }
 });
 
+/**
+ * Sorted list of file names for better readability
+ */
 const sortedList = Array.from(fileList)
   .map((item) => {
     if (item.includes('\\')) {
@@ -62,6 +89,11 @@ const sortedList = Array.from(fileList)
     return item.split('/').pop();
   })
   .sort();
+/**
+ * Helper function to parse the test data
+ * @param {object} data data chunk to be parsed
+ * @param {string} name name of the file to be parsed
+ */
 const parseTestData = (data, name) => {
   return Object.entries(
     Object.keys(data)
@@ -70,7 +102,13 @@ const parseTestData = (data, name) => {
   );
 };
 
+/**
+ * Method to build the HTML content for the given data
+ */
 function buildHtml() {
+  /**
+   * Helper function to build combined results for both unit and e2e tests
+   */
   const buildCombinedResults = () => {
     const unionStats = [];
 
@@ -103,6 +141,12 @@ function buildHtml() {
 
     return unionStats;
   };
+  /**
+   * Helper function to build the HTML table for the given data
+   * @param {object} unitStats data chunk for unit test to be parsed
+   * @param {object} e2eStats data chunk for unit test to be parsed
+   * @param {boolean} combinedResults to include combined results or not
+   */
   const buildTable = (unitStats, e2eStats, combinedResults) => {
     const unionStats = combinedResults ? buildCombinedResults() : null;
     let unitHighlight = '';
@@ -236,6 +280,9 @@ function buildHtml() {
     unitTotal && e2eTotal ? buildTable(unitTotal, e2eTotal, true) : '<p>Not enough data to show results :(</p>';
   let fileData = '';
 
+  /**
+   * Loop through the files and build the HTML table for each of them
+   */
   if (unitData && e2eData) {
     for (let i = 0; i < sortedList.length; i++) {
       const headline = `<h2>Stats for '${sortedList[i]}'</h2>`;
@@ -252,6 +299,9 @@ function buildHtml() {
     }
   }
 
+  /**
+   * HTML page structure with basic styling
+   */
   const header = `
     <title>Code coverage summary</title>
     <meta charset="UTF-8">
