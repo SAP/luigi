@@ -20,7 +20,8 @@ export namespace Events {
   export const ALERT_REQUEST = 'show-alert-request';
 
   /**
-   * Event fired when the micro frontend requests to close an alert.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
    */
   export const ALERT_CLOSED = 'close-alert-request';
 
@@ -43,11 +44,6 @@ export namespace Events {
    * Event fired when the micro frontend requests to show a confirmation modal.
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
-
-  /**
-   * Event passed to the micro frontend when confirmation modal is closed.
-   */
-  export const CONFIRMATION_MODAL_CLOSED = 'close-confirmation-modal-request';
 
   /**
    * Event fired when the micro frontend requests to show a loading indicator.

@@ -264,7 +264,7 @@
             },
             {
               "name": "close-alert-request",
-              "description": "Event fired when the micro frontend requests to close an alert.",
+              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
@@ -293,13 +293,6 @@
             {
               "name": "show-confirmation-modal-request",
               "description": "Event fired when the micro frontend requests to show a confirmation modal.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "close-confirmation-modal-request",
-              "description": "Event passed to the micro frontend when confirmation modal is closed.",
               "type": {
                 "text": "Event"
               }
@@ -695,7 +688,7 @@
             },
             {
               "name": "close-alert-request",
-              "description": "Event fired when the micro frontend requests to close an alert.",
+              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
@@ -724,13 +717,6 @@
             {
               "name": "show-confirmation-modal-request",
               "description": "Event fired when the micro frontend requests to show a confirmation modal.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "close-confirmation-modal-request",
-              "description": "Event passed to the micro frontend when confirmation modal is closed.",
               "type": {
                 "text": "Event"
               }
