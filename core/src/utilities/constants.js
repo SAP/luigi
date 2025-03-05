@@ -1,4 +1,5 @@
 export const CSS_BREAKPOINTS = {
+  desktopMaxWidth: 900,
   desktopMinWidth: 600
 };
 

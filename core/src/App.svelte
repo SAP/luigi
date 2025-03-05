@@ -99,6 +99,7 @@
   let breadcrumbsEnabled;
   let contextRequested = false;
   let loadingIndicatorTimeout;
+  let desktopMaxWidth = LuigiConfig.getConfigValue('settings.desktopMaxWidth') || CSS_BREAKPOINTS.desktopMaxWidth;
   let btpToolLayout =
     LuigiConfig.getConfigValue('settings.btpToolLayout') &&
     GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
@@ -666,6 +667,14 @@
     document.body.classList.remove('lui-leftNavToggle');
   };
 
+  const checkMobileBreakpoint = () => {
+    if (previousWindowWidth < desktopMaxWidth) {
+      document.body.classList.add('lui-mobileView');
+    } else {
+      document.body.classList.remove('lui-mobileView');
+    }
+  };
+
   const onResize = () => {
     resizeMicrofrontendIframe();
 
@@ -678,6 +687,7 @@
       closeLeftNav();
     }
     previousWindowWidth = window.innerWidth;
+    checkMobileBreakpoint();
   };
 
   //// ALERTS
@@ -1748,6 +1758,7 @@
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
     previousWindowWidth = window.innerWidth;
+    checkMobileBreakpoint();
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
       simpleSlideInNav = true;
@@ -2692,6 +2703,15 @@
   }
 
   @media (max-width: ($desktopMaxWidth - 1)) {
+    :global(.fd-shellbar__action--desktop) {
+      display: none;
+    }
+    :global(.fd-shellbar__action--mobile) {
+      display: inline-block;
+    }
+  }
+
+  :global(.lui-mobileView) {
     :global(.fd-shellbar__action--desktop) {
       display: none;
     }
