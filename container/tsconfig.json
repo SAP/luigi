@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "include": [
+    "instrumented/**/*",
     "src/**/*",
     "src/node_modules",
     "test/**/*"

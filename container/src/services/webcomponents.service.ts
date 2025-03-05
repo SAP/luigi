@@ -18,7 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  alertResolvers: Record<string, Function> = {};
+  alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
 
   constructor() {
@@ -467,11 +467,11 @@ export class WebComponentService {
         };
       }
       // @ts-ignore
-      if (!window.Luigi) {
+      if (!window['Luigi']) {
         // @ts-ignore
         window.Luigi = {};
         // @ts-ignore
-        if (!window.Luigi._registerWebcomponent) {
+        if (!window['Luigi']['_registerWebcomponent']) {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
             this.containerService.getContainerManager()._registerWebcomponent(src, element);

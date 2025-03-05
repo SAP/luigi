@@ -13,4 +13,8 @@
 /public/**/*.ts
 
 /coverage
+/e2e-coverage
+/instrumented
+/.nyc_output
+/coverage-summary.html
 .DS_Store
