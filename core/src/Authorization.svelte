@@ -155,6 +155,7 @@
 
   export function logout() {
     AuthLayerSvc.logout();
+    dispatch('toggleDropdownState');
   }
 
   export function handleKeyUp({ keyCode }) {
@@ -200,6 +201,7 @@
       <ul class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border">
         {#each profileNav.items as profileItem}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <li
             tabindex="-1"
             class="fd-list__item fd-list__item--link"
@@ -231,6 +233,7 @@
           </li>
         {/each}
         {#if hasUserSettings}
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <li
             tabindex="-1"
             class="fd-list__item fd-list__item--link lui-anchor-node"
