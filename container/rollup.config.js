@@ -133,10 +133,8 @@ export default [
   {
     input: 'src/events.ts',
     output: {
-      file: 'public/constants/events.js',
+      file: 'public/constants/events.js'
     },
-    plugins: [
-      typescript({}),
-    ],
-  },
+    plugins: [typescript({})]
+  }
 ];
