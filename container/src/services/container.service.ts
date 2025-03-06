@@ -207,6 +207,12 @@ export class ContainerService {
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
                 break;
+              case 'luigi.setVGData': // TODO: add constant
+                this.dispatch(Events.SET_VIEW_GROUP_DATA_REQUEST, targetCnt, event.data.data);
+                break;
+              case 'luigi.add-backdrop': // TODO: add constant
+                this.dispatch('add-backdrop-request', targetCnt, undefined); // TODO: add constant
+                break;
             }
           }
         }

@@ -19,88 +19,12 @@
       ></luigi-container>
       <div style="grid-row: 1; max-width: 30vw">
         <div id="actions"></div>
+        <div> <span style="color: blue">web component</span> <span style="color: green">iframe</span>
+        <button onclick="clearResults()">Clear</button></div>
         <div id="results"></div>
       </div>
     </div>
 
-    <script type="module">
-      import Events from './bundle.js';
-
-      const iframeContainer = document.querySelector('#iframe-based-container-test');
-      const wcContainer = document.querySelector('#wc-based-container-test');
-      function getIframeClient() {
-        return iframeContainer.shadowRoot.querySelector('iframe').contentWindow
-          .LuigiClient;
-      }
-      function getWCClient() {
-        return wcContainer.shadowRoot.querySelector('[lui_web_component]').LuigiClient;
-      }
-
-      function getCreateResultContainer(id) {
-        const res = document.querySelector('#results');
-        let resCnt = res.querySelector(`[restype=${id}]`);
-        if (!resCnt) {
-          resCnt = document.createElement('div');
-          resCnt.setAttribute('restype', id);
-          resCnt.setAttribute('style', 'border: 1px solid grey; overflow: hidden');
-          res.appendChild(resCnt);
-        }
-        return resCnt;
-      }
-
-      function createApiTrigger(luigiEventID, manager, functionName, ...args) {
-        const createPayloadEL = (color) => {
-          return (event) => {
-            const payloadCnt = document.createElement('div');
-            payloadCnt.style.color = color;
-            payloadCnt.innerHTML = `${JSON.stringify(event.payload)}`;
-            payloadCnt.title = payloadCnt.innerHTML;
-            payloadCnt.payload = event.payload;
-            getCreateResultContainer(event.type).appendChild(payloadCnt);
-          };
-        };
-
-        iframeContainer.addEventListener(luigiEventID, createPayloadEL('green'));
-        wcContainer.addEventListener(luigiEventID, createPayloadEL('blue'));
-
-        const btn = document.createElement('button');
-        btn.innerHTML = luigiEventID;
-        document.querySelector('#actions').appendChild(btn);
-        btn.addEventListener('click', () => {
-          let ifBase = getIframeClient();
-          let wcBase = getWCClient();
-
-          if (manager) {
-            ifBase = ifBase[manager]();
-            wcBase = wcBase[manager]();
-          }
-          ifBase[functionName](...args);
-          if (functionName === 'sendCustomMessage') {
-            // Exception for customMessage
-            wcBase.publishEvent(new CustomEvent(args[0].id, { detail: args[0] }));
-          } else {
-            wcBase[functionName](...args);
-          }
-        });
-      }
-
-      //
-      createApiTrigger(Events.ALERT_REQUEST, 'uxManager', 'showAlert', {
-        text: 'test text',
-      });
-      createApiTrigger(
-        Events.SHOW_CONFIRMATION_MODAL_REQUEST,
-        'uxManager',
-        'showConfirmationModal',
-        { text: 'test text' },
-      );
-      createApiTrigger(Events.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
-      createApiTrigger(Events.NAVIGATION_REQUEST, 'linkManager', 'navigate', '/foo/bar');
-      createApiTrigger(Events.CUSTOM_MESSAGE, undefined, 'sendCustomMessage', {
-        id: 'myId',
-        foo: 'bar',
-      });
-      // TODO: create more...
-    </script>
+    <script type="module" src="xtest.js"></script>
   </body>
 </html>
