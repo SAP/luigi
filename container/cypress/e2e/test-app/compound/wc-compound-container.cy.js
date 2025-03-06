@@ -203,7 +203,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API - showAlert', () => {
+    it('LuigiClient API - showAlert closeAlert via xButton', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -211,7 +211,41 @@ describe('Compound Container Tests', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('uxManager().showAlert() test');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+
+      cy.get('#closeAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc true');
+        });
+    });
+
+    it('LuigiClient API - showAlert closeAlert via dismiss', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+
+      cy.get('#dismissAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc neverShowItAgain from wc');
         });
     });
 
@@ -226,8 +260,8 @@ describe('Compound Container Tests', () => {
           cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
         });
+      cy.get(containerSelector).shadow().get('#confirmationModalResponse').should('have.text', 'Modal confirmed true');
     });
 
     it('defer-init flag for LuigiCompoundContainer', () => {
@@ -291,10 +325,7 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API publishEvent', () => {
       cy.on('window:alert', stub);
 
-      cy.get(containerSelector)
-        .shadow()
-        .contains('Publish event')
-        .click({force: true});
+      cy.get(containerSelector).shadow().contains('Publish event').click({ force: true });
 
       cy.should(() => {
         if (consoleInfo) {

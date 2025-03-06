@@ -29,6 +29,10 @@ export namespace LuigiInternalMessageID {
    */
   export const ALERT_CLOSED = 'luigi.ux.alert.hide';
   /**
+   * A message sent to the microfrontend to notify closing of a particular confirmation modal
+   */
+  export const CONFIRMATION_MODAL_CLOSED = 'luigi.ux.confirmationModal.hide';
+  /**
    * A message emmitted from the Microfrontend when it is first initialized
    */
   export const INITIALIZED = 'luigi.init.ok';

@@ -107,6 +107,11 @@ export default class extends HTMLElement {
     const confirmationModalBtn = document.createElement('template');
     confirmationModalBtn.innerHTML = '<button id="confirmationModal">showConfirmationModal</button>';
 
+    const closeAlertResponseDiv = document.createElement('div');
+    closeAlertResponseDiv.innerHTML = '<div id="closeAlertResponse"></div>';
+    const confirmationModalResponseDiv = document.createElement('div');
+    confirmationModalResponseDiv.innerHTML = '<div id="confirmationModalResponse"></div>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -139,6 +144,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
+    this._shadowRoot.appendChild(closeAlertResponseDiv.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalResponseDiv.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -177,10 +184,30 @@ export default class extends HTMLElement {
 
     this.$showAlert = this._shadowRoot.querySelector('#showAlert');
     this.$showAlert.addEventListener('click', () => {
-      this.LuigiClient.uxManager().showAlert({
-        text: 'uxManager().showAlert() test',
-        type: 'info'
-      });
+      const settings = {
+        text: 'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}',
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: {
+            text: "Don't show this again",
+            dismissKey: 'neverShowItAgain'
+          }
+        }
+        // closeAfter: 300000
+      };
+      this.LuigiClient.uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          document
+            .querySelector('luigi-compound-container')
+            .shadowRoot.querySelector(
+              'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
+            )
+            .shadowRoot.querySelector('#closeAlertResponse').innerHTML = 'Callback called on wc ' + param;
+        });
     });
 
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
@@ -376,15 +403,17 @@ export default class extends HTMLElement {
         buttonConfirm: 'Yes',
         buttonDismiss: 'No'
       };
-
       this.LuigiClient.uxManager()
         .showConfirmationModal(settings)
-        .then(() => {
-          this.LuigiClient.uxManager().showAlert({
-            text: 'LuigiClient.uxManager().showConfirmationModal()',
-            type: 'info'
-          });
+        .then((data) => {
+          document
+            .querySelector('luigi-compound-container')
+            .shadowRoot.querySelector(
+              'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
+            )
+            .shadowRoot.querySelector('#confirmationModalResponse').innerHTML = 'Modal confirmed ' + data;
         });
+      // .catch(() => console.log('Modal dissmissed'));
     });
   }
 

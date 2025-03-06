@@ -18,7 +18,8 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  alertResolvers: Record<string, (value: unknown) => void> = {};
+  alertResolvers: Record<string, Function> = {};
+  modalResolver: (value: unknown) => void;
   alertIndex = 0;
 
   constructor() {
@@ -243,6 +244,7 @@ export class WebComponentService {
           },
           showConfirmationModal: (settings) => {
             return new Promise((resolve, reject) => {
+              this.modalResolver = resolve;
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
@@ -723,6 +725,21 @@ export class WebComponentService {
       this.alertResolvers[id] = undefined;
     } else {
       console.log('Promise is not in the list.');
+    }
+  }
+
+  /**
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
+   *
+   * @param {boolean} confirmed the result of the modal being closed
+   *
+   */
+  notifyConfirmationModalClosed(confirmed = true) {
+    if (this.modalResolver) {
+      this.modalResolver(confirmed);
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
     }
   }
 }
