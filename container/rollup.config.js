@@ -129,5 +129,14 @@ export default [
     watch: {
       clearScreen: false
     }
-  }
+  },
+  {
+    input: 'src/events.ts',
+    output: {
+      file: 'public/constants/events.js',
+    },
+    plugins: [
+      typescript({}),
+    ],
+  },
 ];

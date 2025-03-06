@@ -11,6 +11,7 @@
 /test-app/compound/luigi-element.js
 /test-app/iframe/luigi-client.js
 /public/**/*.ts
+/public/constants/events.js
 
 /coverage
 .DS_Store
