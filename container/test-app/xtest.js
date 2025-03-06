@@ -1,4 +1,3 @@
-      
 /** @typedef {import('../src/constants/communication.ts').Events} Events */
 import Events from './bundle.js';
 
@@ -10,12 +9,11 @@ const wcContainer = document.querySelector('#wc-based-container-test');
 const res = document.querySelector('#results');
 
 window.clearResults = function () {
-    res.innerHTML = '';
-}
+  res.innerHTML = '';
+};
 
 function getIframeClient() {
-  return iframeContainer.shadowRoot.querySelector('iframe').contentWindow
-    .LuigiClient;
+  return iframeContainer.shadowRoot.querySelector('iframe').contentWindow.LuigiClient;
 }
 function getWCClient() {
   return wcContainer.shadowRoot.querySelector('[lui_web_component]').LuigiClient;
@@ -71,20 +69,15 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
 
 //
 createApiTrigger(LuigiEvents.ALERT_REQUEST, 'uxManager', 'showAlert', {
-  text: 'test text',
+  text: 'test text'
 });
-createApiTrigger(
-  Events.SHOW_CONFIRMATION_MODAL_REQUEST,
-  'uxManager',
-  'showConfirmationModal',
-  { text: 'test text' },
-);
+createApiTrigger(Events.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', { text: 'test text' });
 createApiTrigger(LuigiEvents.SET_VIEW_GROUP_DATA_REQUEST, undefined, 'setViewGroupData', { vg1: 'Luigi rocks ' });
 createApiTrigger('add-backdrop-request', 'uxManager', 'addBackdrop', {});
 createApiTrigger(LuigiEvents.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
 createApiTrigger(LuigiEvents.NAVIGATION_REQUEST, 'linkManager', 'navigate', '/foo/bar');
 createApiTrigger(LuigiEvents.CUSTOM_MESSAGE, undefined, 'sendCustomMessage', {
   id: 'myId',
-  foo: 'bar',
+  foo: 'bar'
 });
 // TODO: create more...
