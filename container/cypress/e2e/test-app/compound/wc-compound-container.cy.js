@@ -261,7 +261,7 @@ describe('Compound Container Tests', () => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
         });
-      cy.get(containerSelector).shadow().get('#confirmationModalResponse').should('have.text', 'Modal confirmed true');
+      cy.get(containerSelector).shadow().get('#confirmationModalResponse').should('have.text', 'Modal confirmed');
     });
 
     it('defer-init flag for LuigiCompoundContainer', () => {
