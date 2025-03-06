@@ -147,7 +147,7 @@
       };
 
       thisComponent.closeAlert = (id: string, dismissKey?: string) => {
-        thisComponent.notifyAlertClosed(id, dismissKey);        
+        thisComponent.notifyAlertClosed(id, dismissKey);
       };
 
       thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {

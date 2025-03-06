@@ -18,6 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   alertResolvers: Record<string, Function> = {};
   alertIndex = 0;
 

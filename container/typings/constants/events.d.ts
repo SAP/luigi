@@ -159,3 +159,16 @@ export namespace Events {
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }
+
+export class LuigiEvent extends Event {
+  payload?: unknown;
+  detail: unknown;
+
+  constructor(type: string, data: unknown, payload?: unknown) {
+    super(type);
+    this.detail = data;
+    this.payload = payload || data;
+  }
+}
+
+export { Events as LuigiEvents };

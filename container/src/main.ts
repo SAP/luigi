@@ -5,7 +5,7 @@ import { Events } from './constants/communication';
 export { default as LuigiContainer } from './LuigiContainer.svelte';
 export { default as LuigiCompoundContainer } from './LuigiCompoundContainer.svelte';
 export type { PathExistsEvent } from './constants/event-type';
-
+export { Events as LuigiEvents } from './constants/communication';
 export default Events;
 
 if (!customElements.get('luigi-container')) {
