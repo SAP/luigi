@@ -170,3 +170,5 @@ export class LuigiEvent extends Event {
     this.payload = payload || data;
   }
 }
+
+export { Events as LuigiEvents };
