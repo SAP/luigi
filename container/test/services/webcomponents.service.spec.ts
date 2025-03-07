@@ -1802,18 +1802,29 @@ describe('resolveAlert', () => {
 });
 
 describe('notifyConfirmationModalClosed', () => {
-  it.each([true, false])('should dispatch LuigiEvent with modal result', (confirmed) => {
-    const service = new WebComponentService();
-    const mockResolver = jest.fn();
+  const mockResolvers = {resolve: jest.fn(), reject: jest.fn()};
+  let service;
 
-    // mock and spy on functions
-    service.modalResolver = mockResolver;
+  beforeEach(() => {
+    service = new WebComponentService();
+    service.modalResolvers = mockResolvers;
+  });
 
+  it('should resolve the modal and reset related data when modal is confirmed', () => {
     // act
-    service.notifyConfirmationModalClosed(confirmed);
+    service.notifyConfirmationModalClosed(true);
 
     // assert
-    expect(mockResolver).toHaveBeenCalledWith(confirmed);
-    expect(service.modalResolver).toBeUndefined();
+    expect(mockResolvers.resolve).toHaveBeenCalledWith(true);
+    expect(service.modalResolvers).toBeUndefined();
+  });
+
+  it('should reject the modal and reset related data when modal is dismissed', () => {
+    // act
+    service.notifyConfirmationModalClosed(false);
+
+    // assert
+    expect(mockResolvers.reject).toHaveBeenCalledWith(new Error('No data'));
+    expect(service.modalResolvers).toBeUndefined();
   });
 });
