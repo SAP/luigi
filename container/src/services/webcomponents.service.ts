@@ -283,6 +283,9 @@ export class WebComponentService {
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
+          addBackdrop: () => {
+            this.dispatchLuigiEvent('add-backdrop-request', undefined); // TODO: constant
+          },
           hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
           }

@@ -166,7 +166,7 @@ export class ContainerService {
                 });
                 break;
               case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
-                this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
+                this.dispatchWithPayload(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data, event.data.data.settings);
                 break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);

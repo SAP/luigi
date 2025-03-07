@@ -167,7 +167,7 @@ export class LuigiEvent extends Event {
   constructor(type: string, data: unknown, payload?: unknown) {
     super(type);
     this.detail = data;
-    this.payload = payload || data;
+    this.payload = payload || data || {};
   }
 }
 
