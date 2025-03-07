@@ -1802,7 +1802,7 @@ describe('resolveAlert', () => {
 });
 
 describe('notifyConfirmationModalClosed', () => {
-  const mockResolvers = {resolve: jest.fn(), reject: jest.fn()};
+  const mockResolvers = { resolve: jest.fn(), reject: jest.fn() };
   let service;
 
   beforeEach(() => {
