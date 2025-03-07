@@ -213,12 +213,15 @@
     {/if}
   {/if}
   {#if hasApps}
-    <div class="fd-popover {keepMainTitle && 'lui-keep-main'}">
+    <div class="fd-popover {keepMainTitle && 'lui-keep-main'} {appSwitcherItems && appSwitcherItems.length === 1 && 'lui-sat'}">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}
-            <a href={getRouteLink(appSwitcherItems[0])} class="fd-shellbar__title lui-shellbar-single-app-title">
+            <a href={getRouteLink(appSwitcherItems[0])} class="fd-shellbar__title lui-shellbar-single-app-title"
+              on:click={(event) => {
+                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(appSwitcherItems[0].link);
+              }}>
               <span>{$getTranslation(appSwitcherItems[0].title)}</span>
             </a>
           {/if}
