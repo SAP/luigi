@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.1] (2025-03-04)
+
+#### :bug: Fixed
+* [#4173](https://github.com/SAP/luigi/pull/4173) Bug fix: User menu stays open when not clicking on action items. ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.21.0] (2025-02-27)
 
 #### :rocket: Added
@@ -1984,3 +1994,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
 [v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
 [v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0
+[v2.21.1]: https://github.com/SAP/luigi/compare/v2.21.0...v2.21.1
