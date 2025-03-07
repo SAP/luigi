@@ -36,7 +36,7 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
     return (event) => {
       const payloadCnt = document.createElement('div');
       payloadCnt.style.color = color;
-      payloadCnt.innerHTML = `${JSON.stringify(event.payload)}`;
+      payloadCnt.innerHTML = `${JSON.stringify(event.payload, undefined, 1)}`;
       payloadCnt.title = payloadCnt.innerHTML;
       payloadCnt.payload = event.payload;
       getCreateResultContainer(event.type).appendChild(payloadCnt);
