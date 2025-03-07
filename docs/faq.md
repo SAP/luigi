@@ -593,7 +593,7 @@ To hide the top navigation, you can use custom CSS, for example:
 
 ### Can I make top navigation more responsive in case of many navigation items?
 
-To make top navigation more responsive you may consider grouping navigation items using built-in features like [context switcher](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=context-switcher) or [profile](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=profile) drop-down list.
+To make top navigation more responsive you may consider grouping navigation items using [category](https://docs.luigi-project.io/docs/navigation-configuration?section=category) node parameter. Top navigation nodes in the same category will be rendered as a dropdown.
 
 Another solution is to enable mobile navigation on bigger screens. Just use custom CSS to overwrite default breakpoint (899px) - for example:
 
