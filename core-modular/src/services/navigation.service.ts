@@ -59,6 +59,7 @@ export interface Node {
   children: Node[];
   category?: any;
   tabNav?: boolean;
+  viewUrl?: string;
 }
 
 export interface Category {
@@ -169,10 +170,12 @@ export class NavigationService {
   }
 
   shouldRedirect(path: string): string | undefined {
+    const pathData = this.getPathData(path);
     if (path == '') {
       // poor mans implementation, full path resolution TBD
-      const pathData = this.getPathData(path);
       return pathData.rootNodes[0].pathSegment;
+    } else if (pathData.selectedNode && !pathData.selectedNode.viewUrl && pathData.selectedNode.children?.length > 0) {
+      return path + '/' +pathData.selectedNode.children[0].pathSegment;
     }
     return undefined;
   }
