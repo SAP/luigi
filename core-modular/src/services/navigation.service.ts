@@ -175,7 +175,7 @@ export class NavigationService {
       // poor mans implementation, full path resolution TBD
       return pathData.rootNodes[0].pathSegment;
     } else if (pathData.selectedNode && !pathData.selectedNode.viewUrl && pathData.selectedNode.children?.length > 0) {
-      return path + '/' +pathData.selectedNode.children[0].pathSegment;
+      return path + '/' + pathData.selectedNode.children[0].pathSegment;
     }
     return undefined;
   }
