@@ -19,7 +19,7 @@ export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
   alertResolvers: Record<string, Function> = {};
-  modalResolver?: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void };
+  modalResolver?: { resolve: Function; reject: Function };
   alertIndex = 0;
 
   constructor() {
@@ -736,8 +736,8 @@ export class WebComponentService {
    */
   notifyConfirmationModalClosed(confirmed = true) {
     if (this.modalResolver) {
-      if (confirmed) this.modalResolver?.resolve();
-      else this.modalResolver?.reject();
+      if (confirmed) this.modalResolver.resolve();
+      else this.modalResolver.reject();
       this.modalResolver = undefined;
     } else {
       console.log('Modal promise is not listed.');
