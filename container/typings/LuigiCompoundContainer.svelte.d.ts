@@ -203,7 +203,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @example
    * containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
    * @since NEXT_RELEASE_CONTAINER
-  */
+   */
   notifyAlertClosed(id: string, dismissKey?: string): void;
 
   /**
@@ -211,7 +211,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param {boolean} value if the confirmation modal was confirmed or declined.
    * @example
    * containerElement.notifyAlertClosed(true)
-   * @since NEXT_RELEASE_CONTAINER 
+   * @since NEXT_RELEASE_CONTAINER
    */
   notifyConfirmationModalClosed(confirmed = true): void;
 
