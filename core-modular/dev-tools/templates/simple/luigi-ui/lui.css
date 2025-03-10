@@ -19,6 +19,10 @@ ui5-side-navigation {
     grid-column: 1 / span 2;
 }
 
+.ui5-tabcontainer-hidden {
+    display: none;
+}
+
 ui5-shellbar::part(root) {
     padding-inline-start: 0.75rem;
     padding-inline-end: 1.25rem;
@@ -45,6 +49,7 @@ ui5-shellbar {
 
 .content {
     position: relative;
+    height: 100%;
     overflow: hidden;
     background: var(--sapBackgroundColor);
     border-radius: 0.5rem 0.5rem 0 0;
@@ -55,7 +60,7 @@ ui5-shellbar {
 .content luigi-container,
 .content luigi-compound-container {
     display: block;
-    height: 100%;
+    overflow: auto;
 }
 
 

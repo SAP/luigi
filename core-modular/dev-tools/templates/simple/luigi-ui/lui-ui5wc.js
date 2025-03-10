@@ -308,6 +308,7 @@ const connector = {
 
   renderTabNav: (tabNavData) => {
     const tabcontainer = document.querySelector('ui5-tabcontainer');
+    tabcontainer?.setAttribute('no-auto-selection', '');
     if (tabcontainer) tabcontainer.innerHTML = '';
     if (Object.keys(tabNavData).length === 0) {
       document.querySelector('.content-wrapper > ui5-tabcontainer')?.classList.add('ui5-tabcontainer-hidden');
