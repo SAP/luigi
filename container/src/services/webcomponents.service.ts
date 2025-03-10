@@ -18,7 +18,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  modalResolver: { resolve: (value: unknown) => void, reject: (reason?: Error) => void };
+  modalResolver: { resolve: (value: unknown) => void; reject: (reason?: Error) => void };
   alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
 
