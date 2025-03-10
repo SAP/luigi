@@ -61,6 +61,7 @@ ui5-shellbar {
 .content luigi-compound-container {
     display: block;
     overflow: auto;
+    height: 100%;
 }
 
 
