@@ -1802,12 +1802,12 @@ describe('resolveAlert', () => {
 });
 
 describe('notifyConfirmationModalClosed', () => {
-  const mockResolvers = { resolve: jest.fn(), reject: jest.fn() };
+  const mockResolver = { resolve: jest.fn(), reject: jest.fn() };
   let service;
 
   beforeEach(() => {
     service = new WebComponentService();
-    service.modalResolvers = mockResolvers;
+    service.modalResolver = mockResolver;
   });
 
   it('should resolve the modal and reset related data when modal is confirmed', () => {
@@ -1815,8 +1815,8 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(true);
 
     // assert
-    expect(mockResolvers.resolve).toHaveBeenCalledWith(true);
-    expect(service.modalResolvers).toBeUndefined();
+    expect(mockResolver.resolve).toHaveBeenCalledWith(true);
+    expect(service.modalResolver).toBeUndefined();
   });
 
   it('should reject the modal and reset related data when modal is dismissed', () => {
@@ -1824,7 +1824,7 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(false);
 
     // assert
-    expect(mockResolvers.reject).toHaveBeenCalledWith(new Error('No data'));
-    expect(service.modalResolvers).toBeUndefined();
+    expect(mockResolver.reject).toHaveBeenCalledWith(new Error('No data'));
+    expect(service.modalResolver).toBeUndefined();
   });
 });
