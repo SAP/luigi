@@ -654,6 +654,14 @@
             },
             {
               "kind": "method",
+              "name": "notifyAlertClosed"
+            },
+            {
+              "kind": "method",
+              "name": "notifyConfirmationModalClosed"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
