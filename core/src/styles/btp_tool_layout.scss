@@ -34,7 +34,7 @@ body:not(.semiCollapsed) .fd-tool-layout.fd-tool-layout .fd-app__sidebar.fd-app_
     padding-right: 1.25rem;
   }
 
-  .fd-shellbar__group--product > .lui-keep-main {
+  .fd-shellbar__group--product > .lui-keep-main:not(.lui-sat) {
     margin-left: -.5rem;
   }
 }
