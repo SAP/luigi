@@ -266,6 +266,15 @@ export default class LuigiContainer extends HTMLElement {
   notifyAlertClosed(id: string, dismissKey?: string): void;
 
   /**
+   * A function that notifies the microfrontend that the opened confirmation modal has been closed.
+   * @param {boolean} result the output of the opened confirmation modal (true/false)
+   * @example
+   * containerElement.notifyConfirmationModalClosed(true)
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  notifyConfirmationModalClosed(result: boolean): void;
+
+  /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute.
    * @example
    * containerElement.init()
