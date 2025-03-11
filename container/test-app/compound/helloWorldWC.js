@@ -420,7 +420,6 @@ export default class extends HTMLElement {
               'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
             )
             .shadowRoot.querySelector('#confirmationModalResponse').innerHTML = 'Modal dismissed';
-
         });
     });
   }

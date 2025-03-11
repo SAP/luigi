@@ -735,9 +735,6 @@ export class WebComponentService {
    *
    */
   notifyConfirmationModalClosed(confirmed: boolean) {
-    // if (this.modalResolver) {
-  //   if (confirmed) this.modalResolver.resolve();
-  //   else this.modalResolver.reject();
     if (this.modalResolver) {
       if (confirmed) {
         this.modalResolver.resolve();
