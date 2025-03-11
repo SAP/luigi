@@ -591,6 +591,23 @@ To hide the top navigation, you can use custom CSS, for example:
 }
 ```
 
+### Can I make top navigation more responsive in case of many navigation items?
+
+To make top navigation more responsive you may consider grouping navigation items using [category](https://docs.luigi-project.io/docs/navigation-configuration?section=category) node parameter. Top navigation nodes in the same category will be rendered as a dropdown.
+
+Another solution is to enable mobile navigation on bigger screens. Just use custom CSS to overwrite default breakpoint (899px) - for example:
+
+```css
+@media (max-width: 1199px) {
+  .fd-shellbar__action--desktop {
+    display: none;
+  }
+  .fd-shellbar__action--mobile {
+    display: inline-block;
+  }
+}
+```
+
 ### Can I have more than 2 levels in the Luigi side navigation?/Can navigation nodes have grandchildren?
 
 Currently, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
