@@ -23,7 +23,7 @@ npm run start-examples-test &
 WS_FID_PID=$!
 
 # Start the second server for 'test-app' in the background
-npm run start &
+npm run start-test &
 EXAMPLES_FID_PID=$!
 
 # sleep for 30 seconds to wait for both servers to be fired up
