@@ -132,7 +132,11 @@
           buttonConfirm: 'Yes',
           buttonDismiss: 'No',
         };
-        LuigiClient.uxManager().showConfirmationModal(settings);
+
+        LuigiClient.uxManager()
+          .showConfirmationModal(settings)
+          .then(() => console.log('Modal confirmed'))
+          .catch(() => console.log('Modal dissmissed'));
       }
 
       function testShowLoadingIndicator() {

@@ -230,6 +230,10 @@
             },
             {
               "kind": "method",
+              "name": "notifyConfirmationModalClosed"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
@@ -264,7 +268,7 @@
             },
             {
               "name": "close-alert-request",
-              "description": "Event fired when the micro frontend requests to close an alert.",
+              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
@@ -688,7 +692,7 @@
             },
             {
               "name": "close-alert-request",
-              "description": "Event fired when the micro frontend requests to close an alert.",
+              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
