@@ -277,7 +277,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Updates route of the microfrontend by sending a message to the iframe that sets new view URL.
    * @param {string} new view URL
-   * @param {Object} internal luigi legacy data (optional)
+   * @param {Object} internal Luigi legacy data (optional)
    * @since 1.5.0
    */
   updateViewUrl(viewUrl: string, internal?: object): void;

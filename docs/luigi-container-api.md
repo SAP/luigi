@@ -600,7 +600,7 @@ Updates route of the microfrontend by sending a message to the iframe that sets 
 #### Parameters
 
 *   `viewUrl` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
-*   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** luigi legacy data (optional)
+*   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Luigi legacy data (optional)
 *   `new` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** view URL
 
 Returns **void** 
