@@ -573,6 +573,26 @@ Returns **void**
 
 *   **since**: 1.6.0
 
+### notifyConfirmationModalClosed
+
+A function that notifies the microfrontend that the opened confirmation modal has been closed.
+
+#### Parameters
+
+*   `result` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** the output of the opened confirmation modal (true/false)
+
+#### Examples
+
+```javascript
+containerElement.notifyConfirmationModalClosed(true)
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute.

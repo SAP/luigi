@@ -38,6 +38,7 @@
         updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
         notifyAlertClosed = notInitFn('notifyAlertClosed');
+        notifyConfirmationModalClosed = notInitFn('notifyConfirmationModalClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
@@ -132,105 +133,114 @@
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
-    if (containerInitialized) {
-      return;
-    }
+    if (!containerInitialized) {
+      thisComponent.sendCustomMessage = (id: string, data?: object) => {
+        ContainerAPI.sendCustomMessage(
+          id,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
+          !!webcomponent,
+          iframeHandle,
+          data
+        );
+      };
 
-    thisComponent.sendCustomMessage = (id: string, data?: object) => {
-      ContainerAPI.sendCustomMessage(
-        id,
-        thisComponent.getNoShadow() ? thisComponent : mainComponent,
-        !!webcomponent,
-        iframeHandle,
-        data
-      );
-    };
+      thisComponent.updateContext = (contextObj: object, internal?: object) => {
+        context = JSON.stringify(contextObj);
 
-    thisComponent.updateContext = (contextObj: object, internal?: object) => {
-      context = JSON.stringify(contextObj);
-
-      if (webcomponent) {
-        (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
-      } else {
-        ContainerAPI.updateContext(contextObj, internal, iframeHandle);
-      }
-    };
-
-    thisComponent.closeAlert = (id: string, dismissKey?: string) => {
-      thisComponent.notifyAlertClosed(id, dismissKey);
-    };
-
-    thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
-      // check if thisComponent is in dom
-      if (thisComponent.isConnected) {
         if (webcomponent) {
-          webcomponentService.resolveAlert(id, dismissKey);
+          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
-          ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+          ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+        }
+      };
+
+      thisComponent.closeAlert = (id: string, dismissKey?: string) => {
+        thisComponent.notifyAlertClosed(id, dismissKey);
+      };
+
+      thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.resolveAlert(id, dismissKey);
+          } else {
+            ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+          }
         }
       }
-    }
 
-    containerService.registerContainer(thisComponent);
-    webcomponentService.thisComponent = thisComponent;
-
-    const ctx = GenericHelperFunctions.resolveContext(context);
-
-    thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
-      if (viewUrl?.length) {
-        ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
+      thisComponent.notifyConfirmationModalClosed = (result) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.notifyConfirmationModalClosed(!!result);
+          } else {
+            ContainerAPI.notifyConfirmationModalClosed(!!result, iframeHandle);
+          }
+        }
       }
-    };
 
-    if (webcomponent && webcomponent != 'false') {
-      if (!thisComponent.getNoShadow()) {
-        mainComponent.innerHTML = '';
+      containerService.registerContainer(thisComponent);
+      webcomponentService.thisComponent = thisComponent;
 
-        const shadow = thisComponent.attachShadow({ mode: 'open' });
+      const ctx = GenericHelperFunctions.resolveContext(context);
 
-        shadow.append(mainComponent);
+      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
+        if (viewUrl?.length) {
+          ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
+        }
+      };
+
+      if (webcomponent && webcomponent != 'false') {
+        if (!thisComponent.getNoShadow()) {
+          mainComponent.innerHTML = '';
+
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
+
+          shadow.append(mainComponent);
+        } else {
+          // removing mainComponent
+          thisComponent.innerHTML = '';
+        }
+
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+
+        webcomponentService.renderWebComponent(
+          viewurl,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
+          ctx,
+          typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
+        );
       } else {
-        // removing mainComponent
-        thisComponent.innerHTML = '';
-      }
+        if (!thisComponent.getNoShadow()) {
+          // removeing mainComponent
+          thisComponent.innerHTML = '';
 
-      const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
 
-      webcomponentService.renderWebComponent(
-        viewurl,
-        thisComponent.getNoShadow() ? thisComponent : mainComponent,
-        ctx,
-        typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
-      );
-    } else {
-      if (!thisComponent.getNoShadow()) {
-        // removeing mainComponent
-        thisComponent.innerHTML = '';
-
-        const shadow = thisComponent.attachShadow({ mode: 'open' });
-
-        shadow.append(mainComponent);
-      }
-    }
-
-    if (skipInitCheck) {
-      thisComponent.initialized = true;
-      setTimeout(() => {
-        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-      });
-    } else if (webcomponent) {
-      (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-        if (
-          !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
-        ) {
-          thisComponent.initialized = true;
-          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+          shadow.append(mainComponent);
         }
-      });
-    }
+      }
 
-    containerInitialized = true;
-    thisComponent.containerInitialized = true;
+      if (skipInitCheck) {
+        thisComponent.initialized = true;
+        setTimeout(() => {
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        });
+      } else if (webcomponent) {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+          if (
+            !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
+          ) {
+            thisComponent.initialized = true;
+            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+          }
+        });
+      }
+
+      containerInitialized = true;
+      thisComponent.containerInitialized = true;
+    }
   };
 
   onMount(async () => {

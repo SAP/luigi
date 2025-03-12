@@ -8,10 +8,16 @@ import svelte from 'rollup-plugin-svelte';
 
 import svelteConfig from './svelte.config.js';
 
+const coverage = process.env.COVERAGE === 'true';
 const production = !process.env.ROLLUP_WATCH;
+let inputPath = 'src/main.ts';
 
 if (production) {
   console.log('Production BUILD');
+}
+
+if (coverage) {
+  inputPath = 'instrumented/main.ts';
 }
 
 function serve() {
@@ -38,7 +44,7 @@ function serve() {
 
 export default [
   {
-    input: 'src/main.ts',
+    input: inputPath,
     output: {
       sourcemap: true,
       name: 'app',
@@ -47,8 +53,10 @@ export default [
     plugins: [
       svelte(svelteConfig),
       typescript({
-        sourceMap: true,
-        inlineSources: true
+        compilerOptions: { noEmitOnError: !coverage },
+        exclude: !coverage ? 'instrumented/**/*' : null,
+        inlineSources: true,
+        sourceMap: true
       }),
       copy({
         targets: [{ src: 'typings/**/*', dest: 'public' }],

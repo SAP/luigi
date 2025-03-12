@@ -1,4 +1,5 @@
 /* eslint no-prototype-builtins: 0 */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   DefaultCompoundRenderer,
   resolveRenderer,
@@ -18,6 +19,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent!: ContainerElement;
+  modalResolver!: { resolve: (value: unknown) => void; reject: (reason?: Error) => void } | undefined;
   alertResolvers: Record<string, ((value: unknown) => void) | undefined> = {};
   alertIndex = 0;
 
@@ -249,6 +251,7 @@ export class WebComponentService {
           },
           showConfirmationModal: (settings: object) => {
             return new Promise((resolve, reject) => {
+              this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
@@ -299,7 +302,6 @@ export class WebComponentService {
       getActiveFeatureToggles: (): string[] => {
         return this.thisComponent.activeFeatureToggleList || [];
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       publishEvent: (ev: any) => {
         if (eventBusElement && eventBusElement.eventBus) {
           // compound component use case only
@@ -384,7 +386,7 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    */
   initWC(
-    wc: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    wc: HTMLElement | any,
     wc_id: string,
     eventBusElement: ContainerElement,
     viewUrl: string,
@@ -492,11 +494,11 @@ export class WebComponentService {
       }
 
       // @ts-ignore
-      if (!window.Luigi) {
+      if (!(window as any)['Luigi']) {
         // @ts-ignore
         window.Luigi = {};
         // @ts-ignore
-        if (!window.Luigi._registerWebcomponent) {
+        if (!(window as any)['Luigi']['_registerWebcomponent']) {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
             this.containerService.getContainerManager()._registerWebcomponent(src, element);
@@ -570,7 +572,7 @@ export class WebComponentService {
    */
   renderWebComponent(
     viewUrl: string,
-    wc_container: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    wc_container: HTMLElement | any,
     context: object,
     node: WebComponentNode,
     nodeId?: string,
@@ -587,9 +589,7 @@ export class WebComponentService {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId || '', isCompoundChild);
     } else {
       /** Custom import function, if defined */
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).luigiWCFn) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId || '', isCompoundChild);
         });
@@ -676,7 +676,6 @@ export class WebComponentService {
 
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (renderer as any).viewUrl = this.processViewUrl(navNode.viewUrl, { context });
       renderer.createCompoundItemContainer = (layoutConfig: LayoutConfig) => {
         const cnt = document.createElement('div');
@@ -771,6 +770,26 @@ export class WebComponentService {
       this.alertResolvers[id] = undefined;
     } else {
       console.log('Promise is not in the list.');
+    }
+  }
+
+  /**
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
+   *
+   * @param {boolean} confirmed the result of the modal being closed
+   *
+   */
+  notifyConfirmationModalClosed(confirmed: boolean) {
+    if (this.modalResolver) {
+      if (confirmed) {
+        this.modalResolver.resolve(true);
+      } else {
+        this.modalResolver.reject(new Error('No data'));
+      }
+
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
     }
   }
 }

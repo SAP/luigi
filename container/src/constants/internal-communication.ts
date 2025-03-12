@@ -45,6 +45,10 @@ export namespace LuigiInternalMessageID {
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'luigi.ux.confirmationModal.show';
   /**
+   * A message sent to the microfrontend to notify closing of a particular confirmation modal
+   */
+  export const CONFIRMATION_MODAL_CLOSED = 'luigi.ux.confirmationModal.hide';
+  /**
    * A message emmitted from the Microfrontend when a request to show loading indicator is sent
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'luigi.show-loading-indicator';
