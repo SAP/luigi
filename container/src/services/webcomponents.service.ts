@@ -20,7 +20,7 @@ export class WebComponentService {
   thisComponent: ContainerElement;
   alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
-  modalResolver?: { resolve: Function; reject: Function };
+  modalResolver: { resolve: () => void; reject: () => void };
 
   constructor() {
     this.containerService = new ContainerService();
