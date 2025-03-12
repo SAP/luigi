@@ -28,7 +28,7 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.0.0
    *
    *
-   * @example <luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
+   * @example <luigi-container viewurl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
    * @example myContainer.context = {label: "Dashboard"}
    */
   context: string;
@@ -37,7 +37,7 @@ export default class LuigiContainer extends HTMLElement {
    * Label information for the microfrontend.
    * @since 1.0.0
    *
-   * @example <luigi-container viewUrl="/index.html" label="Dashboard"></luigi-container>
+   * @example <luigi-container viewurl="/index.html" label="Dashboard"></luigi-container>
    * @example myContainer.label = "Dashboard"
    */
   label: string;
@@ -276,11 +276,11 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * Updates route of the microfrontend by sending a message to the iframe that sets new view URL.
-   * @param {string} new view URL
+   * @param {string} viewurl new view URL
    * @param {Object} internal Luigi legacy data (optional)
    * @since 1.5.0
    */
-  updateViewUrl(viewUrl: string, internal?: object): void;
+  updateViewUrl(viewurl: string, internal?: object): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute.
