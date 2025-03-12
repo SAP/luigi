@@ -234,6 +234,10 @@
             },
             {
               "kind": "method",
+              "name": "updateViewUrl"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
