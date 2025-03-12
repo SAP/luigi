@@ -53,6 +53,7 @@
             this.updateContext(JSON.parse(newValue));
           }
         }
+
         getNoShadow() {
           return this.hasAttribute('no-shadow') || this.noShadow;
         }
@@ -143,7 +144,7 @@
     thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
       // check if thisComponent is in dom
       if (thisComponent.isConnected) {
-          webcomponentService.resolveAlert(id, dismissKey);
+        webcomponentService.resolveAlert(id, dismissKey);
       }
     }
 
