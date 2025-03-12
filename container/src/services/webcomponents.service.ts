@@ -243,17 +243,17 @@ export class WebComponentService {
             });
           },
           showConfirmationModal: (settings) => {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
               this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                (data) => {
-                  if (data) {
-                    resolve(data);
+                (confirmed) => {
+                  if (confirmed) {
+                    resolve();
                   } else {
-                    reject(new Error('No data'));
+                    reject();
                   }
                 },
                 'callback'

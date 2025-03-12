@@ -624,7 +624,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      expect(confirmationModalPromise).rejects.toThrow('No data');
+      expect(confirmationModalPromise).rejects.toThrow();
     });
 
     it('test uxManager closeUserSettings', () => {
@@ -1815,7 +1815,7 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(true);
 
     // assert
-    expect(mockResolver.resolve).toHaveBeenCalledWith(true);
+    expect(mockResolver.resolve).toHaveBeenCalled();
     expect(service.modalResolver).toBeUndefined();
   });
 
@@ -1824,7 +1824,7 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(false);
 
     // assert
-    expect(mockResolver.reject).toHaveBeenCalledWith(new Error('No data'));
+    expect(mockResolver.reject).toHaveBeenCalled();
     expect(service.modalResolver).toBeUndefined();
   });
 });
