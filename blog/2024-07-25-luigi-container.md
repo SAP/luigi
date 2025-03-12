@@ -17,7 +17,7 @@ In addition LuigiContainer supports [getToken](https://docs.luigi-project.io/doc
 
 #### Light dom container
 
-Furthermore we added the attribute `no-shadow` to the [Luigi Container](https://docs.luigi-project.io/docs/luigi-container-api?section=noshadow) and [Luigi Compound Container](https://docs.luigi-project.io/docs/luigi-compound-container-api?section=noshadow). With this option the containers doesn't have a shadow dom.
+Furthermore we added the attribute `no-shadow` to the [Luigi Container](https://docs.luigi-project.io/docs/luigi-container-api?section=noshadow) and [Luigi Compound Container](https://docs.luigi-project.io/docs/luigi-compound-container-api?section=noshadow). With this option, the containers do not have a shadow DOM.
 
 #### Security for iframe based micro frontends
 
