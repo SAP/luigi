@@ -4,4 +4,4 @@ This is the test suite of the **container/test-app/wc** application. The test su
 
 Please add all web component based **Luigi Container** related tests here. 
 
-Categorize tests into separate files if needed, so that it is easy to read. 
+Categorize tests into separate files if needed, so that it is easy to read.
