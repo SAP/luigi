@@ -23,6 +23,35 @@ ui5-side-navigation {
     display: none;
 }
 
+.lui-dialog::part(header),
+.lui-dialog::part(footer) {
+  padding-inline: 0;
+}
+
+.lui-dialog--large {
+  height: 80%;
+  width: 80%;
+}
+
+.lui-dialog--medium {
+  height: 80%;
+  width: 60%;
+}
+
+.lui-dialog--small {
+  height: 80%;
+  width: 40%;
+}
+
+.lui-dialog--fullscreen {
+  height: 100vh;
+  width: 100vw;
+  min-width: none;
+  min-height: none;
+  max-width: none;
+  max-height: none;
+}
+
 ui5-shellbar::part(root) {
     padding-inline-start: 0.75rem;
     padding-inline-end: 1.25rem;

@@ -70,8 +70,8 @@ export const UIModule = {
       }
     }
   },
-  openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback: Function) => {
+  openModal: (luigi: Luigi, node: any, modalSettings: ModalSettings, onCloseCallback?: Function) => {
     const lc = createContainer(node, luigi);
-    const modalHandle = luigi.getEngine()._connector?.renderModal(lc, modalSettings, onCloseCallback);
+    luigi.getEngine()._connector?.renderModal(lc, modalSettings, onCloseCallback);
   }
 };

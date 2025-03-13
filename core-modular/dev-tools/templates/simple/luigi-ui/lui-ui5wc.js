@@ -33,6 +33,27 @@ function addShellbarItem(shellbar, item) {
   shellbar.appendChild(itemEl);
 }
 
+function setDialogSize(dialog, settings) {
+  const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
+  if (settings.width && settings.width.match(regex) && settings.height && settings.height.match(regex)) {
+    dialog.style.cssText += `width:${settings.width};height:${settings.height};`;
+  } else {
+    switch (settings.size) {
+      case 'fullscreen':
+        dialog.classList.add('lui-dialog--fullscreen');
+        break;
+      case 'm':
+        dialog.classList.add('lui-dialog--medium');
+        break;
+      case 's':
+        dialog.classList.add('lui-dialog--small');
+        break;
+      default:
+        dialog.classList.add('lui-dialog--large');
+    }
+  }
+}
+
 function renderProductSwitcherItems(productSwitcherConfig) {
   document.querySelector('.tool-layout > #productswitch-popover')?.remove();
   const productSwitchPopover = document.createElement('ui5-popover');
@@ -280,10 +301,11 @@ const connector = {
   getContainerWrapper: () => {
     return document.querySelector('.tool-layout > .content-wrapper > .content');
   },
-  renderModal: (lc, modalSettings) => {
+  renderModal: (lc, modalSettings, onCloseCallback) => {
     const dialog = document.createElement('ui5-dialog');
     dialog.classList.add('lui-dialog');
     dialog.setAttribute('header-text', modalSettings?.title);
+    setDialogSize(dialog, modalSettings);
     dialog.appendChild(lc);
 
     const bar = document.createElement('ui5-bar');
@@ -294,6 +316,9 @@ const connector = {
     btn.innerHTML = 'X';
     btn.onclick = () => {
       dialog.open = false;
+      if(onCloseCallback){
+        onCloseCallback();
+      }
     };
     btn.setAttribute('slot', 'endContent');
     bar.appendChild(btn);
@@ -301,6 +326,9 @@ const connector = {
     document.body.appendChild(dialog);
     dialog.addEventListener('close', () => {
       console.log('close');
+      if(onCloseCallback){
+        onCloseCallback();
+      }
       //document.body.removeChild(dialog);
     });
     dialog.open = true;

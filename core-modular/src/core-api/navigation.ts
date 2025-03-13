@@ -13,16 +13,20 @@ export class Navigation {
     this.navService = new NavigationService(luigi);
   }
 
-  navigate = (path: string) => {
+  navigate = (path: string, preserveView?: string, modalSettings?: ModalSettings) => {
     const normalizedPath = path.replace(/\/\/+/g, '/');
     if (this.hashRouting) {
-      location.hash = normalizedPath;
+      if(modalSettings){
+        this.openAsModal(path, modalSettings);
+      }else{
+        location.hash = normalizedPath;
+      }
     } else {
       console.log('path routing not yet implemented');
     }
   };
 
-  openAsModal = (path: string, modalSettings: ModalSettings, onCloseCallback: Function) => {
+  openAsModal = (path: string, modalSettings: ModalSettings, onCloseCallback?: Function) => {
     const normalizedPath = path.replace(/\/\/+/g, '/');
     const node = this.navService.getCurrentNode(normalizedPath);
     const settings = modalSettings || {};

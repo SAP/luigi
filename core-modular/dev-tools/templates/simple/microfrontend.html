@@ -24,6 +24,7 @@
       <p>Some content</p>
       <button onclick="LuigiClient.linkManager().navigate('/home')">nav to home</button>
       <button onclick="showAlert()">alert</button>
+      <button onclick="showModal()">show MF2 in modal</button>
     </div>
     <script>
       function showAlert() {
@@ -54,6 +55,10 @@
       window.addEventListener('hashchange', () => {
         div.innerHTML = location.hash;
       });
+
+      function showModal(){
+        LuigiClient.linkManager().openAsModal('/home/c2', {title:'MF2', size:'s'});
+      }
     </script>
   </body>
 </html>
