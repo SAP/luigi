@@ -16,9 +16,9 @@ export class Navigation {
   navigate = (path: string, preserveView?: string, modalSettings?: ModalSettings) => {
     const normalizedPath = path.replace(/\/\/+/g, '/');
     if (this.hashRouting) {
-      if(modalSettings){
+      if (modalSettings) {
         this.openAsModal(path, modalSettings);
-      }else{
+      } else {
         location.hash = normalizedPath;
       }
     } else {

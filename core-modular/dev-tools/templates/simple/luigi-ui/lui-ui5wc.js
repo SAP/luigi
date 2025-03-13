@@ -316,7 +316,7 @@ const connector = {
     btn.innerHTML = 'X';
     btn.onclick = () => {
       dialog.open = false;
-      if(onCloseCallback){
+      if (onCloseCallback) {
         onCloseCallback();
       }
     };
@@ -326,7 +326,7 @@ const connector = {
     document.body.appendChild(dialog);
     dialog.addEventListener('close', () => {
       console.log('close');
-      if(onCloseCallback){
+      if (onCloseCallback) {
         onCloseCallback();
       }
       //document.body.removeChild(dialog);
