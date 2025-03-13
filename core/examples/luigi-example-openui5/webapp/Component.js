@@ -1,12 +1,13 @@
-sap.ui.define(['sap/ui/core/UIComponent'], function(UIComponent) {
+sap.ui.define(['sap/ui/core/UIComponent'], (UIComponent) => {
   'use strict';
 
   return UIComponent.extend('luigi.demo.Component', {
     metadata: {
-      manifest: 'json'
+      interfaces: ['sap.ui.core.IAsyncContentCreation'],
+      manifest: 'json',
     },
 
-    init: function() {
+    init() {
       UIComponent.prototype.init.apply(this, arguments);
       this.getRouter().initialize();
     }
