@@ -60,4 +60,4 @@ When both `coverage` and `e2e-coverage` folders are present in the main director
 npm run coverage-summary
 ```
 
-New HTML file called `coverage-summary.html` should be created in the main directory - just open it in a browser to see the summary report.
+New HTML file called `index.html` should be created in the `coverage-summary` directory - just open it in a browser to see the summary report.

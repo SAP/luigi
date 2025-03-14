@@ -1,0 +1,54 @@
+name: Deploy coverage report for container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./container
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Run e2e tests
+        run: bash ./run-container-e2e.sh || exit 1
+
+      - name: Generate coverage summary
+        run: npm run coverage-summary
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload files to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./coverage-summary
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
