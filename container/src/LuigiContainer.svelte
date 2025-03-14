@@ -39,6 +39,7 @@
         updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
         notifyAlertClosed = notInitFn('notifyAlertClosed');
+        notifyConfirmationModalClosed = notInitFn('notifyConfirmationModalClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
@@ -157,6 +158,17 @@
             webcomponentService.resolveAlert(id, dismissKey);
           } else {
             ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+          }
+        }
+      }
+
+      thisComponent.notifyConfirmationModalClosed = (result) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.notifyConfirmationModalClosed(!!result);
+          } else {
+            ContainerAPI.notifyConfirmationModalClosed(!!result, iframeHandle);
           }
         }
       }
