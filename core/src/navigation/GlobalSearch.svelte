@@ -184,6 +184,10 @@
 
   //remove arrow from the search popover
   @media screen and (max-width: 1024px) {
+    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field) {
+      margin-bottom: 0;
+    }
+
     .luigi-search-shell__mobile {
       position: relative;
       height: calc(2.25rem + 2px);
@@ -200,9 +204,17 @@
         background: var(--sapShellColor);
         z-index: 2;
       }
+
       .fd-menu {
         max-width: 12rem;
       }
+    }
+  }
+
+  @media (max-width: 599px) {
+    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field) {
+      max-width: 11rem;
+      min-width: 0;
     }
   }
 </style>
