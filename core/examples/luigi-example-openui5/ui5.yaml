@@ -1,15 +1,15 @@
-specVersion: '2.1'
+specVersion: '4.0'
 metadata:
-  name: LuigiOpenUI5
+  name: luigi-example-openui5
 type: application
 framework:
   name: OpenUI5
-  version: "1.80.0"
+  version: "1.120.27"
   libraries:
     - name: sap.f
     - name: sap.m
     - name: sap.ui.core
-    - name: themelib_sap_fiori_3
+    - name: themelib_sap_horizon
 ---
 specVersion: "2.1"
 kind: extension

@@ -723,9 +723,9 @@ runTimeErrorHandler: {
   - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
 ### showBreadcrumbs
-- - **type**: boolean
+- **type**: boolean
 - **description**: if a breadcrumbs configuration is set, the breadcrumbs will show for all nodes by default. This property allows you to disable breadcrumbs for any particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
-- - **example**:
+- **example**:
 ```javascript
 navigation: {
   nodes: [{
@@ -848,7 +848,7 @@ navigation: {
 - **since**: 2.7.0
 
 ### userSettingsGroup
-- - **type**: string
+- **type**: string
 - **description**: sets the user settings group for this navigation node. It is the title of a predefined user settings group belonging to a `userSettingGroups` object. For more information, read the section on [user settings](user-settings.md).
 - **example**:
 ```javascript
