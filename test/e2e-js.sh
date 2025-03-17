@@ -15,7 +15,7 @@ WS_FID_PID=$!
 NG_EXAMPLE="$BASE_DIR/../test/e2e-test-application"
 
 cd $NG_EXAMPLE
-if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+if [ "true" == "true" ] && [ -n "$CYPRESS_DASHBOARD_RECORD_KEY" ] ; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
   npm run e2e:run:js -- --record --parallel --key $CYPRESS_DASHBOARD_RECORD_KEY
