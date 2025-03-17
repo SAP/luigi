@@ -54,7 +54,6 @@ Luigi.setConfig({
       favicon: '/favicon.ico'
     },
     responsiveNavigation: 'Fiori3',
-    btpToolLayout: true,
     appLoadingIndicator: {
       hideAutomatically: true
     }
