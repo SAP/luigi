@@ -42,7 +42,7 @@ WS_EXT_PID=$PID
 set -e # exit on errors
 
 cd $NG_EXAMPLE
-if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ] && [ -n "$CYPRESS_DASHBOARD_RECORD_KEY" ]; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
   npm run e2e:run:angular -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
@@ -51,7 +51,7 @@ else
   npm run e2e:run:angular
 fi
 
-if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ] && [ -n "$CYPRESS_DASHBOARD_RECORD_KEY" ]; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
   npm run e2e:run:external -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
