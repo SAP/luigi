@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - 'main'
+      - main
 
 jobs:
   prepare:
@@ -19,10 +19,6 @@ jobs:
     name: Generate Build Artifacts
     needs: prepare
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./container
 
     steps:
       - name: Checkout repository
@@ -42,19 +38,19 @@ jobs:
       - run: cp -r ~/tmp_build/* .
 
       - name: Run unit tests
-        run: npm run test
+        run: cd ./container && npm run test
 
       - name: Run e2e tests
-        run: bash ./run-container-e2e.sh || exit 1
+        run: bash ./container/run-container-e2e.sh || exit 1
 
       - name: Generate coverage summary
-        run: npm run coverage-summary
+        run: cd ./container && npm run coverage-summary
 
       - name: Upload coverage summary
         uses: actions/upload-artifact@v4
         id: artifact-upload-step
         with:
-          path: ./coverage-summary/index.html
+          path: ./container/coverage-summary/index.html
           retention-days: 7
           overwrite: true
 
