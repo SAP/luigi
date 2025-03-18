@@ -9,15 +9,8 @@ on:
       - main
 
 jobs:
-  prepare:
-    uses: ./.github/workflows/prepare.yml
-    with:
-      buildcache_key: coverage_buildcache-${{ github.ref }}
-    secrets: inherit
-
   upload:
     name: Generate Build Artifacts
-    needs: prepare
     runs-on: ubuntu-latest
 
     steps:
@@ -29,13 +22,8 @@ jobs:
         with:
           node-version: '20.14.0'
 
-      - name: Set up cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/tmp_build
-          key: coverage_buildcache-${{ github.ref }}
-      - run: cp -r ~/tmp_build/* .
+      - name: Build Luigi Client
+        run: cd ./client && npm run bundle
 
       - name: Run unit tests
         run: cd ./container && npm run test
