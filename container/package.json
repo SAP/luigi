@@ -36,7 +36,7 @@
     "release": "node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts",
-    "coverage-summary": "node coverage-summary.js > coverage-summary.html",
+    "coverage-summary": "node coverage-summary/generate-summary.js > coverage-summary/index.html",
     "generate-cem": "node generateCEM.js"
   },
   "devDependencies": {
