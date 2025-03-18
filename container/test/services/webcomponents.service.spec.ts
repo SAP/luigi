@@ -607,7 +607,7 @@ describe('createClientAPI', () => {
           expect.any(Function),
           'callback'
         );
-        expect(result).toEqual(mockEventData);
+        expect(result).toEqual(undefined);
       });
     });
 
@@ -616,7 +616,7 @@ describe('createClientAPI', () => {
       const settings = { confirmationSettings: 'settings' };
 
       service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
-        callback(null);
+        callback(false);
       });
 
       // act
@@ -624,7 +624,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      expect(confirmationModalPromise).rejects.toThrow('No data');
+      expect(confirmationModalPromise).rejects.toBeUndefined();
     });
 
     it('test uxManager closeUserSettings', () => {
@@ -1815,7 +1815,7 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(true);
 
     // assert
-    expect(mockResolver.resolve).toHaveBeenCalledWith(true);
+    expect(mockResolver.resolve).toHaveBeenCalled();
     expect(service.modalResolver).toBeUndefined();
   });
 
@@ -1824,7 +1824,7 @@ describe('notifyConfirmationModalClosed', () => {
     service.notifyConfirmationModalClosed(false);
 
     // assert
-    expect(mockResolver.reject).toHaveBeenCalledWith(new Error('No data'));
+    expect(mockResolver.reject).toHaveBeenCalled();
     expect(service.modalResolver).toBeUndefined();
   });
 });

@@ -29,7 +29,7 @@ EXAMPLES_FID_PID=$!
 # sleep for 30 seconds to wait for both servers to be fired up
 sleep 30
 
-if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+if [ "$USE_CYPRESS_DASHBOARD" == "true" ] && [ -n "$CYPRESS_DASHBOARD_RECORD_KEY" ]; then
   echo "Running tests with recording"
   echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
