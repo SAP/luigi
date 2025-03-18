@@ -6,6 +6,12 @@ on:
       - main
 
 jobs:
+  prepare:
+    uses: ./.github/workflows/prepare.yml
+    with:
+      buildcache_key: compat_buildcache-${{ github.ref }}
+    secrets: inherit
+
   upload:
     name: Generate Build Artifacts
     runs-on: ubuntu-latest
