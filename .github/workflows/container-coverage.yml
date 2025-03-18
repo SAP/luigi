@@ -36,7 +36,7 @@ jobs:
         run: npm run coverage-summary
 
       - name: Upload coverage summary
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         id: artifact-upload-step
         with:
           path: ./coverage-summary/index.html
