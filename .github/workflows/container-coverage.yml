@@ -12,7 +12,7 @@ jobs:
   prepare:
     uses: ./.github/workflows/prepare.yml
     with:
-      buildcache_key: buildcache-${{ github.ref }}
+      buildcache_key: coverage_buildcache-${{ github.ref }}
     secrets: inherit
 
   upload:
@@ -34,7 +34,7 @@ jobs:
         with:
           path: |
             ~/tmp_build
-          key: buildcache-${{ github.ref }}
+          key: coverage_buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
 
       - name: Run unit tests
