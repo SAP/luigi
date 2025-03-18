@@ -4,12 +4,15 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   prepare:
     uses: ./.github/workflows/prepare.yml
     with:
-      buildcache_key: compat_buildcache-${{ github.ref }}
+      buildcache_key: buildcache-${{ github.ref }}
     secrets: inherit
 
   upload:
