@@ -336,6 +336,7 @@
                   <div class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop">
                     <div class="fd-popover fd-popover--right">
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-no-static-element-interactions -->
                       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                         <button
                           title={resolveTooltipText(node, getNodeLabel(node))}
@@ -421,6 +422,7 @@
             <div class="fd-shellbar-collapse">
               <div class="fd-popover fd-popover--right">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                   <div class="fd-shellbar-collapse--control" aria-expanded="false" aria-haspopup="true" role="button">
                     <button
@@ -447,6 +449,7 @@
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-missing-attribute -->
+                          <!-- svelte-ignore a11y-no-static-element-interactions -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={() => {
@@ -463,6 +466,7 @@
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-missing-attribute -->
+                          <!-- svelte-ignore a11y-no-static-element-interactions -->
                           <a class="fd-menu__link" on:click|stopPropagation={openMobileContextSwitcher}>
                             <i
                               class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon &&
@@ -536,6 +540,7 @@
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-missing-attribute -->
+                          <!-- svelte-ignore a11y-no-static-element-interactions -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileProductSwitcher}
@@ -625,7 +630,7 @@
                 {/if}
               </div>
               <div
-                class="fd-popover__body fd-popover__body--right"
+                class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right"
                 aria-hidden={!(dropDownStates.profilePopover || false)}
                 id="profilePopover"
                 on:click|stopPropagation

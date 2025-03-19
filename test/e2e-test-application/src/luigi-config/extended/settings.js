@@ -67,10 +67,12 @@ class Settings {
   //   };
   // };
   // globalSideNavigation = true;
-  // experimental = {
-  //   profileMenuFiori3: true,
-  //   globalNav: true
-  // };
+  profileMenuFiori3=true;
+  btpToolLayout= false;
+  experimental = {
+    btpToolLayout: true,
+    profileMenuFiori3: true
+  };
 }
 
 export const settings = new Settings();
