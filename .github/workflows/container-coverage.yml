@@ -1,0 +1,59 @@
+name: Create coverage report for container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prepare:
+    uses: ./.github/workflows/prepare.yml
+    with:
+      buildcache_key: compat_buildcache-${{ github.ref }}
+    secrets: inherit
+
+  upload:
+    name: Generate Build Artifacts
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./container
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+
+      - name: Set up cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/tmp_build
+          key: buildcache-${{ github.ref }}
+      - run: cp -r ~/tmp_build/* .
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Run e2e tests
+        run: bash ./run-container-e2e.sh || exit 1
+
+      - name: Generate coverage summary
+        run: npm run coverage-summary
+
+      - name: Upload coverage summary
+        uses: actions/upload-artifact@v4
+        id: artifact-upload-step
+        with:
+          path: ./coverage-summary/index.html
+          retention-days: 7
+          overwrite: true
+
+      - name: Output artifact URL
+        run:  echo 'Coverage summary -> ${{ steps.artifact-upload-step.outputs.artifact-url }}'

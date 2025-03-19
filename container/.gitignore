@@ -16,5 +16,5 @@
 /e2e-coverage
 /instrumented
 /.nyc_output
-/coverage-summary.html
+/coverage-summary/index.html
 .DS_Store
