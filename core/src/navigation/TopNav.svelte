@@ -773,6 +773,10 @@
     min-width: 16px;
   }
 
+  .fd-user-menu {
+    background-color: transparent;
+  }
+
   .fd-user-menu .fd-shellbar__button {
     padding-left: 0 !important;
     padding-right: 0 !important;
