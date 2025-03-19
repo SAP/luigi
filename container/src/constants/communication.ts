@@ -83,7 +83,7 @@ export namespace Events {
   /**
    * Event fired when the micro frontend requests to navigate back.
    */
-  export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
+  export const BACK_NAVIGATION_REQUEST = 'navigate-back-request'; // TODO: DEPRECATE
 
   /**
    * Event fired when the micro frontend requests the current app route.

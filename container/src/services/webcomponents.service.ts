@@ -323,6 +323,7 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, {
           params,
+          data: params,
           keepBrowserHistory
         });
       },

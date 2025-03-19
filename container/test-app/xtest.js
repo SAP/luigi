@@ -54,8 +54,16 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
     let wcBase = getWCClient();
 
     if (manager) {
-      ifBase = ifBase[manager]();
-      wcBase = wcBase[manager]();
+      try {
+        ifBase = ifBase[manager]();
+      } catch (e) {
+        console.error(e);
+      }
+      try {
+        wcBase = wcBase[manager]();
+      } catch (e) {
+        console.error(e);
+      }
     }
     ifBase[functionName](...args);
     if (functionName === 'sendCustomMessage') {
@@ -68,16 +76,30 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
 }
 
 //
-createApiTrigger(LuigiEvents.ALERT_REQUEST, 'uxManager', 'showAlert', {
-  text: 'test text'
-});
-createApiTrigger(Events.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', { text: 'test text' });
+// ROOT
 createApiTrigger(LuigiEvents.SET_VIEW_GROUP_DATA_REQUEST, undefined, 'setViewGroupData', { vg1: 'Luigi rocks ' });
-createApiTrigger('add-backdrop-request', 'uxManager', 'addBackdrop', {});
-createApiTrigger(LuigiEvents.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
-createApiTrigger(LuigiEvents.NAVIGATION_REQUEST, 'linkManager', 'navigate', '/foo/bar');
+createApiTrigger(LuigiEvents.SET_ANCHOR_LINK_REQUEST, undefined, 'setAnchor', 'myAnchor');
+createApiTrigger(LuigiEvents.ADD_NODE_PARAMS_REQUEST, undefined, 'addNodeParams', { luigi: 'rocks' }, true);
+createApiTrigger(LuigiEvents.ADD_SEARCH_PARAMS_REQUEST, undefined, 'addCoreSearchParams', { luigi: 'rocks' }, true);
 createApiTrigger(LuigiEvents.CUSTOM_MESSAGE, undefined, 'sendCustomMessage', {
   id: 'myId',
   foo: 'bar'
 });
+
+// UXMANAGER
+createApiTrigger(LuigiEvents.ALERT_REQUEST, 'uxManager', 'showAlert', {
+  text: 'test text'
+});
+createApiTrigger(LuigiEvents.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', { text: 'test text' });
+createApiTrigger('add-backdrop-request', 'uxManager', 'addBackdrop', {});
+createApiTrigger(LuigiEvents.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
+
+// LINKMANAGER
+createApiTrigger(LuigiEvents.NAVIGATION_REQUEST, 'linkManager', 'navigate', '/foo/bar');
+createApiTrigger(LuigiEvents.GO_BACK_REQUEST, 'linkManager', 'goBack', { go: 'back' });
+
+// STORAGEMANAGER - not for wc
+createApiTrigger(LuigiEvents.LOCAL_STORAGE_SET_REQUEST, 'storageManager', 'setItem', 'storageKey', 'storageValue');
+
+
 // TODO: create more...

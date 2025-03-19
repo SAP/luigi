@@ -183,19 +183,28 @@ export class ContainerService {
                 this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
-                this.dispatch(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event, event.data.data.params);
                 break;
               case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
                 this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
-                this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event, event.data.anchor);
                 break;
               case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
                 this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
-                this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
+                {
+                  let gbctx = (event.data?.goBackContext || {});
+                  try {
+                    gbctx = JSON.parse(event.data.goBackContext);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                  this.dispatch(Events.GO_BACK_REQUEST, targetCnt, gbctx);
+                  this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event); // for BW compatibility
+                }
                 break;
               case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
                 this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
