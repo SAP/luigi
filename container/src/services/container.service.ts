@@ -227,6 +227,9 @@ export class ContainerService {
               case 'luigi.add-backdrop': // TODO: add constant
                 this.dispatch('add-backdrop-request', targetCnt, undefined); // TODO: add constant
                 break;
+              case 'luigi.remove-backdrop': // TODO: add constant
+                this.dispatch(Events.REMOVE_BACKDROP_REQUEST, targetCnt, undefined);
+                break;
             }
           }
         }
