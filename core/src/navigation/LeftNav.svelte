@@ -161,12 +161,20 @@
   let btpNavTopCnt;
   let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
   let navHeaderContainer;
+  let updateTimeout;
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
   };
 
   const setLeftNavData = async () => {
+    if (window.Luigi.__btpNavTopCntRszObs) {
+      window.Luigi.__btpNavTopCntRszObs.disconnect();
+      delete window.Luigi.__btpNavTopCntRszObs;
+    }
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
     const componentData = __this.get();
     const leftNavData = await Navigation.getLeftNavData({ ...componentData }, componentData);
     if (!leftNavData) {
@@ -224,18 +232,20 @@
   };
 
   const calculateNavEntries = () => {
-    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
-    const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
-    const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
+    if (btpNavTopCnt) {
+      const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+      const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
+      const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
 
-    if (spacer.clientHeight === 0 && entries.length > 1) {
-      btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
-      for (let i = entries.length - 1; i > 0; i--) {
-        lastNode = entries[i - 1];
-        entries[i].navGroupId = entries[i].parentNode.getAttribute('navGroupId');
-        moreUL.insertBefore(entries[i], moreUL.firstChild);
-        if (spacer.clientHeight > 0) {
-          break;
+      if (spacer.clientHeight === 0 && entries.length > 1) {
+        btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
+        for (let i = entries.length - 1; i > 0; i--) {
+          lastNode = entries[i - 1];
+          entries[i].navGroupId = entries[i].parentNode.getAttribute('navGroupId');
+          moreUL.insertBefore(entries[i], moreUL.firstChild);
+          if (spacer.clientHeight > 0) {
+            break;
+          }
         }
       }
     }
@@ -259,7 +269,6 @@
 
   afterUpdate(() => {
     if (!window.Luigi.__btpNavTopCntRszObs) {
-      let updateTimeout;
       window.Luigi.__btpNavTopCntRszObs = new ResizeObserver((entries, observer) => {
         if (updateTimeout) {
           clearTimeout(updateTimeout);
