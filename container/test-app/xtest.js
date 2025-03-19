@@ -90,7 +90,9 @@ createApiTrigger(LuigiEvents.CUSTOM_MESSAGE, undefined, 'sendCustomMessage', {
 createApiTrigger(LuigiEvents.ALERT_REQUEST, 'uxManager', 'showAlert', {
   text: 'test text'
 });
-createApiTrigger(LuigiEvents.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', { text: 'test text' });
+createApiTrigger(LuigiEvents.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', {
+  text: 'test text'
+});
 createApiTrigger('add-backdrop-request', 'uxManager', 'addBackdrop', {});
 createApiTrigger(LuigiEvents.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
 
@@ -100,6 +102,5 @@ createApiTrigger(LuigiEvents.GO_BACK_REQUEST, 'linkManager', 'goBack', { go: 'ba
 
 // STORAGEMANAGER - not for wc
 createApiTrigger(LuigiEvents.LOCAL_STORAGE_SET_REQUEST, 'storageManager', 'setItem', 'storageKey', 'storageValue');
-
 
 // TODO: create more...

@@ -196,7 +196,7 @@ export class ContainerService {
                 break;
               case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
                 {
-                  let gbctx = (event.data?.goBackContext || {});
+                  let gbctx = event.data?.goBackContext || {};
                   try {
                     gbctx = JSON.parse(event.data.goBackContext);
                   } catch (e) {
