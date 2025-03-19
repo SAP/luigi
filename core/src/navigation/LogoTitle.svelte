@@ -162,60 +162,61 @@
     return RoutingHelpers.getNodeHref(node);
   }
 </script>
+
 <div class="fd-shellbar__branding" role="link" tabindex="0" aria-label="SAP Corporate Portal Home">
-{#if addNavHrefForAnchor}
-  <a
-    class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
-    aria-label={title}
-    on:click={(event) => {
-      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
-    }}
-    href="/"
-    role="button"
-    tabindex="0"
-  >
-    {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
-  </a>
-{:else}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <span
-    class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
-    aria-label={title}
-    on:click={() => goTo('/')}
-    role="button"
-    tabindex="0"
-  >
-    {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
-  </span>
-{/if}
-{#if title}
-  {#if !hasApps || keepMainTitle}
-    {#if addNavHrefForAnchor}
-      <a
-        class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
-        data-testid="luigi-topnav-title"
-        on:click={(event) => {
-          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
-        }}
-        href="/"
-      >
-        {$getTranslation(keepMainTitle ? defaultTitle : title)}
-      </a>
-    {:else}
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <span
-        class="fd-shellbar__title lui-shellbar-single-app-title"
-        data-testid="luigi-topnav-title"
-        on:click={() => goTo('/')}
-      >
-        {$getTranslation(keepMainTitle ? defaultTitle : title)}
-      </span>
+  {#if addNavHrefForAnchor}
+    <a
+      class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
+      aria-label={title}
+      on:click={(event) => {
+        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+      }}
+      href="/"
+      role="button"
+      tabindex="0"
+    >
+      {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
+    </a>
+  {:else}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <span
+      class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
+      aria-label={title}
+      on:click={() => goTo('/')}
+      role="button"
+      tabindex="0"
+    >
+      {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
+    </span>
+  {/if}
+  {#if title}
+    {#if !hasApps || keepMainTitle}
+      {#if addNavHrefForAnchor}
+        <a
+          class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
+          data-testid="luigi-topnav-title"
+          on:click={(event) => {
+            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+          }}
+          href="/"
+        >
+          {$getTranslation(keepMainTitle ? defaultTitle : title)}
+        </a>
+      {:else}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <span
+          class="fd-shellbar__title lui-shellbar-single-app-title"
+          data-testid="luigi-topnav-title"
+          on:click={() => goTo('/')}
+        >
+          {$getTranslation(keepMainTitle ? defaultTitle : title)}
+        </span>
+      {/if}
     {/if}
   {/if}
-  {/if}
-  </div>
-  {#if title}
+</div>
+{#if title}
   {#if hasApps}
     {#if keepMainTitle}<span class="fd-shellbar__separator"></span>{/if}
     <div
