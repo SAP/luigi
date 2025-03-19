@@ -1,9 +1,8 @@
+@use 'fundamental-styles/dist/tool-layout.css';
+@use 'fundamental-styles/dist/tool-header.css';
+@use 'fundamental-styles/dist/navigation.css';
+@use 'fundamental-styles/dist/search-field.css';
 
-@import 'fundamental-styles/dist/tool-layout.css';
-@import 'fundamental-styles/dist/tool-header.css';
-@import 'fundamental-styles/dist/navigation.css';
-@import 'fundamental-styles/dist/search-field.css';
-  
 .fd-tool-layout {
   .fd-shellbar {
       border-radius: var(--sapToolHeader_Border_Radius);
