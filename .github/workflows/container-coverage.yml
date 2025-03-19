@@ -1,4 +1,4 @@
-name: Create coverage report for container
+name: Coverage report for container
 
 on:
   push:
@@ -7,12 +7,8 @@ on:
 
 jobs:
   upload:
-    name: Generate Build Artifacts
+    name: Code coverage artifact
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./container
 
     steps:
       - name: Checkout repository
@@ -23,25 +19,22 @@ jobs:
         with:
           node-version: '20.14.0'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build Luigi Client
+        run: cd ./client && npm i && npm run bundle
 
       - name: Run unit tests
-        run: npm run test
+        run: cd ./container && npm i && npm run test
 
       - name: Run e2e tests
-        run: bash ./run-container-e2e.sh || exit 1
+        run: bash ./container/run-container-e2e.sh || exit 1
 
       - name: Generate coverage summary
-        run: npm run coverage-summary
+        run: cd ./container && npm run coverage-summary
 
       - name: Upload coverage summary
-        uses: actions/upload-pages-artifact@v4
-        id: artifact-upload-step
+        uses: actions/upload-artifact@v4
         with:
-          path: ./coverage-summary/index.html
+          path: ./container/coverage-summary/index.html
+          name: coverage-summary
           retention-days: 7
           overwrite: true
-
-      - name: Output artifact URL
-        run:  echo 'Coverage summary -> ${{ steps.artifact-upload-step.outputs.artifact-url }}'
