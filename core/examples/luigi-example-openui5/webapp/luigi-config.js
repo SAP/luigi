@@ -53,7 +53,7 @@ Luigi.setConfig({
       logo: '/logo.png',
       favicon: '/favicon.ico'
     },
-    responsiveNavigation: 'simpleMobileOnly',
+    responsiveNavigation: 'Fiori3',
     appLoadingIndicator: {
       hideAutomatically: true
     }

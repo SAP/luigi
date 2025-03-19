@@ -12,7 +12,7 @@ const config = {
   preprocess: [
     sveltePreprocess({
       scss: {
-        prependData: `@import "${pathToFileURL(variablePath)}", "${pathToFileURL(mixinPath)}";`
+        prependData: `@use "${pathToFileURL(variablePath)}" as *; @use "${pathToFileURL(mixinPath)}" as *;`
       }
     })
   ]

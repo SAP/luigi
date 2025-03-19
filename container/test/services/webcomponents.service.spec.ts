@@ -607,7 +607,7 @@ describe('createClientAPI', () => {
           expect.any(Function),
           'callback'
         );
-        expect(result).toEqual(mockEventData);
+        expect(result).toEqual(undefined);
       });
     });
 
@@ -616,7 +616,7 @@ describe('createClientAPI', () => {
       const settings = { confirmationSettings: 'settings' };
 
       service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
-        callback(null);
+        callback(false);
       });
 
       // act
@@ -624,7 +624,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      expect(confirmationModalPromise).rejects.toThrow('No data');
+      expect(confirmationModalPromise).rejects.toBeUndefined();
     });
 
     it('test uxManager closeUserSettings', () => {
@@ -1798,5 +1798,33 @@ describe('resolveAlert', () => {
 
     // Restore the original console.log
     consoleSpy.mockRestore();
+  });
+});
+
+describe('notifyConfirmationModalClosed', () => {
+  const mockResolver = { resolve: jest.fn(), reject: jest.fn() };
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+    service.modalResolver = mockResolver;
+  });
+
+  it('should resolve the modal and reset related data when modal is confirmed', () => {
+    // act
+    service.notifyConfirmationModalClosed(true);
+
+    // assert
+    expect(mockResolver.resolve).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
+  });
+
+  it('should reject the modal and reset related data when modal is dismissed', () => {
+    // act
+    service.notifyConfirmationModalClosed(false);
+
+    // assert
+    expect(mockResolver.reject).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
   });
 });

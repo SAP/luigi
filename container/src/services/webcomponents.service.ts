@@ -18,9 +18,9 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent: ContainerElement;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  alertResolvers: Record<string, Function> = {};
+  alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
+  modalResolver: { resolve: () => void; reject: () => void };
 
   constructor() {
     this.containerService = new ContainerService();
@@ -243,16 +243,17 @@ export class WebComponentService {
             });
           },
           showConfirmationModal: (settings) => {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
+              this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                (data) => {
-                  if (data) {
-                    resolve(data);
+                (confirmed) => {
+                  if (confirmed) {
+                    resolve();
                   } else {
-                    reject(new Error('No data'));
+                    reject();
                   }
                 },
                 'callback'
@@ -471,11 +472,11 @@ export class WebComponentService {
         };
       }
       // @ts-ignore
-      if (!window.Luigi) {
+      if (!window['Luigi']) {
         // @ts-ignore
         window.Luigi = {};
         // @ts-ignore
-        if (!window.Luigi._registerWebcomponent) {
+        if (!window['Luigi']['_registerWebcomponent']) {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
             this.containerService.getContainerManager()._registerWebcomponent(src, element);
@@ -727,6 +728,25 @@ export class WebComponentService {
       this.alertResolvers[id] = undefined;
     } else {
       console.log('Promise is not in the list.');
+    }
+  }
+
+  /**
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
+   *
+   * @param {boolean} confirmed the result of the modal being closed
+   *
+   */
+  notifyConfirmationModalClosed(confirmed: boolean) {
+    if (this.modalResolver) {
+      if (confirmed) {
+        this.modalResolver.resolve();
+      } else {
+        this.modalResolver.reject();
+      }
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
     }
   }
 }

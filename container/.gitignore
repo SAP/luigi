@@ -14,4 +14,8 @@
 /public/constants/events.js
 
 /coverage
+/e2e-coverage
+/instrumented
+/.nyc_output
+/coverage-summary/index.html
 .DS_Store
