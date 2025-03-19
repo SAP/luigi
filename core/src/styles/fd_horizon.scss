@@ -1,9 +1,9 @@
-@import '@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/css_variables.css';
-@import 'fundamental-styles/dist/theming/sap_horizon.css';
+@use '@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/css_variables.css';
+@use 'fundamental-styles/dist/theming/sap_horizon.css';
 
-@import './btp_tool_layout.scss';
+@use './btp_tool_layout.scss';
 
-@import './fd_base.scss';
+@use './fd_base.scss';
 
 :root {
   --luigi__shellbar--height: 3.5rem;

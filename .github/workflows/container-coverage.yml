@@ -1,0 +1,40 @@
+name: Coverage report for container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload:
+    name: Code coverage artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+
+      - name: Build Luigi Client
+        run: cd ./client && npm i && npm run bundle
+
+      - name: Run unit tests
+        run: cd ./container && npm i && npm run test
+
+      - name: Run e2e tests
+        run: bash ./container/run-container-e2e.sh || exit 1
+
+      - name: Generate coverage summary
+        run: cd ./container && npm run coverage-summary
+
+      - name: Upload coverage summary
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./container/coverage-summary/index.html
+          name: coverage-summary
+          retention-days: 7
+          overwrite: true
