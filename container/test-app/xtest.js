@@ -49,7 +49,11 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
   const btn = document.createElement('button');
   btn.innerHTML = luigiEventID;
   document.querySelector('#actions').appendChild(btn);
+  const keepResultCheck = document.getElementById('keepRes');
   btn.addEventListener('click', () => {
+    if (!keepResultCheck.checked) {
+      window.clearResults();
+    }
     let ifBase = getIframeClient();
     let wcBase = getWCClient();
 
@@ -102,5 +106,3 @@ createApiTrigger(LuigiEvents.GO_BACK_REQUEST, 'linkManager', 'goBack', { go: 'ba
 
 // STORAGEMANAGER - not for wc
 createApiTrigger(LuigiEvents.LOCAL_STORAGE_SET_REQUEST, 'storageManager', 'setItem', 'storageKey', 'storageValue');
-
-// TODO: create more...

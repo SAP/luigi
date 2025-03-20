@@ -5,9 +5,9 @@
     </script>
   </head>
   <body>
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1rem">
       <luigi-container
-        style="grid-row: 1"
+        style="grid-row: 1; height: 600px;"
         id="iframe-based-container-test"
         viewURL="./iframe/microfrontend.html"
       ></luigi-container>
@@ -23,6 +23,10 @@
           <span style="color: blue">web component</span>
           <span style="color: green">iframe</span>
           <button onclick="clearResults()">Clear</button>
+          <label>
+            <input type="checkbox" id="keepRes" />
+            keep results
+          </label>
         </div>
         <div id="results"></div>
       </div>
