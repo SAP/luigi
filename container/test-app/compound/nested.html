@@ -27,60 +27,87 @@
             viewUrl: layoutMFEDomain + '/panelHeader.js',
             context: {
               title: 'My Awesome Grid',
-              description: 'Really awesome'
+              description: 'Really awesome',
             },
             layoutConfig: {
-              slot: 'header'
+              slot: 'header',
             },
             eventListeners: [
               {
                 source: 'input1',
                 name: 'sendInput',
                 action: 'update',
-                dataConverter: data => {
+                dataConverter: (data) => {
                   return 'new text: ' + data;
-                }
-              }
-            ]
+                },
+              },
+            ],
           },
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
             context: {
-              label: 'Another web component'
+              label: 'Another web component',
             },
             layoutConfig: {
-              slot: 'content'
-            }
+              slot: 'content',
+            },
           },
           {
             viewUrl: './helloWorldWCSelfRegistered.js',
             webcomponent: {
-              selfRegistered: true
+              selfRegistered: true,
             },
             layoutConfig: {
-              slot: 'helloWorldSelfRegistered'
-            }
+              slot: 'helloWorldSelfRegistered',
+            },
           },
           {
             viewUrl: layoutMFEDomain + '/panelFooter.js',
             context: {
-              footer: 'This is the end of awesomeness'
+              footer: 'This is the end of awesomeness',
             },
             layoutConfig: {
-              slot: 'footer'
-            }
-          }
-        ]
+              slot: 'footer',
+            },
+          },
+        ],
       };
 
       const INITIALIZED = 'initialized';
-      let skipInitCheckCompoundCtn = document.getElementById(
-        'nested-wc-compound-container'
+      const ALERT_REQUEST = 'show-alert-request';
+      const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
+      const skipInitCheckCompoundCtn = document.getElementById(
+        'nested-wc-compound-container',
       );
+
       if (!skipInitCheckCompoundCtn.initialized) {
         skipInitCheckCompoundCtn.addEventListener(INITIALIZED, () => {
           console.log('compoundTest is ready now!');
         });
+        skipInitCheckCompoundCtn.addEventListener(ALERT_REQUEST, (event) => {
+          const data = event.detail;
+
+          alert(data.text);
+
+          if (data.callback && typeof event['callback'] === 'function') {
+            event['callback']();
+          } else {
+            skipInitCheckCompoundCtn.notifyAlertClosed(data.id);
+          }
+        });
+        skipInitCheckCompoundCtn.addEventListener(
+          SHOW_CONFIRMATION_MODAL_REQUEST,
+          (event) => {
+            const data = event.detail;
+            const val = confirm(data.body);
+
+            if (!val && typeof event['callback'] === 'function') {
+              event['callback'](val);
+            } else {
+              skipInitCheckCompoundCtn.notifyConfirmationModalClosed(val);
+            }
+          },
+        );
       }
     </script>
   </body>
