@@ -48,3 +48,16 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: '72-Semibold';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Semibold.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '72-SemiboldDuplex';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-SemiboldDuplex.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
