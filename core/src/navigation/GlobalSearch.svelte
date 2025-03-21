@@ -91,6 +91,7 @@
               <ul class="fd-menu__list fd-menu__list--top" bind:this={customSearchItemRendererSlotContainer}>
                 {#each searchResult as result, index}
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
                     on:click={(event) => globalSearchHelper.onSearchResultItemSelected(result, event)}
@@ -99,6 +100,7 @@
                   >
                     {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-no-static-element-interactions -->
                       <!-- svelte-ignore a11y-missing-attribute -->
                       <a class="fd-menu__link" on:click|preventDefault={() => {}}>
                         <div class="fd-product-switch__text">
@@ -127,6 +129,7 @@
 </div>
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div on:click|stopPropagation={() => {}}>
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
