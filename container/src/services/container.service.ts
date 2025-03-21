@@ -207,7 +207,7 @@ export class ContainerService {
                 }
                 break;
               case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
-                this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
@@ -216,7 +216,7 @@ export class ContainerService {
                 this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
-                this.dispatch(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);

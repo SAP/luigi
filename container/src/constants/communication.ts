@@ -143,7 +143,7 @@ export namespace Events {
   /**
    * Event fired when the micro frontend requests to check if the path exists.
    */
-  export const PATH_EXISTS_REQUEST = 'path-exists-request';
+  export const PATH_EXISTS_REQUEST = 'path-exists-request'; // TODO: deprecate, duplicated
 
   /**
    * Event fired when the micro frontend requests to navigate back.

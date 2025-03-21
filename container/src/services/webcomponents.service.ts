@@ -196,12 +196,19 @@ export class WebComponentService {
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
-          pathExists: () => {
+          pathExists: (link: string) => {
+            const options = {
+              fromContext,
+              fromClosestContext,
+              fromVirtualTreeRoot,
+              fromParent,
+              nodeParams
+            };
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(
-                Events.PATH_EXISTS_REQUEST,
+                Events.CHECK_PATH_EXISTS_REQUEST,
                 this.thisComponent,
-                {},
+                { ...options, link },
                 (exists) => {
                   if (exists) {
                     resolve(true);
