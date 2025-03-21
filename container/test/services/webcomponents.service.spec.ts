@@ -124,10 +124,10 @@ describe('dispatchLuigiEvent', () => {
     const callback = jest.fn();
 
     // Act
-    service.dispatchLuigiEvent(msg, data, callback);
+    service.dispatchLuigiEvent(msg, data, callback, 'callback');
 
     // Assert
-    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback);
+    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback, 'callback');
   });
 });
 
@@ -557,7 +557,7 @@ describe('createClientAPI', () => {
       clientAPI.uxManager().showAlert(alertSettings);
 
       // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings, expect.any(Function), 'callback');
     });
 
     it('test uxManager getCurrentTheme', () => {
@@ -834,7 +834,7 @@ describe('createClientAPI', () => {
 
     // asert
     expect(eventBusPublishEventSpy).toHaveBeenCalledWith(customEvent, node_id, wc_id);
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
   });
 
   it('test publishEvent custom message with UNDEFINED eventBusElement', () => {
@@ -855,7 +855,7 @@ describe('createClientAPI', () => {
     clientAPI.publishEvent(new CustomEvent('test-event', { detail: 1 }));
 
     // assert
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
   });
 
   it('test luigiClientInit', () => {

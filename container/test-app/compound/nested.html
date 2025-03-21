@@ -74,13 +74,41 @@
       };
 
       const INITIALIZED = 'initialized';
-      let skipInitCheckCompoundCtn = document.getElementById(
-        'nested-wc-compound-container'
-      );
+      const ALERT_REQUEST = 'show-alert-request';
+      const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
+      const skipInitCheckCompoundCtn = document.getElementById('nested-wc-compound-container');
+
       if (!skipInitCheckCompoundCtn.initialized) {
         skipInitCheckCompoundCtn.addEventListener(INITIALIZED, () => {
           console.log('compoundTest is ready now!');
         });
+        skipInitCheckCompoundCtn.addEventListener(
+          ALERT_REQUEST,
+          (event) => {
+            const data = event.detail;
+
+            alert(data.text);
+
+            if (data.callback && typeof event['callback'] === 'function') {
+              event['callback']();
+            } else {
+              skipInitCheckCompoundCtn.notifyAlertClosed(data.id);
+            }
+          },
+        );
+        skipInitCheckCompoundCtn.addEventListener(
+          SHOW_CONFIRMATION_MODAL_REQUEST,
+          (event) => {
+            const data = event.detail;
+            const val = confirm(data.body);
+
+            if (!val && typeof event['callback'] === 'function') {
+              event['callback'](val);
+            } else {
+              skipInitCheckCompoundCtn.notifyConfirmationModalClosed(val);
+            }
+          },
+        );
       }
     </script>
   </body>
