@@ -255,8 +255,8 @@
       }
     }, ['navigation.viewgroupdata']);
     btpToolLayout =
-    LuigiConfig.getConfigValue('settings.btpToolLayout') &&
-    GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
+      LuigiConfig.getConfigValue('settings.btpToolLayout') &&
+      GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
@@ -301,13 +301,15 @@
 </script>
 
 <div
-  class={isModal || (isDrawer && settings.backdrop) ? 'fd-dialog fd-dialog--active' : `drawer-dialog ${btpToolLayout ? 'btp-drawer-dialog':'drawer-dialog'}`}
+  class={isModal || (isDrawer && settings.backdrop)
+    ? 'fd-dialog fd-dialog--active'
+    : `drawer-dialog ${btpToolLayout ? 'btp-drawer-dialog' : 'drawer-dialog'}`}
   style={isModal ? 'z-index:1001' : ''}
 >
   <div
     class="fd-dialog__content {isDrawer
       ? settings.backdrop
-        ? `drawer drawer-dialog__content ${btpToolLayout ? 'btp-drawer__backdrop':'drawer__backdrop'}`
+        ? `drawer drawer-dialog__content ${btpToolLayout ? 'btp-drawer__backdrop' : 'drawer__backdrop'}`
         : 'drawer drawer-dialog__content'
       : 'lui-modal-mf lui-modal-index-' + modalIndex}"
     data-testid={isModal ? 'modal-mf' : 'drawer-mf'}
@@ -381,7 +383,7 @@
     }
   }
 
-  .drawer-dialog.btp-drawer-dialog{
+  .drawer-dialog.btp-drawer-dialog {
     top: calc(#{$combinedLayoutGap} + #{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
@@ -401,7 +403,7 @@
     top: $topNavHeight;
   }
 
-  .btp-drawer__backdrop{
+  .btp-drawer__backdrop {
     top: calc($topNavHeight + $combinedLayoutGap);
   }
 
