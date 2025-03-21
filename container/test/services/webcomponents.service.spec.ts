@@ -557,7 +557,12 @@ describe('createClientAPI', () => {
       clientAPI.uxManager().showAlert(alertSettings);
 
       // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings, expect.any(Function), 'callback');
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        Events.ALERT_REQUEST,
+        alertSettings,
+        expect.any(Function),
+        'callback'
+      );
     });
 
     it('test uxManager getCurrentTheme', () => {
