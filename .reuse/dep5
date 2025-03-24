@@ -1,8 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Luigi
-Upstream-Contact: Philipp Pracht <philipp.pracht@sap.com>
-Source: https://github.com/SAP/luigi
-
-Files: *
-Copyright: 2020 SAP SE or an SAP affiliate company and Luigi contributors
-License: Apache-2.0
