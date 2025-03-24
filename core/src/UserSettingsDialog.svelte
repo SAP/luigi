@@ -602,9 +602,9 @@
     background-color: var(--fdAvatar_BackgroundColor, var(--sapAccentColor6, #286eb4));
   }
 
-  .lui-us-group-header{
+  .lui-us-group-header {
     padding: 0.6rem 1rem;
-    border-right: .0625rem solid var(--sapPageFooter_BorderColor);
+    border-right: 0.0625rem solid var(--sapPageFooter_BorderColor);
     border-bottom: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
   }
 
@@ -649,7 +649,7 @@
 
     .lui-usersettings-dialog-sub-header {
       left: 0;
-      display:flex;
+      display: flex;
     }
 
     .lui-usersettings-content-header__back-btn {
