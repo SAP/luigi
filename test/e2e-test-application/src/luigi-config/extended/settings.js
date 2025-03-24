@@ -66,7 +66,7 @@ class Settings {
   //   };
   // };
   // globalSideNavigation = true;
-  profileMenuFiori3 = true;
+  profileMenuFiori3 = false;
   btpToolLayout = false;
   experimental = {
     btpToolLayout: true,
