@@ -216,16 +216,18 @@ export class ContainerService {
                 this.dispatchWithPayload(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event, event.data.params);
                 break;
               case 'luigi.navigation.updateModalSettings':
-                this.dispatchWithPayload('update-modal-settings-request',
-                  targetCnt,
-                  event,
-                  { updatedModalSettings: event.data.updatedModalSettings, addHistoryEntry: event.data.addHistoryEntry });
+                this.dispatchWithPayload('update-modal-settings-request', targetCnt, event, {
+                  updatedModalSettings: event.data.updatedModalSettings,
+                  addHistoryEntry: event.data.addHistoryEntry
+                });
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
                 this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
-                this.dispatchWithPayload(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event, { dirty: event.data.dirty });
+                this.dispatchWithPayload(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event, {
+                  dirty: event.data.dirty
+                });
                 break;
               case 'luigi.setVGData': // TODO: add constant
                 this.dispatch(Events.SET_VIEW_GROUP_DATA_REQUEST, targetCnt, event.data.data);

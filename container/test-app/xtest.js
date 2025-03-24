@@ -114,20 +114,21 @@ createApiTrigger(LuigiEvents.NAVIGATION_REQUEST, 'linkManager', 'navigate', '/fo
 createApiTrigger(LuigiEvents.GO_BACK_REQUEST, 'linkManager', 'goBack', { go: 'back' });
 createApiTrigger(LuigiEvents.GET_CURRENT_ROUTE_REQUEST, 'linkManager', 'getCurrentRoute');
 createApiTrigger(LuigiEvents.CHECK_PATH_EXISTS_REQUEST, 'linkManager', 'pathExists', 'some/path');
-createApiTrigger(LuigiEvents.UPDATE_MODAL_PATH_DATA_REQUEST,
+createApiTrigger(
+  LuigiEvents.UPDATE_MODAL_PATH_DATA_REQUEST,
   'linkManager',
   'updateModalPathInternalNavigation',
   'some/path',
   { foo: 'bar' },
   true
 ); // missing on wc
-createApiTrigger('update-modal-settings-request',
+createApiTrigger(
+  'update-modal-settings-request',
   'linkManager',
   'updateModalSettings',
   { title: 'bar', size: 'm' },
   true
 ); // missing on wc
-
 
 // SplitviewHandle events omitted for now (`luigi.navigation.splitview.${action}`)
 
