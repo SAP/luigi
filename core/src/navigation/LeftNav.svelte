@@ -1483,6 +1483,10 @@
     .fd-side-nav {
       height: 100%;
       width: var(--luigi__left-sidenav--width);
+      //workaround fd v39
+      border-right: var(--sapList_BorderWidth) solid;
+      border-right-color: var(--sapGroup_ContentBorderColor);
+      //workaround end
       &.fd-side-nav--condensed {
         width: $leftNavWidthCollapsed;
       }
