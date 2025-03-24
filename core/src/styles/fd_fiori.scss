@@ -1,11 +1,10 @@
-@import '@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css';
-@import 'fundamental-styles/dist/theming/sap_fiori_3.css';
-
+@use '@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css';
+@use 'fundamental-styles/dist/theming/sap_fiori_3.css';
 
 // TODO: remove later, not supported in fiori_3
-@import './btp_tool_layout.scss';
+@use './btp_tool_layout.scss';
 
-@import './fd_base.scss';
+@use './fd_base.scss';
 
 @font-face {
   font-family: 'SAP-icons';
