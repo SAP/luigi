@@ -352,13 +352,14 @@
     <div class="fd-dialog__body lui-usersettings-body">
       <div class="lui-usersettings-left-nav">
         <div class="fd-side-nav">
-          <div class="fd-side-nav__group-header">
+          <div class="fd-side-nav__group-header lui-us-group-header">
             <h2 class="fd-title fd-title--h5" id="dialog-title-2">{$getTranslation(dialogHeader)}</h2>
           </div>
           <div class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation">
             <ul class="fd-list fd-list--byline fd-list--navigation lui-us-list">
               {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
+                  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                   <li
                     class="fd-list__item fd-list__item--link lui-us-navlist__item"
                     data-testid="us-navigation-item"
@@ -570,6 +571,8 @@
     left: var(--left-fd-side-nav-width);
     max-width: 55rem;
     font-size: var(--sapFontHeader3Size, 20px);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
   }
 
   /*customization of FD Styles to align with Fiori 3*/
@@ -597,6 +600,12 @@
     position: absolute;
     z-index: 1;
     background-color: var(--fdAvatar_BackgroundColor, var(--sapAccentColor6, #286eb4));
+  }
+
+  .lui-us-group-header{
+    padding: 0.6rem 1rem;
+    border-right: .0625rem solid var(--sapPageFooter_BorderColor);
+    border-bottom: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
   }
 
   /*Fiori 3 guidlines*/
@@ -640,6 +649,7 @@
 
     .lui-usersettings-dialog-sub-header {
       left: 0;
+      display:flex;
     }
 
     .lui-usersettings-content-header__back-btn {
