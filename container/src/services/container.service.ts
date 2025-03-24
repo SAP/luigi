@@ -180,7 +180,7 @@ export class ContainerService {
                 this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST:
-                this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
                 this.dispatchWithPayload(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event, event.data.data.params);
@@ -213,13 +213,19 @@ export class ContainerService {
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
                 break;
               case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
-                this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event, event.data.params);
+                break;
+              case 'luigi.navigation.updateModalSettings':
+                this.dispatchWithPayload('update-modal-settings-request',
+                  targetCnt,
+                  event,
+                  { updatedModalSettings: event.data.updatedModalSettings, addHistoryEntry: event.data.addHistoryEntry });
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
                 this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
-                this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
+                this.dispatchWithPayload(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event, { dirty: event.data.dirty });
                 break;
               case 'luigi.setVGData': // TODO: add constant
                 this.dispatch(Events.SET_VIEW_GROUP_DATA_REQUEST, targetCnt, event.data.data);
