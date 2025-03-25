@@ -70,7 +70,6 @@ export class ContainerService {
         callback(data);
       };
     }
-    // TODO: remove console.log('DISPATCH', customEvent.type, customEvent.payload);
     targetCnt.dispatchEvent(customEvent);
   }
 
@@ -215,8 +214,8 @@ export class ContainerService {
               case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
                 this.dispatchWithPayload(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event, event.data.params);
                 break;
-              case 'luigi.navigation.updateModalSettings':
-                this.dispatchWithPayload('update-modal-settings-request', targetCnt, event, {
+              case LuigiInternalMessageID.UPDATE_MODAL_SETTINGS:
+                this.dispatchWithPayload(Events.UPDATE_MODAL_SETTINGS_REQUEST, targetCnt, event, {
                   updatedModalSettings: event.data.updatedModalSettings,
                   addHistoryEntry: event.data.addHistoryEntry
                 });
@@ -229,13 +228,13 @@ export class ContainerService {
                   dirty: event.data.dirty
                 });
                 break;
-              case 'luigi.setVGData': // TODO: add constant
+              case LuigiInternalMessageID.SET_VIEW_GROUP_DATA_REQUEST:
                 this.dispatch(Events.SET_VIEW_GROUP_DATA_REQUEST, targetCnt, event.data.data);
                 break;
-              case 'luigi.add-backdrop': // TODO: add constant
-                this.dispatch('add-backdrop-request', targetCnt, event); // TODO: add constant
+              case LuigiInternalMessageID.ADD_BACKDROP_REQUEST:
+                this.dispatch(Events.ADD_BACKDROP_REQUEST, targetCnt, event);
                 break;
-              case 'luigi.remove-backdrop': // TODO: add constant
+              case LuigiInternalMessageID.REMOVE_BACKDROP_REQUEST:
                 this.dispatch(Events.REMOVE_BACKDROP_REQUEST, targetCnt, event);
                 break;
             }
