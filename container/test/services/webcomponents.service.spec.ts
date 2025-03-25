@@ -503,9 +503,9 @@ describe('createClientAPI', () => {
       return pathExistsPromise.then((result) => {
         // Check if the dispatch function was called with the correct arguments
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
-          Events.PATH_EXISTS_REQUEST,
+          Events.CHECK_PATH_EXISTS_REQUEST,
           service.thisComponent,
-          {},
+          expect.any(Object),
           expect.any(Function),
           'callback'
         );
@@ -530,9 +530,9 @@ describe('createClientAPI', () => {
         .catch((error) => {
           // Check if the dispatch function was called with the correct arguments
           expect(service.containerService.dispatch).toHaveBeenCalledWith(
-            Events.PATH_EXISTS_REQUEST,
+            Events.CHECK_PATH_EXISTS_REQUEST,
             service.thisComponent,
-            {},
+            expect.any(Object),
             expect.any(Function),
             'callback'
           );
@@ -897,7 +897,7 @@ describe('createClientAPI', () => {
     clientAPI.addNodeParams(params, keepBrowserHistory);
 
     // assert
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, { params, data: params, keepBrowserHistory });
   });
 
   it('test addNodeParams isSpecial TRUE', () => {

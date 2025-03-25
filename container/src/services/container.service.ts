@@ -169,7 +169,7 @@ export class ContainerService {
                   Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                   targetCnt,
                   event.data.data,
-                  event.data.data.settings
+                  event.data.data?.settings
                 );
                 break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
@@ -182,7 +182,7 @@ export class ContainerService {
                 this.dispatchWithPayload(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event, event.data.data);
                 break;
               case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
-                this.dispatchWithPayload(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event, event.data.data.params);
+                this.dispatchWithPayload(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event, event.data.data?.params);
                 break;
               case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
                 this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
@@ -196,10 +196,12 @@ export class ContainerService {
               case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
                 {
                   let gbctx = event.data?.goBackContext || {};
-                  try {
-                    gbctx = JSON.parse(event.data.goBackContext);
-                  } catch (e) {
-                    console.error(e);
+                  if (typeof gbctx === 'string') {
+                    try {
+                      gbctx = JSON.parse(gbctx);
+                    } catch (e) {
+                      console.warn(e);
+                    }
                   }
                   this.dispatch(Events.GO_BACK_REQUEST, targetCnt, gbctx);
                   this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event); // for BW compatibility
