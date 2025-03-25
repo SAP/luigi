@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -x 
 SCRIPT_DIR="$(dirname "$0")"
 echo "2222222222222222222222222222222222222       vue.sh"
@@ -69,7 +70,7 @@ module.exports = {
 
 
 echo "22222222222222222222222222# fetch assets from vue example"
-curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/index.html > /index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/index.html > "$SCRIPT_DIR/index.html"
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/app.vue > src/app.vue
