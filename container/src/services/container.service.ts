@@ -233,10 +233,10 @@ export class ContainerService {
                 this.dispatch(Events.SET_VIEW_GROUP_DATA_REQUEST, targetCnt, event.data.data);
                 break;
               case 'luigi.add-backdrop': // TODO: add constant
-                this.dispatch('add-backdrop-request', targetCnt, undefined); // TODO: add constant
+                this.dispatch('add-backdrop-request', targetCnt, event); // TODO: add constant
                 break;
               case 'luigi.remove-backdrop': // TODO: add constant
-                this.dispatch(Events.REMOVE_BACKDROP_REQUEST, targetCnt, undefined);
+                this.dispatch(Events.REMOVE_BACKDROP_REQUEST, targetCnt, event);
                 break;
             }
           }
