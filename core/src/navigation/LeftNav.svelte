@@ -615,7 +615,7 @@
 />
 {#if btpToolLayout}
   <div
-    class="fd-navigation fd-navigation--vertical {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
+    class="fd-navigation fd-navigation--vertical {sideNavCompactMode ? 'is-compact' : ''} {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
     semiCollapsibleButton
       ? 'hasFooter'
       : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}
