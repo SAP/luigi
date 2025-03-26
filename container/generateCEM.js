@@ -47,8 +47,10 @@ function parseContainerProps(fileContent) {
 
 function findAttachedJSDocComment(declaration, previousDeclaration, comments) {
   const candidates = comments.filter((comment) => {
-    return comment.loc.end.line < declaration.loc.start.line &&
-    (!previousDeclaration || comment.loc.start.line > previousDeclaration.loc.end.line)
+    return (
+      comment.loc.end.line < declaration.loc.start.line &&
+      (!previousDeclaration || comment.loc.start.line > previousDeclaration.loc.end.line)
+    );
   });
 
   return candidates?.length > 0 ? candidates[candidates.length - 1] : undefined;
@@ -79,7 +81,7 @@ function parseContainerEvents(fileContent) {
 
   const events = [];
   const jsdocComments = ast.comments.filter((comment) => {
-    return comment.type === AST_TOKEN_TYPES.Block && comment.value.startsWith('*')
+    return comment.type === AST_TOKEN_TYPES.Block && comment.value.startsWith('*');
   });
 
   ast.body.forEach((stmt) => {
@@ -94,10 +96,11 @@ function parseContainerEvents(fileContent) {
             declaration.declarations[0].init.type === 'Literal'
           ) {
             const name = declaration.declarations[0].init.value;
-            const jsdocComment = findAttachedJSDocComment(declaration, previousDeclaration, jsdocComments);// jsdocComments[index].value.trim();
+            const jsdocComment = findAttachedJSDocComment(declaration, previousDeclaration, jsdocComments); // jsdocComments[index].value.trim();
             //const jsdocComment = jsdocComments[index].value.trim();
             if (jsdocComment?.value) {
-              let cleanedComment = jsdocComment.value.trim()
+              let cleanedComment = jsdocComment.value
+                .trim()
                 .split('\n')
                 .map((line) => {
                   if (line.trim().startsWith('*')) {
