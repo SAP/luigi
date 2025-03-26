@@ -603,31 +603,25 @@
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <!-- svelte-ignore a11y-no-static-element-interactions -->
               <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
-                {#if userInfo.picture}
-                  <button
-                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
-                    aria-controls="profilePopover"
-                    aria-expanded="true"
-                    aria-haspopup="true"
-                    title={userInfo.name ? userInfo.name : undefined}
-                    tabindex="0"
-                    style="background-image:url('{userInfo.picture}')"
-                    on:click={() => toggleDropdownState('profilePopover')}
-                    data-testid="luigi-topnav-profile-btn"
-                  />
-                {:else}
-                  <button
-                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-shellbar__avatar--circle"
-                    aria-expanded="true"
-                    aria-haspopup="true"
-                    title={userInfo.name ? userInfo.name : undefined}
-                    tabindex="0"
-                    on:click={() => toggleDropdownState('profilePopover')}
-                    data-testid="luigi-topnav-profile-initials"
+                <div
+                  class="fd-button fd-button--transparent fd-shellbar__button fd-user-menu__control"
+                  aria-controls="profilePopover"
+                  aria-expanded="true"
+                  aria-haspopup="true"
+                  title={userInfo.name || undefined}
+                  tabindex="0"
+                  on:click={() => toggleDropdownState('profilePopover')}
+                  data-testid={userInfo.picture ? 'luigi-topnav-profile-btn' : 'luigi-topnav-profile-initials'}
+                >
+                  <span
+                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-shellbar__avatar--circle {userInfo.picture
+                      ? 'fd-avatar--thumbnail'
+                      : ''}"
+                    style={userInfo.picture ? `background-image:url('${userInfo.picture}')` : ''}
                   >
-                    {userInfo.initials ? userInfo.initials : ''}
-                  </button>
-                {/if}
+                    {!userInfo.picture ? userInfo.initials || '' : ''}
+                  </span>
+                </div>
               </div>
               <div
                 class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right"
