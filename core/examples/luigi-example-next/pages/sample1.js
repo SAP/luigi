@@ -11,9 +11,8 @@ export default function Sample1() {
 
   return (
     <>
-      <Head></Head>
+      <Head />
       <div>
-        <script src="/luigi-client.js" />
         <h1>Sample 1</h1>
       </div>
       <div>
