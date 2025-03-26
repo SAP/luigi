@@ -30,4 +30,5 @@ yarn-error.log*
 # vercel
 .vercel
 
+public/core
 public/luigi-client.js
