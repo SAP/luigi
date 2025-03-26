@@ -218,6 +218,20 @@ export class WebComponentService {
                 },
                 'callback'
               );
+              // For BW compatibility
+              this.containerService.dispatch(
+                Events.PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                { ...options, link },
+                (exists) => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                },
+                'callback'
+              );
             });
           },
           openAsDrawer: (route, drawerSettings = {}) => {
