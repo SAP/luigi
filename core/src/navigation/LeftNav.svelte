@@ -615,10 +615,11 @@
 />
 {#if btpToolLayout}
   <div
-    class="fd-navigation fd-navigation--vertical {sideNavCompactMode ? 'is-compact' : ''} {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
-    semiCollapsibleButton
-      ? 'hasFooter'
-      : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}
+    class="fd-navigation fd-navigation--vertical {sideNavCompactMode ? 'is-compact' : ''} {hideNavComponent
+      ? 'hideNavComponent'
+      : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton
+      ? 'hasOnlyFooterText'
+      : ''}
         {isSemiCollapsed ? 'fd-navigation--snapped' : ''}"
     role="navigation"
     style="width: var(--luigi__left-sidenav--width); height: 100%;"
