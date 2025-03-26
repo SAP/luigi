@@ -636,7 +636,7 @@ describe('JS-TEST-APP 2', () => {
       };
     });
 
-    it.only('Initials background color with sap horizon and Fiori3 with profileType Fiori3', () => {
+    it('Initials background color with sap horizon and Fiori3 with profileType Fiori3', () => {
       cy.visitTestApp('/home/one', newConfig);
       cy.get('#app[configversion="sapHorizon"]');
       cy.get('[data-testid="luigi-topnav-profile-initials"] .fd-avatar').then(($el) => {
