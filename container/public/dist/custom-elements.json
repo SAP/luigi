@@ -383,6 +383,13 @@
               }
             },
             {
+              "name": "update-modal-settings-request",
+              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
               "name": "check-path-exists-request",
               "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
@@ -455,6 +462,13 @@
             {
               "name": "has-back-request",
               "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-backdrop-request",
+              "description": "Event fired when the micro frontend requests to display the backdrop.",
               "type": {
                 "text": "Event"
               }
@@ -815,6 +829,13 @@
               }
             },
             {
+              "name": "update-modal-settings-request",
+              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
               "name": "check-path-exists-request",
               "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
@@ -887,6 +908,13 @@
             {
               "name": "has-back-request",
               "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-backdrop-request",
+              "description": "Event fired when the micro frontend requests to display the backdrop.",
               "type": {
                 "text": "Event"
               }

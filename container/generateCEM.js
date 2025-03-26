@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { parse } = require('@typescript-eslint/typescript-estree');
+const { parse, AST_TOKEN_TYPES } = require('@typescript-eslint/typescript-estree');
 
 const luigiContainerPath = 'src/LuigiContainer.svelte';
 const luigiCompoundContainerPath = 'src/LuigiCompoundContainer.svelte';
@@ -45,6 +45,15 @@ function parseContainerProps(fileContent) {
   return propsObject;
 }
 
+function findAttachedJSDocComment(declaration, previousDeclaration, comments) {
+  const candidates = comments.filter((comment) => {
+    return comment.loc.end.line < declaration.loc.start.line &&
+    (!previousDeclaration || comment.loc.start.line > previousDeclaration.loc.end.line)
+  });
+
+  return candidates?.length > 0 ? candidates[candidates.length - 1] : undefined;
+}
+
 /**
  * Parses a JavaScript file content to extract custom events and their descriptions from JSDoc comments.
  *
@@ -69,37 +78,44 @@ function parseContainerEvents(fileContent) {
   const ast = parse(fileContent, options);
 
   const events = [];
+  const jsdocComments = ast.comments.filter((comment) => {
+    return comment.type === AST_TOKEN_TYPES.Block && comment.value.startsWith('*')
+  });
 
   ast.body.forEach((stmt) => {
-    if (stmt.type === 'ExportNamedDeclaration') {
+    if (stmt.type === 'ExportNamedDeclaration' && stmt.declaration?.id?.name === 'Events') {
+      let previousDeclaration;
       stmt.declaration.body.body.forEach((eventName, index) => {
+        const { declaration } = eventName;
         if (eventName.type === 'ExportNamedDeclaration') {
-          const { declaration } = eventName;
-
           if (
             declaration.type === 'VariableDeclaration' &&
             declaration.declarations[0].init &&
             declaration.declarations[0].init.type === 'Literal'
           ) {
             const name = declaration.declarations[0].init.value;
-            const jsdocComment = ast.comments[index].value.trim();
-            let cleanedComment = jsdocComment
-              .split('\n')
-              .map((line) => {
-                if (line.trim().startsWith('*')) {
-                  return line.trim().slice(1).trim();
-                }
-                return line.trim();
-              })
-              .join(' ')
-              .trim();
+            const jsdocComment = findAttachedJSDocComment(declaration, previousDeclaration, jsdocComments);// jsdocComments[index].value.trim();
+            //const jsdocComment = jsdocComments[index].value.trim();
+            if (jsdocComment?.value) {
+              let cleanedComment = jsdocComment.value.trim()
+                .split('\n')
+                .map((line) => {
+                  if (line.trim().startsWith('*')) {
+                    return line.trim().slice(1).trim();
+                  }
+                  return line.trim();
+                })
+                .join(' ')
+                .trim();
 
-            events.push({
-              name,
-              description: cleanedComment || 'No description'
-            });
+              events.push({
+                name,
+                description: cleanedComment || 'No description'
+              });
+            }
           }
         }
+        previousDeclaration = declaration;
       });
     }
   });
