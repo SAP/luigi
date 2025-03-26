@@ -22,7 +22,7 @@ vue create -d $folder && cd $folder
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/package.json > package.json
 npm i
 
-mkdir -p src/views src/router 
+mkdir -p src/views src/router
 
 # cleanup default installation
 rm public/index.html src/app.vue # remove default index, will be replaced with example assets
@@ -66,6 +66,8 @@ module.exports = {
 
 
 # fetch assets from vue example
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/index.html > index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/sampleapp.html > sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/app.vue > src/app.vue
