@@ -70,7 +70,7 @@ module.exports = {
 
 
 # fetch assets from vue example
-curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/index.html > index12345.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/index.html > index.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/app.vue > src/app.vue
