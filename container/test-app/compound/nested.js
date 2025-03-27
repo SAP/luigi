@@ -9,6 +9,9 @@ export default class extends LuigiElement {
         <section style="display: flex; height: 100%; flex-direction: column">
           <button id="addNodeParams">addNodeParams</button>
           <button id="getNodeParams">getNodeParams</button>
+          <button id="showAlert">showAlert</button>
+          <button id="showAlertWithCallback">showAlert (with callback)</button>
+          <button id="confirmationModal">showConfirmationModal</button>
           <header><slot name="header">header</slot></header>
           <main style="flex: auto; overflow: auto">
             <slot name="content">content</slot>
@@ -25,6 +28,36 @@ export default class extends LuigiElement {
     this.$button2 = this._shadowRoot.querySelector('#getNodeParams');
     this.$button2.addEventListener('click', () => {
       console.log('getNodeParams', this.LuigiClient.getNodeParams());
+    });
+    this.$button3 = this._shadowRoot.querySelector('#showAlert');
+    this.$button3.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: 'Direct WC - alert message',
+        type: 'info'
+      });
+    });
+    this.$button4 = this._shadowRoot.querySelector('#showAlertWithCallback');
+    this.$button4.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        callback: true,
+        text: 'Direct WC - alert message',
+        type: 'info'
+      });
+    });
+    this.$button5 = this._shadowRoot.querySelector('#confirmationModal');
+    this.$button5.addEventListener('click', () => {
+      const settings = {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      };
+
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => console.info('Direct WC - modal confirmed'))
+        .catch(() => console.info('Direct WC - modal dissmissed'));
     });
   }
 
