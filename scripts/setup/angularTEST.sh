@@ -37,7 +37,7 @@ fi
 # steps to execute line by line
 
 # Define source and destination directories
-SOURCE_DIR="../core/examples/luigi-example-angular"
+SOURCE_DIR="../../core/examples/luigi-example-angular"
 DEST_DIR="test"
 
 # Create the destination directory if it doesn't exist
