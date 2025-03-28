@@ -96,8 +96,7 @@ function parseContainerEvents(fileContent) {
             declaration.declarations[0].init.type === 'Literal'
           ) {
             const name = declaration.declarations[0].init.value;
-            const jsdocComment = findAttachedJSDocComment(declaration, previousDeclaration, jsdocComments); // jsdocComments[index].value.trim();
-            //const jsdocComment = jsdocComments[index].value.trim();
+            const jsdocComment = findAttachedJSDocComment(declaration, previousDeclaration, jsdocComments);
             if (jsdocComment?.value) {
               let cleanedComment = jsdocComment.value
                 .trim()
@@ -110,11 +109,14 @@ function parseContainerEvents(fileContent) {
                 })
                 .join(' ')
                 .trim();
-
-              events.push({
-                name,
-                description: cleanedComment || 'No description'
-              });
+              if (cleanedComment && cleanedComment.indexOf('@deprecated') > 0) {
+                console.log('IGNORING', name, ': marked as deprecated');
+              } else {
+                events.push({
+                  name,
+                  description: cleanedComment || 'No description'
+                });
+              }
             }
           }
         }

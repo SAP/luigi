@@ -82,8 +82,9 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to navigate back.
+   * @deprecated use GO_BACK_REQUEST
    */
-  export const BACK_NAVIGATION_REQUEST = 'navigate-back-request'; // TODO: DEPRECATE
+  export const BACK_NAVIGATION_REQUEST = 'navigate-back-request'; 
 
   /**
    * Event fired when the micro frontend requests the current app route.
@@ -122,6 +123,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the document title.
+   * @deprecated
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
@@ -147,8 +149,9 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to check if the path exists.
+   * @deprecated use CHECK_PATH_EXISTS_REQUEST
    */
-  export const PATH_EXISTS_REQUEST = 'path-exists-request'; // TODO: deprecate, duplicated
+  export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
   /**
    * Event fired when the micro frontend requests to navigate back.

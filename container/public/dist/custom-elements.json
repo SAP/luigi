@@ -271,13 +271,6 @@
               }
             },
             {
-              "name": "close-alert-request",
-              "description": "Event left due to historical reasons - do not use. @deprecated",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "initialized",
               "description": "Event fired when the micro frontend has been initialized.",
               "type": {
@@ -355,13 +348,6 @@
               }
             },
             {
-              "name": "navigate-back-request",
-              "description": "Event fired when the micro frontend requests to navigate back.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "get-current-route-request",
               "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
@@ -411,13 +397,6 @@
               }
             },
             {
-              "name": "set-document-title-request",
-              "description": "Event fired when the micro frontend requests to set the document title.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "open-user-settings-request",
               "description": "Event fired when the micro frontend requests to open the user settings.",
               "type": {
@@ -441,13 +420,6 @@
             {
               "name": "update-top-navigation-request",
               "description": "Event fired when the micro frontend requests to update the top navigation.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "path-exists-request",
-              "description": "Event fired when the micro frontend requests to check if the path exists.",
               "type": {
                 "text": "Event"
               }
@@ -717,13 +689,6 @@
               }
             },
             {
-              "name": "close-alert-request",
-              "description": "Event left due to historical reasons - do not use. @deprecated",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "initialized",
               "description": "Event fired when the micro frontend has been initialized.",
               "type": {
@@ -801,13 +766,6 @@
               }
             },
             {
-              "name": "navigate-back-request",
-              "description": "Event fired when the micro frontend requests to navigate back.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "get-current-route-request",
               "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
@@ -857,13 +815,6 @@
               }
             },
             {
-              "name": "set-document-title-request",
-              "description": "Event fired when the micro frontend requests to set the document title.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "open-user-settings-request",
               "description": "Event fired when the micro frontend requests to open the user settings.",
               "type": {
@@ -887,13 +838,6 @@
             {
               "name": "update-top-navigation-request",
               "description": "Event fired when the micro frontend requests to update the top navigation.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "path-exists-request",
-              "description": "Event fired when the micro frontend requests to check if the path exists.",
               "type": {
                 "text": "Event"
               }
