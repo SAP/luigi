@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -x 
 
-echo "44444444444444444444444444444444444444444444444444444444444 starting angular.sh 444444444444444444444444444444444444444444444"
-
-set -e    # exit script immediately if any command fails
+set -e
 echo ""
 echo "Installing Luigi with Angular and basic configuration"
 echo ""
