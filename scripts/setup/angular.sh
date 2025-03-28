@@ -14,27 +14,43 @@ else
   echo "Luigi project folder name: $folder"
 fi
 # steps to execute line by line
+echo ""
+ng new $folder --routing --defaults --skip-git && cd $folder    # skip interactive prompts
 
-# Define source and destination directories
-SOURCE_DIR="../../core/examples/luigi-example-angular"
-DEST_DIR=".setupTestFolder/test"
+npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
+sed 's/"scripts": {/"scripts": {\
+\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+mkdir -p src/luigi-config
+mkdir -p src/assets
 
-# Create the destination directory if it doesn't exist
-mkdir -p "$DEST_DIR"
+ # the following steps can be copy and pasted to the terminal at once
+ ### renames the default Angular index.html to angular.html.
+mv src/index.html src/angular.html
 
-# Copy the contents from source to destination
-cp -r "$SOURCE_DIR"/* "$DEST_DIR"/
+# download assets
+### Downloads SAP Luigi’s default index.html and places it in src/index.html.
+### Fetches Luigi’s config file (luigi-config.es6.js) and saves it in src/luigi-config/.
+### Retrieves a basic micro frontend HTML file and stores it in src/assets/.
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > src/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
 
-# Check if the copy was successful
-if [ $? -eq 0 ]; then
-    echo "Copy successful: $SOURCE_DIR -> $DEST_DIR"
-else
-    echo "Copy failed."
-    exit 1
-fi
+# string replacements in some files
+sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
 
-npm i
-npm run build
+sed 's#"src/styles.css"#"src/styles.css",\
+             "node_modules/fundamental-styles/dist/theming/sap_fiori_3.css",\
+             "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css",\
+             "node_modules/fundamental-styles/dist/fundamental-styles.css"#g' angular.json > tmp.json && mv tmp.json angular.json
+sed 's#"src/assets"#"src/assets",\
+              "src/index.html",\
+              "src/logout.html",\
+              {"glob": "fundamental-styles.css","input": "node_modules/fundamental-styles/dist","output": "/fundamental-styles"},\
+              {"glob": "*","input": "node_modules/@sap-theming/theming-base-content","output": "/fonts"},\
+              {"glob": "**","input": "node_modules/@luigi-project/core","output": "/luigi-core"},\
+              {"glob": "luigi-client.js","input": "node_modules/@luigi-project/client","output": "/luigi-client"}#g' angular.json > tmp.json && mv tmp.json angular.json
+
+npm run buildConfig
 npm run start
 
 set +x 
