@@ -17,7 +17,7 @@ fi
 
 # Define source and destination directories
 SOURCE_DIR="../../core/examples/luigi-example-angular"
-DEST_DIR=".setupTestFolder/test"
+DEST_DIR="test"
 
 # Create the destination directory if it doesn't exist
 mkdir -p "$DEST_DIR" && cd "$DEST_DIR"
