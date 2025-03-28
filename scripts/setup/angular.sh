@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -x 
+
 set -e
 echo ""
 echo "Installing Luigi with Angular and basic configuration"
@@ -43,3 +45,5 @@ sed 's#"src/assets"#"src/assets",\
 
 npm run buildConfig
 npm run start
+
+set +x 
