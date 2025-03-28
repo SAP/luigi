@@ -33,6 +33,7 @@ else
     exit 1
 fi
 
+npm i
 npm run build
 npm run start
 
