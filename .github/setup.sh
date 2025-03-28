@@ -15,7 +15,7 @@ else
 fi
 # steps to execute line by line
 echo ""
-ng new $folder --routing --defaults --skip-git && cd $folder    # skip interactive prompts
+ng new $folder --routing && cd $folder
 
 npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
 sed 's/"scripts": {/"scripts": {\
