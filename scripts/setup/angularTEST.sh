@@ -1,8 +1,28 @@
 #!/usr/bin/env bash
 set -x
-set -e
 
 echo "44444444444444444444444444444444444444444444444444444444444 starting angular.sh 4444444444444444444444444444444444444444444444"
+
+
+# Directories to check
+dir1="../core/examples/luigi-example-angular"
+dir2="../../core/examples/luigi-example-angular"
+dir3="../../core/examples/luigi-example-angular/"
+
+# Function to check if a directory exists
+check_directory() {
+    if [ -d "$1" ]; then
+        echo "Directory exists: $1"
+    else
+        echo "Directory does not exist: $1"
+    fi
+}
+
+# Check each directory
+check_directory "$dir1"
+check_directory "$dir2"
+check_directory "$dir3"
+
 
 set -e    # exit script immediately if any command fails
 echo ""
