@@ -8,6 +8,13 @@ const iframeContainer = document.querySelector('#iframe-based-container-test');
 const wcContainer = document.querySelector('#wc-based-container-test');
 const res = document.querySelector('#results');
 
+iframeContainer.addEventListener(Events.INITIALIZED, (event) => {
+  document.body.setAttribute('iframe_init', true);
+});
+wcContainer.addEventListener(Events.INITIALIZED, (event) => {
+  document.body.setAttribute('wc_init', true);
+});
+
 window.clearResults = function () {
   res.innerHTML = '';
 };
@@ -32,9 +39,10 @@ function getCreateResultContainer(id) {
 }
 
 function createApiTrigger(luigiEventID, manager, functionName, ...args) {
-  const createPayloadEL = (color) => {
+  const createPayloadEL = (type, color) => {
     return (event) => {
       const payloadCnt = document.createElement('div');
+      payloadCnt.setAttribute('cnt_type', type);
       payloadCnt.style.color = color;
       payloadCnt.innerHTML = `${JSON.stringify(event.payload, undefined, 1)}`;
       payloadCnt.title = payloadCnt.innerHTML;
@@ -43,11 +51,12 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
     };
   };
 
-  iframeContainer.addEventListener(luigiEventID, createPayloadEL('green'));
-  wcContainer.addEventListener(luigiEventID, createPayloadEL('blue'));
+  iframeContainer.addEventListener(luigiEventID, createPayloadEL('iframe', 'green'));
+  wcContainer.addEventListener(luigiEventID, createPayloadEL('wc', 'blue'));
 
   const btn = document.createElement('button');
   btn.innerHTML = luigiEventID;
+  btn.setAttribute('event_id', luigiEventID);
   document.querySelector('#actions').appendChild(btn);
   const keepResultCheck = document.getElementById('keepRes');
   btn.addEventListener('click', () => {
@@ -81,7 +90,7 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
 
 //
 // ROOT
-createApiTrigger(LuigiEvents.SET_VIEW_GROUP_DATA_REQUEST, undefined, 'setViewGroupData', { vg1: 'Luigi rocks ' });
+createApiTrigger(LuigiEvents.SET_VIEW_GROUP_DATA_REQUEST, undefined, 'setViewGroupData', { vg1: 'Luigi rocks' });
 createApiTrigger(LuigiEvents.SET_ANCHOR_LINK_REQUEST, undefined, 'setAnchor', 'myAnchor');
 createApiTrigger(LuigiEvents.ADD_NODE_PARAMS_REQUEST, undefined, 'addNodeParams', { luigi: 'rocks' }, true);
 createApiTrigger(LuigiEvents.ADD_SEARCH_PARAMS_REQUEST, undefined, 'addCoreSearchParams', { luigi: 'rocks' }, true);
@@ -100,7 +109,7 @@ createApiTrigger(LuigiEvents.ALERT_REQUEST, 'uxManager', 'showAlert', {
 createApiTrigger(LuigiEvents.SHOW_CONFIRMATION_MODAL_REQUEST, 'uxManager', 'showConfirmationModal', {
   text: 'test text'
 });
-createApiTrigger('add-backdrop-request', 'uxManager', 'addBackdrop', {});
+createApiTrigger(LuigiEvents.ADD_BACKDROP_REQUEST, 'uxManager', 'addBackdrop', {});
 createApiTrigger(LuigiEvents.REMOVE_BACKDROP_REQUEST, 'uxManager', 'removeBackdrop', {});
 createApiTrigger(LuigiEvents.SET_CURRENT_LOCALE_REQUEST, 'uxManager', 'setCurrentLocale', 'de_DE');
 createApiTrigger(LuigiEvents.SET_DIRTY_STATUS_REQUEST, 'uxManager', 'setDirtyStatus', true); // dirty status missing on wc client
@@ -123,7 +132,7 @@ createApiTrigger(
   true
 ); // missing on wc
 createApiTrigger(
-  'update-modal-settings-request',
+  LuigiEvents.UPDATE_MODAL_SETTINGS_REQUEST,
   'linkManager',
   'updateModalSettings',
   { title: 'bar', size: 'm' },
