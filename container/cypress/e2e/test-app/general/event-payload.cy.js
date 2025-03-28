@@ -1,16 +1,15 @@
 import { Events } from '../../../../src/constants/communication';
 
-
 function checkPayload(eventId, payloadDataResolver, expectedValue) {
   cy.get(`#actions [event_id=${eventId}]`)
     .click()
     .then(() => {
-      cy.get(`#results [restype=${eventId}] [cnt_type=iframe]`)
-        .then((el) => {
-          expect(payloadDataResolver(el.get(0).payload)).to.equal(expectedValue);
-        });
+      cy.get(`#results [restype=${eventId}] [cnt_type=iframe]`).then((el) => {
+        expect(payloadDataResolver(el.get(0).payload)).to.equal(expectedValue);
+      });
       cy.get(`#results [restype=${eventId}] [cnt_type=wc]`)
-        .first().then((el) => {
+        .first()
+        .then((el) => {
           expect(payloadDataResolver(el.get(0).payload)).to.equal(expectedValue);
         });
     });
@@ -27,15 +26,21 @@ describe('Event payload Test', () => {
 
   describe('Client root API', () => {
     it(Events.SET_VIEW_GROUP_DATA_REQUEST, () => {
-      checkPayload(Events.SET_VIEW_GROUP_DATA_REQUEST,
-        (payload) => { return payload.vg1; },
+      checkPayload(
+        Events.SET_VIEW_GROUP_DATA_REQUEST,
+        (payload) => {
+          return payload.vg1;
+        },
         'Luigi rocks'
       );
     });
 
     it(Events.SET_ANCHOR_LINK_REQUEST, () => {
-      checkPayload(Events.SET_ANCHOR_LINK_REQUEST,
-        (payload) => { return payload; },
+      checkPayload(
+        Events.SET_ANCHOR_LINK_REQUEST,
+        (payload) => {
+          return payload;
+        },
         'myAnchor'
       );
     });
@@ -55,8 +60,11 @@ describe('Event payload Test', () => {
     // });
 
     it(Events.CUSTOM_MESSAGE, () => {
-      checkPayload(Events.CUSTOM_MESSAGE,
-        (payload) => { return payload.id; },
+      checkPayload(
+        Events.CUSTOM_MESSAGE,
+        (payload) => {
+          return payload.id;
+        },
         'myId'
       );
     });
@@ -64,29 +72,41 @@ describe('Event payload Test', () => {
 
   describe('Client uxManager API', () => {
     it(Events.ALERT_REQUEST, () => {
-      checkPayload(Events.ALERT_REQUEST,
-        (payload) => { return payload.text; },
+      checkPayload(
+        Events.ALERT_REQUEST,
+        (payload) => {
+          return payload.text;
+        },
         'test text'
       );
     });
 
     it(Events.SHOW_CONFIRMATION_MODAL_REQUEST, () => {
-      checkPayload(Events.SHOW_CONFIRMATION_MODAL_REQUEST,
-        (payload) => { return payload.text; },
+      checkPayload(
+        Events.SHOW_CONFIRMATION_MODAL_REQUEST,
+        (payload) => {
+          return payload.text;
+        },
         'test text'
       );
     });
 
     it(Events.ADD_BACKDROP_REQUEST, () => {
-      checkPayload(Events.ADD_BACKDROP_REQUEST,
-        (payload) => { return payload._dontcare; },
+      checkPayload(
+        Events.ADD_BACKDROP_REQUEST,
+        (payload) => {
+          return payload._dontcare;
+        },
         undefined
       );
     });
 
     it(Events.REMOVE_BACKDROP_REQUEST, () => {
-      checkPayload(Events.REMOVE_BACKDROP_REQUEST,
-        (payload) => { return payload._dontcare; },
+      checkPayload(
+        Events.REMOVE_BACKDROP_REQUEST,
+        (payload) => {
+          return payload._dontcare;
+        },
         undefined
       );
     });
@@ -108,29 +128,41 @@ describe('Event payload Test', () => {
 
   describe('Client linkManager API', () => {
     it(Events.NAVIGATION_REQUEST, () => {
-      checkPayload(Events.NAVIGATION_REQUEST,
-        (payload) => { return payload.link; },
+      checkPayload(
+        Events.NAVIGATION_REQUEST,
+        (payload) => {
+          return payload.link;
+        },
         '/foo/bar'
       );
     });
 
     it(Events.GO_BACK_REQUEST, () => {
-      checkPayload(Events.GO_BACK_REQUEST,
-        (payload) => { return payload.go; },
+      checkPayload(
+        Events.GO_BACK_REQUEST,
+        (payload) => {
+          return payload.go;
+        },
         'back'
       );
     });
 
     it(Events.GET_CURRENT_ROUTE_REQUEST, () => {
-      checkPayload(Events.GET_CURRENT_ROUTE_REQUEST,
-        (payload) => { return payload._dontcare; },
+      checkPayload(
+        Events.GET_CURRENT_ROUTE_REQUEST,
+        (payload) => {
+          return payload._dontcare;
+        },
         undefined
       );
     });
 
     it(Events.CHECK_PATH_EXISTS_REQUEST, () => {
-      checkPayload(Events.CHECK_PATH_EXISTS_REQUEST,
-        (payload) => { return payload.link; },
+      checkPayload(
+        Events.CHECK_PATH_EXISTS_REQUEST,
+        (payload) => {
+          return payload.link;
+        },
         'some/path'
       );
     });
