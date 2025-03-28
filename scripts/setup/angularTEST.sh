@@ -20,7 +20,7 @@ SOURCE_DIR="../../core/examples/luigi-example-angular"
 DEST_DIR=".setupTestFolder/test"
 
 # Create the destination directory if it doesn't exist
-mkdir -p "$DEST_DIR"
+mkdir -p "$DEST_DIR" && cd "$DEST_DIR"
 
 # Copy the contents from source to destination
 cp -r "$SOURCE_DIR"/* "$DEST_DIR"/
