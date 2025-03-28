@@ -26,7 +26,7 @@ jobs:
         run: cd ./container && npm i && npm run test
 
       - name: Run e2e tests
-        run: bash ./container/run-container-e2e.sh || exit 1
+        run: bash ./container/run-container-e2e.sh coverage || exit 1
 
       - name: Generate coverage summary
         run: cd ./container && npm run coverage-summary
