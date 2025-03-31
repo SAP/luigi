@@ -45,12 +45,12 @@ describe('Event payload Test', () => {
       );
     });
 
-    // it(Events.ADD_NODE_PARAMS_REQUEST, () => {
-    //   checkPayload(Events.ADD_NODE_PARAMS_REQUEST,
-    //     (payload) => { return payload.luigi; },
-    //     'rocks'
-    //   );
-    // });
+    it(Events.ADD_NODE_PARAMS_REQUEST, () => {
+      checkPayload(Events.ADD_NODE_PARAMS_REQUEST,
+        (payload) => { return payload.data.luigi; },
+        'rocks'
+      );
+    });
 
     // it(Events.ADD_SEARCH_PARAMS_REQUEST, () => {
     //   checkPayload(Events.ADD_SEARCH_PARAMS_REQUEST,
