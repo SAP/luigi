@@ -22,7 +22,7 @@ npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-themi
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config
-mkdir -p src/assets # notwendig --> ja
+mkdir -p src/assets
 
  # the following steps can be copy and pasted to the terminal at once
  ### renames the default Angular index.html to angular.html.
