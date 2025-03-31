@@ -46,8 +46,11 @@ describe('Event payload Test', () => {
     });
 
     it(Events.ADD_NODE_PARAMS_REQUEST, () => {
-      checkPayload(Events.ADD_NODE_PARAMS_REQUEST,
-        (payload) => { return payload.data.luigi; },
+      checkPayload(
+        Events.ADD_NODE_PARAMS_REQUEST,
+        (payload) => {
+          return payload.data.luigi;
+        },
         'rocks'
       );
     });
