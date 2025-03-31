@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -x 
-SCRIPT_DIR="$(dirname "$0")"
 
 if ! command -v vue 2>/dev/null; then
   echo "Vue CLI required, please install it globally and try again."

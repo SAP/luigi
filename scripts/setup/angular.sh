@@ -15,13 +15,14 @@ else
 fi
 # steps to execute line by line
 echo ""
+#ng new $folder --routing && cd $folder
 ng new $folder --routing --defaults --skip-git && cd $folder    # skip interactive prompts
 
 npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config
-mkdir -p src/assets
+# mkdir -p src/assets # notwendig?
 
  # the following steps can be copy and pasted to the terminal at once
  ### renames the default Angular index.html to angular.html.
