@@ -98,3 +98,14 @@ ui5-shellbar {
 .lui-dialog::part(footer) {
     padding-inline: 0;
 }
+
+.luigi-alert--overlay{
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.luigi-alert--overlay ui5-message-strip{
+    margin: 5px;
+}
