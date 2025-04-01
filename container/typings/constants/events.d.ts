@@ -82,6 +82,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to navigate back.
+   * @deprecated use GO_BACK_REQUEST
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
@@ -101,6 +102,11 @@ export namespace Events {
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
+   * Event fired when the micro frontend requests to update the modal settings.
+   */
+  export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
+
+  /**
    * Event fired when the micro frontend requests to check the validity of a path.
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
@@ -117,6 +123,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the document title.
+   * @deprecated
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
@@ -142,6 +149,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to check if the path exists.
+   * @deprecated use CHECK_PATH_EXISTS_REQUEST
    */
   export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
@@ -156,7 +164,25 @@ export namespace Events {
   export const HAS_BACK_REQUEST = 'has-back-request';
 
   /**
+   * Event fired when the micro frontend requests to display the backdrop.
+   */
+  export const ADD_BACKDROP_REQUEST = 'add-backdrop-request';
+
+  /**
    * Event fired when the micro frontend requests to remove the backdrop.
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }
+
+export class LuigiEvent extends Event {
+  payload?: unknown;
+  detail: unknown;
+
+  constructor(type: string, data: unknown, payload?: unknown) {
+    super(type);
+    this.detail = data;
+    this.payload = payload || data || {};
+  }
+}
+
+export { Events as LuigiEvents };
