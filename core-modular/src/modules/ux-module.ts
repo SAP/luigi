@@ -30,6 +30,7 @@ export interface ProcessedTextAndLinks {
 }
 
 export interface ConfirmationModalSettings {
+  icon?: string;
   type?: string;
   header?: string;
   body?: string;
