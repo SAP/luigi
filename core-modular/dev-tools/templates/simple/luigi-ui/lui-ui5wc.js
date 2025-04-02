@@ -125,7 +125,8 @@ const connector = {
           <ui5-tabcontainer collapsed fixed></ui5-tabcontainer>
           <div class="content"></div>
         </div>
-        <div class="luigi-alert--overlay"><div> 
+        <div class="luigi-alert--overlay"><div>
+        <div class="luigi-confirmation-modal--overlay"><div>
       `;
       document.body.appendChild(appRoot);
     }
