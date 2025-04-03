@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+
+set -e    # exit script immediately if any command fails
 echo ""
 echo "Installing Luigi with Angular and basic configuration"
 echo ""
@@ -11,20 +12,20 @@ else
 fi
 # steps to execute line by line
 echo ""
-ng new $folder --routing && cd $folder
+ng new $folder --routing --defaults --skip-git && cd $folder    # skip interactive prompts
 
 npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-mkdir -p src/luigi-config
+\   "buildConfig":"webpack --entry .\/public\/assets\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+mkdir public/assets
 
- # the following steps can be copy and pasted to the terminal at once
+# the following steps can be copy and pasted to the terminal at once
 mv src/index.html src/angular.html
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > src/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > public/assets/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
 
 # string replacements in some files
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
@@ -42,4 +43,11 @@ sed 's#"src/assets"#"src/assets",\
               {"glob": "luigi-client.js","input": "node_modules/@luigi-project/client","output": "/luigi-client"}#g' angular.json > tmp.json && mv tmp.json angular.json
 
 npm run buildConfig
+rm public/assets/luigi-config.es6.js
+
+# match basic folder structure of an angular project
+cp -r node_modules/@luigi-project/core public/luigi-core
+cp -r node_modules/@luigi-project/client public/luigi-client
+cp -r node_modules/fundamental-styles public/fundamental-styles
+
 npm run start
