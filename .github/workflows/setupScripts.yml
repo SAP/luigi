@@ -15,7 +15,7 @@ jobs:
           RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
-
+# bash ../../test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/4211_Test_Setup_Scripts2/scripts/setup/angular.sh
   vue:
     runs-on: ubuntu-latest
     steps:
@@ -24,11 +24,11 @@ jobs:
         with:
           node-version: '20.14.0'
       - run: |
-          OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/vue.sh | tee /dev/fd/2)
-          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          OUT=$(bash ./test/setuptests.sh @vue/cli 4173 http://localhost:4173/ https://raw.githubusercontent.com/SAP/luigi/4211_Test_Setup_Scripts2/scripts/setup/vue.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 4173" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
-
+# bash ../../test/setuptests.sh @vue/cli 4173 http://localhost:4173/ https://raw.githubusercontent.com/SAP/luigi/4211_Test_Setup_Scripts2/scripts/setup/vue.sh
   react:
     runs-on: ubuntu-latest
     steps:
@@ -63,7 +63,8 @@ jobs:
         with:
           node-version: '20.14.0'
       - run: |
-          OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh | tee /dev/fd/2)
-          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          OUT=$(bash ./test/setuptests.sh ' ' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
+# bash ../../test/setuptests.sh ' ' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh 
