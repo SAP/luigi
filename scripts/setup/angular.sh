@@ -50,4 +50,7 @@ cp -r node_modules/@luigi-project/core public/luigi-core
 cp -r node_modules/@luigi-project/client public/luigi-client
 cp -r node_modules/fundamental-styles public/fundamental-styles
 
+# change path to fd-styles to prevent error
+sed -i 's|<link rel="stylesheet" href="/fundamental-styles/fundamental-styles.css" />|<link rel="stylesheet" href="/fundamental-styles/dist/fundamental-styles.css" />|' public/assets/basicMicroFrontend.html
+
 npm run start
