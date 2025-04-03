@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e    # exit script immediately if any command fails
+set -e
 echo ""
 echo "Installing Luigi with Angular and basic configuration"
 echo ""
@@ -50,7 +50,7 @@ cp -r node_modules/@luigi-project/core public/luigi-core
 cp -r node_modules/@luigi-project/client public/luigi-client
 cp -r node_modules/fundamental-styles public/fundamental-styles
 
-# change path to fd-styles to prevent error
+# change path to fd-styles to prevent error message
 sed -i 's|<link rel="stylesheet" href="/fundamental-styles/fundamental-styles.css" />|<link rel="stylesheet" href="/fundamental-styles/dist/fundamental-styles.css" />|' public/assets/basicMicroFrontend.html
 
 npm run start

@@ -44,7 +44,5 @@ curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-exampl
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
 
-# generic assets
-
 npm run build
 npm run serve

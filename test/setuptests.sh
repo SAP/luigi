@@ -26,7 +26,6 @@ waitForWebServer() {
   do
     SPAPID=$(netstat -ano | findstr ":$PORT" | awk '{print $5}' | head -n 1)
     if [ ! -z "$SPAPID" ]; then
-      echo "1111 BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK"
       break
     fi
     sleep 15
