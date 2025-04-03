@@ -5,11 +5,15 @@ PORT=$2
 TESTURL=$3
 URL=$4
 
-# Define Kill Webserver method
 killWebserver() {
   PORT=$1
-  # Use netstat to find the process ID for the given port instead of lsof, because lsof doesn't work on windows? --> change back later"
-  SPAPID=$(netstat -ano | findstr ":$PORT" | awk '{print $5}' | head -n 1)
+  SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+  if [ "$SPAPID" == "" ]; then
+    # Fallback
+    # the [] is a workaround to prevent ps showing up itself
+    # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
+    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
+  fi
 
   if [ ! -z "$SPAPID" ]; then
     echo "Stopping webserver on port $PORT"
@@ -22,12 +26,8 @@ waitForWebServer() {
   PORT=$1
   TESTURL=$2
 
-  while true
+  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
   do
-    SPAPID=$(netstat -ano | findstr ":$PORT" | awk '{print $5}' | head -n 1)
-    if [ ! -z "$SPAPID" ]; then
-      break
-    fi
     sleep 15
   done
 
