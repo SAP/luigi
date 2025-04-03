@@ -8,13 +8,8 @@ URL=$4
 # Define Kill Webserver method
 killWebserver() {
   PORT=$1
-  SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
-  if [ "$SPAPID" == "" ]; then
-    # Fallback
-    # the [] is a workaround to prevent ps showing up itself
-    # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
-  fi
+  # Use netstat to find the process ID for the given port instead of lsof, because lsof doesn't work on windows? --> change back later"
+  SPAPID=$(netstat -ano | findstr ":$PORT" | awk '{print $5}' | head -n 1)
 
   if [ ! -z "$SPAPID" ]; then
     echo "Stopping webserver on port $PORT"
@@ -27,8 +22,13 @@ waitForWebServer() {
   PORT=$1
   TESTURL=$2
 
-  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
+  while true
   do
+    SPAPID=$(netstat -ano | findstr ":$PORT" | awk '{print $5}' | head -n 1)
+    if [ ! -z "$SPAPID" ]; then
+      echo "1111 BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK BREAK"
+      break
+    fi
     sleep 15
   done
 
@@ -36,20 +36,20 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
-#Create new folder for setup
+# Create new folder for setup
 cd ..
 mkdir setupTestFolder && cd setupTestFolder
 
-#Install necessary dependencies
+# Install necessary dependencies
 npm install -g $CLI cypress@5.3.0 tar@latest
 
-#Create Cypress Config
+# Create Cypress Config
 echo "{}" > cypress.json
 mkdir cypress
 mkdir cypress/integration
-cp ../luigi/test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
+cp ../../test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
 
-#Run acutal test
+#Run actual test
 (set -e && waitForWebServer $PORT $TESTURL) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
