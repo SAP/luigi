@@ -1,3 +1,4 @@
+import type { LuigiCompoundContainer, LuigiContainer } from '@luigi-project/container';
 import type { Luigi } from '../core-api/luigi';
 
 export interface AlertSettings {
@@ -48,7 +49,11 @@ export const UXModule = {
     console.log('ux init...');
     UXModule.luigi = luigi;
   },
-  processAlert: (alertSettings: AlertSettings, openFromClient: boolean, containerElement: any) => {
+  processAlert: (
+    alertSettings: AlertSettings, 
+    openFromClient: boolean, 
+    containerElement: LuigiContainer | LuigiCompoundContainer
+  ) => {
     if (!UXModule.luigi) {
       throw new Error('Luigi is not initialized.');
     }
@@ -75,17 +80,19 @@ export const UXModule = {
     UXModule.luigi.getEngine()._connector?.renderAlert(alertSettings, alertHandler);
   },
 
-  handleConfirmationModalRequest: (confirmationModalSettings: ConfirmationModalSettings, containerElement: any) => {
+  handleConfirmationModalRequest: (
+    confirmationModalSettings: ConfirmationModalSettings, 
+    containerElement: LuigiContainer | LuigiCompoundContainer
+  ) => {
     if (!UXModule.luigi) {
       throw new Error('Luigi is not initialized.');
     }
     UXModule.luigi.getEngine()._connector?.renderConfirmationModal(confirmationModalSettings, {
-      // TODO: container does not have a "notifyConfirmationModalClosed" function yet
       confirm() {
-        console.log('confirmation Modal confirmed');
+        containerElement.notifyConfirmationModalClosed(true);
       },
       dismiss() {
-        console.log('confirmation Modal dismissed');
+        containerElement.notifyConfirmationModalClosed(false);
       }
     });
   }
