@@ -16,7 +16,7 @@ else
   echo "Luigi project folder name: $folder"
 fi
 
-# create sample vue app"
+# create sample vue app
 vue create -d $folder && cd $folder
 
 # install dependencies
