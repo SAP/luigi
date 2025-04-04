@@ -50,8 +50,8 @@ export const UXModule = {
     UXModule.luigi = luigi;
   },
   processAlert: (
-    alertSettings: AlertSettings, 
-    openFromClient: boolean, 
+    alertSettings: AlertSettings,
+    openFromClient: boolean,
     containerElement: LuigiContainer | LuigiCompoundContainer
   ) => {
     if (!UXModule.luigi) {
@@ -81,7 +81,7 @@ export const UXModule = {
   },
 
   handleConfirmationModalRequest: (
-    confirmationModalSettings: ConfirmationModalSettings, 
+    confirmationModalSettings: ConfirmationModalSettings,
     containerElement: LuigiContainer | LuigiCompoundContainer
   ) => {
     if (!UXModule.luigi) {
