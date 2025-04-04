@@ -166,6 +166,29 @@ describe('Web Container Test', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
+    it('Update modal settings in wc mf', () => {
+      cy.on('window:alert', stub);
+      cy.window().then((win) => {
+        cy.spy(win.console, 'log').as('consoleLog');
+      });
+
+      const expectedPayload = {
+        modalSettings: {
+          size: 'l',
+          title: 'Updated Modal Title'
+        },
+        addHistoryEntry: false
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#updateModalSettingsBtn')
+        .click()
+        .then(() => {
+          cy.get('@consoleLog').should('be.calledWith', expectedPayload);
+        });
+    });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
 
