@@ -61,15 +61,17 @@ export const UXModule = {
     const alertHandler = {
       openFromClient,
       close: () => {
-        containerElement.closeAlert(alertSettings.id);
+        if (alertSettings.id) {
+          containerElement.notifyAlertClosed(alertSettings.id);
+        }
       },
       link: (linkKey: string) => {
         if (alertSettings.links) {
           const link = alertSettings.links[linkKey];
           if (link) {
             link.url && UXModule.luigi?.navigation().navigate(link.url);
-            if (link.dismissKey) {
-              containerElement.closeAlert(alertSettings.id, link.dismissKey);
+            if (link.dismissKey && alertSettings.id) {
+              containerElement.notifyAlertClosed(alertSettings.id, link.dismissKey);
               return true;
             }
           }
