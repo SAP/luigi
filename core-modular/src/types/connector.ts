@@ -25,6 +25,10 @@ export interface LuigiConnector {
     confirmationModalSettings: ConfirmationModalSettings,
     containerHandler: ConfirmationModalHandler
   ): void;
+
+  addBackdrop(): void;
+
+  removeBackdrop(): void;
 }
 
 export type { Node };
