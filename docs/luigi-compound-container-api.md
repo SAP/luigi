@@ -429,6 +429,48 @@ Returns **void**
 
 *   **since**: 1.0.0
 
+### notifyAlertClosed
+
+A function that notifies the microfrontend that the opened alert has been closed.
+
+#### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key specifying which dismiss link was clicked on the alert message (optional)
+
+#### Examples
+
+```javascript
+containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
+### notifyConfirmationModalClosed
+
+A function that notifies the microfrontend if the confirmation modal was confirmed or declined.
+
+#### Parameters
+
+*   `confirmed`   (optional, default `true`)
+*   `value` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if the confirmation modal was confirmed or declined.
+
+#### Examples
+
+```javascript
+containerElement.notifyAlertClosed(true)
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### init
 
 Manually triggers the micro frontend rendering process when using the defer-init attribute.

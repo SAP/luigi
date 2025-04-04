@@ -135,6 +135,7 @@
         });
         luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
           console.log(event.detail);
+          console.log('payload', event.payload);
           alert(event.detail.text);
           const settings = event.detail;
           alertSettings.settings = settings;
@@ -161,6 +162,7 @@
             if (event.callback) {
               event.callback(val);
             }
+            luigiContainer.notifyConfirmationModalClosed(val);
           },
         );
         luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {

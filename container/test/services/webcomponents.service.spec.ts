@@ -124,10 +124,10 @@ describe('dispatchLuigiEvent', () => {
     const callback = jest.fn();
 
     // Act
-    service.dispatchLuigiEvent(msg, data, callback);
+    service.dispatchLuigiEvent(msg, data, callback, 'callback');
 
     // Assert
-    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback);
+    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback, 'callback');
   });
 });
 
@@ -503,9 +503,9 @@ describe('createClientAPI', () => {
       return pathExistsPromise.then((result) => {
         // Check if the dispatch function was called with the correct arguments
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
-          Events.PATH_EXISTS_REQUEST,
+          Events.CHECK_PATH_EXISTS_REQUEST,
           service.thisComponent,
-          {},
+          expect.any(Object),
           expect.any(Function),
           'callback'
         );
@@ -530,9 +530,9 @@ describe('createClientAPI', () => {
         .catch((error) => {
           // Check if the dispatch function was called with the correct arguments
           expect(service.containerService.dispatch).toHaveBeenCalledWith(
-            Events.PATH_EXISTS_REQUEST,
+            Events.CHECK_PATH_EXISTS_REQUEST,
             service.thisComponent,
-            {},
+            expect.any(Object),
             expect.any(Function),
             'callback'
           );
@@ -557,7 +557,12 @@ describe('createClientAPI', () => {
       clientAPI.uxManager().showAlert(alertSettings);
 
       // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(
+        Events.ALERT_REQUEST,
+        alertSettings,
+        expect.any(Function),
+        'callback'
+      );
     });
 
     it('test uxManager getCurrentTheme', () => {
@@ -607,7 +612,7 @@ describe('createClientAPI', () => {
           expect.any(Function),
           'callback'
         );
-        expect(result).toEqual(mockEventData);
+        expect(result).toEqual(undefined);
       });
     });
 
@@ -616,7 +621,7 @@ describe('createClientAPI', () => {
       const settings = { confirmationSettings: 'settings' };
 
       service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
-        callback(null);
+        callback(false);
       });
 
       // act
@@ -624,7 +629,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      expect(confirmationModalPromise).rejects.toThrow('No data');
+      expect(confirmationModalPromise).rejects.toBeUndefined();
     });
 
     it('test uxManager closeUserSettings', () => {
@@ -834,7 +839,7 @@ describe('createClientAPI', () => {
 
     // asert
     expect(eventBusPublishEventSpy).toHaveBeenCalledWith(customEvent, node_id, wc_id);
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
   });
 
   it('test publishEvent custom message with UNDEFINED eventBusElement', () => {
@@ -855,7 +860,7 @@ describe('createClientAPI', () => {
     clientAPI.publishEvent(new CustomEvent('test-event', { detail: 1 }));
 
     // assert
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
   });
 
   it('test luigiClientInit', () => {
@@ -897,7 +902,11 @@ describe('createClientAPI', () => {
     clientAPI.addNodeParams(params, keepBrowserHistory);
 
     // assert
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, {
+      params,
+      data: params,
+      keepBrowserHistory
+    });
   });
 
   it('test addNodeParams isSpecial TRUE', () => {
@@ -1798,5 +1807,33 @@ describe('resolveAlert', () => {
 
     // Restore the original console.log
     consoleSpy.mockRestore();
+  });
+});
+
+describe('notifyConfirmationModalClosed', () => {
+  const mockResolver = { resolve: jest.fn(), reject: jest.fn() };
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+    service.modalResolver = mockResolver;
+  });
+
+  it('should resolve the modal and reset related data when modal is confirmed', () => {
+    // act
+    service.notifyConfirmationModalClosed(true);
+
+    // assert
+    expect(mockResolver.resolve).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
+  });
+
+  it('should reject the modal and reset related data when modal is dismissed', () => {
+    // act
+    service.notifyConfirmationModalClosed(false);
+
+    // assert
+    expect(mockResolver.reject).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
   });
 });

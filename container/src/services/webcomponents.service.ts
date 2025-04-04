@@ -20,6 +20,7 @@ export class WebComponentService {
   thisComponent: ContainerElement;
   alertResolvers: Record<string, (value: unknown) => void> = {};
   alertIndex = 0;
+  modalResolver: { resolve: () => void; reject: () => void };
 
   constructor() {
     this.containerService = new ContainerService();
@@ -77,9 +78,11 @@ export class WebComponentService {
    * @param msg the message to be delivered
    * @param data the data to be sent
    * @param callback the callback function to be called
+   * @param callbackName name of the callback function
    */
-  dispatchLuigiEvent(msg: string, data: object, callback?: () => void) {
-    this.containerService.dispatch(msg, this.thisComponent, data, callback);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void, callbackName?: string) {
+    this.containerService.dispatch(msg, this.thisComponent, data, callback, callbackName);
   }
 
   /**
@@ -195,12 +198,33 @@ export class WebComponentService {
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
-          pathExists: () => {
+          pathExists: (link: string) => {
+            const options = {
+              fromContext,
+              fromClosestContext,
+              fromVirtualTreeRoot,
+              fromParent,
+              nodeParams
+            };
             return new Promise((resolve, reject) => {
+              this.containerService.dispatch(
+                Events.CHECK_PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                { ...options, link },
+                (exists) => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                },
+                'callback'
+              );
+              // For BW compatibility
               this.containerService.dispatch(
                 Events.PATH_EXISTS_REQUEST,
                 this.thisComponent,
-                {},
+                { ...options, link },
                 (exists) => {
                   if (exists) {
                     resolve(true);
@@ -238,20 +262,28 @@ export class WebComponentService {
             alertSettings.id = this.alertIndex++;
             return new Promise((resolve) => {
               this.alertResolvers[alertSettings.id] = resolve;
-              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+              this.dispatchLuigiEvent(
+                Events.ALERT_REQUEST,
+                alertSettings,
+                (dismissKey?: boolean | string) => {
+                  this.resolveAlert(alertSettings.id, dismissKey);
+                },
+                'callback'
+              );
             });
           },
           showConfirmationModal: (settings) => {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
+              this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                (data) => {
-                  if (data) {
-                    resolve(data);
+                (confirmed) => {
+                  if (confirmed) {
+                    resolve();
                   } else {
-                    reject(new Error('No data'));
+                    reject();
                   }
                 },
                 'callback'
@@ -281,6 +313,9 @@ export class WebComponentService {
           },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
+          },
+          addBackdrop: () => {
+            this.dispatchLuigiEvent(Events.ADD_BACKDROP_REQUEST, {});
           },
           hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
@@ -318,6 +353,7 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, {
           params,
+          data: params,
           keepBrowserHistory
         });
       },
@@ -712,17 +748,36 @@ export class WebComponentService {
    * and then the resolver is removed from the `alertResolvers` object to avoid future invocations. If no resolver is found
    * for the provided `id`, a message is logged to the console indicating that no matching promise is in the list.
    * @param {string} id - The unique identifier for the alert to resolve.
-   * @param {dismissKey} [dismissKey=true] - An optional key or value passed to the resolver. Defaults to `true` if not provided.
+   * @param {boolean|string} dismissKey - An optional key or value passed to the resolver. Defaults to `true` if not provided.
    *
    * @returns {void}
    *
    */
-  resolveAlert(id, dismissKey = true) {
+  resolveAlert(id: string, dismissKey?: boolean | string) {
     if (this.alertResolvers[id]) {
-      this.alertResolvers[id](dismissKey);
+      this.alertResolvers[id](dismissKey === undefined ? true : dismissKey);
       this.alertResolvers[id] = undefined;
     } else {
       console.log('Promise is not in the list.');
+    }
+  }
+
+  /**
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
+   *
+   * @param {boolean} confirmed the result of the modal being closed
+   *
+   */
+  notifyConfirmationModalClosed(confirmed: boolean) {
+    if (this.modalResolver) {
+      if (confirmed) {
+        this.modalResolver.resolve();
+      } else {
+        this.modalResolver.reject();
+      }
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
     }
   }
 }

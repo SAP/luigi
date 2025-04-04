@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <script type="module">
+      import './bundle.js';
+    </script>
+  </head>
+  <body>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1rem">
+      <luigi-container
+        style="grid-row: 1; height: 600px"
+        id="iframe-based-container-test"
+        viewURL="./iframe/microfrontend.html"
+      ></luigi-container>
+      <luigi-container
+        style="grid-row: 1"
+        id="wc-based-container-test"
+        viewURL="./wc/helloWorldWC.js"
+        webcomponent="true"
+      ></luigi-container>
+      <div style="grid-row: 1; max-width: 30vw">
+        <div id="actions"></div>
+        <div>
+          <span style="color: blue">web component</span>
+          <span style="color: green">iframe</span>
+          <button onclick="clearResults()">Clear</button>
+          <label>
+            <input type="checkbox" id="keepRes" />
+            keep results
+          </label>
+        </div>
+        <div id="results"></div>
+      </div>
+    </div>
+
+    <script type="module" src="xtest.js"></script>
+  </body>
+</html>
