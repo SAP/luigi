@@ -15,6 +15,7 @@ jobs:
           RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
   vue:
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +28,7 @@ jobs:
           RES=$(grep -c "Stopping webserver on port 4173" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
   react:
     runs-on: ubuntu-latest
     steps:
