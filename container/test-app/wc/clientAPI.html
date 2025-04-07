@@ -188,9 +188,7 @@
         });
         luigiContainer.addEventListener(MFEventID.SET_DIRTY_STATUS_REQUEST, (event) => {
           console.log('dirty', event.detail);
-          alert(
-            'LuigiClient.uxManager().setDirtyStatus()=' + event.detail.dirty,
-          );
+          alert('LuigiClient.uxManager().setDirtyStatus()=' + event.detail.dirty);
         });
         luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, (event) => {
           console.log('Open User Settings Request received', event.detail);
