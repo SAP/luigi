@@ -311,6 +311,9 @@ export class WebComponentService {
           setDocumentTitle: (title) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
+          setDirtyStatus: (isDirty: boolean) => {
+            this.dispatchLuigiEvent(Events.SET_DIRTY_STATUS_REQUEST, { dirty: isDirty });
+          },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
