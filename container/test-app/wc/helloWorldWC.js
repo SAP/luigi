@@ -28,6 +28,9 @@ export default class extends HTMLElement {
     const setAnchorBtn = document.createElement('template');
     setAnchorBtn.innerHTML = '<button id="setAnchor">setAnchor</button>';
 
+    const setLocaleBtn = document.createElement('template');
+    setLocaleBtn.innerHTML = '<button id="setCurrentLocale">setCurrentLocale</button>';
+
     const getCoreSearchParamsBtn = document.createElement('template');
     getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
 
@@ -119,6 +122,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setLocaleBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
@@ -220,6 +224,13 @@ export default class extends HTMLElement {
     this.$setAnchorBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.setAnchor('#myAnchor');
+      }
+    });
+
+    this.$setLocaleBtn = this._shadowRoot.querySelector('#setCurrentLocale');
+    this.$setLocaleBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().setCurrentLocale('de');
       }
     });
 
