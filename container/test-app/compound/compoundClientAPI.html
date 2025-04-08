@@ -255,12 +255,15 @@
       compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
         console.log('anchor', event.detail);
       });
-      compoundContainer.addEventListener(MFEventID.SET_CURRENT_LOCALE_REQUEST, (event) => {
-        console.log('locale', event.detail);
-        alert(
-          'LuigiClient.uxManager().setCurrentLocale()=' + event.detail.currentLocale,
-        );
-      });
+      compoundContainer.addEventListener(
+        MFEventID.SET_CURRENT_LOCALE_REQUEST,
+        (event) => {
+          console.log('locale', event.detail);
+          alert(
+            'LuigiClient.uxManager().setCurrentLocale()=' + event.detail.currentLocale,
+          );
+        },
+      );
       compoundContainer.addEventListener(
         MFEventID.OPEN_USER_SETTINGS_REQUEST,
         (event) => {
