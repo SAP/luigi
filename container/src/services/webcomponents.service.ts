@@ -254,7 +254,7 @@ export class WebComponentService {
             return false;
           },
           updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
-            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS, { modalSettings, addHistoryEntry });
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
           }
         };
         return linkManagerInstance;

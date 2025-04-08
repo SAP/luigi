@@ -451,13 +451,6 @@
               "type": {
                 "text": "Event"
               }
-            },
-            {
-              "name": "update-modalsettings",
-              "description": "Event fired when the micro frontend request to update the modal settings.",
-              "type": {
-                "text": "Event"
-              }
             }
           ]
         }
@@ -873,13 +866,6 @@
             {
               "name": "remove-backdrop-request",
               "description": "Event fired when the micro frontend requests to remove the backdrop.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "update-modalsettings",
-              "description": "Event fired when the micro frontend request to update the modal settings.",
               "type": {
                 "text": "Event"
               }

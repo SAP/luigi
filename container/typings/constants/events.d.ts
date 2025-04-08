@@ -172,11 +172,6 @@ export namespace Events {
    * Event fired when the micro frontend requests to remove the backdrop.
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
-
-  /**
-   * Event fired when the micro frontend request to update the modal settings.
-   */
-  export const UPDATE_MODAL_SETTINGS = 'update-modalsettings';
 }
 
 export class LuigiEvent extends Event {
