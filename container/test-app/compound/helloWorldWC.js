@@ -61,6 +61,9 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const setDirtyStatusBtn = document.createElement('template');
+    setDirtyStatusBtn.innerHTML = '<button id="setDirtyStatus">setDirtyStatus</button>';
+
     const retrieveContextValueBtn = document.createElement('template');
     retrieveContextValueBtn.innerHTML = '<button id="retrieveContextValue">retrieveContextValue</button>';
 
@@ -131,6 +134,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
@@ -309,6 +313,11 @@ export default class extends HTMLElement {
         text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
         type: 'info'
       });
+    });
+
+    this.$setDirtyStatusBtn = this._shadowRoot.querySelector('#setDirtyStatus');
+    this.$setDirtyStatusBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().setDirtyStatus(true);
     });
 
     this.$retrieveContextValueBtn = this._shadowRoot.querySelector('#retrieveContextValue');

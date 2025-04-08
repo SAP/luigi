@@ -69,6 +69,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - setDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
+    });
+
     it('LuigiClient API - getClientPermissions', () => {
       cy.on('window:alert', stub);
 

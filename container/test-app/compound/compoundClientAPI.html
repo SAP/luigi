@@ -255,6 +255,10 @@
       compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
         console.log('anchor', event.detail);
       });
+      compoundContainer.addEventListener(MFEventID.SET_DIRTY_STATUS_REQUEST, (event) => {
+        console.log('dirty', event.detail);
+        alert('LuigiClient.uxManager().setDirtyStatus()=' + event.detail.dirty);
+      });
       compoundContainer.addEventListener(
         MFEventID.OPEN_USER_SETTINGS_REQUEST,
         (event) => {
