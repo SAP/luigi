@@ -57,6 +57,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - setCurrentLocale', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setCurrentLocale')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setCurrentLocale()=de');
+        });
+    });
+
     it('LuigiClient API - getDirtyStatus', () => {
       cy.on('window:alert', stub);
 
