@@ -254,7 +254,10 @@ export class WebComponentService {
             return false;
           },
           updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
-            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, {
+              updatedModalSettings: modalSettings,
+              addHistoryEntry
+            });
           }
         };
         return linkManagerInstance;
@@ -380,6 +383,9 @@ export class WebComponentService {
       },
       getCoreSearchParams: (): object => {
         return this.thisComponent.searchParams || {};
+      },
+      addCoreSearchParams: (searchParams = {}, keepBrowserHistory = true) => {
+        this.dispatchLuigiEvent(Events.ADD_SEARCH_PARAMS_REQUEST, { data: searchParams, keepBrowserHistory });
       },
       getPathParams: (): object => {
         return this.thisComponent.pathParams || {};
