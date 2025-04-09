@@ -242,10 +242,7 @@
       // UPDATE_MODAL_PATH_DATA_REQUEST
       luigiContainer.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, (event) => {
         console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
-        alert(
-          Events.UPDATE_MODAL_PATH_DATA_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data),
-        );
+        alert(`LuigiClient.linkManager().updateModalPathInternalNavigation("${event.payload.link}")`);
       });
 
       // CHECK_PATH_EXISTS_REQUEST

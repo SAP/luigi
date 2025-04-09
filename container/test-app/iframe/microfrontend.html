@@ -47,7 +47,7 @@
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
       <button onclick="testGetHistoryState()">test history state</button>
       <button onclick="testGetContext()">Get Context</button>
-
+      <button onclick="testUpdateModalPathInternalNavigation()">test update modal path internal navigation</button>
       <button onclick="testSetCurrentLocale()">test set current locale</button>
       <button onclick="testSetLocalStorage()">test set local storage</button>
       <button onclick="testRuntimeErrorRequest()">
@@ -159,6 +159,14 @@
           id: 'my.contextMessage',
           ...LuigiClient.getContext(),
         });
+      }
+
+      function testUpdateModalPathInternalNavigation() {
+        const history = true;
+        const link = '/test/route';
+        const modal = { title: 'Some modal' };
+
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(link, modal, history);
       }
 
       function testSetCurrentLocale() {

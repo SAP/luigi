@@ -195,6 +195,26 @@ export class WebComponentService {
             nodeParams = params;
             return linkManagerInstance;
           },
+          updateModalPathInternalNavigation: (path: string, modalSettings = {}, addHistoryEntry = false): void => {
+            if (!path) {
+              console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+              return;
+            }
+
+            const options = {
+              fromClosestContext,
+              fromContext,
+              fromParent,
+              fromVirtualTreeRoot,
+              nodeParams
+            };
+
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_PATH_DATA_REQUEST, Object.assign(options, {
+              history: addHistoryEntry,
+              link: path,
+              modal: modalSettings
+            }));
+          },
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },

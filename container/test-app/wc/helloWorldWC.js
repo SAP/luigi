@@ -81,6 +81,9 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const updateModalPathBtn = document.createElement('template');
+    updateModalPathBtn.innerHTML = '<button id="updateModalPathBtn">lm.updateModalPathInternalNavigation</button>';
+
     const openAsModalBtn = document.createElement('template');
     openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
 
@@ -128,6 +131,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateModalPathBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
@@ -310,6 +314,17 @@ export default class extends HTMLElement {
         text: 'LuigiClient.linkManager().navigate()',
         type: 'info'
       });
+    });
+
+    this.$updateModalPathBtn = this._shadowRoot.querySelector('#updateModalPathBtn');
+    this.$updateModalPathBtn.addEventListener('click', () => {
+      const history = true;
+      const link = '/test/route';
+      const modal = { title: 'Some modal' };
+
+      if (this.LuigiClient) {
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(link, modal, history);
+      }
     });
 
     this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
