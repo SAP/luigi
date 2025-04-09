@@ -87,6 +87,9 @@ export default class extends HTMLElement {
     const openAsModalBtn = document.createElement('template');
     openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
 
+    const updateModalSettingsBtn = document.createElement('template');
+    updateModalSettingsBtn.innerHTML = '<button id="updateModalSettingsBtn">lm.updateModalSettings</button>';
+
     const openAsDrawerBtn = document.createElement('template');
     openAsDrawerBtn.innerHTML = '<button id="openAsDrawerBtn">lm.openAsDrawer</button>';
 
@@ -133,6 +136,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateModalSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateBtn.content.cloneNode(true));
@@ -330,6 +334,14 @@ export default class extends HTMLElement {
         size: 'm'
       });
     });
+    this.$updateModalSettingsBtn = this._shadowRoot.querySelector('#updateModalSettingsBtn');
+    this.$updateModalSettingsBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().updateModalSettings({
+        title: 'Updated Modal Title',
+        size: 'l'
+      });
+    });
+
     this.$openAsDrawerBtn = this._shadowRoot.querySelector('#openAsDrawerBtn');
     this.$openAsDrawerBtn.addEventListener('click', () => {
       this.LuigiClient.linkManager().openAsDrawer('openAsDrawer-wc', {
