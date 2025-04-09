@@ -17,12 +17,7 @@
               "kind": "field",
               "name": "activeFeatureToggleList",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -30,12 +25,7 @@
               "kind": "field",
               "name": "allowRules",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -147,12 +137,7 @@
               "kind": "field",
               "name": "sandboxRules",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -489,12 +474,7 @@
               "kind": "field",
               "name": "activeFeatureToggleList",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
