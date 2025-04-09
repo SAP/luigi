@@ -1,10 +1,23 @@
 describe('Web Container Test', () => {
   describe('LuigiClient API LuigiContainer', () => {
     const containerSelector = '[data-test-id="luigi-client-api-test-01"]';
+    let consoleLog;
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:8080/wc/clientAPI.html');
+      cy.visit('http://localhost:8080/wc/clientAPI.html', {
+        onBeforeLoad(win) {
+          // Clear logs in window console
+          if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+            win.console.clear();
+          }
+
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
+        }
+      });
       stub = cy.stub();
     });
 
@@ -178,6 +191,28 @@ describe('Web Container Test', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
+    it('Update modal settings in wc mf', () => {
+      cy.on('window:alert', stub);
+
+      const expectedPayload = {
+        updatedModalSettings: {
+          title: 'Updated Modal Title',
+          size: 'l'
+        },
+        addHistoryEntry: false
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#updateModalSettingsBtn')
+        .click()
+        .then(() => {
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
+        });
+    });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
 
