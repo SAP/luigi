@@ -300,6 +300,10 @@
         showAnAlert(alertSettings, compoundContainer);
       });
 
+      compoundContainer.addEventListener(MFEventID.ADD_SEARCH_PARAMS_REQUEST, (event) => {
+        if (event) console.log(event.detail);
+      });
+
       // linkManager listeners:
       // path exists
       compoundContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {

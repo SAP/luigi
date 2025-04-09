@@ -34,6 +34,9 @@ export default class extends HTMLElement {
     const getCoreSearchParamsBtn = document.createElement('template');
     getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
 
+    const addCoreSearchParamsBtn = document.createElement('template');
+    addCoreSearchParamsBtn.innerHTML = '<button id="addCoreSearchParams">addCoreSearchParams</button>';
+
     const getPathParamsBtn = document.createElement('template');
     getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
 
@@ -124,6 +127,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(addCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
@@ -244,6 +248,13 @@ export default class extends HTMLElement {
     this.$coreSearchParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
+      }
+    });
+
+    this.$addCoreSearchParamsBtn = this._shadowRoot.querySelector('#addCoreSearchParams');
+    this.$addCoreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.addCoreSearchParams({ luigi: 'rocks' });
       }
     });
 

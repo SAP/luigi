@@ -384,6 +384,9 @@ export class WebComponentService {
       getClientPermissions: (): object => {
         return this.thisComponent.clientPermissions || {};
       },
+      addCoreSearchParams: (searchParams = {}, keepBrowserHistory = true) => {
+        this.dispatchLuigiEvent(Events.ADD_SEARCH_PARAMS_REQUEST, { data: searchParams, keepBrowserHistory });
+      },
       getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};
       },
