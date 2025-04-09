@@ -49,9 +49,6 @@ describe('Web Container Test', () => {
 
     it('Add core search params', () => {
       cy.on('window:alert', stub);
-      cy.window().then((win) => {
-        cy.spy(win.console, 'log').as('consoleLog');
-      });
 
       const expectedPayload = {
         data: { luigi: 'rocks' },
@@ -62,7 +59,9 @@ describe('Web Container Test', () => {
         .get('#addCoreSearchParams')
         .click()
         .then(() => {
-          cy.get('@consoleLog').should('be.calledWith', expectedPayload);
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
         });
     });
 

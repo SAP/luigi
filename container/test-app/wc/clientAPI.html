@@ -183,7 +183,7 @@
           },
         );
         luigiContainer.addEventListener(MFEventID.ADD_SEARCH_PARAMS_REQUEST, (event) => {
-          if (event) console.log(event.detail);
+          if (event) console.log(JSON.stringify(event.detail));
         });
         luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, (event) => {
           const params = event.detail.params;
