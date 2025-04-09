@@ -209,11 +209,14 @@ export class WebComponentService {
               nodeParams
             };
 
-            this.dispatchLuigiEvent(Events.UPDATE_MODAL_PATH_DATA_REQUEST, Object.assign(options, {
-              history: addHistoryEntry,
-              link: path,
-              modal: modalSettings
-            }));
+            this.dispatchLuigiEvent(
+              Events.UPDATE_MODAL_PATH_DATA_REQUEST,
+              Object.assign(options, {
+                history: addHistoryEntry,
+                link: path,
+                modal: modalSettings
+              })
+            );
           },
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});

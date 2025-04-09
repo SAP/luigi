@@ -237,7 +237,9 @@
       compoundContainer.addEventListener(
         MFEventID.UPDATE_MODAL_PATH_DATA_REQUEST,
         (event) => {
-          alert(`LuigiClient.linkManager().updateModalPathInternalNavigation("${event.detail.link}")`);
+          alert(
+            `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.detail.link}")`,
+          );
         },
       );
       compoundContainer.addEventListener(
