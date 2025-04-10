@@ -235,6 +235,14 @@
         },
       );
       compoundContainer.addEventListener(
+        MFEventID.UPDATE_MODAL_PATH_DATA_REQUEST,
+        (event) => {
+          alert(
+            `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.detail.link}")`,
+          );
+        },
+      );
+      compoundContainer.addEventListener(
         MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
         (event) => {
           const data = event.detail;
