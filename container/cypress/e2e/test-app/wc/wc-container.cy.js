@@ -44,6 +44,7 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
     });
 
     it('setCurrentLocale', () => {
