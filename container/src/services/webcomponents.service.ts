@@ -275,6 +275,9 @@ export class WebComponentService {
           },
           hasBack: () => {
             return false;
+          },
+          updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
           }
         };
         return linkManagerInstance;

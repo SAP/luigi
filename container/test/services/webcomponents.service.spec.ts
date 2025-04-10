@@ -516,6 +516,26 @@ describe('createClientAPI', () => {
       expect(hasBack).toEqual(false);
     });
 
+    it('test linkManager updateModalSettings', () => {
+      const addHistoryEntry = true;
+      const updatedModalSettings = { title: 'Some modal' };
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.linkManager().updateModalSettings(updatedModalSettings, addHistoryEntry);
+
+      // assert
+      const expectedPayload = {
+        addHistoryEntry,
+        updatedModalSettings
+      };
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_MODAL_SETTINGS_REQUEST, expectedPayload);
+    });
+
     it('test linkManager pathExists: should resolve with true if path exists', () => {
       // Mock and spy on functions
       service.containerService.dispatch = jest.fn((event, component, options, callback) => {

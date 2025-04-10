@@ -75,6 +75,7 @@
       <button onclick="openAsModal()">test openAsModal()</button>
       <button onclick="openAsDrawer()">test openAsDrawer()</button>
       <button onclick="openAsSplitview()">test openAsSplitview()</button>
+      <button onclick="updateModalSettings()">test updateModalSettings</button>
       <span id="result"></span>
     </div>
 
@@ -86,6 +87,10 @@
           title: 'Modal Title',
           size: 'm',
         });
+      }
+
+      function updateModalSettings(){
+        LuigiClient.linkManager().updateModalSettings({title:'Updated modal title', size:'l'})
       }
 
       function openAsDrawer() {
