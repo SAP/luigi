@@ -35,6 +35,18 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('setDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
+    });
+
     it('setCurrentLocale', () => {
       cy.on('window:alert', stub);
 
