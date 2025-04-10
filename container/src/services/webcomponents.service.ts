@@ -81,8 +81,8 @@ export class WebComponentService {
    * @param callbackName name of the callback function
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void, callbackName?: string) {
-    this.containerService.dispatch(msg, this.thisComponent, data, callback, callbackName);
+  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void) {
+    this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
   /**
@@ -186,8 +186,7 @@ export class WebComponentService {
                   } else {
                     reject('No current route received.');
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -217,8 +216,7 @@ export class WebComponentService {
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
               );
               // For BW compatibility
               this.containerService.dispatch(
@@ -231,8 +229,7 @@ export class WebComponentService {
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -270,8 +267,7 @@ export class WebComponentService {
                 alertSettings,
                 (dismissKey?: boolean | string) => {
                   this.resolveAlert(alertSettings.id, dismissKey);
-                },
-                'callback'
+                }
               );
             });
           },
@@ -288,8 +284,7 @@ export class WebComponentService {
                   } else {
                     reject();
                   }
-                },
-                'callback'
+                }
               );
             });
           },

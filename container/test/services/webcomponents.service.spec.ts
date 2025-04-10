@@ -124,10 +124,10 @@ describe('dispatchLuigiEvent', () => {
     const callback = jest.fn();
 
     // Act
-    service.dispatchLuigiEvent(msg, data, callback, 'callback');
+    service.dispatchLuigiEvent(msg, data, callback);
 
     // Assert
-    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback, 'callback');
+    expect(dispatchSpy).toHaveBeenCalledWith(msg, service.thisComponent, data, callback);
   });
 });
 

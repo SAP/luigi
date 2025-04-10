@@ -41,10 +41,9 @@ export class ContainerService {
     targetCnt: ContainerElement,
     data: object,
     payload: object,
-    callback?: (arg?) => void,
-    callbackName?: string
+    callback?: (arg?) => void
   ): void {
-    this.dispatch(msg, targetCnt, data, callback, callbackName, payload);
+    this.dispatch(msg, targetCnt, data, callback, payload);
   }
 
   /**
@@ -60,16 +59,9 @@ export class ContainerService {
     targetCnt: ContainerElement,
     data: object,
     callback?: (arg?) => void,
-    callbackName?: string,
     payload?: object
   ): void {
-    const customEvent = new LuigiEvent(msg, data, payload);
-
-    if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
-      customEvent[callbackName] = (data) => {
-        callback(data);
-      };
-    }
+    const customEvent = new LuigiEvent(msg, data, payload, callback);
     targetCnt.dispatchEvent(customEvent);
   }
 

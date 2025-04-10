@@ -522,14 +522,14 @@ describe('dispatch', () => {
     };
 
     // Act
-    service.dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
+    service.dispatch(eventName, targetContainer, eventData, callbackFunction);
 
     // Assert
     globalThis.CustomEvent = jest
       .fn()
-      .mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+      .mockImplementation((type, eventInit) => ({ isTrusted: false, callback: callbackFunction }));
 
-    const dispatchedEventMock = { isTrusted: false, onCallback: expect.any(Function) };
+    const dispatchedEventMock = { isTrusted: false, callback: expect.any(Function) };
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(expect.objectContaining(dispatchedEventMock));
   });
 });
