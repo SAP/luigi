@@ -198,12 +198,33 @@ export class WebComponentService {
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
-          pathExists: () => {
+          pathExists: (link: string) => {
+            const options = {
+              fromContext,
+              fromClosestContext,
+              fromVirtualTreeRoot,
+              fromParent,
+              nodeParams
+            };
             return new Promise((resolve, reject) => {
+              this.containerService.dispatch(
+                Events.CHECK_PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                { ...options, link },
+                (exists) => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                },
+                'callback'
+              );
+              // For BW compatibility
               this.containerService.dispatch(
                 Events.PATH_EXISTS_REQUEST,
                 this.thisComponent,
-                {},
+                { ...options, link },
                 (exists) => {
                   if (exists) {
                     resolve(true);
@@ -231,6 +252,9 @@ export class WebComponentService {
           },
           hasBack: () => {
             return false;
+          },
+          updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
           }
         };
         return linkManagerInstance;
@@ -293,6 +317,9 @@ export class WebComponentService {
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
+          addBackdrop: () => {
+            this.dispatchLuigiEvent(Events.ADD_BACKDROP_REQUEST, {});
+          },
           hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
           }
@@ -329,6 +356,7 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, {
           params,
+          data: params,
           keepBrowserHistory
         });
       },
