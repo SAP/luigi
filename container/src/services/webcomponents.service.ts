@@ -314,6 +314,11 @@ export class WebComponentService {
           setDocumentTitle: (title) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
+          setCurrentLocale: (locale: string) => {
+            if (locale) {
+              this.dispatchLuigiEvent(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
+            }
+          },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },

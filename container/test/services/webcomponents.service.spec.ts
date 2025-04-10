@@ -754,6 +754,21 @@ describe('createClientAPI', () => {
       expect(result).toEqual(false);
     });
 
+    it('test uxManager setCurrentLocale', () => {
+      const locale = 'en';
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().setCurrentLocale(locale);
+
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
+    });
+
     it('test uxManager removeBackdrop', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();

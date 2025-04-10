@@ -19,6 +19,9 @@ export default class extends HTMLElement {
     const current_locale = document.createElement('template');
     current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
 
+    const setLocaleBtn = document.createElement('template');
+    setLocaleBtn.innerHTML = '<button id="setCurrentLocale">setCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
     templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
@@ -144,6 +147,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
+    this._shadowRoot.appendChild(setLocaleBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(closeAlertResponseDiv.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalResponseDiv.cloneNode(true));
 
@@ -156,6 +160,13 @@ export default class extends HTMLElement {
           text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
+      }
+    });
+
+    this.$setLocaleBtn = this._shadowRoot.querySelector('#setCurrentLocale');
+    this.$setLocaleBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().setCurrentLocale('de');
       }
     });
 
