@@ -438,6 +438,33 @@ describe('createClientAPI', () => {
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
 
+    it('test linkManager updateModalPathInternalNavigation', () => {
+      const history = true;
+      const link = '/test/route';
+      const modal = { title: 'Some modal' };
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.linkManager().updateModalPathInternalNavigation(link, modal, history);
+
+      // assert
+      const expectedPayload = {
+        fromClosestContext: false,
+        fromContext: null,
+        fromParent: false,
+        fromVirtualTreeRoot: false,
+        history,
+        link,
+        modal,
+        nodeParams: {}
+      };
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_MODAL_PATH_DATA_REQUEST, expectedPayload);
+    });
+
     it('test linkManager updateTopNavigation', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
@@ -753,6 +780,21 @@ describe('createClientAPI', () => {
 
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_DIRTY_STATUS_REQUEST, { dirty: value });
+    });
+
+    it('test uxManager setCurrentLocale', () => {
+      const locale = 'en';
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().setCurrentLocale(locale);
+
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
     });
 
     it('test uxManager removeBackdrop', () => {
