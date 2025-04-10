@@ -251,7 +251,10 @@ export class WebComponentService {
             return false;
           },
           updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
-            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, {
+              updatedModalSettings: modalSettings,
+              addHistoryEntry
+            });
           }
         };
         return linkManagerInstance;
@@ -262,13 +265,9 @@ export class WebComponentService {
             alertSettings.id = this.alertIndex++;
             return new Promise((resolve) => {
               this.alertResolvers[alertSettings.id] = resolve;
-              this.dispatchLuigiEvent(
-                Events.ALERT_REQUEST,
-                alertSettings,
-                (dismissKey?: boolean | string) => {
-                  this.resolveAlert(alertSettings.id, dismissKey);
-                }
-              );
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings, (dismissKey?: boolean | string) => {
+                this.resolveAlert(alertSettings.id, dismissKey);
+              });
             });
           },
           showConfirmationModal: (settings) => {

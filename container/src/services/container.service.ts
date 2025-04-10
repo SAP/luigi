@@ -54,13 +54,7 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(
-    msg: string,
-    targetCnt: ContainerElement,
-    data: object,
-    callback?: (arg?) => void,
-    payload?: object
-  ): void {
+  dispatch(msg: string, targetCnt: ContainerElement, data: object, callback?: (arg?) => void, payload?: object): void {
     const customEvent = new LuigiEvent(msg, data, payload, callback);
     targetCnt.dispatchEvent(customEvent);
   }
