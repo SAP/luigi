@@ -378,8 +378,7 @@ describe('createClientAPI', () => {
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
           expectedPayload,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         expect(result).toBe('/current/route');
       });
@@ -408,8 +407,7 @@ describe('createClientAPI', () => {
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
           expectedPayload,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         expect(result).toBe('/route');
       });
@@ -553,8 +551,7 @@ describe('createClientAPI', () => {
           Events.CHECK_PATH_EXISTS_REQUEST,
           service.thisComponent,
           expect.any(Object),
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         // Check if the function resolves with the correct value
         expect(result).toBe(true);
@@ -580,8 +577,7 @@ describe('createClientAPI', () => {
             Events.CHECK_PATH_EXISTS_REQUEST,
             service.thisComponent,
             expect.any(Object),
-            expect.any(Function),
-            'callback'
+            expect.any(Function)
           );
           expect(error).toBe(false);
         });
@@ -607,8 +603,7 @@ describe('createClientAPI', () => {
       expect(dispatchEventSpy).toHaveBeenCalledWith(
         Events.ALERT_REQUEST,
         alertSettings,
-        expect.any(Function),
-        'callback'
+        expect.any(Function)
       );
     });
 
@@ -656,8 +651,7 @@ describe('createClientAPI', () => {
           Events.SHOW_CONFIRMATION_MODAL_REQUEST,
           service.thisComponent,
           settings,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         expect(result).toEqual(undefined);
       });
@@ -902,7 +896,7 @@ describe('createClientAPI', () => {
 
     // asert
     expect(eventBusPublishEventSpy).toHaveBeenCalledWith(customEvent, node_id, wc_id);
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
   });
 
   it('test publishEvent custom message with UNDEFINED eventBusElement', () => {
@@ -923,7 +917,7 @@ describe('createClientAPI', () => {
     clientAPI.publishEvent(new CustomEvent('test-event', { detail: 1 }));
 
     // assert
-    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined, undefined);
+    expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
   });
 
   it('test luigiClientInit', () => {
