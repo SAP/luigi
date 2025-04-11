@@ -35,6 +35,18 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('setDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
+    });
+
     it('setCurrentLocale', () => {
       cy.on('window:alert', stub);
 
@@ -56,6 +68,24 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        });
+    });
+
+    it('Add core search params', () => {
+      cy.on('window:alert', stub);
+
+      const expectedPayload = {
+        data: { luigi: 'rocks' },
+        keepBrowserHistory: true
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#addCoreSearchParams')
+        .click()
+        .then(() => {
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
         });
     });
 

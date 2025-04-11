@@ -756,29 +756,30 @@ describe('createClientAPI', () => {
       expect(result).toEqual('Title');
     });
 
-    it('test uxManager getDirtyStatus', () => {
+    it.each([true, false])('test uxManager getDirtyStatus', (value) => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      service.thisComponent.dirtyStatus = true;
+      service.thisComponent.dirtyStatus = value;
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const result = clientAPI.uxManager().getDirtyStatus();
 
       // assert
-      expect(result).toEqual(true);
+      expect(result).toEqual(value);
     });
 
-    it('test uxManager getDirtyStatus', () => {
-      // mock and spy on data/functions
-      service.thisComponent = document.createElement('div');
+    it.each([true, false])('test uxManager setDirtyStatus', (value) => {
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const result = clientAPI.uxManager().getDirtyStatus();
+      clientAPI.uxManager().setDirtyStatus(value);
 
       // assert
-      expect(result).toEqual(false);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_DIRTY_STATUS_REQUEST, { dirty: value });
     });
 
     it('test uxManager setCurrentLocale', () => {
@@ -1121,6 +1122,41 @@ describe('createClientAPI', () => {
 
     // assert
     expect(result).toEqual({});
+  });
+
+  it('test addCoreSearchParams', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const params = { luigi: 'rocks' };
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams(params, keepBrowserHistory);
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: params,
+      keepBrowserHistory
+    });
+  });
+
+  it('test addCoreSearchParams with no arguments', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams();
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: {},
+      keepBrowserHistory
+    });
   });
 
   it('test getPathParams WITH attribute', () => {

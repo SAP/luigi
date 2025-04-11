@@ -81,6 +81,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - setDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
+    });
+
     it('LuigiClient API - getClientPermissions', () => {
       cy.on('window:alert', stub);
 
@@ -139,6 +151,25 @@ describe('Compound Container Tests', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        });
+    });
+
+    it('Add core search params', () => {
+      cy.on('window:alert', stub);
+      cy.window().then((win) => {
+        cy.spy(win.console, 'log').as('consoleLog');
+      });
+
+      const expectedPayload = {
+        data: { luigi: 'rocks' },
+        keepBrowserHistory: true
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#addCoreSearchParams')
+        .click()
+        .then(() => {
+          cy.get('@consoleLog').should('be.calledWith', expectedPayload);
         });
     });
 

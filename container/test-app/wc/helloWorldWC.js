@@ -34,6 +34,9 @@ export default class extends HTMLElement {
     const getCoreSearchParamsBtn = document.createElement('template');
     getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
 
+    const addCoreSearchParamsBtn = document.createElement('template');
+    addCoreSearchParamsBtn.innerHTML = '<button id="addCoreSearchParams">addCoreSearchParams</button>';
+
     const getPathParamsBtn = document.createElement('template');
     getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
 
@@ -54,6 +57,9 @@ export default class extends HTMLElement {
 
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
+
+    const setDirtyStatusBtn = document.createElement('template');
+    setDirtyStatusBtn.innerHTML = '<button id="setDirtyStatus">setDirtyStatus</button>';
 
     const updateContextBtn = document.createElement('template');
     updateContextBtn.innerHTML = '<button id="updateContext">updateContext</button>';
@@ -130,11 +136,13 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setLocaleBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(addCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
@@ -249,6 +257,13 @@ export default class extends HTMLElement {
       }
     });
 
+    this.$addCoreSearchParamsBtn = this._shadowRoot.querySelector('#addCoreSearchParams');
+    this.$addCoreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.addCoreSearchParams({ luigi: 'rocks' });
+      }
+    });
+
     this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
     this.$getPathParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -290,6 +305,11 @@ export default class extends HTMLElement {
         text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
         type: 'info'
       });
+    });
+
+    this.$setDirtyStatusBtn = this._shadowRoot.querySelector('#setDirtyStatus');
+    this.$setDirtyStatusBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().setDirtyStatus(true);
     });
 
     this.$updateContextBtn = this._shadowRoot.querySelector('#updateContext');
