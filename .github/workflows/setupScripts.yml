@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: '20.14.0'
       - run: |
-          OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/vue.sh | tee /dev/fd/2)
-          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          OUT=$(bash ./test/setuptests.sh @vue/cli 4173 http://localhost:4173/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/vue.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 4173" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
 
@@ -63,7 +63,7 @@ jobs:
         with:
           node-version: '20.14.0'
       - run: |
-          OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh | tee /dev/fd/2)
-          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          OUT=$(bash ./test/setuptests.sh ' ' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
           echo "$RES"
           if [ $RES == 1 ]; then exit 0; else exit 1; fi
