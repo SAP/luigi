@@ -34,6 +34,25 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('updateModalPathInternalNavigation', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test update modal path internal navigation')
+          .click()
+          .then(() => {
+            expect(stub.getCall(1)).to.be.calledWith(
+              'LuigiClient.linkManager().updateModalPathInternalNavigation("/test/route")'
+            );
+          });
+      });
+  });
+
   it('showAlert', () => {
     cy.on('window:alert', stub);
 
