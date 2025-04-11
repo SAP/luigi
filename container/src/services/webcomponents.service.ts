@@ -194,6 +194,29 @@ export class WebComponentService {
             nodeParams = params;
             return linkManagerInstance;
           },
+          updateModalPathInternalNavigation: (path: string, modalSettings = {}, addHistoryEntry = false): void => {
+            if (!path) {
+              console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+              return;
+            }
+
+            const options = {
+              fromClosestContext,
+              fromContext,
+              fromParent,
+              fromVirtualTreeRoot,
+              nodeParams
+            };
+
+            this.dispatchLuigiEvent(
+              Events.UPDATE_MODAL_PATH_DATA_REQUEST,
+              Object.assign(options, {
+                history: addHistoryEntry,
+                link: path,
+                modal: modalSettings
+              })
+            );
+          },
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
@@ -308,6 +331,14 @@ export class WebComponentService {
           setDocumentTitle: (title) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
+          setDirtyStatus: (isDirty: boolean) => {
+            this.dispatchLuigiEvent(Events.SET_DIRTY_STATUS_REQUEST, { dirty: isDirty });
+          },
+          setCurrentLocale: (locale: string) => {
+            if (locale) {
+              this.dispatchLuigiEvent(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
+            }
+          },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
@@ -380,6 +411,9 @@ export class WebComponentService {
       },
       getClientPermissions: (): object => {
         return this.thisComponent.clientPermissions || {};
+      },
+      addCoreSearchParams: (searchParams = {}, keepBrowserHistory = true) => {
+        this.dispatchLuigiEvent(Events.ADD_SEARCH_PARAMS_REQUEST, { data: searchParams, keepBrowserHistory });
       },
       getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};

@@ -19,6 +19,9 @@ export default class extends HTMLElement {
     const current_locale = document.createElement('template');
     current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
 
+    const setLocaleBtn = document.createElement('template');
+    setLocaleBtn.innerHTML = '<button id="setCurrentLocale">setCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
     templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
@@ -33,6 +36,9 @@ export default class extends HTMLElement {
 
     const getCoreSearchParamsBtn = document.createElement('template');
     getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+
+    const addCoreSearchParamsBtn = document.createElement('template');
+    addCoreSearchParamsBtn.innerHTML = '<button id="addCoreSearchParams">addCoreSearchParams</button>';
 
     const getPathParamsBtn = document.createElement('template');
     getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
@@ -61,6 +67,9 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const setDirtyStatusBtn = document.createElement('template');
+    setDirtyStatusBtn.innerHTML = '<button id="setDirtyStatus">setDirtyStatus</button>';
+
     const retrieveContextValueBtn = document.createElement('template');
     retrieveContextValueBtn.innerHTML = '<button id="retrieveContextValue">retrieveContextValue</button>';
 
@@ -81,6 +90,9 @@ export default class extends HTMLElement {
     fromVirtualTreeRoot,
     withParams().navigate()
     </button>`;
+
+    const updateModalPathBtn = document.createElement('template');
+    updateModalPathBtn.innerHTML = '<button id="updateModalPathBtn">updateModalPathInternalNavigation</button>';
 
     /*
     const linkManagerOpenAsRequestsBtn = document.createElement('template');
@@ -124,6 +136,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(addCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
@@ -131,10 +144,11 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-
+    this._shadowRoot.appendChild(updateModalPathBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
@@ -144,6 +158,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
+    this._shadowRoot.appendChild(setLocaleBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(closeAlertResponseDiv.cloneNode(true));
     this._shadowRoot.appendChild(confirmationModalResponseDiv.cloneNode(true));
 
@@ -156,6 +171,13 @@ export default class extends HTMLElement {
           text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
+      }
+    });
+
+    this.$setLocaleBtn = this._shadowRoot.querySelector('#setCurrentLocale');
+    this.$setLocaleBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().setCurrentLocale('de');
       }
     });
 
@@ -247,6 +269,13 @@ export default class extends HTMLElement {
       }
     });
 
+    this.$addCoreSearchParamsBtn = this._shadowRoot.querySelector('#addCoreSearchParams');
+    this.$addCoreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.addCoreSearchParams({ luigi: 'rocks' });
+      }
+    });
+
     this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
     this.$getPathParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -311,6 +340,11 @@ export default class extends HTMLElement {
       });
     });
 
+    this.$setDirtyStatusBtn = this._shadowRoot.querySelector('#setDirtyStatus');
+    this.$setDirtyStatusBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().setDirtyStatus(true);
+    });
+
     this.$retrieveContextValueBtn = this._shadowRoot.querySelector('#retrieveContextValue');
     this.$retrieveContextValueBtn.addEventListener('click', () => {
       this.LuigiClient.uxManager().showAlert({
@@ -348,6 +382,17 @@ export default class extends HTMLElement {
         text: 'LuigiClient.linkManager().navigate()',
         type: 'info'
       });
+    });
+
+    this.$updateModalPathBtn = this._shadowRoot.querySelector('#updateModalPathBtn');
+    this.$updateModalPathBtn.addEventListener('click', () => {
+      const history = true;
+      const link = '/test/route';
+      const modal = { title: 'Some modal' };
+
+      if (this.LuigiClient) {
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(link, modal, history);
+      }
     });
 
     this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
