@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 export namespace Events {
   /**
    * Event fired when the micro frontend sends a custom message.
@@ -177,11 +178,19 @@ export namespace Events {
 export class LuigiEvent extends Event {
   payload?: unknown;
   detail: unknown;
+  private callbackFn: Function;
 
-  constructor(type: string, data: unknown, payload?: unknown) {
+  constructor(type: string, data: unknown, payload?: unknown, callback?: Function) {
     super(type);
     this.detail = data;
     this.payload = payload || data || {};
+    this.callbackFn = callback;
+  }
+
+  callback(data: unknown): void {
+    if (this.callbackFn) {
+      this.callbackFn(data);
+    }
   }
 }
 
