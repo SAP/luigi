@@ -1124,6 +1124,41 @@ describe('createClientAPI', () => {
     expect(result).toEqual({});
   });
 
+  it('test addCoreSearchParams', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const params = { luigi: 'rocks' };
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams(params, keepBrowserHistory);
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: params,
+      keepBrowserHistory
+    });
+  });
+
+  it('test addCoreSearchParams with no arguments', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams();
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: {},
+      keepBrowserHistory
+    });
+  });
+
   it('test getPathParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');

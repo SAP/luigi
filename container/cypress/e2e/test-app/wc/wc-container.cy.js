@@ -71,6 +71,24 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('Add core search params', () => {
+      cy.on('window:alert', stub);
+
+      const expectedPayload = {
+        data: { luigi: 'rocks' },
+        keepBrowserHistory: true
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#addCoreSearchParams')
+        .click()
+        .then(() => {
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
+        });
+    });
+
     it('getPathParams', () => {
       cy.on('window:alert', stub);
 

@@ -154,6 +154,25 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('Add core search params', () => {
+      cy.on('window:alert', stub);
+      cy.window().then((win) => {
+        cy.spy(win.console, 'log').as('consoleLog');
+      });
+
+      const expectedPayload = {
+        data: { luigi: 'rocks' },
+        keepBrowserHistory: true
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#addCoreSearchParams')
+        .click()
+        .then(() => {
+          cy.get('@consoleLog').should('be.calledWith', expectedPayload);
+        });
+    });
+
     it('LuigiClient API - getSkipInitCheck', () => {
       cy.get(containerSelector).invoke('attr', 'skip-init-check').should('eq', 'true');
     });
