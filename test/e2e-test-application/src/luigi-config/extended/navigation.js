@@ -510,6 +510,7 @@ class Navigation {
 
   appSwitcher = {
     showMainAppEntry: true,
+    keepMainTitle: false,
     items: [
       {
         title: 'Application One',
