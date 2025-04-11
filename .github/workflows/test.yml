@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - 'main'
+
 name: Build & Test
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
@@ -17,9 +18,15 @@ jobs:
     with:
       buildcache_key: buildcache-${{ github.ref }}
 
+  update:
+    uses: ./.github/workflows/update-deps.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache-${{ github.ref }}
+
   unit:
     name: Unit Tests
-    needs: prepare
+    needs: [prepare, update]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v4
@@ -111,7 +118,6 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
-      - run: sudo apt-get update
       - run: sudo apt-get -y install libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: ls test
