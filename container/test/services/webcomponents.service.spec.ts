@@ -600,11 +600,7 @@ describe('createClientAPI', () => {
       clientAPI.uxManager().showAlert(alertSettings);
 
       // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(
-        Events.ALERT_REQUEST,
-        alertSettings,
-        expect.any(Function)
-      );
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings, expect.any(Function));
     });
 
     it('test uxManager getCurrentTheme', () => {
