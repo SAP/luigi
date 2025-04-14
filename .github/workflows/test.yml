@@ -18,12 +18,6 @@ jobs:
     with:
       buildcache_key: buildcache-${{ github.ref }}
 
-  update:
-    uses: ./.github/workflows/update-deps.yml
-    secrets: inherit
-    with:
-      buildcache_key: buildcache-${{ github.ref }}
-
   unit:
     name: Unit Tests
     needs: prepare
@@ -102,15 +96,15 @@ jobs:
 
   e2e:
     name: Integration Tests
-    needs: [prepare, update]
+    needs: prepare
     runs-on: ubuntu-latest
 
     env:
       USE_CYPRESS_DASHBOARD: true  # enable when trying to debug
     steps:
-      - uses: actions/setup-node@v4
+      - uses: ./.github/workflows/update-deps
         with:
-          node-version: '20.14.0'
+          secrets: inherit
       - uses: actions/cache@v4
         with:
           path: |

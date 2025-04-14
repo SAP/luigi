@@ -6,15 +6,8 @@ on:
 name: Whitesource Scan
 
 jobs:
-  update:
-    uses: ./.github/workflows/update-deps.yml
-    secrets: inherit
-    with:
-      buildcache_key: buildcache-${{ github.ref }}
-
   whitesource:
     name: Mend(Whitesource) Scan
-    needs: update
     runs-on: ubuntu-latest
     env:
       WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
@@ -22,10 +15,9 @@ jobs:
       WHITESOURCE_PRODUCT_TOKEN: ${{ secrets.WHITESOURCE_PRODUCT_TOKEN }}
       WHITESOURCE_USER_TOKEN: ${{ secrets.WHITESOURCE_USER_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: ./.github/workflows/update-deps
         with:
-          node-version: '20.14.0'
+          secrets: inherit
       - uses: actions/cache@v4
         with:
           path: ~/.cache
