@@ -17,7 +17,7 @@ wcContainer.addEventListener(Events.INITIALIZED, (event) => {
   document.body.setAttribute('wc_init', true);
 });
 compoundContainer.addEventListener(Events.INITIALIZED, (event) => {
-  console.log("Hello compound")
+  console.log('Hello compound');
   document.body.setAttribute('compound_init', true);
 });
 
@@ -187,15 +187,12 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
       // Exception for customMessage
       wcBase.publishEvent(new CustomEvent(args[0].id, { detail: args[0] }));
       compoundBase.publishEvent(new CustomEvent(args[0].id, { detail: args[0] }));
-
     } else {
       wcBase[functionName](...args);
       compoundBase[functionName](...args);
     }
   });
 }
-
-
 
 // Setup compound container
 setupCompoundContainer();
@@ -258,4 +255,3 @@ document.querySelector('#actions').appendChild(document.createElement('br'));
 document.querySelector('#actions').appendChild(document.createElement('br'));
 
 createApiTrigger(LuigiEvents.LOCAL_STORAGE_SET_REQUEST, 'storageManager', 'setItem', 'storageKey', 'storageValue');
-

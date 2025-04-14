@@ -5,7 +5,10 @@
     </script>
   </head>
   <body>
-    <h3>XTest: We use this page to test communication of Luigi Containers, wc/iframe/compound all in one page. </h3>
+    <h3>
+      XTest: We use this page to test communication of Luigi Containers,
+      wc/iframe/compound all in one page.
+    </h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1rem">
       <luigi-container
         style="grid-row: 1; height: 400px; border: solid 2px green"
@@ -19,7 +22,7 @@
         webcomponent="true"
       ></luigi-container>
       <luigi-compound-container
-        style="grid-row: 2; grid-column: 1 / span 2 ;  border: solid 2px orange;"
+        style="grid-row: 2; grid-column: 1 / span 2; border: solid 2px orange"
         data-test-id="luigi-client-api-test-compound-01"
         id="compound-container-test"
         active-feature-toggle-list='["ft1", "ft2"]'

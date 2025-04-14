@@ -11,7 +11,7 @@ export default class extends HTMLElement {
     template.innerHTML = `<section><p>Hello World!</p></section>`;
 
     const pageTitle = document.createElement('template');
-    pageTitle.innerHTML = ` <h1 id="title">WC based Container</h1>`;
+    pageTitle.innerHTML = `<h1 id="title">WC based Container</h1>`;
 
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
@@ -130,7 +130,7 @@ export default class extends HTMLElement {
       mode: 'open',
       delegatesFocus: false
     });
-    
+
     this._shadowRoot.appendChild(pageTitle.content.cloneNode(true));
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
