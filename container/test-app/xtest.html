@@ -17,6 +17,24 @@
         viewURL="./wc/helloWorldWC.js"
         webcomponent="true"
       ></luigi-container>
+      <luigi-compound-container
+        data-test-id="luigi-client-api-test-compound-01"
+        id="compound-container-test"
+        active-feature-toggle-list='["ft1", "ft2"]'
+        context='{"label": "Compound Container Test"}'
+        node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
+        user-settings='{"language":"it", "date":""}'
+        anchor="testAnchorCompound"
+        defer-init="false"
+        skip-init-check="true"
+        webcomponent="true"
+        theme="sap_fiori_3"
+        locale="en"
+      ></luigi-compound-container>
+
       <div style="grid-row: 1; max-width: 30vw">
         <div id="actions"></div>
         <div>
