@@ -8,15 +8,15 @@
     "serve:microfrontend": "cd public && ws --spa mf.html --port 5101"
   },
   "dependencies": {
-    "@luigi-project/client": "^2.18.0",
-    "@luigi-project/core": "^2.18.0",
+    "@luigi-project/client": "^2.21.2",
+    "@luigi-project/core": "^2.21.2",
     "svelte-routing": "^2.13.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
     "copy-webpack-plugin": "^12.0.2",
     "cross-spawn": "^7.0.6",
-    "local-web-server": "^5.3.3",
+    "local-web-server": "^5.4.0",
     "mini-css-extract-plugin": "^2.9.0",
     "serve": "^14.2.3",
     "svelte": "^4.2.19",
