@@ -6,9 +6,10 @@ inputs:
 
 runs:
   using: 'composite'
-  runs-on: ubuntu-latest
   steps:
     - name: Update deps
       run: sudo apt-get update
+      shell: bash
     - name: Install deps
       run: sudo apt-get -y install ${{ inputs.list-of-deps }}
+      shell: bash
