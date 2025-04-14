@@ -17,6 +17,7 @@ wcContainer.addEventListener(Events.INITIALIZED, (event) => {
   document.body.setAttribute('wc_init', true);
 });
 compoundContainer.addEventListener(Events.INITIALIZED, (event) => {
+  console.log("Hello compound")
   document.body.setAttribute('compound_init', true);
 });
 
@@ -25,33 +26,33 @@ function setupCompoundContainer() {
     renderer: {
       use: 'grid',
       config: {
-        columns: '1fr 1fr 1fr 2fr',
+        columns: '2fr 1fr 1fr 1fr',
         layouts: [
           {
             minWidth: 0,
             maxWidth: 600,
             columns: '1fr',
-            gap: 0,
+            gap: 0
           },
           {
             minWidth: 600,
             maxWidth: 1024,
             columns: '1fr 1fr',
-            gap: '30px',
-          },
-        ],
-      },
+            gap: '30px'
+          }
+        ]
+      }
     },
     children: [
       {
         viewUrl: './assets/panelHeader.js',
         context: {
-          title: 'My Awesome Grid 000',
-          description: 'Really awesome',
+          title: 'Compound Container Grid',
+          description: 'Really awesome'
         },
         layoutConfig: {
           row: '1',
-          column: '1 / -1',
+          column: '1 / -1'
         },
         eventListeners: [
           {
@@ -59,52 +60,50 @@ function setupCompoundContainer() {
             name: 'sendInput',
             action: 'update',
             dataConverter: (data) => {
-              console.info(
-                'dataConverter(): Received Custom Message from "input1" MF ' + data,
-              );
+              console.info('dataConverter(): Received Custom Message from "input1" MF ' + data);
               return 'new text: ' + data;
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       {
         id: 'input1',
         viewUrl: './compound/helloWorldWC.js',
         context: {
           title: 'Some input',
-          instant: true,
-        },
+          instant: true
+        }
       },
       {
         viewUrl: './assets/mfeMain.js',
         context: {
-          label: 'Another web component',
-        },
+          label: 'Another web component'
+        }
       },
       {
         id: 'timerMFE',
         viewUrl: './assets/timer.js',
         context: {
           min: 2,
-          fontScale: '0.5',
-        },
+          fontScale: '0.5'
+        }
       },
       {
         viewUrl: './assets/mfeMain.js',
         context: {
-          label: 'My Label',
-        },
+          label: 'My Label'
+        }
       },
       {
         viewUrl: './assets/panelFooter.js',
         context: {
-          footer: 'This is the end of awesomeness',
+          footer: 'This is the end of awesomeness'
         },
         layoutConfig: {
-          column: '1 / -1',
-        },
-      },
-    ],
+          column: '1 / -1'
+        }
+      }
+    ]
   };
 
   compoundContainer.init();
@@ -119,6 +118,10 @@ function getIframeClient() {
 }
 function getWCClient() {
   return wcContainer.shadowRoot.querySelector('[lui_web_component]').LuigiClient;
+}
+function getCompoundClient() {
+  // only fetch one LuigiClient from the second container in the grid, should suffice.
+  return compoundContainer.shadowRoot.querySelectorAll('[lui_web_component]')[1].LuigiClient;
 }
 
 function getCreateResultContainer(id) {
@@ -148,6 +151,7 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
 
   iframeContainer.addEventListener(luigiEventID, createPayloadEL('iframe', 'green'));
   wcContainer.addEventListener(luigiEventID, createPayloadEL('wc', 'blue'));
+  compoundContainer.addEventListener(luigiEventID, createPayloadEL('compound', 'orange'));
 
   const btn = document.createElement('button');
   btn.innerHTML = luigiEventID;
@@ -160,7 +164,7 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
     }
     let ifBase = getIframeClient();
     let wcBase = getWCClient();
-
+    let compoundBase = getCompoundClient();
     if (manager) {
       try {
         ifBase = ifBase[manager]();
@@ -172,16 +176,29 @@ function createApiTrigger(luigiEventID, manager, functionName, ...args) {
       } catch (e) {
         console.error(e);
       }
+      try {
+        compoundBase = compoundBase[manager]();
+      } catch (e) {
+        console.error(e);
+      }
     }
     ifBase[functionName](...args);
     if (functionName === 'sendCustomMessage') {
       // Exception for customMessage
       wcBase.publishEvent(new CustomEvent(args[0].id, { detail: args[0] }));
+      compoundBase.publishEvent(new CustomEvent(args[0].id, { detail: args[0] }));
+
     } else {
       wcBase[functionName](...args);
+      compoundBase[functionName](...args);
     }
   });
 }
+
+
+
+// Setup compound container
+setupCompoundContainer();
 
 //
 // ROOT
@@ -242,6 +259,3 @@ document.querySelector('#actions').appendChild(document.createElement('br'));
 
 createApiTrigger(LuigiEvents.LOCAL_STORAGE_SET_REQUEST, 'storageManager', 'setItem', 'storageKey', 'storageValue');
 
-
-// Setup compound container
-setupCompoundContainer();
