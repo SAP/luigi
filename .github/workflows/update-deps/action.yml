@@ -1,15 +1,14 @@
 name: Dependency update
+inputs:
+  list-of-deps:
+    required: true
+    default: ''
 
 runs:
   using: 'composite'
   runs-on: ubuntu-latest
   steps:
-    - uses: actions/checkout@v4
-      with:
-        repository: ${{ github.repository }}
-        ref: ${{ github.ref }}
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '20.14.0'
     - name: Update deps
       run: sudo apt-get update
+    - name: Install deps
+      run: sudo apt-get -y install ${{ inputs.list-of-deps }}

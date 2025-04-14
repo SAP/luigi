@@ -15,14 +15,17 @@ jobs:
       WHITESOURCE_PRODUCT_TOKEN: ${{ secrets.WHITESOURCE_PRODUCT_TOKEN }}
       WHITESOURCE_USER_TOKEN: ${{ secrets.WHITESOURCE_USER_TOKEN }}
     steps:
-      - uses: ./.github/workflows/update-deps
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          secrets: inherit
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: ~/.cache
           key: whitesource_cache-${{ github.ref }}
-      - run: sudo apt-get -y install build-essential python-is-python3 libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
+      - uses: ./.github/workflows/update-deps
+        with:
+          list-of-deps: 'build-essential python-is-python3 libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb'
       - run: npm --prefix ./client ci ./client
       - run: npm --prefix ./core ci ./core
       - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev

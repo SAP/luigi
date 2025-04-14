@@ -37,8 +37,8 @@ jobs:
 
   mock_engine:
     name: Mock Engine Tests
-    runs-on: ubuntu-latest
     needs: prepare
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -57,8 +57,8 @@ jobs:
 
   container_unit_tests:
     name: Container Unit Tests
-    runs-on: ubuntu-latest
     needs: prepare
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -75,9 +75,8 @@ jobs:
 
   container_e2e_tests:
     name: Container E2E Tests
-    runs-on: ubuntu-latest
     needs: prepare
-
+    runs-on: ubuntu-latest
     env:
       USE_CYPRESS_DASHBOARD: false # enable when trying to debug
     steps:
@@ -98,13 +97,13 @@ jobs:
     name: Integration Tests
     needs: prepare
     runs-on: ubuntu-latest
-
     env:
       USE_CYPRESS_DASHBOARD: true  # enable when trying to debug
     steps:
-      - uses: ./.github/workflows/update-deps
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          secrets: inherit
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
@@ -112,7 +111,9 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
-      - run: sudo apt-get -y install libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
+      - uses: ./.github/workflows/update-deps
+        with:
+          list-of-deps: 'libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb'
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: ls test
       - run: bash ./test/e2e-js.sh || exit 1
