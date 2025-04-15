@@ -1,7 +1,6 @@
 import { Events, LuigiEvent } from '../constants/communication';
 import type { IframeHandle, ContainerElement } from '../constants/container.model';
 import { LuigiInternalMessageID } from '../constants/internal-communication';
-import { GenericHelperFunctions } from '../utilities/helpers';
 
 export class ContainerService {
   /**
@@ -52,7 +51,6 @@ export class ContainerService {
    * @param {ContainerElement} targetCnt the targeted HTML element onto which the event is dispatched
    * @param {Object} data custom data added to the event to be dispatched
    * @param {Function} callback
-   * @param {string} callbackName
    */
   dispatch(msg: string, targetCnt: ContainerElement, data: object, callback?: (arg?) => void, payload?: object): void {
     const customEvent = new LuigiEvent(msg, data, payload, callback);
@@ -133,7 +131,15 @@ export class ContainerService {
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
               case LuigiInternalMessageID.ALERT_REQUEST:
-                this.dispatchWithPayload(Events.ALERT_REQUEST, targetCnt, event, event.data?.data?.settings);
+                this.dispatchWithPayload(
+                  Events.ALERT_REQUEST,
+                  targetCnt,
+                  event,
+                  event.data?.data?.settings,
+                  (id: string, dismissKey?: boolean | string) => {
+                    targetCnt.notifyAlertClosed(id, dismissKey);
+                  }
+                );
                 break;
               case LuigiInternalMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
@@ -155,7 +161,10 @@ export class ContainerService {
                   Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                   targetCnt,
                   event.data.data,
-                  event.data.data?.settings
+                  event.data.data?.settings,
+                  (modalResult: boolean) => {
+                    targetCnt.notifyConfirmationModalClosed(modalResult);
+                  }
                 );
                 break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
