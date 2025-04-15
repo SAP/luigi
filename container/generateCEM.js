@@ -252,12 +252,7 @@ function generateMemberType(key, value) {
   }
   if (value.type === 'Array') {
     return {
-      text: 'Array<string>',
-      references: [
-        {
-          name: 'string'
-        }
-      ]
+      text: 'Array<string>'
     };
   } else if (value.type === 'String' || value.type === 'Object' || value.type === 'Boolean') {
     if (key === 'context' || key === 'webcomponent') {
