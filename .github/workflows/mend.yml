@@ -1,5 +1,5 @@
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
 
@@ -7,7 +7,7 @@ name: Whitesource Scan
 
 jobs:
   whitesource:
-    name: Mend(Whitesource) Scan
+    name: Mend (Whitesource) Scan
     runs-on: ubuntu-latest
     env:
       WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
