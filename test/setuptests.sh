@@ -27,7 +27,7 @@ waitForWebServer() {
   TESTURL=$2
   PROC=""
 
-  while [ "$PROC" = ""]
+  while [ "$PROC" == "" ]
   do
     PROC=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
     echo $PROC
@@ -49,7 +49,8 @@ npm install -g $CLI cypress@5.3.0 tar@latest
 echo "{}" > cypress.json
 mkdir cypress
 mkdir cypress/integration
-cp ../../test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
+pwd
+cp ../luigi/test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
 
 #Run actual test
 (set -e && waitForWebServer $PORT $TESTURL) & (
