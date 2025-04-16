@@ -26,7 +26,7 @@ waitForWebServer() {
   PORT=$1
   TESTURL=$2
 
-  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
+  while [[`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]]
   do
     sleep 15
   done
