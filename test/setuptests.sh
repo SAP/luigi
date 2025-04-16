@@ -25,9 +25,12 @@ killWebserver() {
 waitForWebServer() {
   PORT=$1
   TESTURL=$2
+  PROC=""
 
-  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` = ""]
+  while [ "$PROC" = ""]
   do
+    PROC=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    echo $PROC
     sleep 15
   done
 
