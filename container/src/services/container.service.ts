@@ -136,8 +136,8 @@ export class ContainerService {
                   targetCnt,
                   event,
                   event.data?.data?.settings,
-                  (id: string, dismissKey?: boolean | string) => {
-                    targetCnt.notifyAlertClosed(id, dismissKey);
+                  (dismissKey?: boolean | string) => {
+                    targetCnt.notifyAlertClosed(event.data?.data?.settings?.id, dismissKey);
                   }
                 );
                 break;
@@ -160,8 +160,8 @@ export class ContainerService {
                 this.dispatchWithPayload(
                   Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                   targetCnt,
-                  event.data.data,
-                  event.data.data?.settings,
+                  event,
+                  event.data?.data?.settings,
                   (modalResult: boolean) => {
                     targetCnt.notifyConfirmationModalClosed(modalResult);
                   }
