@@ -113,6 +113,18 @@ class IframeClass {
   }
 
   setOkResponseHandler(config, component, node) {
+    const viewGroup = config.iframe?.vg;
+    const viewGroupSettings = config.iframe?.contentWindow?.parent['Luigi']?.config?.navigation?.viewGroupSettings;
+    const noClientCheck = viewGroupSettings && viewGroup ? viewGroupSettings[viewGroup]?.noClientCheck : false;
+
+    /**
+     * check for `noClientCheck` attribute
+     * when set to `true`, it prevents a navigation check when reactivating the iframe
+     */
+    if (noClientCheck) {
+      return;
+    }
+
     /**
      * check if luigi responded
      * if not, callback again to replace the iframe
