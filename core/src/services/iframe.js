@@ -11,7 +11,7 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    return children.filter(child => child.tagName === 'IFRAME').find(GenericHelpers.isElementVisible);
+    return children.filter((child) => child.tagName === 'IFRAME').find(GenericHelpers.isElementVisible);
   }
 
   setActiveIframeToPrevious(node) {
@@ -32,7 +32,7 @@ class IframeClass {
 
   removeInactiveIframes(node) {
     const children = Array.from(node.children);
-    children.forEach(child => {
+    children.forEach((child) => {
       if (!GenericHelpers.isElementVisible(child) && !child.vg && child.tagName === 'IFRAME') {
         node.removeChild(child);
       }
@@ -44,7 +44,7 @@ class IframeClass {
   }
 
   getPreservedViewsInDom(iframes) {
-    return iframes.filter(iframe => iframe.pv);
+    return iframes.filter((iframe) => iframe.pv);
   }
 
   canCache(viewGroup) {
@@ -70,7 +70,7 @@ class IframeClass {
     if (currentActiveIframe !== newActiveIframe) {
       let newActiveFound = false;
       const children = Array.from(container.children);
-      children.forEach(child => {
+      children.forEach((child) => {
         if (child === currentActiveIframe) {
           if (removeCurrentActive) {
             container.removeChild(child);
@@ -225,7 +225,7 @@ class IframeClass {
       let targetIframe;
       if (!nextViewIsolated && componentData.viewGroup) {
         const iframes = IframeHelpers.getMainIframes();
-        const sameViewGroupIframes = iframes.filter(iframe => {
+        const sameViewGroupIframes = iframes.filter((iframe) => {
           return iframe.vg === componentData.viewGroup;
         });
         if (sameViewGroupIframes.length > 0) {
@@ -319,10 +319,10 @@ class IframeClass {
 
       const withSync = componentData.isNavigationSyncEnabled;
       if (withSync) {
-        IframeHelpers.getVisibleIframes().forEach(iframe => {
+        IframeHelpers.getVisibleIframes().forEach((iframe) => {
           if (iframe !== config.iframe) {
             if (iframe.userSettingsGroup) {
-              Luigi.readUserSettings().then(storedUserSettings => {
+              Luigi.readUserSettings().then((storedUserSettings) => {
                 IframeHelpers.sendMessageToIframe(iframe, {
                   msg: 'luigi.navigate',
                   context: {
