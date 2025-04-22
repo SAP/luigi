@@ -5,22 +5,47 @@
     </script>
   </head>
   <body>
+    <h3>
+      XTest: We use this page to test communication of Luigi Containers,
+      wc/iframe/compound all in one page.
+    </h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1rem">
       <luigi-container
-        style="grid-row: 1; height: 600px"
+        style="grid-row: 1; height: 400px; border: solid 2px green"
         id="iframe-based-container-test"
         viewURL="./iframe/microfrontend.html"
       ></luigi-container>
       <luigi-container
-        style="grid-row: 1"
+        style="grid-row: 1; border: solid 2px blue"
         id="wc-based-container-test"
         viewURL="./wc/helloWorldWC.js"
         webcomponent="true"
       ></luigi-container>
+      <luigi-compound-container
+        style="grid-row: 2; grid-column: 1 / span 2; border: solid 2px orange"
+        data-test-id="luigi-client-api-test-compound-01"
+        id="compound-container-test"
+        active-feature-toggle-list='["ft1", "ft2"]'
+        context='{"label": "Compound Container Test"}'
+        node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
+        user-settings='{"language":"it", "date":""}'
+        anchor="testAnchorCompound"
+        defer-init="false"
+        skip-init-check="true"
+        webcomponent="true"
+        theme="sap_fiori_3"
+        locale="en"
+      ></luigi-compound-container>
+
       <div style="grid-row: 1; max-width: 30vw">
+        <h3>Communication Panel</h3>
         <div id="actions"></div>
         <div>
           <span style="color: blue">web component</span>
+          <span style="color: orange">compound</span>
           <span style="color: green">iframe</span>
           <button onclick="clearResults()">Clear</button>
           <label>
