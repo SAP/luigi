@@ -197,9 +197,8 @@
     const ebListeners = {};
     wcContainer.eventBus = {
       listeners: ebListeners,
-      onPublishEvent: (event, srcNodeId) => {
-        let userSettingsGroupKey = srcNodeId;
-        storedUserSettings[userSettingsGroupKey] = event.detail;
+      onPublishEvent: (event) => {
+        storedUserSettings[selectedUserSettingGroupKey] = event.detail;
       }
     };
     const wcContext = { ...groupData.context, userSettingsdata: storedUserSettings[selectedUserSettingGroupKey] };

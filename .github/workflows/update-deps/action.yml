@@ -1,0 +1,15 @@
+name: Dependency update
+inputs:
+  list-of-deps:
+    required: true
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Update deps
+      run: sudo apt-get update
+      shell: bash
+    - name: Install deps
+      run: sudo apt-get -y install ${{ inputs.list-of-deps }}
+      shell: bash

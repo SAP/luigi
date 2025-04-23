@@ -81,8 +81,8 @@ export class WebComponentService {
    * @param callbackName name of the callback function
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void, callbackName?: string) {
-    this.containerService.dispatch(msg, this.thisComponent, data, callback, callbackName);
+  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void) {
+    this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
   /**
@@ -186,8 +186,7 @@ export class WebComponentService {
                   } else {
                     reject('No current route received.');
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -240,8 +239,7 @@ export class WebComponentService {
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
               );
               // For BW compatibility
               this.containerService.dispatch(
@@ -254,8 +252,7 @@ export class WebComponentService {
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -277,7 +274,10 @@ export class WebComponentService {
             return false;
           },
           updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
-            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, { updatedModalSettings: modalSettings, addHistoryEntry });
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, {
+              updatedModalSettings: modalSettings,
+              addHistoryEntry
+            });
           }
         };
         return linkManagerInstance;
@@ -288,14 +288,9 @@ export class WebComponentService {
             alertSettings.id = this.alertIndex++;
             return new Promise((resolve) => {
               this.alertResolvers[alertSettings.id] = resolve;
-              this.dispatchLuigiEvent(
-                Events.ALERT_REQUEST,
-                alertSettings,
-                (dismissKey?: boolean | string) => {
-                  this.resolveAlert(alertSettings.id, dismissKey);
-                },
-                'callback'
-              );
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings, (dismissKey?: boolean | string) => {
+                this.resolveAlert(alertSettings.id, dismissKey);
+              });
             });
           },
           showConfirmationModal: (settings) => {
@@ -311,8 +306,7 @@ export class WebComponentService {
                   } else {
                     reject();
                   }
-                },
-                'callback'
+                }
               );
             });
           },
