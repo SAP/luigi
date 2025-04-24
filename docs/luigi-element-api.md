@@ -8,7 +8,7 @@
     },
     "metaData": {
       "categoryPosition": 6,
-      "position": 5
+      "position": 6
     }
   }
 }
