@@ -321,18 +321,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
-  });
-
-  it('test getCurrentRoute request', () => {
-    const event = {
-      source: cw,
-      data: {
-        msg: LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST,
-        params: 'get-currentroute-request'
-      }
-    };
-    cm.messageListener(event);
-    expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test navigation completed request', () => {
@@ -369,6 +358,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.CHECK_PATH_EXISTS_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test set dirty status request', () => {
