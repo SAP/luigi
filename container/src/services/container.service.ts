@@ -203,7 +203,21 @@ export class ContainerService {
                 }
                 break;
               case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
-                this.dispatchWithPayload(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event, event.data.data);
+                this.dispatchWithPayload(
+                  Events.GET_CURRENT_ROUTE_REQUEST,
+                  targetCnt,
+                  event,
+                  event.data.data,
+                  (route: boolean) => {
+                    target.postMessage(
+                      {
+                        msg: Events.GET_CURRENT_ROUTE_REQUEST,
+                        data: { route }
+                      },
+                      event.origin
+                    );
+                  }
+                );
                 break;
               case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
@@ -218,7 +232,21 @@ export class ContainerService {
                 });
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
-                this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
+                this.dispatchWithPayload(
+                  Events.CHECK_PATH_EXISTS_REQUEST,
+                  targetCnt,
+                  event,
+                  event.data.data,
+                  (exists: boolean) => {
+                    target.postMessage(
+                      {
+                        msg: Events.CHECK_PATH_EXISTS_REQUEST,
+                        data: { exists }
+                      },
+                      event.origin
+                    );
+                  }
+                );
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatchWithPayload(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event, {
