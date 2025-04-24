@@ -448,7 +448,7 @@ Returns **void**
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.7.0
 
 ### notifyConfirmationModalClosed
 
@@ -456,7 +456,7 @@ A function that notifies the microfrontend if the confirmation modal was confirm
 
 #### Parameters
 
-*   `confirmed`   (optional, default `true`)
+*   `confirmed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 *   `value` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if the confirmation modal was confirmed or declined.
 
 #### Examples
@@ -469,7 +469,7 @@ Returns **void**
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.7.0
 
 ### init
 
