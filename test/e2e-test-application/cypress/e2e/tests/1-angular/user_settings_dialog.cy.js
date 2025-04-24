@@ -394,5 +394,24 @@ describe('Navigation', () => {
         .find('#green')
         .should('not.have.class', 'active');
     });
+
+    it('Test userSettingGroupKey', () => {
+      cy.getAllLocalStorage().then((localStorage) => {
+        var userSettingsString = localStorage["http://localhost:4200"]["luigi.preferences.userSettings"];
+        expect(userSettingsString).to.be.undefined;
+  
+        // custom 3
+        cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+        // click red button
+        cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#red').click();
+        // Save Settings
+        saveSettings();
+        
+        cy.getAllLocalStorage().then((localStorage) => {
+          var userSettingsString = localStorage["http://localhost:4200"]["luigi.preferences.userSettings"];
+          expect(userSettingsString).to.include('"custom3":{"themeWC":"red"}');
+        });
+      });
+    });
   });
 });
