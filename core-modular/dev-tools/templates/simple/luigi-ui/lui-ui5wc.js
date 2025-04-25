@@ -24,6 +24,12 @@ function readExpandedState(uid) {
 
 function addShellbarItem(shellbar, item) {
   const itemEl = document.createElement('ui5-shellbar-item');
+  if(item.badgeCounter){
+    item.badgeCounter.count().then((count)=>{
+      itemEl.setAttribute('count', count);
+      itemEl.setAttribute('aria-label', item.badgeCounter.label);
+    });
+  }
   itemEl.setAttribute('icon', item.icon);
   itemEl.setAttribute('text', item.label);
   itemEl.setAttribute('luigi-route', item.pathSegment);

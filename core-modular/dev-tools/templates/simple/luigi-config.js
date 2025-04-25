@@ -45,6 +45,35 @@ window.onload = () => {
           pathSegment: 'help',
           icon: 'sys-help',
           viewUrl: '/microfrontend.html#help'
+        },
+        {
+          pathSegment: 'notifications',
+          icon: 'bell',
+          viewUrl: '/microfrontend.html',
+          badgeCounter: {
+            label: 'Number of projects',
+            count: () => {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  resolve(5);
+                }, 1000);
+              });
+            }
+          },
+          children: [
+            {
+              pathSegment: 'child1',
+              label: 'Child 1',
+              viewUrl: '/microfrontend.html#child1',
+              icon: 'group'
+            },
+            {
+              pathSegment: 'child2',
+              label: 'Child 2',
+              viewUrl: '/microfrontend.html#child2',
+              icon: 'calendar'
+            }
+          ]
         }
       ]
     },
