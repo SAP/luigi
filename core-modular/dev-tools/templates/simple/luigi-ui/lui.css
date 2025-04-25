@@ -15,8 +15,12 @@ ui5-side-navigation {
     display: none;
 }
 
-.left-nav-hidden .content {
+.left-nav-hidden .content-wrapper {
     grid-column: 1 / span 2;
+}
+
+.content-wrapper {
+    min-height: 0;
 }
 
 .ui5-tabcontainer-hidden {
