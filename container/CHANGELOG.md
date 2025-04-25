@@ -4,6 +4,20 @@
 
 
 
+## [v1.7.0] (2025-04-23)
+
+#### :rocket: Added
+
+* [#4236](https://github.com/SAP/luigi/pull/4236) Adds addCoreSearchParams fn for wc client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4234](https://github.com/SAP/luigi/pull/4234) Adds updateModalPathInternalNavigation to WC client ([@walmazacn](https://github.com/walmazacn))
+* [#4232](https://github.com/SAP/luigi/pull/4232) Adds setDirtyStatus to WC client ([@walmazacn](https://github.com/walmazacn))
+* [#4231](https://github.com/SAP/luigi/pull/4231) Adds setCurrentLocale to WC client ([@walmazacn](https://github.com/walmazacn))
+* [#4228](https://github.com/SAP/luigi/pull/4228) Adds updateModalSettings for wc client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
 ## [v1.6.0] (2025-02-12)
 
 #### :rocket: Added
@@ -82,3 +96,4 @@
 [v1.4.0]: https://github.com/SAP/luigi/compare/container/v1.3.0...container/v1.4.0
 [v1.5.0]: https://github.com/SAP/luigi/compare/container/v1.4.0...container/v1.5.0
 [v1.6.0]: https://github.com/SAP/luigi/compare/container/v1.5.0...container/v1.6.0
+[v1.7.0]: https://github.com/SAP/luigi/compare/container/v1.6.0...container/v1.7.0

@@ -202,7 +202,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message (optional)
    * @example
    * containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.7.0
    */
   notifyAlertClosed(id: string, dismissKey?: string): void;
 
@@ -211,9 +211,9 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param {boolean} value if the confirmation modal was confirmed or declined.
    * @example
    * containerElement.notifyAlertClosed(true)
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.7.0
    */
-  notifyConfirmationModalClosed(confirmed = true): void;
+  notifyConfirmationModalClosed(confirmed: boolean): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using the defer-init attribute.

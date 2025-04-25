@@ -270,7 +270,7 @@ export default class LuigiContainer extends HTMLElement {
    * @param {boolean} result the output of the opened confirmation modal (true/false)
    * @example
    * containerElement.notifyConfirmationModalClosed(true)
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.7.0
    */
   notifyConfirmationModalClosed(result: boolean): void;
 
