@@ -170,7 +170,7 @@ describe('createClientAPI', () => {
       { slug: 'Sales-settings', params: null },
       { slug: null, params: { project: 'pr2', user: 'john' } },
       { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
-    ])('test linkManager navigateToIntent', data => {
+    ])('test linkManager navigateToIntent', (data) => {
       let payloadLink = `#?intent=${data.slug}`;
 
       if (data.params && Object.keys(data.params)?.length) {
@@ -295,10 +295,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromClosestContext()
-        .navigate(route);
+      clientAPI.linkManager().fromClosestContext().navigate(route);
 
       // assert
       const expectedPayload = {
@@ -321,10 +318,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromContext({ test: 'data' })
-        .navigate(route);
+      clientAPI.linkManager().fromContext({ test: 'data' }).navigate(route);
 
       // assert
       const expectedPayload = {
@@ -347,10 +341,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .fromVirtualTreeRoot()
-        .navigate(route);
+      clientAPI.linkManager().fromVirtualTreeRoot().navigate(route);
 
       // assert
       const expectedPayload = {
@@ -382,13 +373,12 @@ describe('createClientAPI', () => {
         fromVirtualTreeRoot: false,
         nodeParams: {}
       };
-      return currentRoutePromise.then(result => {
+      return currentRoutePromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
           expectedPayload,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         expect(result).toBe('/current/route');
       });
@@ -402,10 +392,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const currentRoutePromise = clientAPI
-        .linkManager()
-        .fromParent()
-        .getCurrentRoute();
+      const currentRoutePromise = clientAPI.linkManager().fromParent().getCurrentRoute();
 
       // assert
       const expectedPayload = {
@@ -415,13 +402,12 @@ describe('createClientAPI', () => {
         fromVirtualTreeRoot: false,
         nodeParams: {}
       };
-      return currentRoutePromise.then(result => {
+      return currentRoutePromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.GET_CURRENT_ROUTE_REQUEST,
           service.thisComponent,
           expectedPayload,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
         expect(result).toBe('/route');
       });
@@ -436,10 +422,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI
-        .linkManager()
-        .withParams({ params: 'some params' })
-        .navigate(route);
+      clientAPI.linkManager().withParams({ params: 'some params' }).navigate(route);
 
       // assert
       const expectedPayload = {
@@ -451,6 +434,33 @@ describe('createClientAPI', () => {
         nodeParams: { params: 'some params' }
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+    });
+
+    it('test linkManager updateModalPathInternalNavigation', () => {
+      const history = true;
+      const link = '/test/route';
+      const modal = { title: 'Some modal' };
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.linkManager().updateModalPathInternalNavigation(link, modal, history);
+
+      // assert
+      const expectedPayload = {
+        fromClosestContext: false,
+        fromContext: null,
+        fromParent: false,
+        fromVirtualTreeRoot: false,
+        history,
+        link,
+        modal,
+        nodeParams: {}
+      };
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_MODAL_PATH_DATA_REQUEST, expectedPayload);
     });
 
     it('test linkManager updateTopNavigation', () => {
@@ -504,6 +514,26 @@ describe('createClientAPI', () => {
       expect(hasBack).toEqual(false);
     });
 
+    it('test linkManager updateModalSettings', () => {
+      const addHistoryEntry = true;
+      const updatedModalSettings = { title: 'Some modal' };
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.linkManager().updateModalSettings(updatedModalSettings, addHistoryEntry);
+
+      // assert
+      const expectedPayload = {
+        addHistoryEntry,
+        updatedModalSettings
+      };
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_MODAL_SETTINGS_REQUEST, expectedPayload);
+    });
+
     it('test linkManager pathExists: should resolve with true if path exists', () => {
       // Mock and spy on functions
       service.containerService.dispatch = jest.fn((event, component, options, callback) => {
@@ -515,14 +545,13 @@ describe('createClientAPI', () => {
       const pathExistsPromise = clientAPI.linkManager().pathExists();
 
       // Simulate asynchronous behavior
-      return pathExistsPromise.then(result => {
+      return pathExistsPromise.then((result) => {
         // Check if the dispatch function was called with the correct arguments
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
-          Events.PATH_EXISTS_REQUEST,
+          Events.CHECK_PATH_EXISTS_REQUEST,
           service.thisComponent,
-          {},
-          expect.any(Function),
-          'callback'
+          expect.any(Object),
+          expect.any(Function)
         );
         // Check if the function resolves with the correct value
         expect(result).toBe(true);
@@ -541,15 +570,14 @@ describe('createClientAPI', () => {
 
       // Simulate asynchronous behavior
       return pathExistsPromise
-        .then(result => {})
-        .catch(error => {
+        .then((result) => {})
+        .catch((error) => {
           // Check if the dispatch function was called with the correct arguments
           expect(service.containerService.dispatch).toHaveBeenCalledWith(
-            Events.PATH_EXISTS_REQUEST,
+            Events.CHECK_PATH_EXISTS_REQUEST,
             service.thisComponent,
-            {},
-            expect.any(Function),
-            'callback'
+            expect.any(Object),
+            expect.any(Function)
           );
           expect(error).toBe(false);
         });
@@ -572,7 +600,7 @@ describe('createClientAPI', () => {
       clientAPI.uxManager().showAlert(alertSettings);
 
       // assert
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings, expect.any(Function));
     });
 
     it('test uxManager getCurrentTheme', () => {
@@ -614,15 +642,14 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      return confirmationModalPromise.then(result => {
+      return confirmationModalPromise.then((result) => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.SHOW_CONFIRMATION_MODAL_REQUEST,
           service.thisComponent,
           settings,
-          expect.any(Function),
-          'callback'
+          expect.any(Function)
         );
-        expect(result).toEqual(mockEventData);
+        expect(result).toEqual(undefined);
       });
     });
 
@@ -631,7 +658,7 @@ describe('createClientAPI', () => {
       const settings = { confirmationSettings: 'settings' };
 
       service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
-        callback(null);
+        callback(false);
       });
 
       // act
@@ -639,7 +666,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      expect(confirmationModalPromise).rejects.toThrow('No data');
+      expect(confirmationModalPromise).rejects.toBeUndefined();
     });
 
     it('test uxManager closeUserSettings', () => {
@@ -719,29 +746,45 @@ describe('createClientAPI', () => {
       expect(result).toEqual('Title');
     });
 
-    it('test uxManager getDirtyStatus', () => {
+    it.each([true, false])('test uxManager getDirtyStatus', (value) => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      service.thisComponent.dirtyStatus = true;
+      service.thisComponent.dirtyStatus = value;
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const result = clientAPI.uxManager().getDirtyStatus();
 
       // assert
-      expect(result).toEqual(true);
+      expect(result).toEqual(value);
     });
 
-    it('test uxManager getDirtyStatus', () => {
-      // mock and spy on data/functions
-      service.thisComponent = document.createElement('div');
+    it.each([true, false])('test uxManager setDirtyStatus', (value) => {
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const result = clientAPI.uxManager().getDirtyStatus();
+      clientAPI.uxManager().setDirtyStatus(value);
 
       // assert
-      expect(result).toEqual(false);
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_DIRTY_STATUS_REQUEST, { dirty: value });
+    });
+
+    it('test uxManager setCurrentLocale', () => {
+      const locale = 'en';
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().setCurrentLocale(locale);
+
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
     });
 
     it('test uxManager removeBackdrop', () => {
@@ -912,7 +955,11 @@ describe('createClientAPI', () => {
     clientAPI.addNodeParams(params, keepBrowserHistory);
 
     // assert
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, {
+      params,
+      data: params,
+      keepBrowserHistory
+    });
   });
 
   it('test addNodeParams isSpecial TRUE', () => {
@@ -1067,6 +1114,41 @@ describe('createClientAPI', () => {
     expect(result).toEqual({});
   });
 
+  it('test addCoreSearchParams', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const params = { luigi: 'rocks' };
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams(params, keepBrowserHistory);
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: params,
+      keepBrowserHistory
+    });
+  });
+
+  it('test addCoreSearchParams with no arguments', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+    const keepBrowserHistory = true;
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    clientAPI.addCoreSearchParams();
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_SEARCH_PARAMS_REQUEST, {
+      data: {},
+      keepBrowserHistory
+    });
+  });
+
   it('test getPathParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
@@ -1192,7 +1274,7 @@ describe('initWC', () => {
       origin: documentOrigin,
       pathname: '/another-page'
     };
-    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation(url => urlSpyMockData);
+    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => urlSpyMockData);
 
     // Act
     service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
@@ -1472,7 +1554,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl =>
+    service.dynamicImport = jest.fn((viewUrl) =>
       Promise.resolve({
         default: class InValidWebComponent {},
         valid: class ValidWebComponent extends HTMLElement {}
@@ -1500,7 +1582,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl =>
+    service.dynamicImport = jest.fn((viewUrl) =>
       Promise.resolve({
         default: class InValidWebComponent {},
         valid: class ValidWebComponent extends HTMLElement {}
@@ -1532,7 +1614,7 @@ describe('registerWCFromUrl', () => {
     // Mock the dynamicImport function to return a module with a valid
     const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn(viewUrl => Promise.reject(new Error('Dynamic import error')));
+    service.dynamicImport = jest.fn((viewUrl) => Promise.reject(new Error('Dynamic import error')));
 
     // act
     let result;
@@ -1735,7 +1817,7 @@ describe('renderWebComponent', () => {
         selfRegistered: false
       }
     };
-    service.registerWCFromUrl = jest.fn(viewUrl => Promise.resolve());
+    service.registerWCFromUrl = jest.fn((viewUrl) => Promise.resolve());
 
     // Call the function to be tested
     service.renderWebComponent(mockedViewURL, wc_container, context, node);
@@ -1764,5 +1846,82 @@ describe('renderWebComponent', () => {
 
     // assert
     expect(service.registerWCFromUrl).toHaveBeenCalled();
+  });
+});
+
+describe('resolveAlert', () => {
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+    // Mock implementation for the alertResolvers map
+    service.alertResolvers = {};
+  });
+
+  it('should resolve the alert and remove the resolver from alertResolvers', () => {
+    const mockResolver = jest.fn();
+    const alertId = 'testAlert';
+    service.alertResolvers[alertId] = mockResolver;
+
+    service.resolveAlert(alertId, 'dismissKey');
+
+    // Ensure the resolver was called with the correct dismissKey
+    expect(mockResolver).toHaveBeenCalledWith('dismissKey');
+    // Ensure the resolver is removed from the alertResolvers
+    expect(service.alertResolvers[alertId]).toBeUndefined();
+  });
+
+  it('should resolve the alert with the default dismissKey (true) if none is provided', () => {
+    const mockResolver = jest.fn();
+    const alertId = 'testAlert';
+    service.alertResolvers[alertId] = mockResolver;
+
+    service.resolveAlert(alertId);
+
+    // Ensure the resolver was called with the default dismissKey
+    expect(mockResolver).toHaveBeenCalledWith(true);
+    // Ensure the resolver is removed from the alertResolvers
+    expect(service.alertResolvers[alertId]).toBeUndefined();
+  });
+
+  it('should log a message if the alert ID is not found', () => {
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const nonExistentAlertId = 'nonExistentAlert';
+
+    service.resolveAlert(nonExistentAlertId);
+
+    // Ensure a console log was called with the correct message
+    expect(consoleSpy).toHaveBeenCalledWith('Promise is not in the list.');
+
+    // Restore the original console.log
+    consoleSpy.mockRestore();
+  });
+});
+
+describe('notifyConfirmationModalClosed', () => {
+  const mockResolver = { resolve: jest.fn(), reject: jest.fn() };
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+    service.modalResolver = mockResolver;
+  });
+
+  it('should resolve the modal and reset related data when modal is confirmed', () => {
+    // act
+    service.notifyConfirmationModalClosed(true);
+
+    // assert
+    expect(mockResolver.resolve).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
+  });
+
+  it('should reject the modal and reset related data when modal is dismissed', () => {
+    // act
+    service.notifyConfirmationModalClosed(false);
+
+    // assert
+    expect(mockResolver.reject).toHaveBeenCalled();
+    expect(service.modalResolver).toBeUndefined();
   });
 });

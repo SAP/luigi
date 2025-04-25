@@ -273,7 +273,7 @@ startE2eTestrunner() {
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[1]}
 
-  if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
+  if [ "$USE_CYPRESS_DASHBOARD" == "true" ] && [ -n "$CYPRESS_DASHBOARD_RECORD_KEY" ]; then
     echo "Running compatibility tests with recording"
     echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
     # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings

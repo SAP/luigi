@@ -2,11 +2,11 @@ const headerService = require('../src/navigation/services/header');
 const assert = require('chai').assert;
 const sinon = require('sinon');
 
-describe('Header', function() {
-  describe('processHeaderSettings', function() {
+describe('Header', function () {
+  describe('processHeaderSettings', function () {
     let clock;
     let component;
-    const setHeaderSettings = headerSettings => {
+    const setHeaderSettings = (headerSettings) => {
       window.Luigi.config = {
         settings: {
           header: Object.assign({}, headerSettings)
@@ -14,7 +14,7 @@ describe('Header', function() {
       };
     };
 
-    const addToConfig = addition => {
+    const addToConfig = (addition) => {
       window.Luigi.config = { ...window.Luigi.config, ...addition };
     };
 
@@ -23,13 +23,13 @@ describe('Header', function() {
       let componentData = {};
       component = {
         get: () => componentData,
-        set: o => {
+        set: (o) => {
           componentData = { ...componentData, ...o };
         },
         store: {
           on: (e, cb) => {},
           get: () => {},
-          subscribe: fn => fn(),
+          subscribe: (fn) => fn(),
           subscribeToScope: () => {}
         }
       };
@@ -274,7 +274,7 @@ describe('Header', function() {
 
   describe('updateTitle', () => {
     let component;
-    const setHeaderSettings = headerSettings => {
+    const setHeaderSettings = (headerSettings) => {
       window.Luigi.config = {
         settings: {
           header: Object.assign({}, headerSettings)
@@ -286,13 +286,13 @@ describe('Header', function() {
       let componentData = {};
       component = {
         get: () => componentData,
-        set: o => {
+        set: (o) => {
           componentData = { ...componentData, ...o };
         },
         store: {
           on: (e, cb) => {},
           get: () => {},
-          subscribe: fn => fn(),
+          subscribe: (fn) => fn(),
           subscribeToScope: () => {}
         }
       };
@@ -419,6 +419,91 @@ describe('Header', function() {
       component.set({
         pathData: pathData
       });
+      headerService.updateTitle(component);
+      assert.equal(document.title, 'Luigi Two');
+    });
+
+    it('set appSwitcherItems with selection conditions, update title', () => {
+      const headerSettings = {
+        title: 'Luigi',
+        subTitle: 'one'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = '';
+      const items = [
+        {
+          title: 'Luigi One',
+          subTitle: 'project one',
+          link: '/projects/pr1'
+        },
+        {
+          title: 'Luigi Two',
+          subTitle: 'project two',
+          link: '/projects/pr2',
+          selectionConditions: {
+            route: '/something/else',
+            contextCriteria: [
+              {
+                key: 'some.key',
+                value: 'value'
+              },
+              {
+                key: 'some.otherkey',
+                value: 'value'
+              }
+            ]
+          }
+        }
+      ];
+      const pathData = [
+        {
+          children: [{ pathSegment: 'overview' }, { pathSegment: 'something' }]
+        },
+        {
+          pathSegment: 'something',
+          children: [
+            {
+              pathSegment: 'else'
+            }
+          ]
+        },
+        {
+          pathSegment: 'else'
+        }
+      ];
+
+      component.set({
+        appSwitcherItems: items
+      });
+      component.set({
+        pathData: pathData
+      });
+      headerService.updateTitle(component);
+      assert.notEqual(document.title, 'Luigi Two');
+
+      pathData._context = {
+        some: {
+          key: 'value'
+        }
+      };
+      component.set({
+        pathData: pathData
+      });
+
+      headerService.updateTitle(component);
+      assert.notEqual(document.title, 'Luigi Two');
+
+      pathData._context = {
+        some: {
+          key: 'value',
+          otherkey: 'value'
+        }
+      };
+      component.set({
+        pathData: pathData
+      });
+
       headerService.updateTitle(component);
       assert.equal(document.title, 'Luigi Two');
     });

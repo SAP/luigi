@@ -95,12 +95,23 @@ export class ContainerAPIFunctions {
   /**
    * Send a message to the microfrontend notifying the alert has been closed
    * @param id the id of the alert being closed
-   * @param dismissKey the dismiss key being sent if any
-   * @param iframeHandle the handle of the iframe to send the message to
+   * @param dismissKey the dismiss key being sent if any (optional)
+   * @param iframeHandle the handle of the iframe to send the message to (optional)
    */
-  closeAlert(id: string, dismissKey: string, iframeHandle: IframeHandle) {
-    containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
+  notifyAlertClosed(id: string, dismissKey?: string, iframeHandle?: IframeHandle) {
+    const message = dismissKey ? { id, dismissKey } : { id };
+    containerService.sendCustomMessageToIframe(iframeHandle, message, LuigiInternalMessageID.ALERT_CLOSED);
   }
+
+  /**
+   * Send a message to the microfrontend notifying the modal has been closed
+   * @param modalResult the result of the modal being closed
+   * @param iframeHandle the handle of the iframe to send the message to (optional)
+   */
+  notifyConfirmationModalClosed = (modalResult: boolean, iframeHandle?: IframeHandle) => {
+    const message = { data: { confirmed: modalResult } };
+    containerService.sendCustomMessageToIframe(iframeHandle, message, LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED);
+  };
 }
 
 export const ContainerAPI = new ContainerAPIFunctions();

@@ -34,6 +34,25 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('updateModalPathInternalNavigation', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test update modal path internal navigation')
+          .click()
+          .then(() => {
+            expect(stub.getCall(1)).to.be.calledWith(
+              'LuigiClient.linkManager().updateModalPathInternalNavigation("/test/route")'
+            );
+          });
+      });
+  });
+
   it('showAlert', () => {
     cy.on('window:alert', stub);
 
@@ -48,6 +67,33 @@ describe('Iframe Container Test', () => {
           .then(() => {
             cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
           });
+      });
+  });
+
+  it('showAlert with notifyAlertClosed', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test showAlert with notifyAlertClosed')
+          .click()
+          .then(() => {
+            cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
+          });
+      });
+
+    cy.contains('Close Alert using notifyAlertClosed').click();
+    cy.wait(500);
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body).contains('Callback called on iframe neverShowItAgain');
       });
   });
 
@@ -224,6 +270,51 @@ describe('Iframe Container Test', () => {
         cy.location().should((loc) => {
           expect(loc.hash).to.eq('#openAsSplitview-iframe');
         });
+      });
+  });
+
+  it('getNodeParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('Test get node params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('nodeParams: {"node":"params"}');
+          });
+      });
+  });
+
+  it('getPathParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get path params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('pathParams: {"path":"param"}');
+          });
+      });
+  });
+
+  it('getCoreSearchParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get core search params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('searchParams: {"search":"param"}');
+          });
       });
   });
 });

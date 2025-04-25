@@ -5,7 +5,6 @@ PORT=$2
 TESTURL=$3
 URL=$4
 
-# Define Kill Webserver method
 killWebserver() {
   PORT=$1
   SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
@@ -26,9 +25,12 @@ killWebserver() {
 waitForWebServer() {
   PORT=$1
   TESTURL=$2
+  PROC=""
 
-  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
+  while [ "$PROC" == "" ]
   do
+    PROC=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    echo $PROC
     sleep 15
   done
 
@@ -36,20 +38,21 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
-#Create new folder for setup
+# Create new folder for setup
 cd ..
 mkdir setupTestFolder && cd setupTestFolder
 
-#Install necessary dependencies
+# Install necessary dependencies
 npm install -g $CLI cypress@5.3.0 tar@latest
 
-#Create Cypress Config
+# Create Cypress Config
 echo "{}" > cypress.json
 mkdir cypress
 mkdir cypress/integration
+pwd
 cp ../luigi/test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
 
-#Run acutal test
+#Run actual test
 (set -e && waitForWebServer $PORT $TESTURL) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)

@@ -1,10 +1,23 @@
 describe('Web Container Test', () => {
   describe('LuigiClient API LuigiContainer', () => {
     const containerSelector = '[data-test-id="luigi-client-api-test-01"]';
+    let consoleLog;
     let stub;
 
     beforeEach(() => {
-      cy.visit('http://localhost:8080/wc/clientAPI.html');
+      cy.visit('http://localhost:8080/wc/clientAPI.html', {
+        onBeforeLoad(win) {
+          // Clear logs in window console
+          if (Object.prototype.toString.call(win.console.clear) === '[object Function]') {
+            win.console.clear();
+          }
+
+          // Set up a spy on console.log
+          cy.stub(win.console, 'log', (value) => {
+            consoleLog = value;
+          });
+        }
+      });
       stub = cy.stub();
     });
 
@@ -22,6 +35,30 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('setDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setDirtyStatus()=true');
+        });
+    });
+
+    it('setCurrentLocale', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setCurrentLocale')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().setCurrentLocale()=de');
+        });
+    });
+
     it('getCoreSearchParams', () => {
       cy.on('window:alert', stub);
 
@@ -31,6 +68,24 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        });
+    });
+
+    it('Add core search params', () => {
+      cy.on('window:alert', stub);
+
+      const expectedPayload = {
+        data: { luigi: 'rocks' },
+        keepBrowserHistory: true
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#addCoreSearchParams')
+        .click()
+        .then(() => {
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
         });
     });
 
@@ -166,9 +221,31 @@ describe('Web Container Test', () => {
           cy.hash().should('eq', '#openAsModal-wc');
         });
     });
+
+    it('Update modal settings in wc mf', () => {
+      cy.on('window:alert', stub);
+
+      const expectedPayload = {
+        updatedModalSettings: {
+          title: 'Updated Modal Title',
+          size: 'l'
+        },
+        addHistoryEntry: false
+      };
+      cy.get(containerSelector)
+        .shadow()
+        .get('#updateModalSettingsBtn')
+        .click()
+        .then(() => {
+          if (consoleLog) {
+            expect(consoleLog).to.equal(JSON.stringify(expectedPayload));
+          }
+        });
+    });
+
     it('openAsDrawer webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsDrawerBtn')
@@ -179,7 +256,7 @@ describe('Web Container Test', () => {
     });
     it('openAsSplitview webcomponent container', () => {
       cy.on('window:alert', stub);
-      
+
       cy.get(containerSelector)
         .shadow()
         .get('#openAsSplitviewBtn')
@@ -195,7 +272,7 @@ describe('Web Container Test', () => {
       const alertMessages = [
         'UPDATE_TOP_NAVIGATION_REQUEST event received',
         'some goBackValue',
-        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false',
+        'LuigiClient.linkManager().pathExists()=true\nthis.LuigiClient.linkManager().hasBack()=false'
       ];
 
       cy.get(containerSelector)
@@ -209,6 +286,20 @@ describe('Web Container Test', () => {
         });
     });
 
+    it('updateModalPathInternalNavigation', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#updateModalPathBtn')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.linkManager().updateModalPathInternalNavigation("/test/route")'
+          );
+        });
+    });
+
     it('showAlert', () => {
       cy.on('window:alert', stub);
 
@@ -217,7 +308,76 @@ describe('Web Container Test', () => {
         .get('#showAlert')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith("uxManager().showAlert() test");
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+    });
+
+    it('closeAlert via xButton', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+      cy.get('#closeAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc true');
+        });
+    });
+
+    it('closeAlert via xButton after navigate away', () => {
+      //expectation promise will not fullfilled
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+          // Simulate navigate away and luigi-container is not in dom anymore
+          cy.get('luigi-container').invoke('remove');
+
+          cy.get('#closeAlert').click();
+
+          // Expect
+          // Callback is not fullfilled which means luigi-container isn't connected to dom
+          cy.get('#callbackCloseAlert').should('not.exist');
+        });
+    });
+
+    it('closeAlert via dismissButton', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .get('#showAlert')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}'
+          );
+        });
+      cy.get('#dismissAlert')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .get('#closeAlertResponse')
+            .should('have.text', 'Callback called on wc neverShowItAgain from wc');
         });
     });
 
@@ -232,7 +392,7 @@ describe('Web Container Test', () => {
           cy.on('window:confirm', (str) => {
             expect(str).to.equal('Are you sure you want to do this?');
           });
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal()');
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().showConfirmationModal() - confirmed');
         });
     });
 

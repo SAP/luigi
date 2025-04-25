@@ -723,9 +723,9 @@ runTimeErrorHandler: {
   - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
 ### showBreadcrumbs
-- - **type**: boolean
+- **type**: boolean
 - **description**: if a breadcrumbs configuration is set, the breadcrumbs will show for all nodes by default. This property allows you to disable breadcrumbs for any particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
-- - **example**:
+- **example**:
 ```javascript
 navigation: {
   nodes: [{
@@ -848,7 +848,7 @@ navigation: {
 - **since**: 2.7.0
 
 ### userSettingsGroup
-- - **type**: string
+- **type**: string
 - **description**: sets the user settings group for this navigation node. It is the title of a predefined user settings group belonging to a `userSettingGroups` object. For more information, read the section on [user settings](user-settings.md).
 - **example**:
 ```javascript
@@ -1164,6 +1164,9 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
   - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
   - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
   - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+  - **selectionConditions** 
+      - **type**: Object
+      - **description**: It allows to specify additional "selected state" conditions, next to `link` match. The object should contain a `route` property to specify an additional path that is matched by this item, as well as `contextCriteria`, an Array of `key: string, value:string` objects, each of which can define a context key and a matching value (all contextCriteria must match).
 
 ### showMainAppEntry
 - **type**: boolean

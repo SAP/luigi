@@ -276,6 +276,7 @@
           on:click={burgerClickHandler}
           tabindex="0"
           title={burgerTooltip}
+          type="button"
         >
           <i class="sap-icon sap-icon--menu2" />
         </button>
@@ -364,22 +365,27 @@
               {:else}
                 <div class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop">
                   {#if addNavHrefForAnchor}
-                    <a
-                      href={getRouteLink(node)}
-                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode
-                        ? 'is-selected'
-                        : ''}"
-                      title={resolveTooltipText(node, getNodeLabel(node))}
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
-                      }}
-                      data-testid={NavigationHelpers.getTestId(node)}
-                    >
-                      <TopNavNode bind:node />
-                      <BadgeCounter {node} />
-                    </a>
+                    {#if !node.separator}
+                      <a
+                        href={getRouteLink(node)}
+                        class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode
+                          ? 'is-selected'
+                          : ''}"
+                        title={resolveTooltipText(node, getNodeLabel(node))}
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        on:click={(event) => {
+                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                        }}
+                        data-testid={NavigationHelpers.getTestId(node)}
+                      >
+                        <TopNavNode bind:node />
+                        <BadgeCounter {node} />
+                      </a>
+                    {:else}
+                      <span class="fd-shellbar__button fd-button fd-button--transparent fd-separator" tabindex="-1"
+                      ></span>
+                    {/if}
                   {:else}
                     <button
                       title={resolveTooltipText(node, getNodeLabel(node))}
@@ -390,6 +396,7 @@
                       aria-haspopup="true"
                       on:click={() => handleClick(node)}
                       data-testid={NavigationHelpers.getTestId(node)}
+                      type="button"
                     >
                       <TopNavNode bind:node />
                       <BadgeCounter {node} />
@@ -472,26 +479,30 @@
                       {#if children}
                         {#each children as node, i}
                           {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
-                            {#if !node.isCat}
+                            {#if !node.isCat || node.separator}
                               <li class="fd-menu__item">
-                                <a
-                                  href={getRouteLink(node)}
-                                  class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
-                                  on:click|preventDefault={() => handleClick(node)}
-                                  data-testid="{NavigationHelpers.getTestId(node)}-mobile"
-                                >
-                                  <span
-                                    class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node)
-                                      ? getSapIconStr(node.icon)
-                                      : ''}"
+                                {#if !node.separator}
+                                  <a
+                                    href={getRouteLink(node)}
+                                    class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
+                                    on:click|preventDefault={() => handleClick(node)}
+                                    data-testid="{NavigationHelpers.getTestId(node)}-mobile"
                                   >
-                                    {#if !hasOpenUIicon(node)}
-                                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
-                                    {/if}
-                                    <BadgeCounter {node} />
-                                  </span>
-                                  <span class="fd-menu__title">{getNodeLabel(node)}</span>
-                                </a>
+                                    <span
+                                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node)
+                                        ? getSapIconStr(node.icon)
+                                        : ''}"
+                                    >
+                                      {#if !hasOpenUIicon(node)}
+                                        <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                                      {/if}
+                                      <BadgeCounter {node} />
+                                    </span>
+                                    <span class="fd-menu__title">{getNodeLabel(node)}</span>
+                                  </a>
+                                {:else}
+                                  <span class="fd-menu__link fd-separator" tabindex="-1"></span>
+                                {/if}
                               </li>
                             {:else if node.visibleChildren.filter((node) => !node.hideFromNav && node.label).length > 0}
                               <li class="fd-menu__item">
@@ -585,6 +596,7 @@
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
               <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
               <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                 {#if userInfo.picture}
                   <button
@@ -600,7 +612,7 @@
                   />
                 {:else}
                   <button
-                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
+                    class="fd-avatar fd-avatar--xs fd-avatar--circle fd-shellbar__avatar--circle"
                     aria-expanded="true"
                     aria-haspopup="true"
                     title={userInfo.name ? userInfo.name : undefined}
@@ -616,6 +628,7 @@
                 class="fd-popover__body fd-popover__body--right"
                 aria-hidden={!(dropDownStates.profilePopover || false)}
                 id="profilePopover"
+                on:click|stopPropagation
               >
                 <Authorization
                   on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
@@ -628,6 +641,7 @@
             <div class="fd-user-menu">
               <div class="fd-popover">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                   <div class={userInfo.picture ? 'fd-shellbar__button--user-menu' : ''}>
                     <button
@@ -659,6 +673,7 @@
                   class="fd-popover__body fd-popover__body--right"
                   aria-hidden={!(dropDownStates.profilePopover || false)}
                   id="profilePopover"
+                  on:click|stopPropagation
                 >
                   <AuthorizationSimpleProfileMenu
                     on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
@@ -770,5 +785,13 @@
 
   .fd-user-menu .fd-avatar {
     cursor: pointer;
+  }
+
+  .fd-separator {
+    pointer-events: none;
+  }
+
+  .lui-shellbar-wrapper {
+    column-gap: 2rem;
   }
 </style>

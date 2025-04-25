@@ -1,5 +1,5 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
-import { Events } from '../../src/constants/communication';
+import { Events, LuigiEvent } from '../../src/constants/communication';
 import type { IframeHandle, ContainerElement } from '../../src/constants/container.model';
 import { ContainerService } from '../../src/services/container.service';
 
@@ -94,6 +94,9 @@ describe('getContainerManager messageListener', () => {
     // Define the message to send and target Origin
     const message = {
       authData: {},
+      searchParams: {},
+      pathParams: {},
+      nodeParams: {},
       context: {},
       internal: {
         thirdPartyCookieCheck: {
@@ -491,7 +494,7 @@ describe('dispatch', () => {
     jest.resetAllMocks();
   });
 
-  it('should dispatch a custom event to the target container, no Callback', () => {
+  it('should dispatch a Luigi event to the target container, no Callback', () => {
     // Arrange
     const targetContainer = document.createElement('div');
     const eventName = 'customEvent';
@@ -502,7 +505,7 @@ describe('dispatch', () => {
     service.dispatch(eventName, targetContainer, eventData);
 
     // Assert
-    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    const dispatchedEvent = new LuigiEvent(eventName, eventData);
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
   });
 
@@ -519,14 +522,14 @@ describe('dispatch', () => {
     };
 
     // Act
-    service.dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
+    service.dispatch(eventName, targetContainer, eventData, callbackFunction);
 
     // Assert
     globalThis.CustomEvent = jest
       .fn()
-      .mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+      .mockImplementation((type, eventInit) => ({ isTrusted: false, callback: callbackFunction }));
 
-    const dispatchedEventMock = { isTrusted: false, onCallback: expect.any(Function) };
+    const dispatchedEventMock = { isTrusted: false, callback: expect.any(Function) };
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(expect.objectContaining(dispatchedEventMock));
   });
 });
