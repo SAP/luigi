@@ -26,7 +26,7 @@ describe('Iframe', () => {
       isNavigationSyncEnabled: true
     };
     component = {
-      set: obj => {
+      set: (obj) => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj,
@@ -38,9 +38,9 @@ describe('Iframe', () => {
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
-    GenericHelpers.isElementVisible.callsFake(element => element.visible);
+    GenericHelpers.isElementVisible.callsFake((element) => element.visible);
     sinon.stub(ViewUrlDecorator);
-    ViewUrlDecorator.applyDecorators.callsFake(url => url);
+    ViewUrlDecorator.applyDecorators.callsFake((url) => url);
 
     node = {
       children: [
@@ -77,7 +77,7 @@ describe('Iframe', () => {
           tagName: 'IFRAME'
         }
       ],
-      removeChild: child => {
+      removeChild: (child) => {
         node.children.forEach((c, i) => {
           if (c === child) {
             node.children.splice(i, 1);
