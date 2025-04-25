@@ -24,8 +24,8 @@ function readExpandedState(uid) {
 
 function addShellbarItem(shellbar, item) {
   const itemEl = document.createElement('ui5-shellbar-item');
-  if(item.badgeCounter){
-    item.badgeCounter.count().then((count)=>{
+  if (item.badgeCounter) {
+    item.badgeCounter.count().then((count) => {
       itemEl.setAttribute('count', count);
       itemEl.setAttribute('aria-label', item.badgeCounter.label);
     });

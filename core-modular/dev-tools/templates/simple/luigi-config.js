@@ -53,7 +53,7 @@ window.onload = () => {
           badgeCounter: {
             label: 'Number of projects',
             count: () => {
-              return new Promise(resolve => {
+              return new Promise((resolve) => {
                 setTimeout(() => {
                   resolve(5);
                 }, 1000);
