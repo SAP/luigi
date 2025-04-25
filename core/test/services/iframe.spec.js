@@ -416,20 +416,32 @@ describe('Iframe', () => {
       assert.isTrue(component.get().isNavigationSyncEnabled);
     });
   });
+
   describe('init handshake failed', () => {
     let someConfig = {};
+
     beforeEach(() => {
       someConfig = {
         iframe: {}
       };
     });
+
     it('init handshake failed no luigi object on iframe', () => {
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
+
     it('init handshake failed initOk undefined', () => {
       someConfig.iframe.luigi = {};
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
+
+    it('init handshake noClientCheck true', () => {
+      someConfig.iframe.luigi = {};
+      someConfig.iframe.vg = 'view-group-name';
+      sinon.stub(NavigationHelpers, 'getViewGroupSettings').callsFake(() => ({ noClientCheck: true }));
+      assert.equal(Iframe.initHandshakeFailed(someConfig), false);
+    });
+
     it('init handshake success', () => {
       someConfig.iframe.luigi = {
         initOk: true,

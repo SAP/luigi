@@ -113,9 +113,7 @@ class IframeClass {
   }
 
   setOkResponseHandler(config, component, node) {
-    const viewGroup = config.iframe?.vg;
-    const viewGroupSettings = config.iframe?.contentWindow?.parent['Luigi']?.config?.navigation?.viewGroupSettings;
-    const noClientCheck = viewGroupSettings && viewGroup ? viewGroupSettings[viewGroup]?.noClientCheck : false;
+    const noClientCheck = NavigationHelpers.getViewGroupSettings(config.iframe?.vg)?.noClientCheck;
 
     /**
      * check for `noClientCheck` attribute
@@ -166,7 +164,18 @@ class IframeClass {
     if (!(config && config.iframe && config.iframe.luigi)) {
       return true;
     }
+
     const clientVersion = config.iframe.luigi.clientVersion;
+    const noClientCheck = NavigationHelpers.getViewGroupSettings(config.iframe.vg)?.noClientCheck;
+
+    /**
+     * check for `noClientCheck` attribute
+     * when set to `true`, it prevents a navigation check when reactivating the iframe
+     */
+    if (noClientCheck) {
+      return false;
+    }
+
     if (config.iframe.luigi.initOk === undefined) {
       // initial get-context request was not received
       return true;
@@ -177,6 +186,7 @@ class IframeClass {
     ) {
       return false;
     }
+
     return !config.iframe.luigi.initOk;
   }
 
