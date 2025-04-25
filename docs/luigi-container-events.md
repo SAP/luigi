@@ -17,6 +17,7 @@ meta -->
 # Luigi Container Events
 
 This document outlines the events provided by the Luigi Container.<br/>
+Each event contains a `payload` property, where additional data might be passed and utilized for internal objectives.<br/>
 In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Container. Source list of all events can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 ## Event Reference
