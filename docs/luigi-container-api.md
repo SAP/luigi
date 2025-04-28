@@ -591,7 +591,7 @@ Returns **void**
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.7.0
 
 ### updateViewUrl
 
