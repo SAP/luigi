@@ -25,7 +25,6 @@
     "zone.js": "~0.14.7"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
     "@angular-builders/custom-webpack": "18.0.0",
     "@angular-devkit/build-angular": "18.2.18",
     "@angular-devkit/core": "18.0.0",
@@ -36,6 +35,7 @@
     "@types/jasminewd2": "2.0.10",
     "@types/node": "8.10.56",
     "cross-spawn": "^7.0.6",
+    "esbuild": "^0.25.3",
     "glob-parent": "6.0.2",
     "lodash": "4.17.21",
     "typescript": "5.4.2",
