@@ -107,7 +107,7 @@
 
   function initKeyboardEvents() {
     window.addEventListener('keydown', (event) => {
-      if (event.metaKey) {
+      if (event.ctrlKey || event.metaKey) {
         metaKeyEnabled = true;
       }
 
