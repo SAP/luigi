@@ -258,6 +258,12 @@
     const uInfo = event.detail;
     userInfo = uInfo ? uInfo : {};
   }
+
+  function handleToggleDropdownStateKeyEvent(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      toggleDropdownState(event.currentTarget.getAttribute('aria-controls'));
+    }
+  }
 </script>
 
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
@@ -611,6 +617,7 @@
                   title={userInfo.name || undefined}
                   tabindex="0"
                   on:click={() => toggleDropdownState('profilePopover')}
+                  on:keydown={(event) => handleToggleDropdownStateKeyEvent(event)}
                   data-testid={userInfo.picture ? 'luigi-topnav-profile-btn' : 'luigi-topnav-profile-initials'}
                 >
                   <span
