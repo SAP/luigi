@@ -173,7 +173,19 @@
   });
 </script>
 
-<svelte:window on:click={closeDropdowns} on:blur={closeDropdowns} />
+<svelte:window on:click={closeDropdowns} on:blur={closeDropdowns} on:keydown={event => {
+  // Handle save key event (Ctrl+S or Cmd+S)
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault();
+    if (document.body.classList.contains('editorVisible')) {
+      if (window.innerWidth < 600) {
+        saveConfigTA();
+      } else {
+        saveConfig();
+      }
+    }
+  }
+}} />
 <div class="editor_container">
   <div class="fd-dialog" role="dialog">
     <div class="fd-dialog__content" role="document" style="width:80%; max-width:80%;">
