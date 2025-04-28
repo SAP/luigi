@@ -11,6 +11,7 @@
 
   let defaultConfigString = defaultConfig;
   let configString = defaultConfigString;
+  let metaKeyEnabled;
 
   function exec(jsString) {
     return eval(jsString);
@@ -77,6 +78,9 @@
     let customConfig = sessionStorage.getItem('fiddle');
     let customConfigPreviousSession = localStorage.getItem('fiddle');
 
+    // init keyboard events
+    initKeyboardEvents();
+
     // check if config saved from a previous session
     if (!customConfig && customConfigPreviousSession) {
       if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
@@ -99,6 +103,25 @@
       exec(defaultConfigString);
       configString = defaultConfigString;
     }
+  }
+
+  function initKeyboardEvents() {
+    window.addEventListener('keydown', (event) => {
+      if (event.metaKey) {
+        metaKeyEnabled = true;
+      }
+
+      if (metaKeyEnabled && event.key === 's') {
+        event.preventDefault();
+        saveConfig();
+      }
+    });
+
+    window.addEventListener('keyup', (event) => {
+      if (event.metaKey) {
+        metaKeyEnabled = false;
+      }
+    });
   }
 
   function saveConfig() {
@@ -196,18 +219,18 @@
               on:click={resetConfig}>Reset</button
             >
           </div>
-          <div class="fd-bar__element lui-mobile-hide">
-            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
-          </div>
-          <div class="fd-bar__element lui-mobile-show">
-            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfigTA}
-              >Apply</button
-            >
-          </div>
           <div class="fd-bar__element">
             <button
-              class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+              class="fd-dialog__decisive-button fd-button fd-button--compact"
               on:click={closeConfig}>Cancel</button
+            >
+          </div>
+          <div class="fd-bar__element lui-mobile-hide">
+            <button class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact" on:click={saveConfig}>Apply</button>
+          </div>
+          <div class="fd-bar__element lui-mobile-show">
+            <button class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact" on:click={saveConfigTA}
+              >Apply</button
             >
           </div>
         </div>
