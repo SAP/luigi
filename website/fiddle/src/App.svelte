@@ -118,7 +118,7 @@
     });
 
     window.addEventListener('keyup', (event) => {
-      if (event.metaKey) {
+      if (event.ctrlKey || event.metaKey) {
         metaKeyEnabled = false;
       }
     });
@@ -128,6 +128,7 @@
     localStorage.setItem('fiddle', window.editor.getValue());
     sessionStorage.setItem('fiddle', window.editor.getValue());
     window.location.href = '/';
+    metaKeyEnabled = false;
   }
 
   function saveConfigTA() {
