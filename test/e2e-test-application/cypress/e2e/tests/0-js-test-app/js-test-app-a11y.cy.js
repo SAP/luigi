@@ -246,7 +246,7 @@ describe('JS-TEST-APP 4', () => {
       };
       newConfig.tag = 'user-settings-dialog';
     });
-    
+
     it('Open user menu by pressing enter', () => {
       cy.visitTestAppLoggedIn('/', newConfig);
       cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'true');
@@ -273,7 +273,6 @@ describe('JS-TEST-APP 4', () => {
       cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'false');
     });
   });
-   
 
   describe('User menu popover does not close when mark the user email', () => {
     let newConfig;
