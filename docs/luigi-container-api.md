@@ -3,12 +3,12 @@
   "node": {
     "label": "Luigi Container API",
     "category": {
-      "label": "API Reference",
+      "label": "Luigi Container",
       "collapsible": true
     },
     "metaData": {
       "categoryPosition": 6,
-      "position": 3
+      "position": 2
     }
   }
 }

@@ -3,12 +3,12 @@
   "node": {
     "label": "Luigi Container",
     "category": {
-      "label": "Advanced",
+      "label": "Luigi Container",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 7,
-      "position": 3
+      "categoryPosition": 6,
+      "position": 1
     }
   }
 }
