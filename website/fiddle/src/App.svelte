@@ -221,17 +221,20 @@
             >
           </div>
           <div class="fd-bar__element">
-            <button
-              class="fd-dialog__decisive-button fd-button fd-button--compact"
-              on:click={closeConfig}>Cancel</button
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={closeConfig}
+              >Cancel</button
             >
           </div>
           <div class="fd-bar__element lui-mobile-hide">
-            <button class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact" on:click={saveConfig}>Apply</button>
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+              on:click={saveConfig}>Apply</button
+            >
           </div>
           <div class="fd-bar__element lui-mobile-show">
-            <button class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact" on:click={saveConfigTA}
-              >Apply</button
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+              on:click={saveConfigTA}>Apply</button
             >
           </div>
         </div>
