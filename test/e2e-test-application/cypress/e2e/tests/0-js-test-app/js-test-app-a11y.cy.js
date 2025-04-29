@@ -217,6 +217,64 @@ describe('JS-TEST-APP 4', () => {
     });
   });
 
+  describe('Open user menu with keyboard', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.settings.responsiveNavigation = 'Fiori3';
+      newConfig.settings.profileType = 'Fiori3';
+      newConfig.settings.experimental = {
+        profileMenuFiori3: true
+      };
+      newConfig.navigation.profile = {
+        logout: { label: 'Sign Out', icon: 'sys-cancel' },
+        items: [
+          {
+            label: 'Luigi in Github',
+            link: '/simple'
+          }
+        ],
+        staticUserInfoFn: () => {
+          return new Promise((resolve) => {
+            resolve({
+              name: 'Static User',
+              initials: 'LU',
+              email: 'luigi@mbro.com'
+            });
+          });
+        }
+      };
+      newConfig.tag = 'user-settings-dialog';
+    });
+    
+    it('Open user menu by pressing enter', () => {
+      cy.visitTestAppLoggedIn('/', newConfig);
+      cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'true');
+      cy.get('body').click();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.get('.fd-user-menu__control').should('have.focus').type('{enter}');
+      cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'false');
+    });
+
+    it.only('Open user menu by pressing space', () => {
+      cy.visitTestAppLoggedIn('/', newConfig);
+      cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'true');
+      cy.get('body').click();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.get('.fd-user-menu__control').should('have.focus').type(' ');
+      cy.get('#profilePopover').should('have.attr', 'aria-hidden', 'false');
+    });
+  });
+   
+
   describe('User menu popover does not close when mark the user email', () => {
     let newConfig;
     beforeEach(() => {
