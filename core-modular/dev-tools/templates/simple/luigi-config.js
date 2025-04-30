@@ -47,6 +47,34 @@ window.onload = () => {
           viewUrl: '/microfrontend.html#help'
         },
         {
+          category: { id: 'cat', label: 'notification', icon: 'notification' },
+          pathSegment: 'errors',
+          label: 'Errors',
+          icon: 'error',
+          viewUrl: '/microfrontend.html#errors'
+        },
+        {
+          category: 'cat',
+          label: 'Warnings',
+          pathSegment: 'warnings',
+          icon: 'warning',
+          viewUrl: '/microfrontend.html#warnings'
+        },
+        {
+          category: 'cat',
+          label: 'Success',
+          pathSegment: 'success',
+          icon: 'success',
+          viewUrl: '/microfrontend.html#errors'
+        },
+        {
+          category: { id: 'cat2', label: 'cat2', icon: 'record' },
+          pathSegment: 'cat2',
+          label: 'Cat2',
+          icon: 'people',
+          viewUrl: '/microfrontend.html#cat2'
+        },
+        {
           pathSegment: 'notifications',
           icon: 'bell',
           viewUrl: '/microfrontend.html',

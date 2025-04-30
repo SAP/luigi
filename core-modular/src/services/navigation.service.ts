@@ -264,7 +264,7 @@ export class NavigationService {
     return {
       appTitle: cfg.settings?.header?.title,
       logo: cfg.settings?.header?.logo,
-      topNodes: cfg.navigation?.nodes,
+      topNodes: this.buildNavItems(cfg.navigation?.nodes) as [any],
       productSwitcher: cfg.navigation?.productSwitcher,
       profile: cfg.navigation?.profile
     };
