@@ -208,10 +208,10 @@ export class ContainerService {
                   targetCnt,
                   event,
                   event.data.data,
-                  (route: boolean) => {
+                  (route: string) => {
                     target.postMessage(
                       {
-                        msg: Events.GET_CURRENT_ROUTE_REQUEST,
+                        msg: LuigiInternalMessageID.SEND_CURRENT_ROUTE_ANSWER,
                         data: { route }
                       },
                       event.origin
@@ -240,7 +240,7 @@ export class ContainerService {
                   (exists: boolean) => {
                     target.postMessage(
                       {
-                        msg: Events.CHECK_PATH_EXISTS_REQUEST,
+                        msg: LuigiInternalMessageID.SEND_PATH_EXISTS_ANSWER,
                         data: { exists }
                       },
                       event.origin

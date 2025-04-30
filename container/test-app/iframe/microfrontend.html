@@ -43,6 +43,7 @@
       <button onclick="testAddNodeParams()">Test add node params</button>
       <button onclick="testGetNodeParams()">Test get node params</button>
       <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
+      <button onclick="testConfirmationModalCallback()">test confirmation modal callback</button>
       <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
       <button onclick="testGetHistoryState()">test history state</button>
@@ -66,7 +67,7 @@
       <button onclick="testGetPathParams()">test get path params</button>
       <button onclick="testGetCoreSearchParams()">test get core search params</button>
       <button onclick="testGetToken()">test get token</button>
-      <button onclick="testShowAlert()">test showAlert</button>
+      <button onclick="testAlertCallback()">test alert callback</button>
       <button onclick="testShowAlertWithNotifyAlertClosed()">
         test showAlert with notifyAlertClosed
       </button>
@@ -147,6 +148,16 @@
           .showConfirmationModal(settings)
           .then(() => console.log('Modal confirmed'))
           .catch(() => console.log('Modal dissmissed'));
+      }
+
+      function testConfirmationModalCallback() {
+        LuigiClient.uxManager().showConfirmationModal({
+          type: 'confirmation',
+          header: 'Callback Test',
+          body: 'Are you sure you want to do this?',
+          buttonConfirm: 'Yes',
+          buttonDismiss: 'No',
+        });
       }
 
       function testShowLoadingIndicator() {
@@ -273,6 +284,13 @@
           .then((param) => {
             console.log('Callback called on microfrontend', param);
           });
+      }
+
+      function testAlertCallback() {
+        LuigiClient.uxManager().showAlert({
+          text: 'Callback Test',
+          type: 'info',
+        });
       }
 
       function testShowAlertWithNotifyAlertClosed() {
