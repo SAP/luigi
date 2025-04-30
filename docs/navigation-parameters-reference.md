@@ -249,14 +249,14 @@ settings: {
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
+  - **noClientCheck**(boolean): when set to `true`, it prevents a navigation check when reactivating the iframe
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
-  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts.
 
 ### globalContext
 - **type**: object
 - **description**: contains key-object pairs which are inherited from all node contexts.
-
 
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
@@ -866,7 +866,7 @@ navigation: {
 ### viewGroup
 - **type**: string
 - **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin.
-The value of this parameter is considered as the view group ID. If you want to use this feature, you must set [preloadViewGroups](navigation-advanced.md#preloadViewGroups) to `true` and provide a preload URL for your view group ID in [viewGroupsSettings](navigation-advanced.md##viewGroupsSettings).
+The value of this parameter is considered as the view group ID. If you want to use this feature, you must set [preloadViewGroups](navigation-advanced.md#preloadViewGroups) to `true` and provide a preload URL for your view group ID in [viewGroupSettings](navigation-advanced.md#viewGroupSettings).
 For further explanations, see [this section](navigation-configuration.md#view-groups).
 - **example:**
 ```javascript
