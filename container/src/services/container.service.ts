@@ -226,15 +226,10 @@ export class ContainerService {
                 );
                 break;
               case LuigiInternalMessageID.UPDATE_MODAL_SETTINGS:
-                this.dispatchWithPayload(
-                  Events.UPDATE_MODAL_SETTINGS_REQUEST,
-                  targetCnt,
-                  event,
-                  {
-                    addHistoryEntry: event.data.addHistoryEntry,
-                    updatedModalSettings: event.data.updatedModalSettings
-                  } as ModalSettingsRequestPayload
-                );
+                this.dispatchWithPayload(Events.UPDATE_MODAL_SETTINGS_REQUEST, targetCnt, event, {
+                  addHistoryEntry: event.data.addHistoryEntry,
+                  updatedModalSettings: event.data.updatedModalSettings
+                } as ModalSettingsRequestPayload);
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
                 this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
