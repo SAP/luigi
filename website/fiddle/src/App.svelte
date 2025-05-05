@@ -11,7 +11,6 @@
 
   let defaultConfigString = defaultConfig;
   let configString = defaultConfigString;
-  let metaKeyEnabled;
 
   function exec(jsString) {
     return eval(jsString);
@@ -107,19 +106,9 @@
 
   function initKeyboardEvents() {
     window.addEventListener('keydown', (event) => {
-      if (event.ctrlKey || event.metaKey) {
-        metaKeyEnabled = true;
-      }
-
-      if (metaKeyEnabled && event.key === 's') {
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
         event.preventDefault();
         saveConfig();
-      }
-    });
-
-    window.addEventListener('keyup', (event) => {
-      if (event.ctrlKey || event.metaKey) {
-        metaKeyEnabled = false;
       }
     });
   }
@@ -128,7 +117,6 @@
     localStorage.setItem('fiddle', window.editor.getValue());
     sessionStorage.setItem('fiddle', window.editor.getValue());
     window.location.href = '/';
-    metaKeyEnabled = false;
   }
 
   function saveConfigTA() {
