@@ -17,19 +17,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show an alert.
-   * It can be dispatched with the payload shown below - read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
-   * @example
-   * {
-   *  text: 'Custom alert message',
-   *  type: 'info',
-   *  links: {
-   *   goToHome: { text: 'Homepage', url: '/overview' },
-   *   goToOtherProject: { text: 'Other project', url: '/projects/pr2' },
-   *   relativePath: { text: 'Hide side nav', url: 'hideSideNav' },
-   *   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
-   *  },
-   *  closeAfter: 3000
-   * }
    */
   export const ALERT_REQUEST = 'show-alert-request';
 
@@ -56,14 +43,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a confirmation modal.
-   * It can be dispatched with the payload shown below - read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
-   * @example
-   * {
-   *  header: 'Confirmation',
-   *  body: 'Are you sure you want to do this?',
-   *  buttonConfirm: 'Yes',
-   *  buttonDismiss: 'No'
-   * }
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
 
@@ -79,15 +58,11 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the current locale.
-   * It can be dispatched with the payload shown below.
-   * @example { currentLocale: 'en' }
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
   /**
    * Event fired when the micro frontend requests to modify the local storage.
-   * It can be dispatched with the payload shown below.
-   * @example { key: 'luigi-version', value: '2.21.0' }
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
@@ -98,7 +73,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the anchor of the URL.
-   * It can be dispatched with the payload - string value (like 'some-anchor').
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
@@ -115,15 +89,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the current app route.
-   * It can be dispatched with the payload shown below.
-   * @example
-   * {
-   *  fromClosestContext: false,
-   *  fromContext: null,
-   *  fromParent: true,
-   *  fromVirtualTreeRoot: false,
-   *  nodeParams: {}
-   * }
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
@@ -134,39 +99,21 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to update the modal path parameters.
-   * It can be dispatched with the payload shown below.
-   * @example
-   * {
-   *  fromClosestContext: false,
-   *  fromContext: null,
-   *  fromParent: true,
-   *  fromVirtualTreeRoot: false,
-   *  history: true,,
-   *  link: '/test/route',
-   *  modal: { title: 'Some modal' },
-   *  nodeParams: {}
-   * }
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
    * Event fired when the micro frontend requests to update the modal settings.
-   * It can be dispatched with the payload shown below - read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
-   * @example { addHistoryEntry: true, updatedModalSettings: {} }
    */
   export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
 
   /**
    * Event fired when the micro frontend requests to check the validity of a path.
-   * It can be dispatched with the payload shown below.
-   * @example { link: '/test/route' }
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
    * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
-   * It can be dispatched with the payload shown below.
-   * @example { dirty: true }
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
