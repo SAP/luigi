@@ -45,8 +45,25 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### ALERT_REQUEST
 
 Event fired when the micro frontend requests to show an alert.
+It's dispatched with the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | AlertRequestPayload)>
+
+#### Examples
+
+```javascript
+payload: {
+ text: 'Custom alert message',
+ type: 'info',
+ links: {
+  goToHome: { text: 'Homepage', url: '/overview' },
+  goToOtherProject: { text: 'Other project', url: '/projects/pr2' },
+  relativePath: { text: 'Hide side nav', url: 'hideSideNav' },
+  neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
+ },
+ closeAfter: 3000
+}
+```
 
 ### ALERT_CLOSED
 
@@ -79,8 +96,20 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### SHOW_CONFIRMATION_MODAL_REQUEST
 
 Event fired when the micro frontend requests to show a confirmation modal.
+It's dispatched with the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ConfirmationModalRequestPayload)>
+
+#### Examples
+
+```javascript
+payload: {
+ header: 'Confirmation',
+ body: 'Are you sure you want to do this?',
+ buttonConfirm: 'Yes',
+ buttonDismiss: 'No'
+}
+```
 
 ### SHOW_LOADING_INDICATOR_REQUEST
 
@@ -97,14 +126,28 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### SET_CURRENT_LOCALE_REQUEST
 
 Event fired when the micro frontend requests to set the current locale.
+It's dispatched with the payload shown below.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+payload: { currentLocale: 'en' }
+```
 
 ### LOCAL_STORAGE_SET_REQUEST
 
 Event fired when the micro frontend requests to modify the local storage.
+It's dispatched with the payload shown below.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+payload: { key: 'luigi-version', value: '2.21.0' }
+```
 
 ### RUNTIME_ERROR_HANDLING_REQUEST
 
@@ -115,6 +158,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### SET_ANCHOR_LINK_REQUEST
 
 Event fired when the micro frontend requests to set the anchor of the URL.
+It's dispatched with the payload - string value (like 'some-anchor').
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -137,8 +181,21 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### GET_CURRENT_ROUTE_REQUEST
 
 Event fired when the micro frontend requests the current app route.
+It's dispatched with the payload shown below - some properties are optional.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | CurrentRouteRequestPayload)>
+
+#### Examples
+
+```javascript
+payload: {
+ fromClosestContext: false,
+ fromContext: null,
+ fromParent: true,
+ fromVirtualTreeRoot: false,
+ nodeParams: {}
+}
+```
 
 ### NAVIGATION_COMPLETED_REPORT
 
@@ -149,26 +206,63 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### UPDATE_MODAL_PATH_DATA_REQUEST
 
 Event fired when the micro frontend requests to update the modal path parameters.
+It's dispatched with the payload shown below - some properties are optional.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ModalPathDataRequestPayload)>
+
+#### Examples
+
+```javascript
+payload: {
+ fromClosestContext: false,
+ fromContext: null,
+ fromParent: true,
+ fromVirtualTreeRoot: false,
+ history: true,
+ link: '/test/route',
+ modal: { title: 'Some modal' },
+ nodeParams: {}
+}
+```
 
 ### UPDATE_MODAL_SETTINGS_REQUEST
 
 Event fired when the micro frontend requests to update the modal settings.
+It's dispatched with the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ModalSettingsRequestPayload)>
+
+#### Examples
+
+```javascript
+payload: { addHistoryEntry: true, updatedModalSettings: {} }
+```
 
 ### CHECK_PATH_EXISTS_REQUEST
 
 Event fired when the micro frontend requests to check the validity of a path.
+It's dispatched with the payload shown below.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+payload: { link: '/test/route' }
+```
 
 ### SET_DIRTY_STATUS_REQUEST
 
 Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
+It's dispatched with the payload shown below.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+payload: { dirty: true }
+```
 
 ### SET_VIEW_GROUP_DATA_REQUEST
 

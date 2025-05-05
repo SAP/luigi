@@ -1,3 +1,13 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference path="../../typings/constants/container-events.ts" />
+import type {
+  AlertRequestPayload,
+  ConfirmationModalRequestPayload,
+  CurrentRouteRequestPayload,
+  ModalPathDataRequestPayload,
+  ModalSettingsRequestPayload
+} from 'ContainerEvents';
+
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 export namespace Events {
   /**
@@ -17,6 +27,20 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show an alert.
+   * It's dispatched with the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
+   * @type {Object.<string, unknown | AlertRequestPayload>}
+   * @example
+   * payload: {
+   *  text: 'Custom alert message',
+   *  type: 'info',
+   *  links: {
+   *   goToHome: { text: 'Homepage', url: '/overview' },
+   *   goToOtherProject: { text: 'Other project', url: '/projects/pr2' },
+   *   relativePath: { text: 'Hide side nav', url: 'hideSideNav' },
+   *   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
+   *  },
+   *  closeAfter: 3000
+   * }
    */
   export const ALERT_REQUEST = 'show-alert-request';
 
@@ -43,6 +67,15 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a confirmation modal.
+   * It's dispatched with the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
+   * @type {Object.<string, unknown | ConfirmationModalRequestPayload>}
+   * @example
+   * payload: {
+   *  header: 'Confirmation',
+   *  body: 'Are you sure you want to do this?',
+   *  buttonConfirm: 'Yes',
+   *  buttonDismiss: 'No'
+   * }
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
 
@@ -58,11 +91,17 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the current locale.
+   * It's dispatched with the payload shown below.
+   * @type {Object.<string, unknown>}
+   * @example payload: { currentLocale: 'en' }
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
   /**
    * Event fired when the micro frontend requests to modify the local storage.
+   * It's dispatched with the payload shown below.
+   * @type {Object.<string, unknown>}
+   * @example payload: { key: 'luigi-version', value: '2.21.0' }
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
@@ -73,6 +112,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the anchor of the URL.
+   * It's dispatched with the payload - string value (like 'some-anchor').
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
@@ -89,6 +129,16 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the current app route.
+   * It's dispatched with the payload shown below - some properties are optional.
+   * @type {Object.<string, unknown | CurrentRouteRequestPayload>}
+   * @example
+   * payload: {
+   *  fromClosestContext: false,
+   *  fromContext: null,
+   *  fromParent: true,
+   *  fromVirtualTreeRoot: false,
+   *  nodeParams: {}
+   * }
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
@@ -99,21 +149,44 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to update the modal path parameters.
+   * It's dispatched with the payload shown below - some properties are optional.
+   * @type {Object.<string, unknown | ModalPathDataRequestPayload>}
+   * @example
+   * payload: {
+   *  fromClosestContext: false,
+   *  fromContext: null,
+   *  fromParent: true,
+   *  fromVirtualTreeRoot: false,
+   *  history: true,
+   *  link: '/test/route',
+   *  modal: { title: 'Some modal' },
+   *  nodeParams: {}
+   * }
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
    * Event fired when the micro frontend requests to update the modal settings.
+   * It's dispatched with the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
+   * @type {Object.<string, unknown | ModalSettingsRequestPayload>}
+   * @example
+   * payload: { addHistoryEntry: true, updatedModalSettings: {} }
    */
   export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
 
   /**
    * Event fired when the micro frontend requests to check the validity of a path.
+   * It's dispatched with the payload shown below.
+   * @type {Object.<string, unknown>}
+   * @example payload: { link: '/test/route' }
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
    * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
+   * It's dispatched with the payload shown below.
+   * @type {Object.<string, unknown>}
+   * @example payload: { dirty: true }
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 

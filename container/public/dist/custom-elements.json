@@ -250,7 +250,7 @@
             },
             {
               "name": "show-alert-request",
-              "description": "Event fired when the micro frontend requests to show an alert.",
+              "description": "Event fired when the micro frontend requests to show an alert. It's dispatched with the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). @type {Object.<string, unknown | AlertRequestPayload>} @example payload: { text: 'Custom alert message', type: 'info', links: { goToHome: { text: 'Homepage', url: '/overview' }, goToOtherProject: { text: 'Other project', url: '/projects/pr2' }, relativePath: { text: 'Hide side nav', url: 'hideSideNav' }, neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' } }, closeAfter: 3000 }",
               "type": {
                 "text": "Event"
               }
@@ -278,7 +278,7 @@
             },
             {
               "name": "show-confirmation-modal-request",
-              "description": "Event fired when the micro frontend requests to show a confirmation modal.",
+              "description": "Event fired when the micro frontend requests to show a confirmation modal. It's dispatched with the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). @type {Object.<string, unknown | ConfirmationModalRequestPayload>} @example payload: { header: 'Confirmation', body: 'Are you sure you want to do this?', buttonConfirm: 'Yes', buttonDismiss: 'No' }",
               "type": {
                 "text": "Event"
               }
@@ -299,14 +299,14 @@
             },
             {
               "name": "set-current-locale-request",
-              "description": "Event fired when the micro frontend requests to set the current locale.",
+              "description": "Event fired when the micro frontend requests to set the current locale. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { currentLocale: 'en' }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-storage-request",
-              "description": "Event fired when the micro frontend requests to modify the local storage.",
+              "description": "Event fired when the micro frontend requests to modify the local storage. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { key: 'luigi-version', value: '2.21.0' }",
               "type": {
                 "text": "Event"
               }
@@ -320,7 +320,7 @@
             },
             {
               "name": "set-anchor-request",
-              "description": "Event fired when the micro frontend requests to set the anchor of the URL.",
+              "description": "Event fired when the micro frontend requests to set the anchor of the URL. It's dispatched with the payload - string value (like 'some-anchor').",
               "type": {
                 "text": "Event"
               }
@@ -334,7 +334,7 @@
             },
             {
               "name": "get-current-route-request",
-              "description": "Event fired when the micro frontend requests the current app route.",
+              "description": "Event fired when the micro frontend requests the current app route. It's dispatched with the payload shown below - some properties are optional. @type {Object.<string, unknown | CurrentRouteRequestPayload>} @example payload: { fromClosestContext: false, fromContext: null, fromParent: true, fromVirtualTreeRoot: false, nodeParams: {} }",
               "type": {
                 "text": "Event"
               }
@@ -348,28 +348,28 @@
             },
             {
               "name": "update-modal-path-data-request",
-              "description": "Event fired when the micro frontend requests to update the modal path parameters.",
+              "description": "Event fired when the micro frontend requests to update the modal path parameters. It's dispatched with the payload shown below - some properties are optional. @type {Object.<string, unknown | ModalPathDataRequestPayload>} @example payload: { fromClosestContext: false, fromContext: null, fromParent: true, fromVirtualTreeRoot: false, history: true, link: '/test/route', modal: { title: 'Some modal' }, nodeParams: {} }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-modal-settings-request",
-              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "description": "Event fired when the micro frontend requests to update the modal settings. It's dispatched with the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). @type {Object.<string, unknown | ModalSettingsRequestPayload>} @example payload: { addHistoryEntry: true, updatedModalSettings: {} }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "check-path-exists-request",
-              "description": "Event fired when the micro frontend requests to check the validity of a path.",
+              "description": "Event fired when the micro frontend requests to check the validity of a path. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { link: '/test/route' }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-dirty-status-request",
-              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.",
+              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { dirty: true }",
               "type": {
                 "text": "Event"
               }
@@ -663,7 +663,7 @@
             },
             {
               "name": "show-alert-request",
-              "description": "Event fired when the micro frontend requests to show an alert.",
+              "description": "Event fired when the micro frontend requests to show an alert. It's dispatched with the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). @type {Object.<string, unknown | AlertRequestPayload>} @example payload: { text: 'Custom alert message', type: 'info', links: { goToHome: { text: 'Homepage', url: '/overview' }, goToOtherProject: { text: 'Other project', url: '/projects/pr2' }, relativePath: { text: 'Hide side nav', url: 'hideSideNav' }, neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' } }, closeAfter: 3000 }",
               "type": {
                 "text": "Event"
               }
@@ -691,7 +691,7 @@
             },
             {
               "name": "show-confirmation-modal-request",
-              "description": "Event fired when the micro frontend requests to show a confirmation modal.",
+              "description": "Event fired when the micro frontend requests to show a confirmation modal. It's dispatched with the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). @type {Object.<string, unknown | ConfirmationModalRequestPayload>} @example payload: { header: 'Confirmation', body: 'Are you sure you want to do this?', buttonConfirm: 'Yes', buttonDismiss: 'No' }",
               "type": {
                 "text": "Event"
               }
@@ -712,14 +712,14 @@
             },
             {
               "name": "set-current-locale-request",
-              "description": "Event fired when the micro frontend requests to set the current locale.",
+              "description": "Event fired when the micro frontend requests to set the current locale. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { currentLocale: 'en' }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-storage-request",
-              "description": "Event fired when the micro frontend requests to modify the local storage.",
+              "description": "Event fired when the micro frontend requests to modify the local storage. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { key: 'luigi-version', value: '2.21.0' }",
               "type": {
                 "text": "Event"
               }
@@ -733,7 +733,7 @@
             },
             {
               "name": "set-anchor-request",
-              "description": "Event fired when the micro frontend requests to set the anchor of the URL.",
+              "description": "Event fired when the micro frontend requests to set the anchor of the URL. It's dispatched with the payload - string value (like 'some-anchor').",
               "type": {
                 "text": "Event"
               }
@@ -747,7 +747,7 @@
             },
             {
               "name": "get-current-route-request",
-              "description": "Event fired when the micro frontend requests the current app route.",
+              "description": "Event fired when the micro frontend requests the current app route. It's dispatched with the payload shown below - some properties are optional. @type {Object.<string, unknown | CurrentRouteRequestPayload>} @example payload: { fromClosestContext: false, fromContext: null, fromParent: true, fromVirtualTreeRoot: false, nodeParams: {} }",
               "type": {
                 "text": "Event"
               }
@@ -761,28 +761,28 @@
             },
             {
               "name": "update-modal-path-data-request",
-              "description": "Event fired when the micro frontend requests to update the modal path parameters.",
+              "description": "Event fired when the micro frontend requests to update the modal path parameters. It's dispatched with the payload shown below - some properties are optional. @type {Object.<string, unknown | ModalPathDataRequestPayload>} @example payload: { fromClosestContext: false, fromContext: null, fromParent: true, fromVirtualTreeRoot: false, history: true, link: '/test/route', modal: { title: 'Some modal' }, nodeParams: {} }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "update-modal-settings-request",
-              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "description": "Event fired when the micro frontend requests to update the modal settings. It's dispatched with the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). @type {Object.<string, unknown | ModalSettingsRequestPayload>} @example payload: { addHistoryEntry: true, updatedModalSettings: {} }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "check-path-exists-request",
-              "description": "Event fired when the micro frontend requests to check the validity of a path.",
+              "description": "Event fired when the micro frontend requests to check the validity of a path. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { link: '/test/route' }",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "set-dirty-status-request",
-              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.",
+              "description": "Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes. It's dispatched with the payload shown below. @type {Object.<string, unknown>} @example payload: { dirty: true }",
               "type": {
                 "text": "Event"
               }
