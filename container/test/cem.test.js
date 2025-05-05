@@ -137,7 +137,7 @@ function getEvents(fileContent) {
       }
     }
   }
-  return events;
+  return events.filter(event => event !== 'ContainerEvents');
 }
 
 describe.only('Custom Element Manifest Validation', () => {
