@@ -23,6 +23,7 @@ class Navigation {
       preloadUrl: '/sampleapp.html#/preload'
     },
     view_group_components: {
+      noClientCheck: true,
       preloadUrl: '/sampleapp.html#/view-group/preload'
     }
   };

@@ -26,7 +26,7 @@ describe('Iframe', () => {
       isNavigationSyncEnabled: true
     };
     component = {
-      set: obj => {
+      set: (obj) => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj,
@@ -38,9 +38,9 @@ describe('Iframe', () => {
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
-    GenericHelpers.isElementVisible.callsFake(element => element.visible);
+    GenericHelpers.isElementVisible.callsFake((element) => element.visible);
     sinon.stub(ViewUrlDecorator);
-    ViewUrlDecorator.applyDecorators.callsFake(url => url);
+    ViewUrlDecorator.applyDecorators.callsFake((url) => url);
 
     node = {
       children: [
@@ -77,7 +77,7 @@ describe('Iframe', () => {
           tagName: 'IFRAME'
         }
       ],
-      removeChild: child => {
+      removeChild: (child) => {
         node.children.forEach((c, i) => {
           if (c === child) {
             node.children.splice(i, 1);
@@ -416,20 +416,32 @@ describe('Iframe', () => {
       assert.isTrue(component.get().isNavigationSyncEnabled);
     });
   });
+
   describe('init handshake failed', () => {
     let someConfig = {};
+
     beforeEach(() => {
       someConfig = {
         iframe: {}
       };
     });
+
     it('init handshake failed no luigi object on iframe', () => {
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
+
     it('init handshake failed initOk undefined', () => {
       someConfig.iframe.luigi = {};
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
+
+    it('init handshake noClientCheck true', () => {
+      someConfig.iframe.luigi = {};
+      someConfig.iframe.vg = 'view-group-name';
+      sinon.stub(NavigationHelpers, 'getViewGroupSettings').callsFake(() => ({ noClientCheck: true }));
+      assert.equal(Iframe.initHandshakeFailed(someConfig), false);
+    });
+
     it('init handshake success', () => {
       someConfig.iframe.luigi = {
         initOk: true,
