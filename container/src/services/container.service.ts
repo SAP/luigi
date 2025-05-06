@@ -41,6 +41,7 @@ export class ContainerService {
     targetCnt: ContainerElement,
     data: object,
     payload: object,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback?: (arg?: any) => void
   ): void {
     this.dispatch(msg, targetCnt, data, callback, payload);
