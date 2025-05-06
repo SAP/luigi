@@ -19,8 +19,6 @@ meta -->
 ## Overview
 The Luigi Compound Container works similarly to Luigi's compound web components [feature](web-component.md#compound-web-components) and allows you to insert multiple micro frontends on the same page.
 
-
-
 ## Installation
 
 1. Install the Luigi Container [npm](https://www.npmjs.com/) package to use the Luigi Compound Container : `@luigi-project/container` 
