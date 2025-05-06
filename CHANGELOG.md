@@ -25,6 +25,46 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.3] (2025-04-23)
+
+#### :bug: Fixed
+* [#4229](https://github.com/SAP/luigi/pull/4229) using correct userSettingGroupKey ([@hardl](https://github.com/hardl))
+
+
+
+
+## [v2.21.2] (2025-03-21)
+
+#### :bug: Fixed
+* [#4194](https://github.com/SAP/luigi/pull/4194) leftnav-btp: fix observer issue ([@hardl](https://github.com/hardl))
+
+
+
+
+
+## [v2.21.1] (2025-03-04)
+
+#### :bug: Fixed
+* [#4173](https://github.com/SAP/luigi/pull/4173) Bug fix: User menu stays open when not clicking on action items. ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.21.0] (2025-02-27)
+
+#### :rocket: Added
+* [#4130](https://github.com/SAP/luigi/pull/4130) Web component based micro frontends in user settings ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#4163](https://github.com/SAP/luigi/pull/4163) Fix user menu popover initials bgColor ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.20.0] (2025-02-18)
 
 #### :rocket: Added
@@ -1970,3 +2010,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
 [v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
 [v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
+[v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0
+[v2.21.1]: https://github.com/SAP/luigi/compare/v2.21.0...v2.21.1
+[v2.21.2]: https://github.com/SAP/luigi/compare/v2.21.1...v2.21.2
+[v2.21.3]: https://github.com/SAP/luigi/compare/v2.21.2...v2.21.3

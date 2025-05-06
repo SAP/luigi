@@ -8,8 +8,14 @@ import autoPreprocess from 'svelte-preprocess';
 import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
+let inputPath = 'src/main.ts';
+
 if (production) {
   console.log('Production BUILD');
+}
+
+if (process.env.COVERAGE === 'true') {
+  inputPath = 'instrumented/main.ts';
 }
 
 function serve() {
@@ -35,7 +41,7 @@ function serve() {
 
 export default [
   {
-    input: 'src/main.ts',
+    input: inputPath,
     output: {
       sourcemap: true,
       name: 'app',
@@ -129,5 +135,12 @@ export default [
     watch: {
       clearScreen: false
     }
+  },
+  {
+    input: 'src/events.ts',
+    output: {
+      file: 'public/constants/events.js'
+    },
+    plugins: [typescript({})]
   }
 ];

@@ -155,6 +155,7 @@
 
   export function logout() {
     AuthLayerSvc.logout();
+    dispatch('toggleDropdownState');
   }
 
   export function handleKeyUp({ keyCode }) {
@@ -173,16 +174,13 @@
       <div class="fd-user-menu__header">
         {#if userInfo.picture}
           <span
-            class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+            class="fd-avatar fd-avatar--l fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
             aria-label="Avatar"
             data-testid="luigi-topnav-profile-avatar"
             style="background-image:url('{userInfo.picture}')"
           />
         {:else}
-          <span
-            class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
-            aria-label="Avatar"
-          >
+          <span class="fd-avatar fd-avatar--l fd-avatar--circle fd-user-menu__avatar" aria-label="Avatar">
             {userInfo.initials ? userInfo.initials : ''}
           </span>
         {/if}
@@ -203,6 +201,7 @@
       <ul class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border">
         {#each profileNav.items as profileItem}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <li
             tabindex="-1"
             class="fd-list__item fd-list__item--link"
@@ -234,6 +233,7 @@
           </li>
         {/each}
         {#if hasUserSettings}
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <li
             tabindex="-1"
             class="fd-list__item fd-list__item--link lui-anchor-node"

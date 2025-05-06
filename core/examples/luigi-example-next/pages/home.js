@@ -13,7 +13,6 @@ export default function Home() {
     <>
       <Head />
       <div>
-        <script src="/luigi-client.js" />
         <h1>Welcome to Luigi with Next.js</h1>
       </div>
     </>
