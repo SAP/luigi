@@ -7,5 +7,7 @@ export default {
     // enable run-time checks when not in production
     dev: !process.env.ROLLUP_WATCH
   },
-  preprocess: sveltePreprocess()
+  preprocess: sveltePreprocess({
+    sourceMap: true
+  })
 };
