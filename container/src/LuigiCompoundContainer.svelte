@@ -46,6 +46,8 @@
 
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
+        notifyAlertClosed = notInitFn('notifyAlertClosed');
+        notifyConfirmationModalClosed = notInitFn('notifyConfirmationModalClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             if (oldValue !== newValue) {
@@ -151,6 +153,20 @@
     const ctx = GenericHelperFunctions.resolveContext(context);
 
     deferInit = false;
+
+    thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
+      // check if thisComponent is in dom
+      if (thisComponent.isConnected) {
+        webcomponentService.resolveAlert(id, dismissKey);
+      }
+    }
+
+    thisComponent.notifyConfirmationModalClosed = (result) => {
+      // check if thisComponent is in dom
+      if (thisComponent.isConnected) {
+        webcomponentService.notifyConfirmationModalClosed(!!result);
+      }
+    }
 
     const node = {
       compound: compoundConfig,

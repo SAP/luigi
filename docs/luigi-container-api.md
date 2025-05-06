@@ -72,7 +72,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 #### Examples
 
 ```javascript
-<luigi-container viewUrl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
+<luigi-container viewurl="/index.html" context='{"label": "Dashboard"}'></luigi-container>
 ```
 
 ```javascript
@@ -92,7 +92,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 #### Examples
 
 ```javascript
-<luigi-container viewUrl="/index.html" label="Dashboard"></luigi-container>
+<luigi-container viewurl="/index.html" label="Dashboard"></luigi-container>
 ```
 
 ```javascript
@@ -591,7 +591,22 @@ Returns **void**
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.7.0
+
+### updateViewUrl
+
+Updates route of the microfrontend by sending a message to the iframe that sets new view URL.
+
+#### Parameters
+
+*   `viewurl` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** new view URL
+*   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Luigi legacy data (optional)
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: 1.5.0
 
 ### init
 

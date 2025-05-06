@@ -25,6 +25,23 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.3] (2025-04-23)
+
+#### :bug: Fixed
+* [#4229](https://github.com/SAP/luigi/pull/4229) using correct userSettingGroupKey ([@hardl](https://github.com/hardl))
+
+
+
+
+## [v2.21.2] (2025-03-21)
+
+#### :bug: Fixed
+* [#4194](https://github.com/SAP/luigi/pull/4194) leftnav-btp: fix observer issue ([@hardl](https://github.com/hardl))
+
+
+
+
+
 ## [v2.21.1] (2025-03-04)
 
 #### :bug: Fixed
@@ -1995,3 +2012,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
 [v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0
 [v2.21.1]: https://github.com/SAP/luigi/compare/v2.21.0...v2.21.1
+[v2.21.2]: https://github.com/SAP/luigi/compare/v2.21.1...v2.21.2
+[v2.21.3]: https://github.com/SAP/luigi/compare/v2.21.2...v2.21.3

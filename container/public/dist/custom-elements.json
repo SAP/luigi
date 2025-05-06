@@ -17,12 +17,7 @@
               "kind": "field",
               "name": "activeFeatureToggleList",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -30,12 +25,7 @@
               "kind": "field",
               "name": "allowRules",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -147,12 +137,7 @@
               "kind": "field",
               "name": "sandboxRules",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -234,6 +219,10 @@
             },
             {
               "kind": "method",
+              "name": "updateViewUrl"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
@@ -262,13 +251,6 @@
             {
               "name": "show-alert-request",
               "description": "Event fired when the micro frontend requests to show an alert.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "close-alert-request",
-              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
@@ -351,13 +333,6 @@
               }
             },
             {
-              "name": "navigate-back-request",
-              "description": "Event fired when the micro frontend requests to navigate back.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "get-current-route-request",
               "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
@@ -379,6 +354,13 @@
               }
             },
             {
+              "name": "update-modal-settings-request",
+              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
               "name": "check-path-exists-request",
               "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
@@ -395,13 +377,6 @@
             {
               "name": "set-viewgroup-data-request",
               "description": "Event fired when the micro frontend requests to set the view group data.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "set-document-title-request",
-              "description": "Event fired when the micro frontend requests to set the document title.",
               "type": {
                 "text": "Event"
               }
@@ -435,13 +410,6 @@
               }
             },
             {
-              "name": "path-exists-request",
-              "description": "Event fired when the micro frontend requests to check if the path exists.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "go-back-request",
               "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
@@ -451,6 +419,13 @@
             {
               "name": "has-back-request",
               "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-backdrop-request",
+              "description": "Event fired when the micro frontend requests to display the backdrop.",
               "type": {
                 "text": "Event"
               }
@@ -499,12 +474,7 @@
               "kind": "field",
               "name": "activeFeatureToggleList",
               "type": {
-                "text": "Array<string>",
-                "references": [
-                  {
-                    "name": "string"
-                  }
-                ]
+                "text": "Array<string>"
               },
               "default": "undefined"
             },
@@ -658,6 +628,14 @@
             },
             {
               "kind": "method",
+              "name": "notifyAlertClosed"
+            },
+            {
+              "kind": "method",
+              "name": "notifyConfirmationModalClosed"
+            },
+            {
+              "kind": "method",
               "name": "init"
             }
           ],
@@ -686,13 +664,6 @@
             {
               "name": "show-alert-request",
               "description": "Event fired when the micro frontend requests to show an alert.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "close-alert-request",
-              "description": "Event left due to historical reasons - do not use. @deprecated",
               "type": {
                 "text": "Event"
               }
@@ -775,13 +746,6 @@
               }
             },
             {
-              "name": "navigate-back-request",
-              "description": "Event fired when the micro frontend requests to navigate back.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "get-current-route-request",
               "description": "Event fired when the micro frontend requests the current app route.",
               "type": {
@@ -803,6 +767,13 @@
               }
             },
             {
+              "name": "update-modal-settings-request",
+              "description": "Event fired when the micro frontend requests to update the modal settings.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
               "name": "check-path-exists-request",
               "description": "Event fired when the micro frontend requests to check the validity of a path.",
               "type": {
@@ -819,13 +790,6 @@
             {
               "name": "set-viewgroup-data-request",
               "description": "Event fired when the micro frontend requests to set the view group data.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "name": "set-document-title-request",
-              "description": "Event fired when the micro frontend requests to set the document title.",
               "type": {
                 "text": "Event"
               }
@@ -859,13 +823,6 @@
               }
             },
             {
-              "name": "path-exists-request",
-              "description": "Event fired when the micro frontend requests to check if the path exists.",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
               "name": "go-back-request",
               "description": "Event fired when the micro frontend requests to navigate back.",
               "type": {
@@ -875,6 +832,13 @@
             {
               "name": "has-back-request",
               "description": "Event fired when the micro frontend requests to check if there are any preserved views.",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "add-backdrop-request",
+              "description": "Event fired when the micro frontend requests to display the backdrop.",
               "type": {
                 "text": "Event"
               }

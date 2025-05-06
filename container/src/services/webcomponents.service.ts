@@ -19,7 +19,7 @@ import type {
 export class WebComponentService {
   containerService: ContainerService;
   thisComponent!: ContainerElement;
-  modalResolver!: { resolve: (value: unknown) => void; reject: (reason?: Error) => void } | undefined;
+  modalResolver!: { resolve: (value?: void | PromiseLike<void>) => void; reject: (reason?: Error) => void } | undefined;
   alertResolvers: Record<string, ((value: unknown) => void) | undefined> = {};
   alertIndex = 0;
 
@@ -27,7 +27,7 @@ export class WebComponentService {
     this.containerService = new ContainerService();
   }
 
-  dynamicImport(viewUrl: string) {
+  dynamicImport(viewUrl: string): Readonly<Promise<any>> {
     // Object.freeze() used as potential marker for bundlers other than webpack
     return Object.freeze(import(/* webpackIgnore: true */ viewUrl));
   }
@@ -56,7 +56,7 @@ export class WebComponentService {
     viewUrl: string,
     nodeId: string,
     isCompoundChild?: boolean
-  ) {
+  ): void {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
 
@@ -83,8 +83,9 @@ export class WebComponentService {
    * @param msg the message to be delivered
    * @param data the data to be sent
    * @param callback the callback function to be called
+   * @param callbackName name of the callback function
    */
-  dispatchLuigiEvent(msg: string, data: object | string, callback?: () => void) {
+  dispatchLuigiEvent(msg: string, data: object | string, callback?: (arg?: any) => void): void {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
@@ -189,8 +190,7 @@ export class WebComponentService {
                   } else {
                     reject('No current route received.');
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -198,23 +198,65 @@ export class WebComponentService {
             nodeParams = params;
             return linkManagerInstance;
           },
+          updateModalPathInternalNavigation: (path: string, modalSettings = {}, addHistoryEntry = false): void => {
+            if (!path) {
+              console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+              return;
+            }
+
+            const options = {
+              fromClosestContext,
+              fromContext,
+              fromParent,
+              fromVirtualTreeRoot,
+              nodeParams
+            };
+
+            this.dispatchLuigiEvent(
+              Events.UPDATE_MODAL_PATH_DATA_REQUEST,
+              Object.assign(options, {
+                history: addHistoryEntry,
+                link: path,
+                modal: modalSettings
+              })
+            );
+          },
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
-          pathExists: () => {
+          pathExists: (link: string) => {
+            const options = {
+              fromContext,
+              fromClosestContext,
+              fromVirtualTreeRoot,
+              fromParent,
+              nodeParams
+            };
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(
-                Events.PATH_EXISTS_REQUEST,
+                Events.CHECK_PATH_EXISTS_REQUEST,
                 this.thisComponent,
-                {},
+                { ...options, link },
                 (exists) => {
                   if (exists) {
                     resolve(true);
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
+              );
+              // For BW compatibility
+              this.containerService.dispatch(
+                Events.PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                { ...options, link },
+                (exists) => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                }
               );
             });
           },
@@ -234,6 +276,12 @@ export class WebComponentService {
           },
           hasBack: () => {
             return false;
+          },
+          updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, {
+              updatedModalSettings: modalSettings,
+              addHistoryEntry
+            });
           }
         };
 
@@ -246,24 +294,25 @@ export class WebComponentService {
 
             return new Promise((resolve) => {
               this.alertResolvers[alertSettings.id] = resolve;
-              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings, (dismissKey?: boolean | string) => {
+                this.resolveAlert(alertSettings.id, dismissKey);
+              });
             });
           },
           showConfirmationModal: (settings: object) => {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
               this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                (data) => {
-                  if (data) {
-                    resolve(data);
+                (confirmed) => {
+                  if (confirmed) {
+                    resolve();
                   } else {
-                    reject(new Error('No data'));
+                    reject();
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -288,8 +337,19 @@ export class WebComponentService {
           setDocumentTitle: (title: string) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
+          setDirtyStatus: (isDirty: boolean) => {
+            this.dispatchLuigiEvent(Events.SET_DIRTY_STATUS_REQUEST, { dirty: isDirty });
+          },
+          setCurrentLocale: (locale: string) => {
+            if (locale) {
+              this.dispatchLuigiEvent(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
+            }
+          },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
+          },
+          addBackdrop: () => {
+            this.dispatchLuigiEvent(Events.ADD_BACKDROP_REQUEST, {});
           },
           hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
@@ -330,6 +390,7 @@ export class WebComponentService {
 
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, {
           params,
+          data: params,
           keepBrowserHistory
         });
       },
@@ -363,6 +424,9 @@ export class WebComponentService {
       getClientPermissions: (): object => {
         return this.thisComponent.clientPermissions || {};
       },
+      addCoreSearchParams: (searchParams = {}, keepBrowserHistory = true) => {
+        this.dispatchLuigiEvent(Events.ADD_SEARCH_PARAMS_REQUEST, { data: searchParams, keepBrowserHistory });
+      },
       getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};
       },
@@ -393,7 +457,7 @@ export class WebComponentService {
     ctx: object,
     nodeId: string,
     isCompoundChild?: boolean
-  ) {
+  ): void {
     const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
 
     if (wc.__postProcess) {
@@ -481,7 +545,7 @@ export class WebComponentService {
    * @param {*} viewUrl the source of the wc bundle
    * @param {*} onload callback function executed after script attached and loaded
    */
-  includeSelfRegisteredWCFromUrl(node: WebComponentNode, viewUrl: string, onload: () => void) {
+  includeSelfRegisteredWCFromUrl(node: WebComponentNode, viewUrl: string, onload: () => void): void {
     if (this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!this.containerService.getContainerManager()._registerWebcomponent) {
@@ -577,7 +641,7 @@ export class WebComponentService {
     node: WebComponentNode,
     nodeId?: string,
     isCompoundChild?: boolean
-  ) {
+  ): void {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
@@ -759,14 +823,14 @@ export class WebComponentService {
    * and then the resolver is removed from the `alertResolvers` object to avoid future invocations. If no resolver is found
    * for the provided `id`, a message is logged to the console indicating that no matching promise is in the list.
    * @param {string} id - The unique identifier for the alert to resolve.
-   * @param {dismissKey} [dismissKey=true] - An optional key or value passed to the resolver. Defaults to `true` if not provided.
+   * @param {boolean|string} dismissKey - An optional key or value passed to the resolver. Defaults to `true` if not provided.
    *
    * @returns {void}
    *
    */
-  resolveAlert(id: string, dismissKey = true): void {
+  resolveAlert(id: string, dismissKey?: boolean | string): void {
     if (this.alertResolvers[id]) {
-      this.alertResolvers[id](dismissKey);
+      this.alertResolvers[id](dismissKey === undefined ? true : dismissKey);
       this.alertResolvers[id] = undefined;
     } else {
       console.log('Promise is not in the list.');
@@ -779,12 +843,12 @@ export class WebComponentService {
    * @param {boolean} confirmed the result of the modal being closed
    *
    */
-  notifyConfirmationModalClosed(confirmed: boolean) {
+  notifyConfirmationModalClosed(confirmed: boolean): void {
     if (this.modalResolver) {
       if (confirmed) {
-        this.modalResolver.resolve(true);
+        this.modalResolver.resolve();
       } else {
-        this.modalResolver.reject(new Error('No data'));
+        this.modalResolver.reject();
       }
 
       this.modalResolver = undefined;

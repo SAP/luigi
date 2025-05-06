@@ -248,7 +248,11 @@ describe('Container Service', () => {
 
       containerAPI.notifyConfirmationModalClosed(result, iframeHandle);
 
-      expect(spy).toHaveBeenCalledWith(iframeHandle, { data: { confirmed: result } }, LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED);
+      expect(spy).toHaveBeenCalledWith(
+        iframeHandle,
+        { data: { confirmed: result } },
+        LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED
+      );
     });
   });
 

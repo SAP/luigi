@@ -120,6 +120,7 @@
 
       luigiContainer.addEventListener(Events.ALERT_REQUEST, (event) => {
         console.log('params:', Events.ALERT_REQUEST, event);
+        console.log('payload', event.payload);
         alert('show-alert-request message received: ' + JSON.stringify(event.detail));
         console.log(event.detail.data.data);
         alertSettings = event.detail.data.data;
@@ -240,8 +241,7 @@
       luigiContainer.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, (event) => {
         console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
         alert(
-          Events.UPDATE_MODAL_PATH_DATA_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data),
+          `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.payload.link}")`,
         );
       });
 
