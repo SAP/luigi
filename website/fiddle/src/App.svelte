@@ -5,6 +5,7 @@
 
   export let luigiVersion = luigiCorePkgInfo.version;
   export let customVersion;
+
   export let versions;
   export let showVersions;
 
