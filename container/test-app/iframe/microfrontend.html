@@ -35,7 +35,7 @@
   <body style="-webkit-font-smoothing: antialiased; color: #515559">
     <div id="imgCnt"></div>
     <div id="textCnt">
-      <h1 id="title">Multi purpose demo page</h1>
+      <h1 id="title">iFrame based Container</h1>
       <p id="content">Some content</p>
       <button onclick="testNav()">test navigate</button>
       <button onclick="testCustom()">test custom message</button>
@@ -47,7 +47,9 @@
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
       <button onclick="testGetHistoryState()">test history state</button>
       <button onclick="testGetContext()">Get Context</button>
-
+      <button onclick="testUpdateModalPathInternalNavigation()">
+        test update modal path internal navigation
+      </button>
       <button onclick="testSetCurrentLocale()">test set current locale</button>
       <button onclick="testSetLocalStorage()">test set local storage</button>
       <button onclick="testRuntimeErrorRequest()">
@@ -73,6 +75,7 @@
       <button onclick="openAsModal()">test openAsModal()</button>
       <button onclick="openAsDrawer()">test openAsDrawer()</button>
       <button onclick="openAsSplitview()">test openAsSplitview()</button>
+      <button onclick="updateModalSettings()">test updateModalSettings</button>
       <span id="result"></span>
     </div>
 
@@ -83,6 +86,13 @@
         LuigiClient.linkManager().openAsModal('openAsModal-iframe', {
           title: 'Modal Title',
           size: 'm',
+        });
+      }
+
+      function updateModalSettings() {
+        LuigiClient.linkManager().updateModalSettings({
+          title: 'Updated modal title',
+          size: 'l',
         });
       }
 
@@ -159,6 +169,18 @@
           id: 'my.contextMessage',
           ...LuigiClient.getContext(),
         });
+      }
+
+      function testUpdateModalPathInternalNavigation() {
+        const history = true;
+        const link = '/test/route';
+        const modal = { title: 'Some modal' };
+
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(
+          link,
+          modal,
+          history,
+        );
       }
 
       function testSetCurrentLocale() {

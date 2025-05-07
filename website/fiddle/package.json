@@ -1,6 +1,24 @@
 {
   "name": "luigi-fiddle",
   "private": true,
+  "scripts": {
+    "start": "npm run dev",
+    "build": "node patch.js && node build_patch_ui5.js && cross-env NODE_ENV=production webpack",
+    "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
+  },
+  "dependencies": {
+    "@luigi-project/client": "2.21.3",
+    "@luigi-project/container": "^1.6.0",
+    "@luigi-project/core": "2.21.3",
+    "@luigi-project/plugin-auth-oauth2": "^2.21.3",
+    "@luigi-project/plugin-auth-oidc": "^2.21.3",
+    "@luigi-project/plugin-auth-oidc-pkce": "^0.42.0",
+    "@ui5/webcomponents": "^2.7.3",
+    "@ui5/webcomponents-fiori": "^2.7.3",
+    "ace-builds": "^1.38.0",
+    "fs-extra": "^11.3.0",
+    "fundamental-styles": "0.23.0"
+  },
   "devDependencies": {
     "braces": "~3.0.3",
     "copy-webpack-plugin": "^11.0.0",
@@ -13,27 +31,9 @@
     "style-loader": "^3.3.3",
     "svelte": "^4.2.19",
     "svelte-loader": "^3.1.9",
-    "webpack": "^5.95.0",
+    "webpack": "^5.99.8",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0"
-  },
-  "scripts": {
-    "start": "npm run dev",
-    "build": "node patch.js && node build_patch_ui5.js && cross-env NODE_ENV=production webpack",
-    "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
-  },
-  "dependencies": {
-    "@luigi-project/client": "2.21.0",
-    "@luigi-project/container": "^1.6.0",
-    "@luigi-project/core": "2.21.0",
-    "@luigi-project/plugin-auth-oauth2": "^2.21.0",
-    "@luigi-project/plugin-auth-oidc": "^2.21.0",
-    "@luigi-project/plugin-auth-oidc-pkce": "^0.42.0",
-    "@ui5/webcomponents": "^2.7.3",
-    "@ui5/webcomponents-fiori": "^2.7.3",
-    "ace-builds": "^1.38.0",
-    "fs-extra": "^11.3.0",
-    "fundamental-styles": "0.23.0"
+    "webpack-dev-server": "^5.2.1"
   },
   "engines": {
     "node": ">=18.19.1"
