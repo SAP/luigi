@@ -1,11 +1,11 @@
 <script>
+  import { onDestroy, onMount } from 'svelte';
+
   import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
-  import { onMount } from 'svelte';
 
   export let luigiVersion = luigiCorePkgInfo.version;
   export let customVersion;
-
   export let versions;
   export let showVersions;
 
@@ -104,13 +104,15 @@
     }
   }
 
+  function handleKeydownEvent(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      event.preventDefault();
+      saveConfig();
+    }
+  }
+
   function initKeyboardEvents() {
-    window.addEventListener('keydown', (event) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-        event.preventDefault();
-        saveConfig();
-      }
-    });
+    window.addEventListener('keydown', handleKeydownEvent);
   }
 
   function saveConfig() {
@@ -174,6 +176,10 @@
     }
     window.location.reload();
   }
+
+  onDestroy(() => {
+    window.removeEventListener('keydown', handleKeydownEvent);
+  });
 
   onMount(async () => {
     await injectLuigiAssets();
