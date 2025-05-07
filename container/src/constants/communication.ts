@@ -178,7 +178,7 @@ export namespace Events {
 export class LuigiEvent extends Event {
   payload?: unknown;
   detail: unknown;
-  private callbackFn: Function;
+  private callbackFn: Function | undefined;
 
   constructor(type: string, data: unknown, payload?: unknown, callback?: Function) {
     super(type);
