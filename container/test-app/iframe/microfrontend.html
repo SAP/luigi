@@ -78,7 +78,7 @@
       <button onclick="openAsDrawer()">test openAsDrawer()</button>
       <button onclick="openAsSplitview()">test openAsSplitview()</button>
       <button onclick="updateModalSettings()">test updateModalSettings</button>
-      <br><br>
+      <br /><br />
       <span id="result"></span>
     </div>
 
@@ -221,10 +221,10 @@
       }
 
       function testGetCurrentRoute() {
-        LuigiClient.linkManager().getCurrentRoute()
+        LuigiClient.linkManager()
+          .getCurrentRoute()
           .then((result) => {
-            document.querySelector('#result').innerHTML =
-              `getCurrentRoute: ${result}`;
+            document.querySelector('#result').innerHTML = `getCurrentRoute: ${result}`;
           });
       }
 
@@ -237,10 +237,10 @@
       }
 
       function testCheckPathExists() {
-        LuigiClient.linkManager().pathExists('/projects/pr2')
+        LuigiClient.linkManager()
+          .pathExists('/projects/pr2')
           .then((result) => {
-            document.querySelector('#result').innerHTML =
-              `pathExists: ${result}`;
+            document.querySelector('#result').innerHTML = `pathExists: ${result}`;
           });
       }
 

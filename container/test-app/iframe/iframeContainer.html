@@ -246,7 +246,7 @@
         if (event.callbackFn && typeof event.callbackFn === 'function') {
           event.callbackFn({
             correlationId: event.detail.data?.data?.id,
-            route: '/test/route'
+            route: '/test/route',
           });
         }
       });
@@ -279,7 +279,7 @@
         if (event.callbackFn && typeof event.callbackFn === 'function') {
           event.callbackFn({
             correlationId: event.detail.data?.data?.id,
-            pathExists: true
+            pathExists: true,
           });
         }
       });
