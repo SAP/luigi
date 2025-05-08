@@ -244,7 +244,10 @@
         );
 
         if (event.callbackFn && typeof event.callbackFn === 'function') {
-          event.callbackFn('/test/route');
+          event.callbackFn({
+            correlationId: event.detail.data?.data?.id,
+            route: '/test/route'
+          });
         }
       });
 
@@ -274,7 +277,10 @@
         );
 
         if (event.callbackFn && typeof event.callbackFn === 'function') {
-          event.callbackFn(true);
+          event.callbackFn({
+            correlationId: event.detail.data?.data?.id,
+            pathExists: true
+          });
         }
       });
 

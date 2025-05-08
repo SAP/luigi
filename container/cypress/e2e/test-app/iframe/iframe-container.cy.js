@@ -363,6 +363,7 @@ describe('Iframe Container Test', () => {
                 .should('be.calledWith', Cypress.sinon.match.object, 'http://localhost:8080')
                 .its('firstCall.args.0')
                 .should('deep.include', { msg: 'luigi.navigation.currentRoute.answer' });
+              cy.wrap($body).contains('getCurrentRoute: /test/route');
             });
         });
       });
@@ -390,6 +391,7 @@ describe('Iframe Container Test', () => {
                 .should('be.calledWith', Cypress.sinon.match.object, 'http://localhost:8080')
                 .its('firstCall.args.0')
                 .should('deep.include', { msg: 'luigi.navigation.pathExists.answer' });
+              cy.wrap($body).contains('pathExists: true');
             });
         });
       });
