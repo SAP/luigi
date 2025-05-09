@@ -39,7 +39,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### NAVIGATION_REQUEST
 
 Event fired when a navigation has been requested by the micro frontend.
-It's dispatched with custom data shown below (check [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details) - some properties are optional.
+It's dispatched with custom data shown below (check [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: NavigationRequestPayload
 
@@ -54,7 +54,7 @@ Type: NavigationRequestPayload
  link: '/test/route',
  nodeParams: {}
 }
-
+ 
 <br><br>
 ```
 
@@ -67,7 +67,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `payload` **AlertRequestPayload** event payload (check [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details)
+*   `payload` **AlertRequestPayload** event payload (check [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
 
 #### Examples
 
@@ -83,7 +83,7 @@ payload: {
  },
  closeAfter: 3000
 }
-
+ 
 <br><br>
 ```
 
@@ -97,7 +97,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### ADD_SEARCH_PARAMS_REQUEST
 
 Event fired when the micro frontend requests the addition of search parameters to the URL.
-It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details) - some properties are optional.
+It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: ParamsRequestPayload
 
@@ -108,14 +108,14 @@ Type: ParamsRequestPayload
  data: {},
  keepBrowserHistory: false
 }
-
+ 
 <br><br>
 ```
 
 ### ADD_NODE_PARAMS_REQUEST
 
 Event fired when the micro frontend requests the addition of node parameters to the URL.
-It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details) - some properties are optional.
+It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: ParamsRequestPayload
 
@@ -126,7 +126,7 @@ Type: ParamsRequestPayload
  data: {},
  keepBrowserHistory: false
 }
-
+ 
 <br><br>
 ```
 
@@ -139,7 +139,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `payload` **ConfirmationModalRequestPayload** event payload (check [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details)
+*   `payload` **ConfirmationModalRequestPayload** event payload (check [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
 
 #### Examples
 
@@ -150,7 +150,7 @@ payload: {
  buttonConfirm: 'Yes',
  buttonDismiss: 'No'
 }
-
+ 
 <br><br>
 ```
 
@@ -179,7 +179,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { currentLocale: 'en' }
-
+ 
 <br><br>
 ```
 
@@ -194,7 +194,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { key: 'luigi-version', value: '2.21.0' }
-
+ 
 <br><br>
 ```
 
@@ -216,7 +216,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: 'some-anchor'
-
+ 
 <br><br>
 ```
 
@@ -236,7 +236,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `payload` **CurrentRouteRequestPayload** event payload (check [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details)
+*   `payload` **CurrentRouteRequestPayload** event payload (check [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
 
 #### Examples
 
@@ -248,7 +248,7 @@ payload: {
  fromVirtualTreeRoot: false,
  nodeParams: {}
 }
-
+ 
 <br><br>
 ```
 
@@ -268,7 +268,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `payload` **ModalPathDataRequestPayload** event payload (check [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details)
+*   `payload` **ModalPathDataRequestPayload** event payload (check [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
 
 #### Examples
 
@@ -283,7 +283,7 @@ payload: {
  modal: { title: 'Some modal' },
  nodeParams: {}
 }
-
+ 
 <br><br>
 ```
 
@@ -296,13 +296,13 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `payload` **ModalSettingsRequestPayload** event payload (check [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts) details)
+*   `payload` **ModalSettingsRequestPayload** event payload (check [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
 
 #### Examples
 
 ```javascript
 payload: { addHistoryEntry: true, updatedModalSettings: {} }
-
+ 
 <br><br>
 ```
 
@@ -317,7 +317,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { link: '/test/route' }
-
+ 
 <br><br>
 ```
 
@@ -332,7 +332,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { dirty: true }
-
+ 
 <br><br>
 ```
 

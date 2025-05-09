@@ -139,11 +139,7 @@ export class ContainerService {
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
-                this.dispatch(
-                  Events.NAVIGATION_REQUEST,
-                  targetCnt,
-                  event.data.params as NavigationRequestPayload
-                );
+                this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params as NavigationRequestPayload);
                 break;
               case LuigiInternalMessageID.ALERT_REQUEST:
                 this.dispatchWithPayload(

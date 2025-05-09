@@ -35,7 +35,7 @@ export namespace Events {
 
   /**
    * Event fired when a navigation has been requested by the micro frontend.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|NavigationRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|NavigationRequestPayload} details) - some properties are optional.
    * @type {NavigationRequestPayload}
    * @example
    * {
@@ -55,7 +55,7 @@ export namespace Events {
    * Event fired when the micro frontend requests to show an alert.
    * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
    * @type {Object.<string, unknown | AlertRequestPayload>}
-   * @property {AlertRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|AlertRequestPayload} details)
+   * @property {AlertRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|AlertRequestPayload} details)
    * @example
    * payload: {
    *  text: 'Custom alert message',
@@ -93,7 +93,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the addition of search parameters to the URL.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ParamsRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
    * @type {ParamsRequestPayload}
    * @example
    * {
@@ -107,7 +107,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the addition of node parameters to the URL.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ParamsRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
    * @type {ParamsRequestPayload}
    * @example
    * {
@@ -123,7 +123,7 @@ export namespace Events {
    * Event fired when the micro frontend requests to show a confirmation modal.
    * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
    * @type {Object.<string, unknown | ConfirmationModalRequestPayload>}
-   * @property {ConfirmationModalRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ConfirmationModalRequestPayload} details)
+   * @property {ConfirmationModalRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ConfirmationModalRequestPayload} details)
    * @example
    * payload: {
    *  header: 'Confirmation',
@@ -215,7 +215,7 @@ export namespace Events {
    * Event fired when the micro frontend requests the current app route.
    * It's dispatched with custom data and the payload shown below - some properties are optional.
    * @type {Object.<string, unknown | CurrentRouteRequestPayload>}
-   * @property {CurrentRouteRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|CurrentRouteRequestPayload} details)
+   * @property {CurrentRouteRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|CurrentRouteRequestPayload} details)
    * @example
    * payload: {
    *  fromClosestContext: false,
@@ -242,7 +242,7 @@ export namespace Events {
    * Event fired when the micro frontend requests to update the modal path parameters.
    * It's dispatched with custom data and the payload shown below - some properties are optional.
    * @type {Object.<string, unknown | ModalPathDataRequestPayload>}
-   * @property {ModalPathDataRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ModalPathDataRequestPayload} details)
+   * @property {ModalPathDataRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalPathDataRequestPayload} details)
    * @example
    * payload: {
    *  fromClosestContext: false,
@@ -263,7 +263,7 @@ export namespace Events {
    * Event fired when the micro frontend requests to update the modal settings.
    * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
    * @type {Object.<string, unknown | ModalSettingsRequestPayload>}
-   * @property {ModalSettingsRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ModalSettingsRequestPayload} details)
+   * @property {ModalSettingsRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalSettingsRequestPayload} details)
    * @example
    * payload: { addHistoryEntry: true, updatedModalSettings: {} }
    *  
