@@ -34,7 +34,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 #### Properties
 
 *   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event ID
-*   `data` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** event data<br><br>
+*   `data` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** event data
+
+Returns **void** <br><br>
 
 ### NAVIGATION_REQUEST
 
@@ -54,9 +56,9 @@ Type: NavigationRequestPayload
  link: '/test/route',
  nodeParams: {}
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### ALERT_REQUEST
 
@@ -83,9 +85,9 @@ payload: {
  },
  closeAfter: 3000
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### INITIALIZED
 
@@ -93,6 +95,8 @@ Event fired when the micro frontend has been initialized.
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** <br><br>
 
 ### ADD_SEARCH_PARAMS_REQUEST
 
@@ -108,9 +112,9 @@ Type: ParamsRequestPayload
  data: {},
  keepBrowserHistory: false
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### ADD_NODE_PARAMS_REQUEST
 
@@ -126,9 +130,9 @@ Type: ParamsRequestPayload
  data: {},
  keepBrowserHistory: false
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### SHOW_CONFIRMATION_MODAL_REQUEST
 
@@ -150,9 +154,9 @@ payload: {
  buttonConfirm: 'Yes',
  buttonDismiss: 'No'
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### SHOW_LOADING_INDICATOR_REQUEST
 
@@ -161,12 +165,16 @@ It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+Returns **void** <br><br>
+
 ### HIDE_LOADING_INDICATOR_REQUEST
 
 Event fired when the micro frontend requests to hide the loading indicator.
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** <br><br>
 
 ### SET_CURRENT_LOCALE_REQUEST
 
@@ -179,9 +187,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { currentLocale: 'en' }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### LOCAL_STORAGE_SET_REQUEST
 
@@ -194,9 +202,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { key: 'luigi-version', value: '2.21.0' }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### RUNTIME_ERROR_HANDLING_REQUEST
 
@@ -204,6 +212,8 @@ Event fired when the micro frontend requests to handle errors that might happen 
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** <br><br>
 
 ### SET_ANCHOR_LINK_REQUEST
 
@@ -216,9 +226,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: 'some-anchor'
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### SET_THIRD_PARTY_COOKIES_REQUEST
 
@@ -226,6 +236,8 @@ Event fired when the micro frontend requests to set third-party cookies.
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** <br><br>
 
 ### GET_CURRENT_ROUTE_REQUEST
 
@@ -248,9 +260,9 @@ payload: {
  fromVirtualTreeRoot: false,
  nodeParams: {}
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### NAVIGATION_COMPLETED_REPORT
 
@@ -258,6 +270,8 @@ Event fired to report that the micro frontend's navigation has completed.
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** <br><br>
 
 ### UPDATE_MODAL_PATH_DATA_REQUEST
 
@@ -283,9 +297,9 @@ payload: {
  modal: { title: 'Some modal' },
  nodeParams: {}
 }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### UPDATE_MODAL_SETTINGS_REQUEST
 
@@ -302,9 +316,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { addHistoryEntry: true, updatedModalSettings: {} }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### CHECK_PATH_EXISTS_REQUEST
 
@@ -317,9 +331,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { link: '/test/route' }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### SET_DIRTY_STATUS_REQUEST
 
@@ -332,9 +346,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ```javascript
 payload: { dirty: true }
- 
-<br><br>
 ```
+
+Returns **void** <br><br>
 
 ### SET_VIEW_GROUP_DATA_REQUEST
 
@@ -343,12 +357,16 @@ It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
+Returns **void** <br><br>
+
 ### GO_BACK_REQUEST
 
 Event fired when the micro frontend requests to navigate back.
 It's dispatched with custom data.
 
 Type: unknown
+
+Returns **void** <br><br>
 
 ### ADD_BACKDROP_REQUEST
 
@@ -357,9 +375,13 @@ It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+Returns **void** <br><br>
+
 ### REMOVE_BACKDROP_REQUEST
 
 Event fired when the micro frontend requests to remove the backdrop.
 It's dispatched with custom data.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Returns **void** 

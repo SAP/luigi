@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/no-trailing-spaces */
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference path="../../typings/constants/event-payloads.ts" />
 import type {
@@ -19,7 +18,8 @@ export namespace Events {
    * @type {Object}
    * @property {string} id - event ID
    * @property {object} data - event data
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const CUSTOM_MESSAGE = 'custom-message';
@@ -28,7 +28,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const GET_CONTEXT_REQUEST = 'get-context-request';
@@ -46,7 +46,8 @@ export namespace Events {
    *  link: '/test/route',
    *  nodeParams: {}
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
@@ -68,7 +69,8 @@ export namespace Events {
    *  },
    *  closeAfter: 3000
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const ALERT_REQUEST = 'show-alert-request';
@@ -77,7 +79,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const ALERT_CLOSED = 'close-alert-request';
@@ -86,7 +88,8 @@ export namespace Events {
    * Event fired when the micro frontend has been initialized.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const INITIALIZED = 'initialized';
@@ -100,7 +103,8 @@ export namespace Events {
    *  data: {},
    *  keepBrowserHistory: false
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
@@ -114,7 +118,8 @@ export namespace Events {
    *  data: {},
    *  keepBrowserHistory: false
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
@@ -131,7 +136,8 @@ export namespace Events {
    *  buttonConfirm: 'Yes',
    *  buttonDismiss: 'No'
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
@@ -140,7 +146,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to show a loading indicator.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'show-loading-indicator-request';
@@ -149,7 +156,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to hide the loading indicator.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const HIDE_LOADING_INDICATOR_REQUEST = 'hide-loading-indicator-request';
@@ -159,7 +167,8 @@ export namespace Events {
    * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, unknown>}
    * @example payload: { currentLocale: 'en' }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
@@ -169,7 +178,8 @@ export namespace Events {
    * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, unknown>}
    * @example payload: { key: 'luigi-version', value: '2.21.0' }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
@@ -178,7 +188,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
@@ -188,7 +199,8 @@ export namespace Events {
    * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, unknown | string>}
    * @example payload: 'some-anchor'
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
@@ -197,7 +209,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to set third-party cookies.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SET_THIRD_PARTY_COOKIES_REQUEST = 'set-third-party-cookies-request';
@@ -206,7 +219,7 @@ export namespace Events {
    * Event left due to historical reasons - use 'GO_BACK_REQUEST' instead.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
@@ -224,7 +237,8 @@ export namespace Events {
    *  fromVirtualTreeRoot: false,
    *  nodeParams: {}
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
@@ -233,7 +247,8 @@ export namespace Events {
    * Event fired to report that the micro frontend's navigation has completed.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
@@ -254,7 +269,8 @@ export namespace Events {
    *  modal: { title: 'Some modal' },
    *  nodeParams: {}
    * }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
@@ -266,7 +282,8 @@ export namespace Events {
    * @property {ModalSettingsRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalSettingsRequestPayload} details)
    * @example
    * payload: { addHistoryEntry: true, updatedModalSettings: {} }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
@@ -276,7 +293,8 @@ export namespace Events {
    * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, string>}
    * @example payload: { link: '/test/route' }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
@@ -286,7 +304,8 @@ export namespace Events {
    * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, boolean>}
    * @example payload: { dirty: true }
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
@@ -295,7 +314,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to set the view group data.
    * It's dispatched with custom data.
    * @type {Object.<string, string>}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
@@ -304,7 +324,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
@@ -313,7 +333,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
@@ -322,7 +342,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
@@ -331,7 +351,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
@@ -340,7 +360,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
@@ -349,7 +369,7 @@ export namespace Events {
    * Event left due to historical reasons - use 'CHECK_PATH_EXISTS_REQUEST' instead.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const PATH_EXISTS_REQUEST = 'path-exists-request';
@@ -358,7 +378,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to navigate back.
    * It's dispatched with custom data.
    * @type {unknown}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const GO_BACK_REQUEST = 'go-back-request';
@@ -367,7 +388,7 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *  
+   *
    * <br><br>
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
@@ -376,7 +397,8 @@ export namespace Events {
    * Event fired when the micro frontend requests to display the backdrop.
    * It's dispatched with custom data.
    * @type {Object}
-   *  
+   * @returns {void}
+   *
    * <br><br>
    */
   export const ADD_BACKDROP_REQUEST = 'add-backdrop-request';
@@ -385,6 +407,7 @@ export namespace Events {
    * Event fired when the micro frontend requests to remove the backdrop.
    * It's dispatched with custom data.
    * @type {Object}
+   * @returns {void}
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }
