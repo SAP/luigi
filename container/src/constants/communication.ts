@@ -1,34 +1,61 @@
+/* eslint-disable @stylistic/no-trailing-spaces */
 /* eslint-disable @typescript-eslint/triple-slash-reference */
-/// <reference path="../../typings/constants/container-events.ts" />
+/// <reference path="../../typings/constants/event-payloads.ts" />
 import type {
   AlertRequestPayload,
   ConfirmationModalRequestPayload,
   CurrentRouteRequestPayload,
   ModalPathDataRequestPayload,
-  ModalSettingsRequestPayload
-} from 'ContainerEvents';
+  ModalSettingsRequestPayload,
+  NavigationRequestPayload,
+  ParamsRequestPayload
+} from 'EventPayloads';
 
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 export namespace Events {
   /**
    * Event fired when the micro frontend sends a custom message.
+   * It's dispatched with custom data.
+   * @type {Object}
+   * @property {string} id - event ID
+   * @property {object} data - event data
+   *  
+   * <br><br>
    */
   export const CUSTOM_MESSAGE = 'custom-message';
 
   /**
-   * Event fired when the micro frontend requests the context data.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const GET_CONTEXT_REQUEST = 'get-context-request';
 
   /**
    * Event fired when a navigation has been requested by the micro frontend.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|NavigationRequestPayload} details) - some properties are optional.
+   * @type {NavigationRequestPayload}
+   * @example
+   * {
+   *  fromClosestContext: false,
+   *  fromContext: null,
+   *  fromParent: true,
+   *  fromVirtualTreeRoot: false,
+   *  link: '/test/route',
+   *  nodeParams: {}
+   * }
+   *  
+   * <br><br>
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
 
   /**
    * Event fired when the micro frontend requests to show an alert.
-   * It's dispatched with the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
+   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
    * @type {Object.<string, unknown | AlertRequestPayload>}
+   * @property {AlertRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|AlertRequestPayload} details)
    * @example
    * payload: {
    *  text: 'Custom alert message',
@@ -41,34 +68,62 @@ export namespace Events {
    *  },
    *  closeAfter: 3000
    * }
+   *  
+   * <br><br>
    */
   export const ALERT_REQUEST = 'show-alert-request';
 
   /**
    * Event left due to historical reasons - do not use.
    * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const ALERT_CLOSED = 'close-alert-request';
 
   /**
    * Event fired when the micro frontend has been initialized.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const INITIALIZED = 'initialized';
 
   /**
    * Event fired when the micro frontend requests the addition of search parameters to the URL.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ParamsRequestPayload} details) - some properties are optional.
+   * @type {ParamsRequestPayload}
+   * @example
+   * {
+   *  data: {},
+   *  keepBrowserHistory: false
+   * }
+   *  
+   * <br><br>
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
 
   /**
    * Event fired when the micro frontend requests the addition of node parameters to the URL.
+   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ParamsRequestPayload} details) - some properties are optional.
+   * @type {ParamsRequestPayload}
+   * @example
+   * {
+   *  data: {},
+   *  keepBrowserHistory: false
+   * }
+   *  
+   * <br><br>
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
 
   /**
    * Event fired when the micro frontend requests to show a confirmation modal.
-   * It's dispatched with the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
+   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
    * @type {Object.<string, unknown | ConfirmationModalRequestPayload>}
+   * @property {ConfirmationModalRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ConfirmationModalRequestPayload} details)
    * @example
    * payload: {
    *  header: 'Confirmation',
@@ -76,61 +131,91 @@ export namespace Events {
    *  buttonConfirm: 'Yes',
    *  buttonDismiss: 'No'
    * }
+   *  
+   * <br><br>
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
 
   /**
    * Event fired when the micro frontend requests to show a loading indicator.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'show-loading-indicator-request';
 
   /**
    * Event fired when the micro frontend requests to hide the loading indicator.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const HIDE_LOADING_INDICATOR_REQUEST = 'hide-loading-indicator-request';
 
   /**
    * Event fired when the micro frontend requests to set the current locale.
-   * It's dispatched with the payload shown below.
+   * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, unknown>}
    * @example payload: { currentLocale: 'en' }
+   *  
+   * <br><br>
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
   /**
    * Event fired when the micro frontend requests to modify the local storage.
-   * It's dispatched with the payload shown below.
+   * It's dispatched with custom data and the payload shown below.
    * @type {Object.<string, unknown>}
    * @example payload: { key: 'luigi-version', value: '2.21.0' }
+   *  
+   * <br><br>
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
   /**
    * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
   /**
    * Event fired when the micro frontend requests to set the anchor of the URL.
-   * It's dispatched with the payload - string value (like 'some-anchor').
+   * It's dispatched with custom data and the payload shown below.
+   * @type {Object.<string, unknown | string>}
+   * @example payload: 'some-anchor'
+   *  
+   * <br><br>
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
   /**
    * Event fired when the micro frontend requests to set third-party cookies.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const SET_THIRD_PARTY_COOKIES_REQUEST = 'set-third-party-cookies-request';
 
   /**
-   * Event fired when the micro frontend requests to navigate back.
-   * @deprecated use GO_BACK_REQUEST
+   * Event left due to historical reasons - use 'GO_BACK_REQUEST' instead.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
   /**
    * Event fired when the micro frontend requests the current app route.
-   * It's dispatched with the payload shown below - some properties are optional.
+   * It's dispatched with custom data and the payload shown below - some properties are optional.
    * @type {Object.<string, unknown | CurrentRouteRequestPayload>}
+   * @property {CurrentRouteRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|CurrentRouteRequestPayload} details)
    * @example
    * payload: {
    *  fromClosestContext: false,
@@ -139,18 +224,25 @@ export namespace Events {
    *  fromVirtualTreeRoot: false,
    *  nodeParams: {}
    * }
+   *  
+   * <br><br>
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
   /**
    * Event fired to report that the micro frontend's navigation has completed.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
 
   /**
    * Event fired when the micro frontend requests to update the modal path parameters.
-   * It's dispatched with the payload shown below - some properties are optional.
+   * It's dispatched with custom data and the payload shown below - some properties are optional.
    * @type {Object.<string, unknown | ModalPathDataRequestPayload>}
+   * @property {ModalPathDataRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ModalPathDataRequestPayload} details)
    * @example
    * payload: {
    *  fromClosestContext: false,
@@ -162,88 +254,137 @@ export namespace Events {
    *  modal: { title: 'Some modal' },
    *  nodeParams: {}
    * }
+   *  
+   * <br><br>
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
    * Event fired when the micro frontend requests to update the modal settings.
-   * It's dispatched with the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
+   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
    * @type {Object.<string, unknown | ModalSettingsRequestPayload>}
+   * @property {ModalSettingsRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-type.d.ts|ModalSettingsRequestPayload} details)
    * @example
    * payload: { addHistoryEntry: true, updatedModalSettings: {} }
+   *  
+   * <br><br>
    */
   export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
 
   /**
    * Event fired when the micro frontend requests to check the validity of a path.
-   * It's dispatched with the payload shown below.
-   * @type {Object.<string, unknown>}
+   * It's dispatched with custom data and the payload shown below.
+   * @type {Object.<string, string>}
    * @example payload: { link: '/test/route' }
+   *  
+   * <br><br>
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
   /**
    * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
-   * It's dispatched with the payload shown below.
-   * @type {Object.<string, unknown>}
+   * It's dispatched with custom data and the payload shown below.
+   * @type {Object.<string, boolean>}
    * @example payload: { dirty: true }
+   *  
+   * <br><br>
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
   /**
    * Event fired when the micro frontend requests to set the view group data.
+   * It's dispatched with custom data.
+   * @type {Object.<string, string>}
+   *  
+   * <br><br>
    */
   export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
 
   /**
-   * Event fired when the micro frontend requests to set the document title.
+   * Event left due to historical reasons - do not use.
    * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
   /**
-   * Event fired when the micro frontend requests to open the user settings.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
 
   /**
-   * Event fired when the micro frontend requests to close the user settings.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
 
   /**
-   * Event fired when the micro frontend requests to collapse left side navigation.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
 
   /**
-   * Event fired when the micro frontend requests to update the top navigation.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
 
   /**
-   * Event fired when the micro frontend requests to check if the path exists.
-   * @deprecated use CHECK_PATH_EXISTS_REQUEST
+   * Event left due to historical reasons - use 'CHECK_PATH_EXISTS_REQUEST' instead.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
   /**
    * Event fired when the micro frontend requests to navigate back.
+   * It's dispatched with custom data.
+   * @type {unknown}
+   *  
+   * <br><br>
    */
   export const GO_BACK_REQUEST = 'go-back-request';
 
   /**
-   * Event fired when the micro frontend requests to check if there are any preserved views.
+   * Event left due to historical reasons - do not use.
+   * @deprecated
+   * @ignore
+   *  
+   * <br><br>
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
 
   /**
    * Event fired when the micro frontend requests to display the backdrop.
+   * It's dispatched with custom data.
+   * @type {Object}
+   *  
+   * <br><br>
    */
   export const ADD_BACKDROP_REQUEST = 'add-backdrop-request';
 
   /**
    * Event fired when the micro frontend requests to remove the backdrop.
+   * It's dispatched with custom data.
+   * @type {Object}
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }

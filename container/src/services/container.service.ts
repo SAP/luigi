@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
-/// <reference path="../../typings/constants/container-events.ts" />
+/// <reference path="../../typings/constants/event-payloads.ts" />
 import type {
   AlertRequestPayload,
   ConfirmationModalRequestPayload,
   CurrentRouteRequestPayload,
   ModalPathDataRequestPayload,
-  ModalSettingsRequestPayload
-} from 'ContainerEvents';
+  ModalSettingsRequestPayload,
+  NavigationRequestPayload
+} from 'EventPayloads';
 import { Events, LuigiEvent } from '../constants/communication';
 import type { ContainerElement, IframeHandle } from '../constants/container.model';
 import { LuigiInternalMessageID } from '../constants/internal-communication';
@@ -138,7 +139,11 @@ export class ContainerService {
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
-                this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
+                this.dispatch(
+                  Events.NAVIGATION_REQUEST,
+                  targetCnt,
+                  event.data.params as NavigationRequestPayload
+                );
                 break;
               case LuigiInternalMessageID.ALERT_REQUEST:
                 this.dispatchWithPayload(
@@ -149,7 +154,7 @@ export class ContainerService {
                 );
                 break;
               case LuigiInternalMessageID.INITIALIZED:
-                this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
+                this.dispatch(Events.INITIALIZED, targetCnt, event.data?.params || {});
                 break;
               case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
                 this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, {

@@ -1,4 +1,4 @@
-declare module 'ContainerEvents' {
+declare module 'EventPayloads' {
   type ModalSettings = {
     height?: 'px' | '%' | 'rem' | 'em' | 'vh' | 'vw';
     size?: 'fullscreen' | 'l' | 'm' | 's';
@@ -42,9 +42,20 @@ declare module 'ContainerEvents' {
     };
   }
 
+  export interface NavigationRequestPayload extends CurrentRouteRequestPayload {
+    link?: string;
+  }
+
   export interface ModalPathDataRequestPayload extends CurrentRouteRequestPayload {
     history?: boolean;
     link?: string;
     modal?: ModalSettings;
+  }
+
+  export interface ParamsRequestPayload {
+    data?: {
+      [key: string]: any;
+    };
+    keepBrowserHistory?: boolean;
   }
 }
