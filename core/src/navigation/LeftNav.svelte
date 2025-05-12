@@ -989,12 +989,11 @@
     {/if}
   </div>
 {:else if vegaSideNav}
-  <div
-    dir="ltr"
-    class="fd-app__sidebar is-cozy {hideNavComponent ? 'hideNavComponent' : ''}"
-  >
-    <nav class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''} {vegaSideNav ? 'vega-nav' :''}" 
-      aria-roledescription="Main Navigation">
+  <div dir="ltr" class="fd-app__sidebar is-cozy {hideNavComponent ? 'hideNavComponent' : ''}">
+    <nav
+      class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''} {vegaSideNav ? 'vega-nav' : ''}"
+      aria-roledescription="Main Navigation"
+    >
       <div class="fd-side-nav__container fd-side-nav__container--top">
         <ul class="fd-navigation-list level-1" role="tree" aria-roledescription="Navigation List Tree">
           <li class="fd-navigation-list__item" role="none">
