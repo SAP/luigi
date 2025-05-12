@@ -992,9 +992,9 @@
   <div
     dir="ltr"
     class="fd-app__sidebar is-cozy {hideNavComponent ? 'hideNavComponent' : ''}"
-    styleo="width: var(--luigi__left-sidenav--width);"
   >
-    <nav class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''}" aria-roledescription="Main Navigation">
+    <nav class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''} {vegaSideNav ? 'vega-nav' :''}" 
+      aria-roledescription="Main Navigation">
       <div class="fd-side-nav__container fd-side-nav__container--top">
         <ul class="fd-navigation-list level-1" role="tree" aria-roledescription="Navigation List Tree">
           <li class="fd-navigation-list__item" role="none">
@@ -1757,11 +1757,13 @@
         }
       }
     }
-
+    .fd-side-nav:not(.vega-nav) {
+      height: 100%;
+      width: var(--luigi__left-sidenav--width);
+    }
     .fd-side-nav,
     .fd-side-nav {
       height: 100%;
-      width: var(--luigi__left-sidenav--width);
       //workaround fd v39
       border-right: var(--sapList_BorderWidth) solid;
       border-right-color: var(--sapGroup_ContentBorderColor);
