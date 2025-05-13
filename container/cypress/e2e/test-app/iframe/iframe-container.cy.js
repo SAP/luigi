@@ -68,6 +68,7 @@ describe('Iframe Container Test', () => {
             .click()
             .then(() => {
               cy.get('@notifyConfirmationModalClosed').should('have.been.called');
+              cy.wrap($body).contains('showConfirmationModal: true');
             });
         });
     });
@@ -88,6 +89,7 @@ describe('Iframe Container Test', () => {
             .click()
             .then(() => {
               cy.get('@notifyAlertClosed').should('have.been.called');
+              cy.wrap($body).contains('showAlert: true');
             });
         });
     });

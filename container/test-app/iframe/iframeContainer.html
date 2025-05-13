@@ -130,8 +130,8 @@
         if (alertSettings?.settings?.text !== 'Callback Test') {
           showAnAlert(alertSettings);
         } else {
-          if (event.callbackFn && typeof event.callbackFn === 'function') {
-            event.callbackFn(true);
+          if (event.callback && typeof event.callback === 'function') {
+            event.callback(true);
           }
         }
       });
@@ -159,8 +159,8 @@
         if (data?.data?.data?.settings?.header !== 'Callback Test') {
           luigiContainer.notifyConfirmationModalClosed(val);
         } else {
-          if (event.callbackFn && typeof event.callbackFn === 'function') {
-            event.callbackFn(true);
+          if (event.callback && typeof event.callback === 'function') {
+            event.callback(true);
           }
         }
       });
@@ -243,11 +243,8 @@
           'message received: ' + JSON.stringify(event.detail.data),
         );
 
-        if (event.callbackFn && typeof event.callbackFn === 'function') {
-          event.callbackFn({
-            correlationId: event.detail.data?.data?.id,
-            route: '/test/route',
-          });
+        if (event.callback && typeof event.callback === 'function') {
+          event.callback('/test/route');
         }
       });
 
@@ -276,11 +273,8 @@
           'message received: ' + JSON.stringify(event.detail.data),
         );
 
-        if (event.callbackFn && typeof event.callbackFn === 'function') {
-          event.callbackFn({
-            correlationId: event.detail.data?.data?.id,
-            pathExists: true,
-          });
+        if (event.callback && typeof event.callback === 'function') {
+          event.callback(true);
         }
       });
 

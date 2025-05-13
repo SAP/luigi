@@ -128,7 +128,7 @@
       }
 
       function testAddNodeParams() {
-        LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
+        LuigiClient.addNodeParams({ luigi: 'nodeParams' }, true);
       }
 
       function testGetNodeParams() {
@@ -159,6 +159,8 @@
           body: 'Are you sure you want to do this?',
           buttonConfirm: 'Yes',
           buttonDismiss: 'No',
+        }).then(() => {
+          document.querySelector('#result').innerHTML = 'showConfirmationModal: true';
         });
       }
 
@@ -300,6 +302,8 @@
         LuigiClient.uxManager().showAlert({
           text: 'Callback Test',
           type: 'info',
+        }).then((result) => {
+          document.querySelector('#result').innerHTML = `showAlert: ${result}`;
         });
       }
 

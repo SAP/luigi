@@ -208,11 +208,14 @@ export class ContainerService {
                   targetCnt,
                   event,
                   event.data.data,
-                  (data: object) => {
+                  (route: string) => {
                     target.postMessage(
                       {
                         msg: LuigiInternalMessageID.SEND_CURRENT_ROUTE_ANSWER,
-                        data
+                        data: {
+                          correlationId: event.data?.data?.id,
+                          route
+                        }
                       },
                       event.origin
                     );
@@ -237,11 +240,14 @@ export class ContainerService {
                   targetCnt,
                   event,
                   event.data.data,
-                  (data: object) => {
+                  (pathExists: boolean) => {
                     target.postMessage(
                       {
                         msg: LuigiInternalMessageID.SEND_PATH_EXISTS_ANSWER,
-                        data
+                        data: {
+                          correlationId: event.data?.data?.id,
+                          pathExists
+                        }
                       },
                       event.origin
                     );
