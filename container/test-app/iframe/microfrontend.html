@@ -153,15 +153,17 @@
       }
 
       function testConfirmationModalCallback() {
-        LuigiClient.uxManager().showConfirmationModal({
-          type: 'confirmation',
-          header: 'Callback Test',
-          body: 'Are you sure you want to do this?',
-          buttonConfirm: 'Yes',
-          buttonDismiss: 'No',
-        }).then(() => {
-          document.querySelector('#result').innerHTML = 'showConfirmationModal: true';
-        });
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            type: 'confirmation',
+            header: 'Callback Test',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No',
+          })
+          .then(() => {
+            document.querySelector('#result').innerHTML = 'showConfirmationModal: true';
+          });
       }
 
       function testShowLoadingIndicator() {
@@ -299,12 +301,14 @@
       }
 
       function testAlertCallback() {
-        LuigiClient.uxManager().showAlert({
-          text: 'Callback Test',
-          type: 'info',
-        }).then((result) => {
-          document.querySelector('#result').innerHTML = `showAlert: ${result}`;
-        });
+        LuigiClient.uxManager()
+          .showAlert({
+            text: 'Callback Test',
+            type: 'info',
+          })
+          .then((result) => {
+            document.querySelector('#result').innerHTML = `showAlert: ${result}`;
+          });
       }
 
       function testShowAlertWithNotifyAlertClosed() {
