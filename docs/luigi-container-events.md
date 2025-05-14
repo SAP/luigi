@@ -90,7 +90,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend has been initialized.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -155,7 +155,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to show a loading indicator.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -163,7 +163,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to hide the loading indicator.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -206,7 +206,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -229,7 +229,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to set third-party cookies.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -258,7 +258,7 @@ Returns **void** <br><br>
 
 Event fired to report that the micro frontend's navigation has completed.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -377,7 +377,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to display the backdrop.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** <br><br>
 
@@ -385,6 +385,6 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to remove the backdrop.
 
-Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
 
 Returns **void** 

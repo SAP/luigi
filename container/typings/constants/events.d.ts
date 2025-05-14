@@ -86,6 +86,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend has been initialized.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -142,6 +143,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a loading indicator.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -150,6 +152,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to hide the loading indicator.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -187,6 +190,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -206,6 +210,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set third-party cookies.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -241,6 +246,7 @@ export namespace Events {
 
   /**
    * Event fired to report that the micro frontend's navigation has completed.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -405,6 +411,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to display the backdrop.
+   * @type {Event}
    * @returns {void}
    *
    * <br><br>
@@ -413,6 +420,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to remove the backdrop.
+   * @type {Event}
    * @returns {void}
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
