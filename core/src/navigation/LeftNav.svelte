@@ -1030,10 +1030,12 @@
       </div>
     {/if}
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-     
+
     {#if vegaSideNav}
       <nav
-        class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''} {vegaSideNav ? 'vega-nav' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
+        class="fd-side-nav {isSemiCollapsed ? 'is-collapsed' : ''} {vegaSideNav ? 'vega-nav' : ''} {navHeader
+          ? 'lui-nav-header-visible'
+          : ''}"
         aria-roledescription="Main Navigation"
       >
         <div class="fd-side-nav__container fd-side-nav__container--top">
@@ -1313,7 +1315,9 @@
       </nav>
     {:else}
       <nav
-        class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
+        class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader
+          ? 'lui-nav-header-visible'
+          : ''}"
         on:keyup={handleKey}
         data-testid="semiCollapsibleLeftNav"
       >
@@ -1455,7 +1459,8 @@
                                     href={getRouteLink(node)}
                                     class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                                     on:click={(event) => {
-                                      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                        handleClick(node);
                                     }}
                                     on:keyup={!addNavHrefForAnchor
                                       ? (event) => handleEnterPressed(event, node)
@@ -1555,7 +1560,10 @@
                             />
                           {:else}
                             <span class="fd-nested-list__icon sap-icon">
-                              <img src={nodes.metaInfo.icon} alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''} />
+                              <img
+                                src={nodes.metaInfo.icon}
+                                alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}
+                              />
                             </span>
                           {/if}
                         {/if}
