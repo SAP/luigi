@@ -1178,7 +1178,10 @@
                               />
                             {:else}
                               <span class="fd-navigation__icon" role="presentation" aria-hidden="true">
-                                <img src={nodes.metaInfo.icon} alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''} />
+                                <img
+                                  src={nodes.metaInfo.icon}
+                                  alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}
+                                />
                               </span>
                             {/if}
                             <span class="fd-navigation__text">{$getTranslation(key)}</span>
@@ -1241,7 +1244,11 @@
                                 </div>
                               {/if}
 
-                              <ul class="fd-navigation__list fd-navigation__list--child-items" role="tree" tabindex="-1">
+                              <ul
+                                class="fd-navigation__list fd-navigation__list--child-items"
+                                role="tree"
+                                tabindex="-1"
+                              >
                                 {#each nodes as node}
                                   {#if !node.hideFromNav}
                                     {#if node.label}
