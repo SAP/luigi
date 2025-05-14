@@ -1836,9 +1836,9 @@
   }
 
   .fd-side-nav--condensed .lui-fd-side-nav-wrapper > .fd-nested-list {
-    &> .fd-nested-list__button,
-    &> .fd-nested-list__group-header,
-    &> .fd-nested-list__title {
+    & > .fd-nested-list__button,
+    & > .fd-nested-list__group-header,
+    & > .fd-nested-list__title {
       display: none;
     }
   }
