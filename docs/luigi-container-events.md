@@ -17,7 +17,7 @@ meta -->
 # Luigi Container Events
 
 This document outlines the events provided by the Luigi Container.<br/>
-Each event contains a `payload` property, where additional data might be passed and utilized for internal objectives.<br/>
+Some events contain an additional payload which can be utilized for internal objectives.<br/>
 In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Container. Source list of all events can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
 
 ## Event Reference
@@ -27,7 +27,7 @@ In addition you can use standard `addEventListener` function to react on events 
 ### CUSTOM_MESSAGE
 
 Event fired when the micro frontend sends a custom message.
-It's dispatched with custom data.
+It's dispatched with custom payload.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -41,7 +41,7 @@ Returns **void** <br><br>
 ### NAVIGATION_REQUEST
 
 Event fired when a navigation has been requested by the micro frontend.
-It's dispatched with custom data shown below (check [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+It's dispatched with custom payload shown below (check [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: NavigationRequestPayload
 
@@ -63,18 +63,15 @@ Returns **void** <br><br>
 ### ALERT_REQUEST
 
 Event fired when the micro frontend requests to show an alert.
-It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
+It's dispatched with custom payload shown below (check [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | AlertRequestPayload)>
-
-#### Properties
-
-*   `payload` **AlertRequestPayload** event payload (check [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
+Type: AlertRequestPayload
 
 #### Examples
 
 ```javascript
-payload: {
+{
  text: 'Custom alert message',
  type: 'info',
  links: {
@@ -92,16 +89,15 @@ Returns **void** <br><br>
 ### INITIALIZED
 
 Event fired when the micro frontend has been initialized.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### ADD_SEARCH_PARAMS_REQUEST
 
 Event fired when the micro frontend requests the addition of search parameters to the URL.
-It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+It's dispatched with custom payload shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: ParamsRequestPayload
 
@@ -119,7 +115,7 @@ Returns **void** <br><br>
 ### ADD_NODE_PARAMS_REQUEST
 
 Event fired when the micro frontend requests the addition of node parameters to the URL.
-It's dispatched with custom data shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+It's dispatched with custom payload shown below (check [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
 Type: ParamsRequestPayload
 
@@ -137,18 +133,15 @@ Returns **void** <br><br>
 ### SHOW_CONFIRMATION_MODAL_REQUEST
 
 Event fired when the micro frontend requests to show a confirmation modal.
-It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
+It's dispatched with custom payload shown below (check [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ConfirmationModalRequestPayload)>
-
-#### Properties
-
-*   `payload` **ConfirmationModalRequestPayload** event payload (check [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
+Type: ConfirmationModalRequestPayload
 
 #### Examples
 
 ```javascript
-payload: {
+{
  header: 'Confirmation',
  body: 'Are you sure you want to do this?',
  buttonConfirm: 'Yes',
@@ -161,32 +154,32 @@ Returns **void** <br><br>
 ### SHOW_LOADING_INDICATOR_REQUEST
 
 Event fired when the micro frontend requests to show a loading indicator.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### HIDE_LOADING_INDICATOR_REQUEST
 
 Event fired when the micro frontend requests to hide the loading indicator.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### SET_CURRENT_LOCALE_REQUEST
 
 Event fired when the micro frontend requests to set the current locale.
-It's dispatched with custom data and the payload shown below.
+It's dispatched with custom payload shown below.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 #### Examples
 
 ```javascript
-payload: { currentLocale: 'en' }
+{
+ currentLocale: 'en'
+}
 ```
 
 Returns **void** <br><br>
@@ -194,14 +187,17 @@ Returns **void** <br><br>
 ### LOCAL_STORAGE_SET_REQUEST
 
 Event fired when the micro frontend requests to modify the local storage.
-It's dispatched with custom data and the payload shown below.
+It's dispatched with custom payload shown below.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 #### Examples
 
 ```javascript
-payload: { key: 'luigi-version', value: '2.21.0' }
+{
+ key: 'luigi-version',
+ value: '2.21.0'
+}
 ```
 
 Returns **void** <br><br>
@@ -209,23 +205,22 @@ Returns **void** <br><br>
 ### RUNTIME_ERROR_HANDLING_REQUEST
 
 Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### SET_ANCHOR_LINK_REQUEST
 
 Event fired when the micro frontend requests to set the anchor of the URL.
-It's dispatched with custom data and the payload shown below.
+It's dispatched with custom payload shown below.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 #### Examples
 
 ```javascript
-payload: 'some-anchor'
+'some-anchor'
 ```
 
 Returns **void** <br><br>
@@ -233,27 +228,22 @@ Returns **void** <br><br>
 ### SET_THIRD_PARTY_COOKIES_REQUEST
 
 Event fired when the micro frontend requests to set third-party cookies.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### GET_CURRENT_ROUTE_REQUEST
 
 Event fired when the micro frontend requests the current app route.
-It's dispatched with custom data and the payload shown below - some properties are optional.
+It's dispatched with custom payload shown below (check [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | CurrentRouteRequestPayload)>
-
-#### Properties
-
-*   `payload` **CurrentRouteRequestPayload** event payload (check [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
+Type: CurrentRouteRequestPayload
 
 #### Examples
 
 ```javascript
-payload: {
+{
  fromClosestContext: false,
  fromContext: null,
  fromParent: true,
@@ -267,27 +257,22 @@ Returns **void** <br><br>
 ### NAVIGATION_COMPLETED_REPORT
 
 Event fired to report that the micro frontend's navigation has completed.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### UPDATE_MODAL_PATH_DATA_REQUEST
 
 Event fired when the micro frontend requests to update the modal path parameters.
-It's dispatched with custom data and the payload shown below - some properties are optional.
+It's dispatched with custom payload shown below (check [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ModalPathDataRequestPayload)>
-
-#### Properties
-
-*   `payload` **ModalPathDataRequestPayload** event payload (check [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
+Type: ModalPathDataRequestPayload
 
 #### Examples
 
 ```javascript
-payload: {
+{
  fromClosestContext: false,
  fromContext: null,
  fromParent: true,
@@ -304,18 +289,18 @@ Returns **void** <br><br>
 ### UPDATE_MODAL_SETTINGS_REQUEST
 
 Event fired when the micro frontend requests to update the modal settings.
-It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
+It's dispatched with custom payload shown below (check [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details) - some properties are optional.
+Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), (unknown | ModalSettingsRequestPayload)>
-
-#### Properties
-
-*   `payload` **ModalSettingsRequestPayload** event payload (check [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts) details)
+Type: ModalSettingsRequestPayload
 
 #### Examples
 
 ```javascript
-payload: { addHistoryEntry: true, updatedModalSettings: {} }
+{
+ addHistoryEntry: true,
+ updatedModalSettings: {}
+}
 ```
 
 Returns **void** <br><br>
@@ -323,14 +308,16 @@ Returns **void** <br><br>
 ### CHECK_PATH_EXISTS_REQUEST
 
 Event fired when the micro frontend requests to check the validity of a path.
-It's dispatched with custom data and the payload shown below.
+It's dispatched with custom payload shown below.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 #### Examples
 
 ```javascript
-payload: { link: '/test/route' }
+{
+ link: '/test/route'
+}
 ```
 
 Returns **void** <br><br>
@@ -338,14 +325,16 @@ Returns **void** <br><br>
 ### SET_DIRTY_STATUS_REQUEST
 
 Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
-It's dispatched with custom data and the payload shown below.
+It's dispatched with custom payload shown below.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>
 
 #### Examples
 
 ```javascript
-payload: { dirty: true }
+{
+ dirty: true
+}
 ```
 
 Returns **void** <br><br>
@@ -353,35 +342,49 @@ Returns **void** <br><br>
 ### SET_VIEW_GROUP_DATA_REQUEST
 
 Event fired when the micro frontend requests to set the view group data.
-It's dispatched with custom data.
+It's dispatched with custom payload.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+{
+ vg: 'some data'
+}
+```
 
 Returns **void** <br><br>
 
 ### GO_BACK_REQUEST
 
 Event fired when the micro frontend requests to navigate back.
-It's dispatched with custom data.
+It's dispatched with custom payload.
 
-Type: unknown
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), unknown>
+
+#### Examples
+
+```javascript
+{
+ ctx: 'some context'
+}
+```
 
 Returns **void** <br><br>
 
 ### ADD_BACKDROP_REQUEST
 
 Event fired when the micro frontend requests to display the backdrop.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** <br><br>
 
 ### REMOVE_BACKDROP_REQUEST
 
 Event fired when the micro frontend requests to remove the backdrop.
-It's dispatched with custom data.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Returns **void** 

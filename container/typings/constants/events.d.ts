@@ -14,7 +14,7 @@ import type {
 export namespace Events {
   /**
    * Event fired when the micro frontend sends a custom message.
-   * It's dispatched with custom data.
+   * It's dispatched with custom payload.
    * @type {Object}
    * @property {string} id - event ID
    * @property {object} data - event data
@@ -35,7 +35,7 @@ export namespace Events {
 
   /**
    * Event fired when a navigation has been requested by the micro frontend.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|NavigationRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|NavigationRequestPayload} details) - some properties are optional.
    * @type {NavigationRequestPayload}
    * @example
    * {
@@ -54,11 +54,11 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show an alert.
-   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
-   * @type {Object.<string, unknown | AlertRequestPayload>}
-   * @property {AlertRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|AlertRequestPayload} details)
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|AlertRequestPayload} details) - some properties are optional.
+   * Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert).
+   * @type {AlertRequestPayload}
    * @example
-   * payload: {
+   * {
    *  text: 'Custom alert message',
    *  type: 'info',
    *  links: {
@@ -86,8 +86,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend has been initialized.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -96,7 +94,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the addition of search parameters to the URL.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
    * @type {ParamsRequestPayload}
    * @example
    * {
@@ -111,7 +109,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the addition of node parameters to the URL.
-   * It's dispatched with custom data shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload} details) - some properties are optional.
    * @type {ParamsRequestPayload}
    * @example
    * {
@@ -126,11 +124,11 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a confirmation modal.
-   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
-   * @type {Object.<string, unknown | ConfirmationModalRequestPayload>}
-   * @property {ConfirmationModalRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ConfirmationModalRequestPayload} details)
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ConfirmationModalRequestPayload} details) - some properties are optional.
+   * Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal).
+   * @type {ConfirmationModalRequestPayload}
    * @example
-   * payload: {
+   * {
    *  header: 'Confirmation',
    *  body: 'Are you sure you want to do this?',
    *  buttonConfirm: 'Yes',
@@ -144,8 +142,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a loading indicator.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -154,8 +150,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to hide the loading indicator.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -164,9 +158,12 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the current locale.
-   * It's dispatched with custom data and the payload shown below.
-   * @type {Object.<string, unknown>}
-   * @example payload: { currentLocale: 'en' }
+   * It's dispatched with custom payload shown below.
+   * @type {Object.<string, string>}
+   * @example
+   * {
+   *  currentLocale: 'en'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -175,9 +172,13 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to modify the local storage.
-   * It's dispatched with custom data and the payload shown below.
-   * @type {Object.<string, unknown>}
-   * @example payload: { key: 'luigi-version', value: '2.21.0' }
+   * It's dispatched with custom payload shown below.
+   * @type {Object.<string, string>}
+   * @example
+   * {
+   *  key: 'luigi-version',
+   *  value: '2.21.0'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -186,8 +187,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -196,9 +195,9 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the anchor of the URL.
-   * It's dispatched with custom data and the payload shown below.
-   * @type {Object.<string, unknown | string>}
-   * @example payload: 'some-anchor'
+   * It's dispatched with custom payload shown below.
+   * @type {string}
+   * @example 'some-anchor'
    * @returns {void}
    *
    * <br><br>
@@ -207,8 +206,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set third-party cookies.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -226,11 +223,10 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests the current app route.
-   * It's dispatched with custom data and the payload shown below - some properties are optional.
-   * @type {Object.<string, unknown | CurrentRouteRequestPayload>}
-   * @property {CurrentRouteRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|CurrentRouteRequestPayload} details)
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|CurrentRouteRequestPayload} details) - some properties are optional.
+   * @type {CurrentRouteRequestPayload}
    * @example
-   * payload: {
+   * {
    *  fromClosestContext: false,
    *  fromContext: null,
    *  fromParent: true,
@@ -245,8 +241,6 @@ export namespace Events {
 
   /**
    * Event fired to report that the micro frontend's navigation has completed.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -255,11 +249,10 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to update the modal path parameters.
-   * It's dispatched with custom data and the payload shown below - some properties are optional.
-   * @type {Object.<string, unknown | ModalPathDataRequestPayload>}
-   * @property {ModalPathDataRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalPathDataRequestPayload} details)
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalPathDataRequestPayload} details) - some properties are optional.
+   * @type {ModalPathDataRequestPayload}
    * @example
-   * payload: {
+   * {
    *  fromClosestContext: false,
    *  fromContext: null,
    *  fromParent: true,
@@ -277,11 +270,14 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to update the modal settings.
-   * It's dispatched with custom data and the payload shown below - some properties are optional. Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
-   * @type {Object.<string, unknown | ModalSettingsRequestPayload>}
-   * @property {ModalSettingsRequestPayload} payload - event payload (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalSettingsRequestPayload} details)
+   * It's dispatched with custom payload shown below (check {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalSettingsRequestPayload} details) - some properties are optional.
+   * Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings).
+   * @type {ModalSettingsRequestPayload}
    * @example
-   * payload: { addHistoryEntry: true, updatedModalSettings: {} }
+   * {
+   *  addHistoryEntry: true,
+   *  updatedModalSettings: {}
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -290,9 +286,12 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to check the validity of a path.
-   * It's dispatched with custom data and the payload shown below.
+   * It's dispatched with custom payload shown below.
    * @type {Object.<string, string>}
-   * @example payload: { link: '/test/route' }
+   * @example
+   * {
+   *  link: '/test/route'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -301,9 +300,12 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the 'dirty status' which, for example, avoids closing when there are any unsaved changes.
-   * It's dispatched with custom data and the payload shown below.
+   * It's dispatched with custom payload shown below.
    * @type {Object.<string, boolean>}
-   * @example payload: { dirty: true }
+   * @example
+   * {
+   *  dirty: true
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -312,8 +314,12 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set the view group data.
-   * It's dispatched with custom data.
-   * @type {Object.<string, string>}
+   * It's dispatched with custom payload.
+   * @type {Object.<string, unknown>}
+   * @example
+   * {
+   *  vg: 'some data'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -376,8 +382,12 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to navigate back.
-   * It's dispatched with custom data.
-   * @type {unknown}
+   * It's dispatched with custom payload.
+   * @type {Object.<string, unknown>}
+   * @example
+   * {
+   *  ctx: 'some context'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -395,8 +405,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to display the backdrop.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    *
    * <br><br>
@@ -405,8 +413,6 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to remove the backdrop.
-   * It's dispatched with custom data.
-   * @type {Object}
    * @returns {void}
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';

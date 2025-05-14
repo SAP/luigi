@@ -45,6 +45,14 @@ export class ContainerService {
     }
   }
 
+  /**
+   * Dispatch an event to the given target container with additional payload
+   * @param {string} msg the event message
+   * @param {ContainerElement} targetCnt the targeted HTML element onto which the event is dispatched
+   * @param {Object} data custom data added to the event to be dispatched
+   * @param {Object | string} payload additional data added to the event for internal objectives
+   * @param {Function} callback optional callback function
+   */
   dispatchWithPayload(
     msg: string,
     targetCnt: ContainerElement,
@@ -60,7 +68,7 @@ export class ContainerService {
    * @param {string} msg the event message
    * @param {ContainerElement} targetCnt the targeted HTML element onto which the event is dispatched
    * @param {Object} data custom data added to the event to be dispatched
-   * @param {Function} callback
+   * @param {Function} callback optional callback function
    * @param {string} callbackName
    */
   dispatch(msg: string, targetCnt: ContainerElement, data: object, callback?: (arg?) => void, payload?: object): void {
