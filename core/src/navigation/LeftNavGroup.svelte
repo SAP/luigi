@@ -3,6 +3,7 @@
 
   export let navGroup;
   export let expanded = true;
+  export let vega = false;
 
   function toggleExpanded() {
     expanded = !expanded;
@@ -15,6 +16,127 @@
 
 {#if navGroup.isSingleEntry}
   <slot />
+{:else if vega}
+  <li class="fd-navigation-list__item fd-navigation-list__item--group" role="none">
+    <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
+      <div class="fd-navigation-list__content-container">
+        <span class="fd-navigation-list__text">Navigation Group</span>
+      </div>
+      <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
+        <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
+      </div>
+    </a>
+    <ul class="fd-navigation-list level-1" role="group">
+      <li class="fd-navigation-list__item" role="none">
+        <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
+          <div class="fd-navigation-list__content-container">
+            <span class="fd-navigation-list__icon">
+              <i class=" sap-icon--shield" role="presentation"></i>
+            </span>
+            <span class="fd-navigation-list__text">Nav Item</span>
+          </div>
+          <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
+            <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
+          </div>
+        </a>
+        <ul class="fd-navigation-list level-2" role="group">
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+            </a>
+          </li>
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content is-selected" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+            </a>
+          </li>
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+              <div class="fd-navigation-list__indication-arrow" role="presentation" aria-hidden="true">
+                <i class="sap-icon--arrow-right" role="presentation"></i>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="fd-navigation-list__item" role="none">
+        <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+          <div class="fd-navigation-list__content-container">
+            <span class="fd-navigation-list__icon">
+              <i class=" sap-icon--official-service" role="presentation"></i>
+            </span>
+            <span class="fd-navigation-list__text">Nav Item</span>
+          </div>
+        </a>
+      </li>
+      <li class="fd-navigation-list__item" role="none">
+        <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+          <div class="fd-navigation-list__content-container">
+            <span class="fd-navigation-list__icon">
+              <i class=" sap-icon--sys-help" role="presentation"></i>
+            </span>
+            <span class="fd-navigation-list__text">Nav Item</span>
+          </div>
+        </a>
+      </li>
+      <li class="fd-navigation-list__item fd-navigation-list__item--two-click_disabled" role="none">
+        <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="false">
+          <div class="fd-navigation-list__content-container">
+            <span class="fd-navigation-list__icon">
+              <i class=" sap-icon--travel-expense" role="presentation"></i>
+            </span>
+            <span class="fd-navigation-list__text">Two-Click Nav Item</span>
+          </div>
+          <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
+            <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
+          </div>
+        </a>
+        <ul class="fd-navigation-list level-2" role="group" style="display: none;">
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+            </a>
+          </li>
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content is-selected" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+            </a>
+          </li>
+          <li class="fd-navigation-list__item" role="none">
+            <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+              <div class="fd-navigation-list__content-container">
+                <span class="fd-navigation-list__text">Child Item</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="fd-navigation-list__item" role="none">
+        <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+          <div class="fd-navigation-list__content-container">
+            <span class="fd-navigation-list__icon">
+              <i class=" sap-icon--commission-check" role="presentation"></i>
+            </span>
+            <span class="fd-navigation-list__text">Nav Item</span>
+          </div>
+          <div class="fd-navigation-list__indication-arrow" role="presentation" aria-hidden="true">
+            <i class="sap-icon--arrow-right" role="presentation"></i>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </li>
 {:else}
   <li class="fd-navigation__list-item">
     <div

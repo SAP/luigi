@@ -301,7 +301,7 @@
   });
 
   function convertEntriesToToolLayout(entries) {
-    if (btpToolLayout) {
+    if (btpToolLayout || vegaSideNav) {
       const categoryById = {};
       const subCatEntries = [];
       const subCatDelim = toolLayoutSubCatDelimiter;
@@ -1038,240 +1038,318 @@
           : ''}"
         aria-roledescription="Main Navigation"
       >
-        <div class="fd-side-nav__container fd-side-nav__container--top">
-          <ul class="fd-navigation-list level-1" role="tree" aria-roledescription="Navigation List Tree">
-            <li class="fd-navigation-list__item" role="none">
-              <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                <div class="fd-navigation-list__content-container">
-                  <span class="fd-navigation-list__icon">
-                    <i class=" sap-icon--home" role="presentation"></i>
-                  </span>
-                  <span class="fd-navigation-list__text">Nav Item</span>
-                </div>
-              </a>
-            </li>
-            <li class="fd-navigation-list__item" role="none">
-              <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                <div class="fd-navigation-list__content-container">
-                  <span class="fd-navigation-list__icon">
-                    <i class=" sap-icon--favorite-list" role="presentation"></i>
-                  </span>
-                  <span class="fd-navigation-list__text">Nav Item</span>
-                </div>
-              </a>
-            </li>
-            <li class="fd-navigation-list__item" role="none">
-              <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                <div class="fd-navigation-list__content-container">
-                  <span class="fd-navigation-list__icon">
-                    <i class=" sap-icon--time-account" role="presentation"></i>
-                  </span>
-                  <span class="fd-navigation-list__text">Nav Item</span>
-                </div>
-              </a>
-            </li>
+        {#if children && pathData.length > 1}
+          <div class="fd-side-nav__container fd-side-nav__container--top">
+            <ul class="fd-navigation-list level-1" role="tree" aria-roledescription="Navigation List Tree">
+              {#each sortedVerticalNavGroups as group}
+                <LeftNavGroup
+                  navGroup={group}
+                  vega={vegaSideNav}
+                  expanded={group.groupEntry && isExpanded(group.groupEntry[1], expandedCategories)}
+                >
+                  {#each group.entries as [key, nodes], index}
+                    {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
+                      <!-- Single nodes -->
+                      {#each nodes as node}
+                        {#if !node.hideFromNav}
+                          {#if node.label}
+                            <li class="fd-navigation-list__item lui-nav-entry" role="none">
+                              <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+                                <div class="fd-navigation-list__content-container">
+                                  <span class="fd-navigation-list__icon">
+                                    <i class=" sap-icon--home" role="presentation"></i>
+                                  </span>
+                                  <span class="fd-navigation-list__text">{getNodeLabel(node)}</span>
+                                </div>
+                              </a>
+                            </li>
+                            <!-- <li class="fd-navigation__list-item lui-nav-entry">
+                              <div
+                                class="fd-navigation__item"
+                                aria-level="2"
+                                role="treeitem"
+                                aria-selected={node === selectedNode}
+                                aria-expanded="false"
+                              >
+                                <a
+                                  class="fd-navigation__link {node === selectedNode ? 'is-selected' : ''} lui-hideOnHover"
+                                  tabindex="0"
+                                  href={getRouteLink(node)}
+                                  title={resolveTooltipText(node, getNodeLabel(node))}
+                                  on:click={(event) => {
+                                    NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                  }}
+                                  on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
+                                  role={!addNavHrefForAnchor ? 'button' : undefined}
+                                  data-testid={NavigationHelpers.getTestId(node)}
+                                  on:mouseup={(event) => {
+                                    isSemiCollapsed && event.target.blur();
+                                  }}
+                                >
+                                  {#if node.icon}
+                                    {#if isOpenUIiconName(node.icon)}
+                                      <span
+                                        class="fd-navigation__icon lui-hideOnHover-show {getSapIconStr(node.icon)}"
+                                        role="presentation"
+                                        aria-hidden="true"
+                                      />
+                                    {:else}
+                                      <span class="fd-navigation__icon lui-hideOnHover-show">
+                                        <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                                      </span>
+                                    {/if}
+                                  {:else}
+                                    <span
+                                      class="fd-navigation__icon lui-hideOnHover-show {isSemiCollapsed
+                                        ? 'sap-icon--rhombus-milestone-2'
+                                        : ''}"
+                                      role="presentation"
+                                      aria-hidden="true"
+                                    />
+                                  {/if}
+                                  <span
+                                    class="fd-navigation__text lui-hideOnHover-show badge-align-{node.statusBadge &&
+                                    node.statusBadge.align === 'right'
+                                      ? 'right'
+                                      : 'left'}"
+                                  >
+                                    {getNodeLabel(node)}
+                                    <StatusBadge {node} />
+                                  </span>
+                                  {#if node.externalLink && node.externalLink.url}
+                                    <span
+                                      class="fd-navigation__external-link-indicator"
+                                      role="presentation"
+                                      aria-hidden="true"
+                                      aria-label="external link indicator"
+                                    />
+                                  {/if}
+                                  {#if node.badgeCounter}
+                                    <BadgeCounter {node} />
+                                  {/if}
+                                  <span
+                                    class="fd-navigation__selection-indicator"
+                                    role="presentation"
+                                    aria-hidden="true"
+                                    aria-label="selection indicator"
+                                  />
+                                </a>
+                              </div>
+                            </li> -->
+                          {/if}
+                        {/if}
+                      {/each}
+                    {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+                      <li
+                        class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
+                        data-testid={getTestIdForCat(nodes.metaInfo, key)}
+                      >
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        <div
+                          class="fd-navigation__item {isSemiCollapsed ? 'fd-popover__control' : ''}"
+                          role="treeitem"
+                          title={resolveTooltipText(nodes, $getTranslation(key))}
+                          aria-expanded={isSemiCollapsed
+                            ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory
+                            : isExpanded(nodes, expandedCategories)}
+                          aria-selected={isSemiCollapsed && nodes.indexOf(selectedNode) >= 0}
+                          on:click|stopPropagation={(event) => handleIconClick(nodes, event.currentTarget)}
+                        >
+                          <!-- svelte-ignore a11y-missing-attribute -->
+                          <!-- svelte-ignore a11y-click-events-have-key-events                   -->
+                          <a
+                            class="fd-navigation__link"
+                            role="button"
+                            tabindex="0"
+                            on:click|preventDefault={() =>
+                              setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                            on:keypress|preventDefault={() =>
+                              setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                            on:keypress|preventDefault={(event) => handleExpandCollapseCategories(event, nodes)}
+                          >
+                            {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                              <span
+                                class="fd-navigation__icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed &&
+                                !nodes.metaInfo.icon
+                                  ? 'sap-icon--rhombus-milestone-2'
+                                  : ''}"
+                                role="presentation"
+                                aria-hidden="true"
+                              />
+                            {:else}
+                              <span class="fd-navigation__icon" role="presentation" aria-hidden="true">
+                                <img src={nodes.metaInfo.icon} alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''} />
+                              </span>
+                            {/if}
+                            <span class="fd-navigation__text">{$getTranslation(key)}</span>
+                            <span
+                              class="fd-navigation__selection-indicator"
+                              role="presentation"
+                              aria-hidden="true"
+                              aria-label="selection indicator"
+                            />
+                            <span
+                              class="fd-navigation__has-children-indicator"
+                              role="presentation"
+                              aria-hidden="true"
+                              aria-label="has children indicator, expanded"
+                            />
+                          </a>
+                        </div>
+                        {#if !isSemiCollapsed || (nodes.metaInfo && nodes.metaInfo.label === selectedCategory)}
+                          <div
+                            class="fd-navigation__list-container
+                            {isSemiCollapsed
+                              ? 'fd-popover__body fd-popover__body--after fd-popover__body--arrow-left'
+                              : ''}"
+                          >
+                            <div
+                              class="fd-navigation__list-wrapper
+                                {isSemiCollapsed ? 'fd-popover__wrapper' : ''}"
+                            >
+                              {#if isSemiCollapsed}
+                                <div
+                                  class="fd-navigation__item fd-navigation__item--title"
+                                  aria-level="1"
+                                  role="treeitem"
+                                  aria-expanded="true"
+                                  aria-selected="false"
+                                  title={resolveTooltipText(nodes, $getTranslation(key))}
+                                  data-testid={getTestIdForCat(nodes.metaInfo, key)}
+                                >
+                                  <!-- svelte-ignore a11y-missing-attribute -->
+                                  <a class="fd-navigation__link" role="button" tabindex="0">
+                                    {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
+                                      {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                                        <span
+                                          class="fd-navigation__icon {getSapIconStr(nodes.metaInfo.icon)}"
+                                          role="presentation"
+                                          aria-hidden="true"
+                                        />
+                                      {:else}
+                                        <span class="fd-navigation__icon" role="presentation" aria-hidden="true">
+                                          <img
+                                            src={nodes.metaInfo.icon}
+                                            alt={nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}
+                                          />
+                                        </span>
+                                      {/if}
+                                    {/if}
+                                    <span class="fd-navigation__text">{$getTranslation(key)}</span>
+                                    <span class="fd-navigation__selection-indicator" />
+                                  </a>
+                                </div>
+                              {/if}
 
-            <li class="fd-navigation-list__item fd-navigation-list__item--group" role="none">
-              <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
-                <div class="fd-navigation-list__content-container">
-                  <span class="fd-navigation-list__text">Navigation Group</span>
-                </div>
-                <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                  <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
-                </div>
-              </a>
-              <ul class="fd-navigation-list level-1" role="group">
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--shield" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                    <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                      <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
-                    </div>
-                  </a>
-                  <ul class="fd-navigation-list level-2" role="group">
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content is-selected" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                        <div class="fd-navigation-list__indication-arrow" role="presentation" aria-hidden="true">
-                          <i class="sap-icon--arrow-right" role="presentation"></i>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--official-service" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--sys-help" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="fd-navigation-list__item fd-navigation-list__item--two-click_disabled" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="false">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--travel-expense" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Two-Click Nav Item</span>
-                    </div>
-                    <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                      <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
-                    </div>
-                  </a>
-                  <ul class="fd-navigation-list level-2" role="group" style="display: none;">
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content is-selected" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--commission-check" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                    <div class="fd-navigation-list__indication-arrow" role="presentation" aria-hidden="true">
-                      <i class="sap-icon--arrow-right" role="presentation"></i>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
+                              <ul class="fd-navigation__list fd-navigation__list--child-items" role="tree" tabindex="-1">
+                                {#each nodes as node}
+                                  {#if !node.hideFromNav}
+                                    {#if node.label}
+                                      <li class="fd-navigation__list-item">
+                                        <div
+                                          class="fd-navigation__item fd-navigation__item--child"
+                                          aria-level="3"
+                                          role="treeitem"
+                                          title={resolveTooltipText(node, getNodeLabel(node))}
+                                          aria-expanded="false"
+                                          aria-selected={node === selectedNode}
+                                          data-testid={NavigationHelpers.getTestId(node)}
+                                        >
+                                          <a
+                                            class="fd-navigation__link"
+                                            tabindex="0"
+                                            href={getRouteLink(node)}
+                                            on:click={(event) => {
+                                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                                handleClick(node);
+                                            }}
+                                            on:keyup={!addNavHrefForAnchor
+                                              ? (event) => handleEnterPressed(event, node)
+                                              : undefined}
+                                          >
+                                            <span
+                                              class="fd-navigation__text badge-align-{node.statusBadge &&
+                                              node.statusBadge.align === 'right'
+                                                ? 'right'
+                                                : 'left'}"
+                                            >
+                                              {getNodeLabel(node)}
+                                              <StatusBadge {node} />
+                                            </span>
+                                            <span
+                                              class="fd-navigation__selection-indicator"
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              aria-label="selection indicator"
+                                            />
+                                            {#if node.externalLink && node.externalLink.url}
+                                              <span
+                                                class="fd-navigation__external-link-indicator"
+                                                role="presentation"
+                                                aria-hidden="true"
+                                                aria-label="external link indicator"
+                                              />
+                                            {/if}
+                                            {#if node.badgeCounter}
+                                              <BadgeCounter {node} />
+                                            {/if}
+                                          </a>
+                                        </div>
+                                      </li>
 
-            <li class="fd-navigation-list__item fd-navigation-list__item--group" role="none">
-              <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="false">
-                <div class="fd-navigation-list__content-container">
-                  <span class="fd-navigation-list__text">Navigation Group</span>
-                </div>
-                <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                  <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
-                </div>
-              </a>
-              <ul class="fd-navigation-list level-1" role="group" style="display: none;">
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--palette" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                    <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                      <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
-                    </div>
-                  </a>
-                  <ul class="fd-navigation-list level-2" role="group">
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content is-selected" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="fd-navigation-list__item" role="none">
-                      <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                        <div class="fd-navigation-list__content-container">
-                          <span class="fd-navigation-list__text">Child Item</span>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--sales-notification" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--nurse" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="fd-navigation-list__item" role="none">
-                  <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
-                    <div class="fd-navigation-list__content-container">
-                      <span class="fd-navigation-list__icon">
-                        <i class=" sap-icon--travel-request" role="presentation"></i>
-                      </span>
-                      <span class="fd-navigation-list__text">Nav Item</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+                                      <li
+                                        style="display: none;"
+                                        class="fd-nested-list__item"
+                                        aria-labelledby="collapsible_listnode_{index}"
+                                      >
+                                        <a
+                                          href={getRouteLink(node)}
+                                          class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                                          on:click={(event) => {
+                                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                              handleClick(node);
+                                          }}
+                                          on:keyup={!addNavHrefForAnchor
+                                            ? (event) => handleEnterPressed(event, node)
+                                            : undefined}
+                                          role={!addNavHrefForAnchor ? 'button' : undefined}
+                                          tabindex="0"
+                                          data-testid={NavigationHelpers.getTestId(node)}
+                                          title={resolveTooltipText(node, getNodeLabel(node))}
+                                        >
+                                          <span
+                                            class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                            node.statusBadge.align === 'right'
+                                              ? 'right'
+                                              : 'left'}"
+                                          >
+                                            {getNodeLabel(node)}
+                                            <StatusBadge {node} />
+                                          </span>
+
+                                          {#if node.externalLink && node.externalLink.url}
+                                            <i class="sap-icon--action" />
+                                          {/if}
+                                          {#if node.badgeCounter}
+                                            <BadgeCounter {node} />
+                                          {/if}
+                                        </a>
+                                      </li>
+                                    {/if}
+                                  {/if}
+                                {/each}
+                              </ul>
+                            </div>
+                          </div>
+                        {/if}
+                      </li>
+                    {/if}
+                  {/each}
+                </LeftNavGroup>
+              {/each}
+            </ul>
+          </div>
+        {/if}
 
         {#if footerText || semiCollapsibleButton}
           <div class="fd-side-nav__utility">
