@@ -16,8 +16,13 @@ export namespace Events {
    * Event fired when the micro frontend sends a custom message.
    * It's dispatched with custom payload.
    * @type {Object}
-   * @property {string} id - event ID
    * @property {object} data - event data
+   * @property {string} id - event ID
+   * @example
+   * {
+   *  data: {},
+   *  id: 'some-id'
+   * }
    * @returns {void}
    *
    * <br><br>
@@ -86,7 +91,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend has been initialized.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -143,7 +148,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to show a loading indicator.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -152,7 +157,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to hide the loading indicator.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -190,7 +195,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -210,7 +215,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to set third-party cookies.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -246,7 +251,7 @@ export namespace Events {
 
   /**
    * Event fired to report that the micro frontend's navigation has completed.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -411,7 +416,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to display the backdrop.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
    * <br><br>
@@ -420,7 +425,7 @@ export namespace Events {
 
   /**
    * Event fired when the micro frontend requests to remove the backdrop.
-   * @type {Event}
+   * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    */
   export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
@@ -429,7 +434,7 @@ export namespace Events {
 export class LuigiEvent extends Event {
   payload?: unknown;
   detail: unknown;
-  private callbackFn: Function;
+  private callbackFn: Function | undefined;
 
   constructor(type: string, data: unknown, payload?: unknown, callback?: Function) {
     super(type);

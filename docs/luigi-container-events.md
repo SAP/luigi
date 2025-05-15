@@ -33,8 +33,17 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event ID
 *   `data` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** event data
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** event ID
+
+#### Examples
+
+```javascript
+{
+ data: {},
+ id: 'some-id'
+}
+```
 
 Returns **void** <br><br>
 
@@ -90,7 +99,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend has been initialized.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -155,7 +164,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to show a loading indicator.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -163,7 +172,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to hide the loading indicator.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -206,7 +215,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -229,7 +238,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to set third-party cookies.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -258,7 +267,7 @@ Returns **void** <br><br>
 
 Event fired to report that the micro frontend's navigation has completed.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -377,7 +386,7 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to display the backdrop.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** <br><br>
 
@@ -385,6 +394,6 @@ Returns **void** <br><br>
 
 Event fired when the micro frontend requests to remove the backdrop.
 
-Type: [Event](https://developer.mozilla.org/docs/Web/API/Event)
+
 
 Returns **void** 
