@@ -130,6 +130,11 @@ elif [ "$1" = "luigi-client-support-ui5-release" ]; then
   echo "$PWD"
   checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
   publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
+elif [ "$1" = "luigi-client-support-angular-release" ]; then
+  echo "$PWD"
+  checkRequiredFiles "client-frameworks-support/client-support-angular/dist" "package.json" "README.md" "index.d.ts" "index.d.ts.map"
+  checkRequiredFiles "client-frameworks-support/client-support-angular/dist/fesm2022" "luigi-project-client-support-angular.mjs" "luigi-project-client-support-angular.mjs.map"
+  publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist"
 elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
   echo "$PWD"
   checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
