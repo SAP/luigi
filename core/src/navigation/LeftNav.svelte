@@ -160,7 +160,8 @@
     GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
   let vegaSideNav = LuigiConfig.getConfigValue('settings.sideNav.style') === 'vega';
   let btpNavTopCnt;
-  let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
+  let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.sideNav.subCategoryDelimiter') || 
+      LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
   let navHeaderContainer;
   let updateTimeout;
 
@@ -1054,10 +1055,36 @@
                         {#if !node.hideFromNav}
                           {#if node.label}
                             <li class="fd-navigation-list__item lui-nav-entry" role="none">
-                              <a class="fd-navigation-list__content" role="treeitem" tabindex="0">
+                              <!-- svelte-ignore a11y-role-has-required-aria-props -->
+                              <a class="fd-navigation-list__content {node === selectedNode ? 'is-selected' : ''}" 
+                                  role="treeitem" tabindex="0"
+                                  href={getRouteLink(node)}
+                                  title={resolveTooltipText(node, getNodeLabel(node))}
+                                  on:click={(event) => {
+                                    NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                  }}
+                                  on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
+                                  data-testid={NavigationHelpers.getTestId(node)}
+                                  on:mouseup={(event) => {
+                                    isSemiCollapsed && event.target.blur();
+                                  }}>
                                 <div class="fd-navigation-list__content-container">
                                   <span class="fd-navigation-list__icon">
-                                    <i class=" sap-icon--home" role="presentation"></i>
+                                    {#if node.icon}
+                                      {#if isOpenUIiconName(node.icon)}
+                                        <i class="lui-hideOnHover-show {getSapIconStr(node.icon)}" role="presentation"></i>
+                                      {:else}
+                                        <img src={node.icon} alt={node.altText ? node.altText : ''} 
+                                            class="lui-hideOnHover-show"/>
+                                      {/if}
+                                    {:else}
+                                      <i
+                                        class="lui-hideOnHover-show {isSemiCollapsed
+                                          ? 'sap-icon--rhombus-milestone-2'
+                                          : ''}"
+                                        role="presentation"
+                                      />
+                                    {/if}
                                   </span>
                                   <span class="fd-navigation-list__text">{getNodeLabel(node)}</span>
                                 </div>
@@ -2229,5 +2256,9 @@
   .fd-side-nav--condensed .fd-nested-list__group-header,
   .fd-side-nav--condensed .fd-nested-list__title {
     display: none;
+  }
+
+  .fd-navigation-list__content {
+    text-decoration: none;
   }
 </style>

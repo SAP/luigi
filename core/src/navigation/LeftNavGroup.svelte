@@ -17,17 +17,25 @@
 {#if navGroup.isSingleEntry}
   <slot />
 {:else if vega}
-  <li class="fd-navigation-list__item fd-navigation-list__item--group" role="none">
-    <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
+  <li class="fd-navigation-list__item fd-navigation-list__item--group lui-expanded-{expanded}" role="none">
+    <!-- svelte-ignore a11y-missing-attribute -->
+    <a class="fd-navigation-list__content" role="treeitem" tabindex="0" 
+      aria-expanded={expanded}
+      on:click|preventDefault|stopPropagation={toggleExpanded}
+        on:keyup={(event) => {
+          (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
+        }}>
       <div class="fd-navigation-list__content-container">
-        <span class="fd-navigation-list__text">Navigation Group</span>
+        <span class="fd-navigation-list__text">{navGroup.title}</span>
       </div>
       <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-        <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
+        <i class="{expanded ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}" role="presentation"></i>
       </div>
     </a>
-    <ul class="fd-navigation-list level-1" role="group">
-      <li class="fd-navigation-list__item" role="none">
+    <ul class="fd-navigation-list level-1" role="group" tabindex="-1"
+      navGroupId={navGroup.uid}>
+      <slot />
+      <!-- <li class="fd-navigation-list__item" role="none">
         <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
           <div class="fd-navigation-list__content-container">
             <span class="fd-navigation-list__icon">
@@ -134,7 +142,7 @@
             <i class="sap-icon--arrow-right" role="presentation"></i>
           </div>
         </a>
-      </li>
+      </li> -->
     </ul>
   </li>
 {:else}
@@ -189,5 +197,11 @@
 
   :global(.fd-navigation--snapped) .fd-navigation__list--parent-items {
     --fdNavigation_List_Parent_Items_Display: flex;
+  }
+
+  .lui-expanded-false {
+    & > ul {
+      display: none;
+    }
   }
 </style>
