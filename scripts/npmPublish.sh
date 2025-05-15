@@ -153,11 +153,11 @@ else
     publishPackage "plugins" "plugins/auth/public/auth-oidc"
   fi
 
-  # Luigi Client Support Anguar
-  if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
-    checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
-    publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
-  fi
+  # # Luigi Client Support Anguar
+  # if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
+  #   checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
+  #   publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
+  # fi
 
   # Luigi Testing Utilities
   if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
