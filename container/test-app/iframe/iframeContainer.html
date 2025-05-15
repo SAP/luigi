@@ -130,9 +130,7 @@
         if (alertSettings?.settings?.text !== 'Callback Test') {
           showAnAlert(alertSettings);
         } else {
-          if (event.callback && typeof event.callback === 'function') {
-            event.callback(true);
-          }
+          event.callback(true);
         }
       });
 
@@ -159,9 +157,7 @@
         if (data?.data?.data?.settings?.header !== 'Callback Test') {
           luigiContainer.notifyConfirmationModalClosed(val);
         } else {
-          if (event.callback && typeof event.callback === 'function') {
-            event.callback(true);
-          }
+          event.callback(true);
         }
       });
 
@@ -242,10 +238,7 @@
           Events.GET_CURRENT_ROUTE_REQUEST,
           'message received: ' + JSON.stringify(event.detail.data),
         );
-
-        if (event.callback && typeof event.callback === 'function') {
-          event.callback('/test/route');
-        }
+        event.callback('/test/route');
       });
 
       // NAVIGATION_COMPLETED_REPORT
@@ -272,10 +265,7 @@
           Events.CHECK_PATH_EXISTS_REQUEST,
           'message received: ' + JSON.stringify(event.detail.data),
         );
-
-        if (event.callback && typeof event.callback === 'function') {
-          event.callback(true);
-        }
+        event.callback(true);
       });
 
       // SET_DIRTY_STATUS_REQUEST
