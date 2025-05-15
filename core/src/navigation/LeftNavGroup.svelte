@@ -19,21 +19,25 @@
 {:else if vega}
   <li class="fd-navigation-list__item fd-navigation-list__item--group lui-expanded-{expanded}" role="none">
     <!-- svelte-ignore a11y-missing-attribute -->
-    <a class="fd-navigation-list__content" role="treeitem" tabindex="0" 
+    <a
+      class="fd-navigation-list__content"
+      role="treeitem"
+      tabindex="0"
       aria-expanded={expanded}
       on:click|preventDefault|stopPropagation={toggleExpanded}
-        on:keyup={(event) => {
-          (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
-        }}>
+      on:keyup={(event) => {
+        (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
+      }}
+    >
       <div class="fd-navigation-list__content-container">
         <span class="fd-navigation-list__text">{navGroup.title}</span>
       </div>
       <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-        <i class="{expanded ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}" role="presentation"></i>
+        <i class={expanded ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'} role="presentation"
+        ></i>
       </div>
     </a>
-    <ul class="fd-navigation-list level-1" role="group" tabindex="-1"
-      navGroupId={navGroup.uid}>
+    <ul class="fd-navigation-list level-1" role="group" tabindex="-1" navGroupId={navGroup.uid}>
       <slot />
       <!-- <li class="fd-navigation-list__item" role="none">
         <a class="fd-navigation-list__content" role="treeitem" tabindex="0" aria-expanded="true">
