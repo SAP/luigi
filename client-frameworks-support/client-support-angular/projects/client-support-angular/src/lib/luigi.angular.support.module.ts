@@ -44,7 +44,7 @@ export const staticRoutes: Routes = [
       provide: RouteReuseStrategy,
       useClass: LuigiRouteStrategy
     }
-  ],
+  ]
 })
 export class LuigiAngularSupportModule {
   constructor(navigation: LuigiAutoRoutingService, context: LuigiContextService) {}
