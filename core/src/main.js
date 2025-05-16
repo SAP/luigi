@@ -1,4 +1,3 @@
-import './app.scss';
 import App from './App.svelte';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';
