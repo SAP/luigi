@@ -1,14 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "luigi-container",
+    "label": "Luigi Container",
     "category": {
       "label": "Luigi Container",
       "collapsible": true
     },
     "metaData": {
       "categoryPosition": 6,
-      "position": 1
+      "position": 0
     }
   }
 }
