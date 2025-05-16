@@ -2,11 +2,14 @@
 /// <reference path="../../typings/constants/event-payloads.ts" />
 import type {
   AlertRequestPayload,
+  CheckPathPostMessageData,
   ConfirmationModalRequestPayload,
+  CurrentRoutePostMessageData,
   CurrentRouteRequestPayload,
   ModalPathDataRequestPayload,
   ModalSettingsRequestPayload,
-  NavigationRequestPayload
+  NavigationRequestPayload,
+  ParamsRequestPayload
 } from 'EventPayloads';
 import { Events, LuigiEvent } from '../constants/communication';
 import type { ContainerElement, IframeHandle } from '../constants/container.model';
@@ -69,7 +72,6 @@ export class ContainerService {
    * @param {ContainerElement} targetCnt the targeted HTML element onto which the event is dispatched
    * @param {Object} data custom data added to the event to be dispatched
    * @param {Function} callback optional callback function
-   * @param {string} callbackName
    */
   dispatch(msg: string, targetCnt: ContainerElement, data: object, callback?: (arg?) => void, payload?: object): void {
     const customEvent = new LuigiEvent(msg, data, payload, callback);
@@ -154,30 +156,44 @@ export class ContainerService {
                   Events.ALERT_REQUEST,
                   targetCnt,
                   event,
-                  event.data?.data?.settings as AlertRequestPayload
+                  event.data?.data?.settings as AlertRequestPayload,
+                  (dismissKey?: boolean | string) => {
+                    targetCnt.notifyAlertClosed(event.data?.data?.settings?.id, dismissKey);
+                  }
                 );
                 break;
               case LuigiInternalMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data?.params || {});
                 break;
               case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, {
-                  data: event.data.data,
-                  keepBrowserHistory: event.data.keepBrowserHistory
-                });
+                this.dispatch(
+                  Events.ADD_SEARCH_PARAMS_REQUEST,
+                  targetCnt,
+                  {
+                    data: event.data.data,
+                    keepBrowserHistory: event.data.keepBrowserHistory
+                  } as ParamsRequestPayload
+                );
                 break;
               case LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, {
-                  data: event.data.data,
-                  keepBrowserHistory: event.data.keepBrowserHistory
-                });
+                this.dispatch(
+                  Events.ADD_NODE_PARAMS_REQUEST,
+                  targetCnt,
+                  {
+                    data: event.data.data,
+                    keepBrowserHistory: event.data.keepBrowserHistory
+                  } as ParamsRequestPayload
+                );
                 break;
               case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
                 this.dispatchWithPayload(
                   Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                   targetCnt,
                   event.data.data,
-                  event.data.data?.settings as ConfirmationModalRequestPayload
+                  event.data.data?.settings as ConfirmationModalRequestPayload,
+                  (modalResult: boolean) => {
+                    targetCnt.notifyConfirmationModalClosed(modalResult);
+                  }
                 );
                 break;
               case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
@@ -220,7 +236,19 @@ export class ContainerService {
                   Events.GET_CURRENT_ROUTE_REQUEST,
                   targetCnt,
                   event,
-                  event.data.data as CurrentRouteRequestPayload
+                  event.data.data as CurrentRouteRequestPayload,
+                  (route: string) => {
+                    target.postMessage(
+                      {
+                        msg: LuigiInternalMessageID.SEND_CURRENT_ROUTE_ANSWER,
+                        data: {
+                          correlationId: event.data?.data?.id,
+                          route
+                        } as CurrentRoutePostMessageData
+                      },
+                      event.origin
+                    );
+                  }
                 );
                 break;
               case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
@@ -241,7 +269,24 @@ export class ContainerService {
                 } as ModalSettingsRequestPayload);
                 break;
               case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
-                this.dispatchWithPayload(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event, event.data.data);
+                this.dispatchWithPayload(
+                  Events.CHECK_PATH_EXISTS_REQUEST,
+                  targetCnt,
+                  event,
+                  event.data.data,
+                  (pathExists: boolean) => {
+                    target.postMessage(
+                      {
+                        msg: LuigiInternalMessageID.SEND_PATH_EXISTS_ANSWER,
+                        data: {
+                          correlationId: event.data?.data?.id,
+                          pathExists
+                        } as CheckPathPostMessageData
+                      },
+                      event.origin
+                    );
+                  }
+                );
                 break;
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatchWithPayload(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event, {

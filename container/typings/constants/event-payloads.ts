@@ -42,6 +42,16 @@ declare module 'EventPayloads' {
     };
   }
 
+  export interface CurrentRoutePostMessageData {
+    correlationId: number;
+    route: string;
+  }
+
+  export interface CheckPathPostMessageData {
+    correlationId: number;
+    pathExists: boolean;
+  }
+
   export interface NavigationRequestPayload extends CurrentRouteRequestPayload {
     link?: string;
   }

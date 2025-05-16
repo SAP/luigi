@@ -229,7 +229,7 @@
           "events": [
             {
               "name": "custom-message",
-              "description": "Event fired when the micro frontend sends a custom message. It's dispatched with custom payload. @type {Object} @property {string} id - event ID @property {object} data - event data @returns {void}",
+              "description": "Event fired when the micro frontend sends a custom message. It's dispatched with custom payload. @type {Object} @property {object} data - event data @property {string} id - event ID @example { data: {}, id: 'some-id' } @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -250,7 +250,7 @@
             },
             {
               "name": "initialized",
-              "description": "Event fired when the micro frontend has been initialized. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend has been initialized. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -278,14 +278,14 @@
             },
             {
               "name": "show-loading-indicator-request",
-              "description": "Event fired when the micro frontend requests to show a loading indicator. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to show a loading indicator. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "hide-loading-indicator-request",
-              "description": "Event fired when the micro frontend requests to hide the loading indicator. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to hide the loading indicator. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -306,7 +306,7 @@
             },
             {
               "name": "runtime-error-handling-request",
-              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -320,7 +320,7 @@
             },
             {
               "name": "set-third-party-cookies-request",
-              "description": "Event fired when the micro frontend requests to set third-party cookies. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to set third-party cookies. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -334,7 +334,7 @@
             },
             {
               "name": "report-navigation-completed-request",
-              "description": "Event fired to report that the micro frontend's navigation has completed. @type {Event} @returns {void}",
+              "description": "Event fired to report that the micro frontend's navigation has completed. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -383,14 +383,14 @@
             },
             {
               "name": "add-backdrop-request",
-              "description": "Event fired when the micro frontend requests to display the backdrop. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to display the backdrop. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "remove-backdrop-request",
-              "description": "Event fired when the micro frontend requests to remove the backdrop. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to remove the backdrop. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -600,7 +600,7 @@
           "events": [
             {
               "name": "custom-message",
-              "description": "Event fired when the micro frontend sends a custom message. It's dispatched with custom payload. @type {Object} @property {string} id - event ID @property {object} data - event data @returns {void}",
+              "description": "Event fired when the micro frontend sends a custom message. It's dispatched with custom payload. @type {Object} @property {object} data - event data @property {string} id - event ID @example { data: {}, id: 'some-id' } @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -621,7 +621,7 @@
             },
             {
               "name": "initialized",
-              "description": "Event fired when the micro frontend has been initialized. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend has been initialized. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -649,14 +649,14 @@
             },
             {
               "name": "show-loading-indicator-request",
-              "description": "Event fired when the micro frontend requests to show a loading indicator. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to show a loading indicator. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "hide-loading-indicator-request",
-              "description": "Event fired when the micro frontend requests to hide the loading indicator. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to hide the loading indicator. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -677,7 +677,7 @@
             },
             {
               "name": "runtime-error-handling-request",
-              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to handle errors that might happen during the runtime of the micro frontend. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -691,7 +691,7 @@
             },
             {
               "name": "set-third-party-cookies-request",
-              "description": "Event fired when the micro frontend requests to set third-party cookies. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to set third-party cookies. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -705,7 +705,7 @@
             },
             {
               "name": "report-navigation-completed-request",
-              "description": "Event fired to report that the micro frontend's navigation has completed. @type {Event} @returns {void}",
+              "description": "Event fired to report that the micro frontend's navigation has completed. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
@@ -754,14 +754,14 @@
             },
             {
               "name": "add-backdrop-request",
-              "description": "Event fired when the micro frontend requests to display the backdrop. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to display the backdrop. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
             },
             {
               "name": "remove-backdrop-request",
-              "description": "Event fired when the micro frontend requests to remove the backdrop. @type {Event} @returns {void}",
+              "description": "Event fired when the micro frontend requests to remove the backdrop. @type {unspecified} (type is not relevant in this case) @returns {void}",
               "type": {
                 "text": "Event"
               }
