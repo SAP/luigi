@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Luigi Compound Container",
+    "label": "luigi-compound-container",
     "category": {
       "label": "Luigi Container",
       "collapsible": true
