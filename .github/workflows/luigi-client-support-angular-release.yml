@@ -1,5 +1,6 @@
 on: 
   workflow_dispatch:
+  pull_request:
 
 name: Publish Luigi Client Support Angular Release   
 env:
