@@ -1,8 +1,6 @@
 on: 
   workflow_dispatch:
-    branches:
-    - 4147-own-release-cycle-client-support-lib
-    
+
 name: Publish Luigi Client Support Angular Release   
 env:
   NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
