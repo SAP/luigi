@@ -1,14 +1,13 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { provideAppInitializer, NgModule } from '@angular/core';
 import { LuigiMockEngine } from '@luigi-project/testing-utilities';
 
 // @dynamic
 @NgModule({
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: LuigiMockEngine.initPostMessageHook,
-      multi: true
-    }
+    provideAppInitializer(() => {
+      const initializerFn = (LuigiMockEngine.initPostMessageHook)();
+      return initializerFn();
+    })
   ]
 })
 /*
