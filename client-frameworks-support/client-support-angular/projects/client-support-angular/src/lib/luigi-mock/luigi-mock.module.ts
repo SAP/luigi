@@ -5,7 +5,7 @@ import { LuigiMockEngine } from '@luigi-project/testing-utilities';
 @NgModule({
   providers: [
     provideAppInitializer(() => {
-      const initializerFn = (LuigiMockEngine.initPostMessageHook)();
+      const initializerFn = LuigiMockEngine.initPostMessageHook();
       return initializerFn();
     })
   ]
