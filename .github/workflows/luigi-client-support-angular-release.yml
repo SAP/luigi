@@ -1,7 +1,4 @@
-on: 
-  workflow_dispatch:
-  pull_request:
-
+on: workflow_dispatch
 name: Publish Luigi Client Support Angular Release   
 env:
   NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
