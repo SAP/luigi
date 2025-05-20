@@ -393,8 +393,9 @@
                                 aria-label={userSettingsGroupProperty[1].altText
                                   ? userSettingsGroupProperty[1].altText
                                   : ''}
-                                style="background-image:url('{userSettingsGroupProperty[1]
-                                  .icon}'); background-size:cover;"
+                                style="background-image:url('
+                                  {userSettingsGroupProperty[1].icon}
+                                '); background-size:cover"
                               />
                               {#if userSettingsGroupProperty[1].initials}
                                 <span
@@ -531,8 +532,9 @@
                               aria-label={userSettingsGroupProperty[1].altText
                                 ? userSettingsGroupProperty[1].altText
                                 : ''}
-                              style="background-image:url('{userSettingsGroupProperty[1]
-                                .icon}'); background-size:cover;"
+                              style="background-image:url('
+                                {userSettingsGroupProperty[1].icon}
+                              '); background-size:cover"
                             />
                             {#if userSettingsGroupProperty[1].initials}
                               <span
