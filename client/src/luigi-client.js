@@ -26,8 +26,8 @@ class LuigiClient {
     }
   }
 
-  addInitListener(initFn) {
-    return lifecycleManager.addInitListener(initFn);
+  addInitListener(initFn, disableTpcCheck) {
+    return lifecycleManager.addInitListener(initFn, disableTpcCheck);
   }
   removeInitListener(id) {
     return lifecycleManager.removeInitListener(id);
@@ -104,7 +104,6 @@ class LuigiClient {
   setViewGroupData(value) {
     return lifecycleManager.setViewGroupData(value);
   }
-
 
   /**
    * @private

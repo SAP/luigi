@@ -10,9 +10,11 @@
       component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
-    <button id="sendCustomMessageBtn" style="margin: 25px 0 15px">sendCustomMessage</button>
+    <button id="sendCustomMessageBtn" style="margin: 25px 0 15px">
+      sendCustomMessage
+    </button>
 
-    <div style="height: fit-content;">
+    <div style="height: fit-content">
       <div style="border: 1px solid blue">
         <!-- Luigi Container to test general functionalities, params etc-->
         <luigi-container
@@ -34,7 +36,7 @@
         ></luigi-container>
       </div>
 
-      <button id="init-button" style="margin: 25px 0 15px">
+      <button id="defer-init-button" style="margin: 25px 0 15px">
         container.init() to initialize defered container
       </button>
       <div style="border: 1px solid red">
@@ -49,7 +51,7 @@
           defer-init="true"
         ></luigi-container>
       </div>
-      
+
       <!-- Used for testing dynamic compound container creation -->
       <div class="content"></div>
 
@@ -65,96 +67,198 @@
       import '../bundle.js';
       import MFEventID from '../bundle.js';
       const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
-      initButton.addEventListener('click', function() {
+      const deferInitButton = document.getElementById('defer-init-button');
+      deferInitButton.addEventListener('click', function () {
         deferInitContainer.init();
       });
       // document.querySelector('luigi-container');
-      const container = document.querySelector('[data-test-id="luigi-client-api-test-01"]')
+      const container = document.querySelector(
+        '[data-test-id="luigi-client-api-test-01"]',
+      );
       const sendCustomMsgBtn = document.getElementById('sendCustomMessageBtn');
       sendCustomMsgBtn.addEventListener('click', () => {
-        container.sendCustomMessage('custom-message-id', {dataToSend: 'cool custom Message'});
+        container.sendCustomMessage('custom-message-id', {
+          dataToSend: 'cool custom Message',
+        });
       });
 
-      [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
-        luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+      var alertSettings = {};
+
+      const showAnAlert = (alertSettings, luigiContainer) => {
+        var popup = document.createElement('div');
+        var text = document.createTextNode(alertSettings.settings.text);
+        popup.appendChild(text);
+
+        var dismissButton = document.createElement('BUTTON');
+        dismissButton.setAttribute('id', 'dismissAlert');
+        var buttonText = document.createTextNode('Dismiss Alert');
+        dismissButton.addEventListener('click', () => {
+          console.log(
+            'Dismiss clicked core side. Sending close message to mf of id =',
+            alertSettings.settings.id,
+          );
+          luigiContainer.closeAlert(
+            alertSettings.settings.id,
+            'neverShowItAgain from wc',
+          );
+          popup.style.display = 'none';
+        });
+        dismissButton.appendChild(buttonText);
+        const closeButton = document.createElement('button');
+        if (alertSettings.settings.notifyAlertClosed) {
+          closeButton.innerHTML = 'Close Alert using notifyAlertClosed';
+        } else {
+          closeButton.innerHTML = 'Close Alert';
+        }
+        closeButton.setAttribute('id', 'closeAlert');
+        closeButton.addEventListener('click', () => {
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(alertSettings.settings.id);
+          } else {
+            luigiContainer.closeAlert(alertSettings.settings.id);
+          }
+          popup.style.display = 'none';
+        });
+        popup.appendChild(dismissButton);
+        popup.appendChild(closeButton);
+
+        popup.style.visibility = 'visible';
+        popup.id = 'pop';
+        document.getElementsByTagName('body')[0].appendChild(popup);
+        return dismissButton;
+      };
+
+      [...document.querySelectorAll('luigi-container')].forEach((luigiContainer) => {
+        luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, (event) => {
           console.log(event.detail);
           window.location.hash = event.detail.link;
         });
-        luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, event => {
-          console.log(event.detail);
-          alert(event.detail.text);
+        luigiContainer.addEventListener(MFEventID.UPDATE_MODAL_SETTINGS_REQUEST, (event) => {
+          console.log(JSON.stringify(event.detail));
         });
+        luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
+          console.log(event.detail);
+          console.log('payload', event.payload);
+          alert(event.detail.text);
+          const settings = event.detail;
+          alertSettings.settings = settings;
+          showAnAlert(alertSettings, luigiContainer);
+        });
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
+          console.log(event.detail);
+          alert(event.detail.goBackValue);
+        });
+        luigiContainer.addEventListener(
+          MFEventID.UPDATE_TOP_NAVIGATION_REQUEST,
+          (event) => {
+            alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
+          },
+        );
+        luigiContainer.addEventListener(
+          MFEventID.UPDATE_MODAL_PATH_DATA_REQUEST,
+          (event) => {
+            alert(
+              `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.detail.link}")`,
+            );
+          },
+        );
         luigiContainer.addEventListener(
           MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
-          event => {
-            console.log(event.detail);
-            const val = confirm(event.detail.body);
+          (event) => {
+            const data = event.detail;
+            console.log(data);
+            const val = confirm(data.body);
             // send back to mf alert.answer with data
             window.postMessage('alert.answer', data);
-            event.luigiCallback(val);
-          }
+            if (event.callback) {
+              event.callback(val);
+            }
+            luigiContainer.notifyConfirmationModalClosed(val);
+          },
         );
-        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
-          console.log('Custom Event', event);
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
           if (event.detail.id !== 'timer') {
-            alert(event.detail.id);
+            alert(event.detail.data);
           }
         });
-
+        luigiContainer.addEventListener(MFEventID.GO_BACK_REQUEST, (event) => {
+          console.log(event);
+        });
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
-          event => {
+          (event) => {
             console.log(event.detail);
-          }
+          },
         );
-        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.ADD_SEARCH_PARAMS_REQUEST, (event) => {
+          if (event) console.log(JSON.stringify(event.detail));
+        });
+        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, (event) => {
           const params = event.detail.params;
           console.log('params', params);
         });
-        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
           console.log('anchor', event.detail);
         });
-
-        // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
-        // setDocumentTitle removeBackdrop hideAppLoadingIndicator
-        luigiContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
-          console.log('Close User Settings Request received', event.detail);
+        luigiContainer.addEventListener(MFEventID.SET_DIRTY_STATUS_REQUEST, (event) => {
+          console.log('dirty', event.detail);
+          alert('LuigiClient.uxManager().setDirtyStatus()=' + event.detail.dirty);
         });
-        luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.SET_CURRENT_LOCALE_REQUEST, (event) => {
+          console.log('locale', event.detail);
+          alert(
+            'LuigiClient.uxManager().setCurrentLocale()=' + event.detail.currentLocale,
+          );
+        });
+        luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, (event) => {
           console.log('Open User Settings Request received', event.detail);
+          alert('LuigiClient.uxManager().openUserSettings()');
         });
-        luigiContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
-          console.log('Collapse Left Side Nav Request received', event.detail);
-        });
-        luigiContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
-          console.log('Set Document Title Request received', event.detail);
-        });
-        luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
+        luigiContainer.addEventListener(
+          MFEventID.CLOSE_USER_SETTINGS_REQUEST,
+          (event) => {
+            console.log('Close User Settings Request received', event.detail);
+            alert('LuigiClient.uxManager().closeUserSettings()');
+          },
+        );
+        luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, (event) => {
           console.log('Remove Backdrop Request received', event.detail);
+          alert('LuigiClient.uxManager().removeBackdrop()');
+        });
+        luigiContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, (event) => {
+          console.log('Collapse Left Side Nav Request received', event.detail);
+          alert('LuigiClient.uxManager().collapseLeftSideNav()');
+        });
+        luigiContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, (event) => {
+          console.log('Set Document Title Request received', event.detail);
+          luigiContainer.documentTitle = event.detail;
         });
         luigiContainer.addEventListener(
           MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
-          event => {
+          (event) => {
             console.log('Hide Loading Indicator Request received', event.detail);
-          }
+            alert('LuigiClient.uxManager().hideAppLoadingIndicator()');
+          },
         );
 
         // linkManager listeners:
         // path exists
-        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
-          console.log('Remove Backdrop Request received', event.detail, event);
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
+          console.log('Path Exists Request received', event.detail, event);
           // send back result with defined 'callback'
           // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
           event.callback(true);
         });
 
         // setViewGroup Data listener
-        luigiContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
-          console.log('Set View Group Data Request received', event.detail, event);
-        });
+        luigiContainer.addEventListener(
+          MFEventID.SET_VIEW_GROUP_DATA_REQUEST,
+          (event) => {
+            console.log('Set View Group Data Request received', event.detail, event);
+          },
+        );
 
-        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, (event) => {
           event.callback(window.location.pathname);
         });
       });

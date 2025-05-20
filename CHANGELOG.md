@@ -25,6 +25,152 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.21.3] (2025-04-23)
+
+#### :bug: Fixed
+* [#4229](https://github.com/SAP/luigi/pull/4229) using correct userSettingGroupKey ([@hardl](https://github.com/hardl))
+
+
+
+
+## [v2.21.2] (2025-03-21)
+
+#### :bug: Fixed
+* [#4194](https://github.com/SAP/luigi/pull/4194) leftnav-btp: fix observer issue ([@hardl](https://github.com/hardl))
+
+
+
+
+
+## [v2.21.1] (2025-03-04)
+
+#### :bug: Fixed
+* [#4173](https://github.com/SAP/luigi/pull/4173) Bug fix: User menu stays open when not clicking on action items. ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.21.0] (2025-02-27)
+
+#### :rocket: Added
+* [#4130](https://github.com/SAP/luigi/pull/4130) Web component based micro frontends in user settings ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#4163](https://github.com/SAP/luigi/pull/4163) Fix user menu popover initials bgColor ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.20.0] (2025-02-18)
+
+#### :rocket: Added
+* [#4144](https://github.com/SAP/luigi/pull/4144) Angular 19 support for client-support-angular library ([@walmazacn](https://github.com/walmazacn))
+* [#4137](https://github.com/SAP/luigi/pull/4137) Appswitcher enhancements ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#4149](https://github.com/SAP/luigi/pull/4149) Filter out empty nav groups ([@hardl](https://github.com/hardl))
+* [#4148](https://github.com/SAP/luigi/pull/4148) Fix: Wrong backgroundColor for profile initials ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4140](https://github.com/SAP/luigi/pull/4140) Accessibility tab order ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+## [v2.19.2] (2025-01-16)
+
+#### :bug: Fixed
+* [#4114](https://github.com/SAP/luigi/pull/4114) switch visibility of usersettings entry after prep of all data ([@hardl](https://github.com/hardl))
+
+
+
+## [v2.19.1] (2025-01-16)
+
+#### :bug: Fixed
+* [#4110](https://github.com/SAP/luigi/pull/4110) Fix: usersettings profile entry when set in afterInit ([@hardl](https://github.com/hardl))
+* [#4102](https://github.com/SAP/luigi/pull/4102) Fix: iconClassAttribute for sap-icons ([@hardl](https://github.com/hardl))
+
+
+
+
+## [v2.19.0] (2024-12-23)
+
+#### :rocket: Added
+* [#4078](https://github.com/SAP/luigi/pull/4078) Mitigation of potential backwards compatibility issue ([@hardl](https://github.com/hardl))
+* [#4077](https://github.com/SAP/luigi/pull/4077) getCurrentRoute in web component client api ([@hardl](https://github.com/hardl))
+
+
+
+
+
+## [v2.18.3] (2024-12-17)
+
+#### :bug: Fixed
+* [#4071](https://github.com/SAP/luigi/pull/4071) Fixes input focus in search field ([@walmazacn](https://github.com/walmazacn))
+
+
+
+## [v2.18.2] (2024-12-16)
+
+#### :bug: Fixed
+* [#4068](https://github.com/SAP/luigi/pull/4068) Fixes 'setAttribute' issue in Luigi Client ([@walmazacn](https://github.com/walmazacn))
+* [#4065](https://github.com/SAP/luigi/pull/4065) BtpLayout: Backdrop fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4058](https://github.com/SAP/luigi/pull/4058) Wrong order of productswitcher item ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.18.1] (2024-11-29)
+
+#### :bug: Fixed
+* [#4028](https://github.com/SAP/luigi/pull/4028) Auth expiration check reset ([@hardl](https://github.com/hardl))
+* [#4024](https://github.com/SAP/luigi/pull/4024) Fixes accessibility issue in navigation ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+
+## [v2.18.0] (2024-11-05)
+
+#### :rocket: Added
+* [#4008](https://github.com/SAP/luigi/pull/4008) Adds document attribute for disable tcpcheck ([@walmazacn](https://github.com/walmazacn))
+* [#3983](https://github.com/SAP/luigi/pull/3983) Disable tpc via client ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+## [v2.17.0] (2024-10-02)
+
+#### :rocket: Added
+* [#3946](https://github.com/SAP/luigi/pull/3946) Adds option to disable luigiCookie ([@walmazacn](https://github.com/walmazacn))
+* [#3922](https://github.com/SAP/luigi/pull/3922) Adds node property for hiding global search ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3968](https://github.com/SAP/luigi/pull/3968) Fix fdToolLayout background-color ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3964](https://github.com/SAP/luigi/pull/3964) Clean Luigi store ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.16.0] (2024-09-27)
+
+#### :rocket: Added
+* [#3938](https://github.com/SAP/luigi/pull/3938) LeftNav in btpLayout: make 'expanded' the default state for nav item groups ([@amilewskaa](https://github.com/amilewskaa))
+* [#3915](https://github.com/SAP/luigi/pull/3915) Adds optional renderer for navHeader ([@walmazacn](https://github.com/walmazacn))
+
+#### :bug: Fixed
+* [#3902](https://github.com/SAP/luigi/pull/3902) Fixes wrong drawer position ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
 ## [v2.15.0] (2024-08-28)
 
 #### :rocket: Added
@@ -1854,3 +2000,17 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.14.2]: https://github.com/SAP/luigi/compare/v2.14.1...v2.14.2
 [v2.14.3]: https://github.com/SAP/luigi/compare/v2.14.2...v2.14.3
 [v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
+[v2.16.0]: https://github.com/SAP/luigi/compare/v2.15.0...v2.16.0
+[v2.17.0]: https://github.com/SAP/luigi/compare/v2.16.0...v2.17.0
+[v2.18.0]: https://github.com/SAP/luigi/compare/v2.17.0...v2.18.0
+[v2.18.1]: https://github.com/SAP/luigi/compare/v2.18.0...v2.18.1
+[v2.18.2]: https://github.com/SAP/luigi/compare/v2.18.1...v2.18.2
+[v2.18.3]: https://github.com/SAP/luigi/compare/v2.18.2...v2.18.3
+[v2.19.0]: https://github.com/SAP/luigi/compare/v2.18.3...v2.19.0
+[v2.19.1]: https://github.com/SAP/luigi/compare/v2.19.0...v2.19.1
+[v2.19.2]: https://github.com/SAP/luigi/compare/v2.19.1...v2.19.2
+[v2.20.0]: https://github.com/SAP/luigi/compare/v2.19.2...v2.20.0
+[v2.21.0]: https://github.com/SAP/luigi/compare/v2.20.0...v2.21.0
+[v2.21.1]: https://github.com/SAP/luigi/compare/v2.21.0...v2.21.1
+[v2.21.2]: https://github.com/SAP/luigi/compare/v2.21.1...v2.21.2
+[v2.21.3]: https://github.com/SAP/luigi/compare/v2.21.2...v2.21.3

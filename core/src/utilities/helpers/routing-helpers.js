@@ -22,21 +22,21 @@ class RoutingHelpersClass {
     const children = childrenResolverFn
       ? await childrenResolverFn(lastElement, pathData.context)
       : await AsyncHelpers.getConfigValueFromObjectAsync(lastElement, 'children', pathData.context);
-    const pathExists = children.find(childNode => childNode.pathSegment === lastElement.defaultChildNode);
+    const pathExists = children.find((childNode) => childNode.pathSegment === lastElement.defaultChildNode);
 
     if (lastElement.defaultChildNode && pathExists) {
       return lastElement.defaultChildNode;
     } else if (children && children.length) {
       const rootPath = pathData.navigationPath.length === 1;
       if (rootPath) {
-        const firstNodeWithPathSegment = children.find(child => child.pathSegment);
+        const firstNodeWithPathSegment = children.find((child) => child.pathSegment);
         return (
           (firstNodeWithPathSegment && firstNodeWithPathSegment.pathSegment) ||
           console.error('At least one navigation node in the root hierarchy must have a pathSegment.')
         );
       }
       const validChild = children.find(
-        child =>
+        (child) =>
           child.pathSegment && (child.viewUrl || child.compound || (child.externalLink && child.externalLink.url))
       );
       if (validChild) return validChild.pathSegment;
@@ -51,7 +51,7 @@ class RoutingHelpersClass {
     const viewParamString = paramsString.replace(/\+/g, ' ');
     const pairs = viewParamString ? viewParamString.split('&') : null;
     if (pairs) {
-      pairs.forEach(pairString => {
+      pairs.forEach((pairString) => {
         const keyValue = pairString.split('=');
         if (keyValue && keyValue.length > 0) {
           result[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
@@ -73,7 +73,7 @@ class RoutingHelpersClass {
     const result = {};
     const paramPrefix = this.getContentViewParamPrefix();
     if (params) {
-      Object.entries(params).forEach(entry => {
+      Object.entries(params).forEach((entry) => {
         if (entry[0].startsWith(paramPrefix)) {
           const paramName = entry[0].substr(paramPrefix.length);
           result[paramName] = entry[1];
@@ -174,14 +174,14 @@ class RoutingHelpersClass {
   addRouteChangeListener(callback) {
     const hashRoutingActive = LuigiConfig.getConfigValue('routing.useHashRouting');
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if (e.data.msg === 'refreshRoute' && e.origin === window.origin) {
         const path = hashRoutingActive ? Routing.getHashPath() : Routing.getModifiedPathname();
         callback(path);
       }
     });
 
-    EventListenerHelpers.addEventListener('popstate', e => {
+    EventListenerHelpers.addEventListener('popstate', (e) => {
       const path = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
       callback(path, e.detail);
     });
@@ -260,8 +260,8 @@ class RoutingHelpersClass {
     return Object.entries(object)
       .map(([key, value]) => {
         const foundKey = contains
-          ? Object.keys(paramMap).find(key2 => value && value.indexOf(paramPrefix + key2) >= 0)
-          : Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
+          ? Object.keys(paramMap).find((key2) => value && value.indexOf(paramPrefix + key2) >= 0)
+          : Object.keys(paramMap).find((key2) => value === paramPrefix + key2);
         return [
           key,
           foundKey ? (contains ? value.replace(paramPrefix + foundKey, paramMap[foundKey]) : paramMap[foundKey]) : value
@@ -375,7 +375,7 @@ class RoutingHelpersClass {
     }
     const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
-      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft, true));
+      featureToggleList.forEach((ft) => LuigiFeatureToggles.setFeatureToggle(ft, true));
     }
   }
 
@@ -457,7 +457,7 @@ class RoutingHelpersClass {
       const intentObject = this.getIntentObject(caseInsensitiveLink);
       if (intentObject) {
         let realPath = mappings.find(
-          item => item.semanticObject === intentObject.semanticObject && item.action === intentObject.action
+          (item) => item.semanticObject === intentObject.semanticObject && item.action === intentObject.action
         );
         if (!realPath) {
           return false;
@@ -527,7 +527,7 @@ class RoutingHelpersClass {
   prepareSearchParamsForClient(currentNode) {
     const filteredObj = {};
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
-      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach((key) => {
         if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
           filteredObj[key] = LuigiRouting.getSearchParams()[key];
         }
@@ -544,7 +544,7 @@ class RoutingHelpersClass {
 
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       const filteredObj = {};
-      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach((key) => {
         if (key in localSearchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
           filteredObj[key] = localSearchParams[key];
           delete localSearchParams[key];
@@ -688,6 +688,33 @@ class RoutingHelpersClass {
       };
     }
     return historyState;
+  }
+
+  /**
+   * Deals with undefined inherited property
+   * @param {Object} node the data of node
+   * @param {string} property name of affected property
+   * @param {() => void} callback optional method to be called
+   * @returns {(boolean|undefined)} true if the given props are present in node, falsy otherwise
+   */
+  handleInheritedProperty(node, property, callback) {
+    let inheritedProperty;
+
+    if (node) {
+      if (node.tabNav && node[property] === true) {
+        inheritedProperty = true;
+      }
+
+      if (node[property] === false) {
+        inheritedProperty = false;
+      }
+
+      if (callback && typeof callback === 'function') {
+        callback();
+      }
+    }
+
+    return inheritedProperty;
   }
 }
 

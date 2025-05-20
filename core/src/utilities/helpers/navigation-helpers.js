@@ -9,6 +9,7 @@ class NavigationHelpersClass {
   constructor() {
     this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
     this.COL_NAV_KEY = 'luigi.preferences.navigation.collapsedNavigation';
+    this.COLLAPSED_SUPER_CATEGORIES_KEY = 'luigi.preferences.navigation.collapsedSuperCategories';
     this.virtualGroupPrefix = '___';
   }
 
@@ -40,16 +41,9 @@ class NavigationHelpersClass {
 
   prepareForTests(...parts) {
     let result = '';
-    parts.forEach(p => {
+    parts.forEach((p) => {
       if (p) {
-        result +=
-          (result ? '_' : '') +
-          encodeURIComponent(
-            p
-              .toLowerCase()
-              .split(' ')
-              .join('')
-          );
+        result += (result ? '_' : '') + encodeURIComponent(p.toLowerCase().split(' ').join(''));
       }
     });
     return result;
@@ -114,7 +108,7 @@ class NavigationHelpersClass {
     let groupCounter = 0;
     let virtualGroupCounter = 0;
 
-    const orderNodes = nodes => {
+    const orderNodes = (nodes) => {
       nodes.sort((a, b) => {
         const oa = a.order || 0;
         const ob = b.order || 0;
@@ -122,7 +116,7 @@ class NavigationHelpersClass {
       });
     };
 
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       let key;
       let metaInfo;
       const category = node[property];
@@ -172,7 +166,7 @@ class NavigationHelpersClass {
       // Previously we skipped pushing hideFromNav nodes, but we need them now for TabNav logic
       arr.push(node);
     });
-    Object.keys(result).forEach(category => {
+    Object.keys(result).forEach((category) => {
       const metaInfo = result[category].metaInfo;
       if (metaInfo && metaInfo.id) {
         result[metaInfo.label] = result[metaInfo.id];
@@ -180,7 +174,7 @@ class NavigationHelpersClass {
       }
     });
 
-    Object.keys(result).forEach(category => {
+    Object.keys(result).forEach((category) => {
       orderNodes(result[category]);
       if (result[category].length === 0) {
         delete result[category];
@@ -214,7 +208,7 @@ class NavigationHelpersClass {
     let badgeCountsToSumUp = [];
 
     for (const node of rawChildren) {
-      pathData.forEach(n => {
+      pathData.forEach((n) => {
         if (!selectedNode && n === node) {
           selectedNode = node;
         }
@@ -322,6 +316,25 @@ class NavigationHelpersClass {
     return expandedList;
   }
 
+  storeCollapsedSuperCategoriesState(key, value) {
+    let collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
+
+    if (value) {
+      collapsedList = collapsedList.filter((item) => item !== key);
+    } else {
+      if (!collapsedList.includes(key)) {
+        collapsedList.push(key);
+      }
+    }
+
+    localStorage.setItem(this.COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(collapsedList));
+  }
+
+  isCollapsedSuperCategory(key) {
+    const collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
+    return collapsedList.includes(key);
+  }
+
   storeExpandedState(key, value, replace = false) {
     let expandedList = this.loadExpandedCategories();
 
@@ -330,7 +343,7 @@ class NavigationHelpersClass {
     if (value) {
       if (replace) {
         // Filter out other categories
-        expandedList = expandedList.filter(f => f.indexOf(context + ':') === -1);
+        expandedList = expandedList.filter((f) => f.indexOf(context + ':') === -1);
       }
 
       if (expandedList.indexOf(key) < 0) {
@@ -429,7 +442,7 @@ class NavigationHelpersClass {
 
   substituteVars(resolver, context) {
     const resolverString = JSON.stringify(resolver);
-    const resString = resolverString.replace(/\$\{[a-zA-Z0-9$_.]+\}/g, match => {
+    const resString = resolverString.replace(/\$\{[a-zA-Z0-9$_.]+\}/g, (match) => {
       const chain = match.substr(2, match.length - 3);
       return this.getPropertyChainValue(context, chain) || match;
     });
@@ -481,8 +494,8 @@ class NavigationHelpersClass {
         headers: requestOptions.headers,
         body: JSON.stringify(requestOptions.body)
       })
-        .then(response => {
-          response.json().then(data => {
+        .then((response) => {
+          response.json().then((data) => {
             try {
               const titleData = this.processTitleData(data, resolver, node);
               node.titleResolver._cache = {
@@ -495,10 +508,10 @@ class NavigationHelpersClass {
             }
           });
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
-    }).catch(error => {
+    }).catch((error) => {
       reject(error);
     });
   }

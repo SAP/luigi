@@ -11,10 +11,8 @@ describe('Navigation', () => {
     //Check Dialog is open
     cy.get('.lui-usersettings-dialog').should('exist');
 
-    //Check we have 5 left bar items
-    cy.get('.lui-us-list')
-      .find('[data-testid="us-navigation-item"]')
-      .should('have.length', 6);
+    //Check we have 6 left bar items
+    cy.get('.lui-us-list').find('[data-testid="us-navigation-item"]').should('have.length', 7);
   };
 
   const saveSettings = () => {
@@ -39,6 +37,28 @@ describe('Navigation', () => {
     openSettingsDialogBox();
   });
 
+  it('check iconClassAttribute', () => {
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(0) // User Account
+      .get('span')
+      .should('have.class', 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail lui-avatar-space');
+
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(1) // Language & Region
+      .get('span')
+      .should('have.class', 'fd-image--s fd-list__thumbnail'); // default value, no iconClassAttribute specified
+
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(2) // Privacy
+      .get('span')
+      .should('have.class', 'SAP-icon-iconClassAttribute-Test');
+
+    cy.get('[data-testid="us-navigation-item"]')
+      .eq(3) // Theming
+      .get('span')
+      .should('have.class', 'fd-list__thumbnail'); // default value, no iconClassAttribute specified
+  });
+
   describe('User Account Configuration', () => {
     const setting_name = 'name_' + new Date().getTime();
     const setting_date_format = 'df_' + new Date().getTime();
@@ -46,29 +66,19 @@ describe('Navigation', () => {
 
     it('Fill Account, Language and Region, Privacy, should have placeholder', () => {
       //Click on User Account
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(0)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(0).click();
 
       //Check User Account is selected
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(0)
-        .should('have.class', 'is-selected');
+      cy.get('[data-testid="us-navigation-item"]').eq(0).should('have.class', 'is-selected');
 
       //Check Name Input has placeholder
-      cy.get('[data-testid="lui-us-input0"]')
-        .invoke('attr', 'placeholder')
-        .should('contain', 'Name');
+      cy.get('[data-testid="lui-us-input0"]').invoke('attr', 'placeholder').should('contain', 'Name');
 
       //Click on Language & Region
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(1)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(1).click();
 
       //Check Language & Region is selected
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(1)
-        .should('have.class', 'is-selected');
+      cy.get('[data-testid="us-navigation-item"]').eq(1).should('have.class', 'is-selected');
 
       //Check Language and Region Dropdown wth arrow should exist
       cy.get('[data-testid="lui-us-enum-0"]').should('exist');
@@ -78,24 +88,16 @@ describe('Navigation', () => {
       cy.get('[data-testid="lui-us-input1"]').should('exist');
 
       //Check Date Format Input has placeholder
-      cy.get('[data-testid="lui-us-input1"]')
-        .invoke('attr', 'placeholder')
-        .should('contain', 'DD-MM-YYYY');
+      cy.get('[data-testid="lui-us-input1"]').invoke('attr', 'placeholder').should('contain', 'DD-MM-YYYY');
 
       //Click on Privacy
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(2)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(2).click();
 
       //Click on Privacy
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(2)
-        .should('have.class', 'is-selected');
+      cy.get('[data-testid="us-navigation-item"]').eq(2).should('have.class', 'is-selected');
 
       //Check Private Policy Input has placeholder
-      cy.get('[data-testid="lui-us-input0"]')
-        .invoke('attr', 'placeholder')
-        .should('contain', '...');
+      cy.get('[data-testid="lui-us-input0"]').invoke('attr', 'placeholder').should('contain', '...');
 
       //Close settings
       closeSettings();
@@ -103,22 +105,16 @@ describe('Navigation', () => {
 
     it('Fill Account and save; reopen and check saved value', () => {
       //Click on User Account
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(0)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(0).click();
 
       //Check User Account is selected
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(0)
-        .should('have.class', 'is-selected');
+      cy.get('[data-testid="us-navigation-item"]').eq(0).should('have.class', 'is-selected');
 
       //Check Name Input field and type a new name
       cy.get('[data-testid="lui-us-input0"]').type(setting_name);
 
       //Email Input field should be disabled and a usual text
-      cy.get('[data-testid="lui-us-input1"]')
-        .should('have.class', 'fd-text')
-        .should('have.attr', 'disabled');
+      cy.get('[data-testid="lui-us-input1"]').should('have.class', 'fd-text').should('have.attr', 'disabled');
 
       cy.get('[data-testid="lui-us-label-switch_checkbox"]').click();
 
@@ -143,23 +139,16 @@ describe('Navigation', () => {
 
     it('Fill Language and Region and save; reopen and check saved values', () => {
       //Click on Language & Region
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(1)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(1).click();
 
       //Check Language & Region is selected
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(1)
-        .should('have.class', 'is-selected');
+      cy.get('[data-testid="us-navigation-item"]').eq(1).should('have.class', 'is-selected');
 
       //Check Language & Region Input field exist
       cy.get('[data-testid="lui-us-input0"]').should('exist');
 
       //Open button to show enumeration list options
-      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
-        .eq(0)
-        .find('.lui-activate-dropdown')
-        .click();
+      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item').eq(0).find('.lui-activate-dropdown').click();
 
       //Check we should have 4 options
       cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
@@ -175,23 +164,16 @@ describe('Navigation', () => {
       cy.get('[data-testid="lui-us-input0"]').should('contain', 'Français');
 
       //Open button to show enumeration list options
-      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
-        .eq(0)
-        .find('.lui-activate-dropdown')
-        .click();
+      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item').eq(0).find('.lui-activate-dropdown').click();
 
       //Choose option one above French
-      cy.get('[data-testid="lui-us-enum-0"]')
-        .type('{upArrow}')
-        .type('{enter}');
+      cy.get('[data-testid="lui-us-enum-0"]').type('{upArrow}').type('{enter}');
 
       //Check Placeholder of input field is English (en)
       cy.get('[data-testid="lui-us-input0"]').should('contain', 'English (en)');
 
       //Choose option one below English
-      cy.get('[data-testid="lui-us-enum-0"]')
-        .type('{downArrow}')
-        .type('{enter}');
+      cy.get('[data-testid="lui-us-enum-0"]').type('{downArrow}').type('{enter}');
 
       //Confirm with keyboard: Enter
       cy.get('.fd-popover__body--dropdown-fill').type('{enter}');
@@ -206,9 +188,7 @@ describe('Navigation', () => {
       openSettingsDialogBox();
 
       //Click on Language & Region (left menu)
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(1)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(1).click();
 
       //Check Placeholder of input field is Français
       cy.get('[data-testid="lui-us-input0"]').should('contain', 'Français');
@@ -222,9 +202,7 @@ describe('Navigation', () => {
 
     it('Fill Privacy and save; reopen and check saved value', () => {
       //Click on Privacy
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(2)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(2).click();
 
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);
@@ -238,9 +216,7 @@ describe('Navigation', () => {
         .should('not.have.class', 'fd-button--emphasized');
 
       //Click Time Format 12h
-      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
-        .eq(0)
-        .click();
+      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button').eq(0).click();
 
       //Check Time Format 12h is selected
       cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
@@ -254,17 +230,13 @@ describe('Navigation', () => {
       openSettingsDialogBox();
 
       //Click on Privacy
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(2)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(2).click();
 
       //Check Private Policy Input field has saved value
       cy.get('[data-testid="lui-us-input0"]').should('have.value', setting_privacy_policy);
 
       //Check Time Format 12h is selected
-      cy.get('.lui-usersettings-content .enum-buttons-container-time button')
-        .eq(0)
-        .should('have.class', 'is-selected');
+      cy.get('.lui-usersettings-content .enum-buttons-container-time button').eq(0).should('have.class', 'is-selected');
 
       //Close settings
       closeSettings();
@@ -273,71 +245,172 @@ describe('Navigation', () => {
     it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
       //Click on theming
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(3)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(3).click();
       //Check if iframe is loaded and have a red button
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then((result) => {
         $iframeBody = result;
-        cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'red');
-        cy.wrap($iframeBody)
-          .contains('Red')
-          .should('not.have.class', 'active');
-        cy.wrap($iframeBody)
-          .contains('Red')
-          .click();
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
+        cy.wrap($iframeBody).contains('Red').should('not.have.class', 'active');
+        cy.wrap($iframeBody).contains('Red').click();
       });
       saveSettings();
       openSettingsDialogBox();
       //Click on theming
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(3)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(3).click();
       //Check if iframe has a red button with a active class
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then((result) => {
         $iframeBody = result;
-        cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'active');
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
       });
     });
 
     it('Check custom mf without meta data defined in schema', () => {
       let $iframeBody;
       //click on custom
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(4)
-        .click();
+      cy.get('[data-testid="us-navigation-item"]').eq(4).click();
       //check if iframe is rendered also there are no meta data set in config.
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then((result) => {
         $iframeBody = result;
-        cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'red');
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
       });
     });
 
     it('Ctx update after storing user settings data using custom messages', () => {
       let $iframeBody;
-      cy.get('[data-testid="us-navigation-item"]')
-        .eq(5)
-        .click();
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+      cy.get('[data-testid="us-navigation-item"]').eq(4).click();
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then((result) => {
         $iframeBody = result;
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('have.class', 'yellow');
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('not.have.class', 'active');
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .click();
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('have.class', 'active');
+        cy.wrap($iframeBody).contains('Yellow').should('have.class', 'yellow');
+        cy.wrap($iframeBody).contains('Yellow').should('not.have.class', 'active');
+        cy.wrap($iframeBody).contains('Yellow').click();
+        cy.wrap($iframeBody).contains('Yellow').should('have.class', 'active');
+      });
+    });
+
+    it('Should hide iframe container and show WC container', () => {
+      cy.get('[data-testid="us-navigation-item"]').eq(5).click();
+      cy.get('.iframeUserSettingsCtn').should('not.be.visible');
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('p')
+        .should('contain.text', 'WC says hello world!');
+    });
+
+    it('Test custom usersettings webcomponent', () => {
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      //Check custom3 webcomponent
+      cy.get('[data-testid="us-navigation-item"]').eq(6).should('have.class', 'is-selected');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#green').click();
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('have.class', 'active');
+
+      //Save Settings
+      saveSettings();
+
+      //Re-open Setting Dialog Box
+      openSettingsDialogBox();
+
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('not.have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#red').click();
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
+
+      //Save Settings
+      saveSettings();
+
+      //Re-open Setting Dialog Box
+      openSettingsDialogBox();
+
+      cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#red')
+        .should('have.class', 'active');
+
+      cy.get('.wcUserSettingsCtn')
+        .should('be.visible')
+        .children()
+        .first()
+        .shadow()
+        .find('#green')
+        .should('not.have.class', 'active');
+    });
+
+    it('Test userSettingGroupKey', () => {
+      cy.getAllLocalStorage().then((localStorage) => {
+        var userSettingsString = localStorage["http://localhost:4200"]["luigi.preferences.userSettings"];
+        expect(userSettingsString).to.be.undefined;
+  
+        // custom 3
+        cy.get('[data-testid="us-navigation-item"]').eq(6).click();
+        // click red button
+        cy.get('.wcUserSettingsCtn').should('be.visible').children().first().shadow().find('#red').click();
+        // Save Settings
+        saveSettings();
+        
+        cy.getAllLocalStorage().then((localStorage) => {
+          var userSettingsString = localStorage["http://localhost:4200"]["luigi.preferences.userSettings"];
+          expect(userSettingsString).to.include('"custom3":{"themeWC":"red"}');
+        });
       });
     });
   });

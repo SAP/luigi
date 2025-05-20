@@ -1,12 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Logout successful</title>
     <meta name="description" content="" />
     <meta name="keywords" content="logout" />
+    <script type="text/javascript">
+      function login() {
+        window.location.href = window.location.origin;
+      }
+
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return (results && decodeURIComponent(results[1].replace(/\+/g, ' '))) || '';
+      }
+    </script>
     <link
       rel="stylesheet"
       type="text/css"
@@ -73,19 +84,7 @@
         </div>
       </div>
     </div>
-
     <script type="text/javascript">
-      function login() {
-        window.location.href = window.location.origin;
-      }
-
-      function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return (results && decodeURIComponent(results[1].replace(/\+/g, ' '))) || '';
-      }
-
       var error = getUrlParameter('error');
       var errorDescription = getUrlParameter('errorDescription');
 

@@ -36,10 +36,10 @@
     }
     setProfileNavData();
 
-    AuthLayerSvc.getLoggedInStore().subscribe(loggedIn => {
+    AuthLayerSvc.getLoggedInStore().subscribe((loggedIn) => {
       isLoggedIn = loggedIn;
     });
-    AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
+    AuthLayerSvc.getUserInfoStore().subscribe((uInfo) => {
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
     });
@@ -68,21 +68,19 @@
   // review these functions and remove unnecessary 'export' keywords
   export function setProfileNavData() {
     if (!navProfileListenerInstalled) {
-      StateHelpers.doOnStoreChange(
-        store,
-        async () => {
+      StateHelpers.doOnStoreChange(store, async () => {
+        setTimeout(async () => {
           const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
           //check if the User Settings schema exist
           const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
           const userSettings = userSettingsConfig
             ? userSettingsConfig
             : await LuigiConfig.getConfigValueAsync('settings.userSettings');
-          hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
             items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
           };
-          if (hasUserSettings) {
+          if (userSettings) {
             const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
@@ -103,9 +101,9 @@
             AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
           }
           profileNav = profileNavData;
-        },
-        ['navigation.profile']
-      );
+          hasUserSettings = Boolean(userSettings);
+        });
+      }, ['navigation.profile']);
       navProfileListenerInstalled = true;
     }
   }
@@ -180,7 +178,9 @@
             id="username"
             class="lui-username fd-has-type-1"
             data-testid="luigi-topnav-profile-username"
-          >{userInfo.name ? userInfo.name : userInfo.email}</span>
+          >
+            {userInfo.name ? userInfo.name : userInfo.email}
+          </span>
         </li>
       {/if}
       {#each profileNav.items as profileItem}
@@ -190,7 +190,7 @@
             class="fd-menu__link"
             data-testid="luigi-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
-            on:click={event => {
+            on:click={(event) => {
               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
             }}
           >
@@ -214,7 +214,7 @@
           tabindex="-1"
           class="fd-menu__item lui-anchor-node"
           on:click|preventDefault={onUserSettingsClick}
-          on:keyup={event => handleKeyUp(event)}
+          on:keyup={(event) => handleKeyUp(event)}
           data-testid={getTestId(profileNav.settings)}
         >
           <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

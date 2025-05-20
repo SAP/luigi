@@ -110,7 +110,7 @@
   export let searchResult;
   export let storedUserSettings;
 
-  const prepareInternalData = async config => {
+  const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
     const userSettingsGroupName = iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
     const userSettingGroups = await LuigiConfig.readUserSettings();
@@ -120,14 +120,15 @@
       isNavigateBack,
       viewStackSize: preservedViews.length,
       clientPermissions: iframeConf.nextViewUrl ? iframeConf.nextClientPermissions : iframeConf.clientPermissions,
+      thirdPartyCookieCheck: await LuigiConfig.getConfigValue('settings.thirdPartyCookieCheck'),
       userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null,
       anchor: LuigiRouting.getAnchor(),
       cssVariables: await LuigiTheming.getCSSVariables()
     });
 
     IframeHelpers.specialIframeTypes
-      .map(o => o.iframeConfigKey)
-      .forEach(key => {
+      .map((o) => o.iframeConfigKey)
+      .forEach((key) => {
         internalData[key] = config[key] || false;
       });
 
@@ -154,7 +155,7 @@
     config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
-  const sendAuthDataToClient = authData => {
+  const sendAuthDataToClient = (authData) => {
     const message = {
       msg: 'luigi.auth.tokenIssued',
       authData
@@ -202,7 +203,7 @@
     return Routing.navigateTo(path, options);
   };
 
-  const removeQueryParams = str => str.split('?')[0];
+  const removeQueryParams = (str) => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -220,7 +221,7 @@
    * Clears the dirty state when dirty state promise resolves and dirty state is not needed anymore
    * @param source used for drawers/modals/split view wc and iframe when source is needed to differentiate which mf is affected
    */
-  const clearDirtyState = source => {
+  const clearDirtyState = (source) => {
     if (unsavedChanges && unsavedChanges.dirtySet) {
       if (source) {
         unsavedChanges.dirtySet.delete(source);
@@ -230,7 +231,7 @@
     }
   };
 
-  const getUnsavedChangesModalPromise = source => {
+  const getUnsavedChangesModalPromise = (source) => {
     return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
@@ -263,6 +264,7 @@
           navigationPath,
           context,
           pathParams,
+          hideGlobalSearch,
           hideSideNav,
           isolateView,
           pageErrorHandler,
@@ -278,10 +280,10 @@
           isNavigationSyncEnabled
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
           noAnimation = false;
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'hideNav') {
               hideNav = obj.hideNav;
             } else if (prop === 'viewUrl') {
@@ -300,6 +302,8 @@
               context = obj.context;
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
+            } else if (prop === 'hideGlobalSearch') {
+              hideGlobalSearch = obj.hideGlobalSearch;
             } else if (prop === 'hideSideNav') {
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
@@ -358,18 +362,14 @@
 
   const enableRouting = (node, config) => {
     // initial route handling
-    StateHelpers.doOnStoreChange(
-      store,
-      () => {
-        const wc_container = document.querySelector('.wcContainer');
-        if (wc_container) wc_container.configChangedRequest = true;
+    StateHelpers.doOnStoreChange(store, () => {
+      const wc_container = document.querySelector('.wcContainer');
+      if (wc_container) wc_container.configChangedRequest = true;
 
-        NodeDataManagementStorage.deleteCache();
-        const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
-      },
-      ['navigation.nodes']
-    );
+      NodeDataManagementStorage.deleteCache();
+      const currentPath = Routing.getCurrentPath();
+      Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
+    }, ['navigation.nodes']);
 
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
@@ -413,7 +413,7 @@
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const node = [...localNavPath].reverse().find(n => n.virtualTree);
+      const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
@@ -426,12 +426,12 @@
       path = Routing.concatenatePath(getSubPath(localNode.parent, localPathParams), params.link);
     } else if (params.fromClosestContext) {
       // from the closest navigation context
-      const node = [...localNavPath].reverse().find(n => n.navigationContext && n.navigationContext.length > 0);
+      const node = [...localNavPath].reverse().find((n) => n.navigationContext && n.navigationContext.length > 0);
       path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = [...localNavPath].reverse().find(n => navigationContext === n.navigationContext);
+      const node = [...localNavPath].reverse().find((n) => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
     } else if (params.intent) {
       path = RoutingHelpers.getIntentPath(params.link);
@@ -452,7 +452,7 @@
     return path;
   };
 
-  const handleNavClick = event => {
+  const handleNavClick = (event) => {
     const node = event.detail.node;
     getUnsavedChangesModalPromise().then(
       () => {
@@ -481,7 +481,7 @@
 
   ////GLOBALSEARCH
 
-  const checkSearchProvider = searchProvider => {
+  const checkSearchProvider = (searchProvider) => {
     if (!searchProvider) {
       console.warn('No search provider defined.');
       return false;
@@ -528,7 +528,7 @@
     }
   };
 
-  export const setGlobalSearchString = searchString => {
+  export const setGlobalSearchString = (searchString) => {
     if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         inputElem.value = searchString;
@@ -541,18 +541,18 @@
     }
   };
 
-  export const setSearchInputPlaceholder = placeholderString => {
+  export const setSearchInputPlaceholder = (placeholderString) => {
     if (checkSearchProvider(searchProvider) && inputElem) {
       inputElem.placeholder = placeholderString;
     }
   };
 
-  export const showSearchResult = arr => {
+  export const showSearchResult = (arr) => {
     if (checkSearchProvider(searchProvider)) {
       if (arr && arr.length > 0) {
         if (GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)) {
           let searchApiObj = {
-            fireItemSelected: item => {
+            fireItemSelected: (item) => {
               searchProvider.onSearchResultItemSelected(item);
             }
           };
@@ -579,7 +579,7 @@
     }
   };
 
-  export const handleSearchNavigation = event => {
+  export const handleSearchNavigation = (event) => {
     let node = event.detail.node;
     let data = {
       params: {
@@ -631,13 +631,13 @@
     return mfSplitView.displayed;
   };
 
-  const splitViewIframeCreated = event => {
+  const splitViewIframeCreated = (event) => {
     splitViewIframe = event.detail.splitViewIframe;
     splitViewIframeData = event.detail.splitViewIframeData;
     mfSplitView.collapsed = event.detail.collapsed;
   };
 
-  const splitViewStatusChanged = event => {
+  const splitViewStatusChanged = (event) => {
     if (event.detail.displayed !== undefined) {
       mfSplitView.displayed = event.detail.displayed;
     }
@@ -646,7 +646,7 @@
     }
   };
 
-  const splitViewWCCreated = event => {
+  const splitViewWCCreated = (event) => {
     splitViewWC = event.detail.splitViewWC;
     splitViewWCData = event.detail.splitViewWCData;
     mfSplitView.collapsed = event.detail.collapsed;
@@ -655,6 +655,7 @@
   /// RESIZING
 
   let hideNav;
+  let hideGlobalSearch;
   let hideSideNav;
   let noAnimation;
   let previousWindowWidth;
@@ -685,7 +686,7 @@
 
   const getAlertWithId = (alertQueue, id) => {
     if (!alertQueue || !(alertQueue.length > 0)) return;
-    return alertQueue.filter(alert => alert.settings.id === id)[0];
+    return alertQueue.filter((alert) => alert.settings.id === id)[0];
   };
 
   export const showAlert = (settings, openFromClient = false) => {
@@ -738,7 +739,7 @@
       return;
     }
 
-    alerts = alerts.filter(a => a.settings.id !== id);
+    alerts = alerts.filter((a) => a.settings.id !== id);
 
     if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
@@ -753,7 +754,7 @@
     }
   };
 
-  const handleAlertDismissExternal = event => {
+  const handleAlertDismissExternal = (event) => {
     handleAlertDismiss(event.detail.id, event.detail.dismissKey);
   };
 
@@ -784,7 +785,7 @@
     });
   };
 
-  const handleModalResult = result => {
+  const handleModalResult = (result) => {
     const { promise, openFromClient, targetIframe } = confirmationModal;
 
     resetConfirmationModalData();
@@ -804,7 +805,7 @@
     }
   };
 
-  const shouldShowUnsavedChangesModal = source => {
+  const shouldShowUnsavedChangesModal = (source) => {
     if (
       //TODO GenericHelpers.canComponentHandleModal(this) &&
       unsavedChanges.dirtySet
@@ -998,13 +999,13 @@
     ];
 
     if (resetSize) {
-      containers.forEach(container => {
+      containers.forEach((container) => {
         container?.style.removeProperty('width');
       });
     } else {
       const { width: drawerWidth } = getComputedStyle(drawer);
 
-      containers.forEach(container => {
+      containers.forEach((container) => {
         setContainerWidth(container, drawerWidth);
       });
     }
@@ -1021,23 +1022,23 @@
     }
   };
 
-  const drawerIframeCreated = event => {
+  const drawerIframeCreated = (event) => {
     drawerIframe = event.detail.modalIframe;
     drawerIframeData = event.detail.modalIframeData;
     resizeMicrofrontendIframe();
   };
 
-  const drawerWCCreated = event => {
+  const drawerWCCreated = (event) => {
     drawerWC = event.detail.modalWC;
     drawerWCData = event.detail.modalWCData;
     resizeMicrofrontendIframe();
   };
 
-  const setDrawerState = event => {
+  const setDrawerState = (event) => {
     activeDrawer = event.detail.activeDrawer;
   };
 
-  const closeDrawer = event => {
+  const closeDrawer = (event) => {
     if (event && event.detail && event.detail.activeDrawer !== undefined) {
       activeDrawer = event.detail.activeDrawer;
     }
@@ -1083,7 +1084,7 @@
 
   // Open View in New Tab
 
-  const openViewInNewTab = async nodepath => {
+  const openViewInNewTab = async (nodepath) => {
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
@@ -1102,7 +1103,7 @@
    * @param params {Object} navigation options
    * @returns {string} the path built
    */
-  export const buildPathForGetCurrentRoute = params => {
+  export const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
     if (currentNode) {
       let parent = currentNode.parent;
@@ -1119,7 +1120,7 @@
 
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const virtualTreeNode = [...localNavPath].reverse().find(n => n.virtualTree);
+      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
@@ -1136,13 +1137,13 @@
       // from the closest navigation context
       const navContextNode = [...localNavPath]
         .reverse()
-        .find(n => n.navigationContext && n.navigationContext.length > 0);
+        .find((n) => n.navigationContext && n.navigationContext.length > 0);
       const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
       path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const navContextNode = [...localNavPath].reverse().find(n => navigationContext === n.navigationContext);
+      const navContextNode = [...localNavPath].reverse().find((n) => navigationContext === n.navigationContext);
       const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
       path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else {
@@ -1169,7 +1170,7 @@
       isolateAllViews,
       defaultPageErrorHandler
     };
-    LuigiI18N.addCurrentLocaleChangeListener(locale => {
+    LuigiI18N.addCurrentLocaleChangeListener((locale) => {
       const message = {
         msg: 'luigi.current-locale-changed',
         currentLocale: locale
@@ -1177,12 +1178,12 @@
       IframeHelpers.broadcastMessageToAllIframes(message);
     });
 
-    EventListenerHelpers.addEventListener('popstate', async e => {
+    EventListenerHelpers.addEventListener('popstate', async (e) => {
       const alertQueue = alerts;
       if (!alertQueue || !(alertQueue.length > 0)) return;
 
       const updatedAlerts = alertQueue
-        .map(a => {
+        .map((a) => {
           if (a && !a.openFromClient && typeof a.settings.ttl === 'number') {
             //alert has some TTL set
             if (a.settings.ttl === 0) {
@@ -1196,12 +1197,12 @@
           //return either unchanged Alert or the one with reduced TTL value
           return a;
         })
-        .filter(a => a); //remove empty alerts from array
+        .filter((a) => a); //remove empty alerts from array
 
       alerts = updatedAlerts;
     });
 
-    EventListenerHelpers.addEventListener('message', async e => {
+    EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       const topMostModal = mfModalList[mfModalList.length - 1];
       const modalIframe = topMostModal && topMostModal.modalIframe;
@@ -1251,7 +1252,7 @@
           return;
         }
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+          const microfrontend = LuigiElements.getMicrofrontends().find((mf) =>
             IframeHelpers.isMessageSource(e, mf.container)
           );
 
@@ -1291,7 +1292,7 @@
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
         if (isSpecialIframe) {
-          specialIframeMessageSource.forEach(async typ => {
+          specialIframeMessageSource.forEach(async (typ) => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
               ...config,
@@ -1378,7 +1379,7 @@
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1697,7 +1698,7 @@
   setContext('store', store);
   setContext('getTranslation', getTranslation);
 
-  const tpcErrorHandling = thirdpartycookiecheck => {
+  const tpcErrorHandling = (thirdpartycookiecheck) => {
     if (
       thirdPartyCookiesCheck &&
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling &&
@@ -1725,7 +1726,7 @@
     }
   }
 
-  export const pathExists = async path => {
+  export const pathExists = async (path) => {
     const data = {
       link: path,
       relative: path[0] !== '/',
@@ -1777,7 +1778,7 @@
         thirdPartyCookieCheckIframe.height = '0px';
         thirdPartyCookieCheckIframe.src = thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1800,7 +1801,7 @@
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 
-  const handleKeyDown = event => {
+  const handleKeyDown = (event) => {
     if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length > 0) {
       closeModal(mfModalList.length - 1);
     }
@@ -1828,8 +1829,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
@@ -1862,12 +1863,14 @@
   {/if}
 
   {#if btpToolLayout}
+    <Backdrop disable={disableBackdrop}></Backdrop>
     <div class="lui-core-layout">
       <div class="fd-tool-layout fd-tool-layout--sticky">
         <div class="fd-tool-layout__container">
           <div class="fd-tool-layout__header-container">
             {#if !isHeaderDisabled}
               <TopNav
+                hideSearchComponent={hideGlobalSearch}
                 pathData={navigationPath}
                 {pathParams}
                 on:handleClick={handleNavClick}
@@ -1951,6 +1954,33 @@
       </div>
     </div>
   {:else}
+    {#if !isHeaderDisabled}
+      <TopNav
+        hideSearchComponent={hideGlobalSearch}
+        pathData={navigationPath}
+        {pathParams}
+        on:handleClick={handleNavClick}
+        on:resizeTabNav={onResizeTabNav}
+        on:toggleSearch={toggleSearch}
+        on:closeSearchResult={closeSearchResult}
+        on:handleSearchNavigation={handleSearchNavigation}
+        bind:isSearchFieldVisible
+        bind:displaySearchResult
+        bind:searchResult
+        bind:inputElem
+        bind:customSearchItemRendererSlot
+        {burgerTooltip}
+      />
+    {/if}
+    {#if !(hideNav || hideSideNav)}
+      <LeftNav
+        pathData={navigationPath}
+        {pathParams}
+        on:handleClick={handleNavClick}
+        on:resizeTabNav={onResizeTabNav}
+        {burgerTooltip}
+      />
+    {/if}
     <Backdrop disable={disableBackdrop}>
       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
       <div
@@ -1989,38 +2019,14 @@
         </div>
       </div>
     {/if}
-    {#if !isHeaderDisabled}
-      <TopNav
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-        on:resizeTabNav={onResizeTabNav}
-        on:toggleSearch={toggleSearch}
-        on:closeSearchResult={closeSearchResult}
-        on:handleSearchNavigation={handleSearchNavigation}
-        bind:isSearchFieldVisible
-        bind:displaySearchResult
-        bind:searchResult
-        bind:inputElem
-        bind:customSearchItemRendererSlot
-        {burgerTooltip}
-      />
-    {/if}
+
     {#if !hideNav}
       <GlobalNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
       {#if breadcrumbsEnabled}
         <Breadcrumb pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} />
       {/if}
     {/if}
-    {#if !(hideNav || hideSideNav)}
-      <LeftNav
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-        on:resizeTabNav={onResizeTabNav}
-        {burgerTooltip}
-      />
-    {/if}
+
     {#if tabNav && !hideNav}
       <TabNav pathData={navigationPath} {pathParams} on:handleClick={handleNavClick} {resizeTabNavToggle} />
     {/if}
@@ -2036,6 +2042,10 @@
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
     --luigi__horizontal-nav--height: 2.75rem;
+  }
+
+  .fd-tool-layout {
+    --fdToolLayout_Background: var(--sapBackgroundColor);
   }
 
   :global(html) {

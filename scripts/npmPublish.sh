@@ -130,10 +130,10 @@ elif [ "$1" = "luigi-client-support-ui5-release" ]; then
   echo "$PWD"
   checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
   publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
-# elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
-  # echo "$PWD"
-  # checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
-  # publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
+elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
+  echo "$PWD"
+  checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
+  publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
 else
   prepublishChecks
   # Luigi OAuth Plugin

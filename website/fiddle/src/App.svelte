@@ -1,11 +1,11 @@
 <script>
+  import { onDestroy, onMount } from 'svelte';
+
   import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
-  import { onMount } from 'svelte';
 
   export let luigiVersion = luigiCorePkgInfo.version;
   export let customVersion;
-
   export let versions;
   export let showVersions;
 
@@ -49,7 +49,7 @@
     const core = document.createElement('script');
     core.setAttribute('src', coreBasePath + '/luigi.js');
     document.head.appendChild(core);
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       window.loadInterval = setInterval(() => {
         if (window.Luigi) {
           clearInterval(window.loadInterval);
@@ -77,6 +77,9 @@
     let customConfig = sessionStorage.getItem('fiddle');
     let customConfigPreviousSession = localStorage.getItem('fiddle');
 
+    // init keyboard events
+    initKeyboardEvents();
+
     // check if config saved from a previous session
     if (!customConfig && customConfigPreviousSession) {
       if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
@@ -99,6 +102,17 @@
       exec(defaultConfigString);
       configString = defaultConfigString;
     }
+  }
+
+  function handleKeydownEvent(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      event.preventDefault();
+      saveConfig();
+    }
+  }
+
+  function initKeyboardEvents() {
+    window.addEventListener('keydown', handleKeydownEvent);
   }
 
   function saveConfig() {
@@ -163,6 +177,10 @@
     window.location.reload();
   }
 
+  onDestroy(() => {
+    window.removeEventListener('keydown', handleKeydownEvent);
+  });
+
   onMount(async () => {
     await injectLuigiAssets();
 
@@ -193,23 +211,25 @@
           <div class="fd-bar__element">
             <button
               class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-              on:click={resetConfig}
-            >Reset</button>
+              on:click={resetConfig}>Reset</button
+            >
+          </div>
+          <div class="fd-bar__element">
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={closeConfig}
+              >Cancel</button
+            >
           </div>
           <div class="fd-bar__element lui-mobile-hide">
-            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+              on:click={saveConfig}>Apply</button
+            >
           </div>
           <div class="fd-bar__element lui-mobile-show">
             <button
-              class="fd-dialog__decisive-button fd-button fd-button--compact"
-              on:click={saveConfigTA}
-            >Apply</button>
-          </div>
-          <div class="fd-bar__element">
-            <button
-              class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-              on:click={closeConfig}
-            >Cancel</button>
+              class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+              on:click={saveConfigTA}>Apply</button
+            >
           </div>
         </div>
       </footer>
@@ -222,12 +242,14 @@
     <div class="fd-action-bar__header">
       <div class="title-wrapper">
         <img alt="Luigi" src="./img/luigi.png" />
-        <span class="lui-mobile-hide">powered by Luigi
+        <span class="lui-mobile-hide"
+          >powered by Luigi
           <button
             class="fd-button fd-button--compact btn-primary"
             on:click|preventDefault|stopPropagation={chooseVersion}
           >
-            <span class="lui-mobile-hide">v{luigiVersion + (customVersion ? ' (CDN)' : '')}
+            <span class="lui-mobile-hide"
+              >v{luigiVersion + (customVersion ? ' (CDN)' : '')}
               {#if showVersions}
                 <div class="lui-version-chooser">
                   {#if !versions}
@@ -239,7 +261,13 @@
                     </div>
                   {/if}
                   {#each versions || [] as version}
-                    <a class="fd-link" href="#top" target="_blank" rel="noreferrer" on:click={switchVersion(version)}>
+                    <a
+                      class="fd-link"
+                      href="#top"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      on:click={switchVersion(version)}
+                    >
                       {version}
                     </a><br />
                   {/each}
@@ -249,10 +277,20 @@
           </button>
         </span>
         <span>
-          <a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank" rel="noreferrer">
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/privacy.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Privacy Policy &nbsp&nbsp
           </a>
-          <a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank" rel="noreferrer">
+          <a
+            class="fd-link"
+            href="https://www.sap.com/about/legal/impressum.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Legal
           </a>
         </span>

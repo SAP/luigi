@@ -5,12 +5,13 @@ on:
 name: Backwards Compatibility Check
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  CYPRESS_DASHBOARD_RECORD_KEY: ${{ secrets.CYPRESS_DASHBOARD }}
   GH_TOKEN: ${{ github.token }}
 
 jobs:
-  prepare: 
+  prepare:
     uses: ./.github/workflows/prepare.yml
-    with: 
+    with:
       buildcache_key: compat_buildcache-${{ github.ref }}
     secrets: inherit
 
@@ -18,11 +19,13 @@ jobs:
     name: Compatibility Tests
     needs: prepare
     runs-on: ubuntu-latest
+    env:
+      USE_CYPRESS_DASHBOARD: true  # enable when trying to debug
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.14.0'    
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |

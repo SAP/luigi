@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "include": [
+    "instrumented/**/*",
     "src/**/*",
     "src/node_modules",
     "test/**/*"
@@ -12,5 +13,6 @@
   ],
   "compilerOptions": {
     "module": "ESNext",
+    "target": "ES2021"
   },
 }

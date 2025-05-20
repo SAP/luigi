@@ -18,7 +18,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () {};
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -104,11 +104,11 @@ class LuigiConfig {
   configChanged(...scope) {
     const optimizedScope = StateHelpers.optimizeScope(scope);
     if (optimizedScope.length > 0) {
-      optimizedScope.forEach(s => {
+      optimizedScope.forEach((s) => {
         window.Luigi._store.fire(s, { current: window.Luigi._store });
       });
     } else {
-      window.Luigi._store.update(config => config);
+      window.Luigi._store.update((config) => config);
     }
   }
 
@@ -219,6 +219,7 @@ class LuigiConfig {
    */
   unload() {
     this.initialized = false;
+    window.Luigi._store.clear();
     AuthLayerSvc.unload();
     EventListenerHelpers.removeAllEventListeners();
     const container = LuigiElements.getLuigiContainer();
@@ -298,9 +299,9 @@ class LuigiConfig {
   clearNavigationCache() {
     NodeDataManagementStorage.deleteCache();
 
-    const clearTitleResolverCache = nodes => {
+    const clearTitleResolverCache = (nodes) => {
       if (nodes && nodes.forEach) {
-        nodes.forEach(node => {
+        nodes.forEach((node) => {
           if (node.titleResolver && node.titleResolver._cache) {
             node.titleResolver._cache = undefined;
           }
@@ -349,7 +350,7 @@ class LuigiConfig {
   updateContextValues(ctx) {
     const visibleIframes = IframeHelpers.getMicrofrontendIframes();
     if (visibleIframes && visibleIframes.length > 0) {
-      visibleIframes.forEach(iframe => {
+      visibleIframes.forEach((iframe) => {
         // luigi configuration data about the mf which is rendered in the iframe
         if (iframe.luigi) {
           IframeHelpers.sendMessageToIframe(iframe, {
@@ -367,7 +368,7 @@ class LuigiConfig {
     }
     if (document.querySelector('.wcContainer')) {
       let luiWebComponents = document.querySelectorAll('[lui_web_component=true]');
-      luiWebComponents.forEach(luiWebComponent => {
+      luiWebComponents.forEach((luiWebComponent) => {
         luiWebComponent.context = Object.assign({}, luiWebComponent.context, ctx);
       });
     }

@@ -8,8 +8,12 @@ import { AuthLayerSvc } from './services';
 const createConfigStore = () => {
   const { subscribe, update, reset } = writable({});
   const scopeSubscribers = {};
+  let unSubscriptions = [];
   return {
-    subscribe,
+    subscribe: (fn) => {
+      //subscribe fn returns unsubscription fn
+      unSubscriptions.push(subscribe(fn));
+    },
     update,
     reset,
     subscribeToScope: (fn, scope) => {
@@ -23,10 +27,16 @@ const createConfigStore = () => {
     fire: (scope, data) => {
       let subscribers = scopeSubscribers[scope];
       if (subscribers) {
-        [...subscribers].forEach(fn => {
+        [...subscribers].forEach((fn) => {
           fn(data);
         });
       }
+    },
+    clear: () => {
+      unSubscriptions.forEach((sub) => {
+        sub();
+      });
+      unSubscriptions = [];
     }
   };
 };
@@ -39,7 +49,7 @@ export const getTranslation = readable((key, interpolations, locale) => {
 Luigi._store = store;
 
 const configReadyCallback = () => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     LuigiI18N._init();
 
     AuthLayerSvc.init().then(() => {
@@ -59,11 +69,11 @@ const configReadyCallback = () => {
           }
         });
 
-        Luigi.showAlert = settings => {
+        Luigi.showAlert = (settings) => {
           return app.showAlert(settings);
         };
 
-        Luigi.showConfirmationModal = settings => {
+        Luigi.showConfirmationModal = (settings) => {
           return app.showModal(settings);
         };
 
@@ -78,11 +88,11 @@ const configReadyCallback = () => {
           return app.getGlobalSearchString();
         };
 
-        Luigi.setGlobalSearchString = searchString => {
+        Luigi.setGlobalSearchString = (searchString) => {
           app.setGlobalSearchString(searchString);
         };
 
-        Luigi.showSearchResult = arr => {
+        Luigi.showSearchResult = (arr) => {
           return app.showSearchResult(arr);
         };
 
@@ -105,7 +115,7 @@ const configReadyCallback = () => {
           }
         };
 
-        Luigi.pathExists = path => {
+        Luigi.pathExists = (path) => {
           return app.pathExists(path);
         };
 

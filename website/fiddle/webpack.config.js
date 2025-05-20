@@ -55,10 +55,10 @@ module.exports = {
         { from: './node_modules/@luigi-project/client', to: 'vendor/luigi-client' },
         { from: './node_modules/@luigi-project/plugin-auth-oauth2', to: 'vendor/plugin-auth-oauth2' },
         { from: './node_modules/@luigi-project/plugin-auth-oidc', to: 'vendor/plugin-auth-oidc' },
-        // { from: './node_modules/@luigi-project/plugin-auth-oidc-pkce', to: 'vendor/plugin-auth-oidc-pkce' },
+        { from: './node_modules/@luigi-project/plugin-auth-oidc-pkce', to: 'vendor/plugin-auth-oidc-pkce' },
         { from: './node_modules/fundamental-styles', to: 'vendor/fundamental-styles' },
         { from: './node_modules/@sap-theming/theming-base-content', to: 'vendor/theming-base-content' },
-        ...['ace.js', 'mode-javascript.js', 'worker-javascript.js', 'theme-textmate.js'].map(f => ({
+        ...['ace.js', 'mode-javascript.js', 'worker-javascript.js', 'theme-textmate.js'].map((f) => ({
           from: './node_modules/ace-builds/src-min/' + f,
           to: 'vendor/ace/src-min/'
         }))
@@ -73,12 +73,14 @@ module.exports = {
     errorDetails: true
   },
   devServer: {
-    proxy: {
-      '/luigi-cdn': {
-        target: 'https://www.unpkg.com',
-        changeOrigin: true,
-        pathRewrite: { '^/luigi-cdn': '/@luigi-project' }
+    proxy: [
+      {
+        '/luigi-cdn': {
+          target: 'https://www.unpkg.com',
+          changeOrigin: true,
+          pathRewrite: { '^/luigi-cdn': '/@luigi-project' }
+        }
       }
-    }
+    ]
   }
 };

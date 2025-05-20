@@ -7,11 +7,20 @@ import {
 } from './web-component-helpers';
 import { ContainerService } from './container.service';
 import { Events } from '../constants/communication';
+import type {
+  ContainerElement,
+  LayoutConfig,
+  WebComponentNode,
+  WebComponentRenderer
+} from '../constants/container.model';
 
 /** Methods for dealing with web components based micro frontend handling */
 export class WebComponentService {
   containerService: ContainerService;
-  thisComponent: any;
+  thisComponent: ContainerElement;
+  alertResolvers: Record<string, (value: unknown) => void> = {};
+  alertIndex = 0;
+  modalResolver: { resolve: () => void; reject: () => void };
 
   constructor() {
     this.containerService = new ContainerService();
@@ -22,7 +31,7 @@ export class WebComponentService {
     return Object.freeze(import(/* webpackIgnore: true */ viewUrl));
   }
 
-  processViewUrl(viewUrl: string, data?: any): string {
+  processViewUrl(viewUrl: string, data?: object): string {
     return viewUrl;
   }
 
@@ -41,8 +50,8 @@ export class WebComponentService {
   attachWC(
     wc_id: string,
     wcItemPlaceholder: HTMLDivElement,
-    wc_container,
-    ctx,
+    wc_container: ContainerElement,
+    ctx: object,
     viewUrl: string,
     nodeId: string,
     isCompoundChild?: boolean
@@ -70,7 +79,8 @@ export class WebComponentService {
    * @param data the data to be sent
    * @param callback the callback function to be called
    */
-  dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatchLuigiEvent(msg: string, data: object, callback?: (arg?: any) => void) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
@@ -87,7 +97,13 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
+  createClientAPI(
+    eventBusElement: ContainerElement,
+    nodeId: string,
+    wc_id: string,
+    component: HTMLElement,
+    isCompoundChild?: boolean
+  ) {
     return {
       linkManager: () => {
         let fromContext = null;
@@ -138,7 +154,7 @@ export class WebComponentService {
             fromClosestContext = true;
             return linkManagerInstance;
           },
-          fromContext: navigationContext => {
+          fromContext: (navigationContext) => {
             fromContext = navigationContext;
             return linkManagerInstance;
           },
@@ -163,38 +179,79 @@ export class WebComponentService {
                 Events.GET_CURRENT_ROUTE_REQUEST,
                 this.thisComponent,
                 { ...options },
-                route => {
+                (route) => {
                   if (route) {
                     resolve(route);
                   } else {
                     reject('No current route received.');
                   }
-                },
-                'callback'
+                }
               );
             });
           },
-          withParams: params => {
+          withParams: (params) => {
             nodeParams = params;
             return linkManagerInstance;
+          },
+          updateModalPathInternalNavigation: (path: string, modalSettings = {}, addHistoryEntry = false): void => {
+            if (!path) {
+              console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+              return;
+            }
+
+            const options = {
+              fromClosestContext,
+              fromContext,
+              fromParent,
+              fromVirtualTreeRoot,
+              nodeParams
+            };
+
+            this.dispatchLuigiEvent(
+              Events.UPDATE_MODAL_PATH_DATA_REQUEST,
+              Object.assign(options, {
+                history: addHistoryEntry,
+                link: path,
+                modal: modalSettings
+              })
+            );
           },
           updateTopNavigation: (): void => {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
-          pathExists: () => {
+          pathExists: (link: string) => {
+            const options = {
+              fromContext,
+              fromClosestContext,
+              fromVirtualTreeRoot,
+              fromParent,
+              nodeParams
+            };
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(
-                Events.PATH_EXISTS_REQUEST,
+                Events.CHECK_PATH_EXISTS_REQUEST,
                 this.thisComponent,
-                {},
-                exists => {
+                { ...options, link },
+                (exists) => {
                   if (exists) {
                     resolve(true);
                   } else {
                     reject(false);
                   }
-                },
-                'callback'
+                }
+              );
+              // For BW compatibility
+              this.containerService.dispatch(
+                Events.PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                { ...options, link },
+                (exists) => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                }
               );
             });
           },
@@ -209,34 +266,46 @@ export class WebComponentService {
               splitView: splitViewSettings
             });
           },
-          goBack: goBackContext => {
+          goBack: (goBackContext) => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
             return false;
+          },
+          updateModalSettings: (modalSettings = {}, addHistoryEntry = false) => {
+            this.dispatchLuigiEvent(Events.UPDATE_MODAL_SETTINGS_REQUEST, {
+              updatedModalSettings: modalSettings,
+              addHistoryEntry
+            });
           }
         };
         return linkManagerInstance;
       },
       uxManager: () => {
         return {
-          showAlert: alertSettings => {
-            this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+          showAlert: (alertSettings) => {
+            alertSettings.id = this.alertIndex++;
+            return new Promise((resolve) => {
+              this.alertResolvers[alertSettings.id] = resolve;
+              this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings, (dismissKey?: boolean | string) => {
+                this.resolveAlert(alertSettings.id, dismissKey);
+              });
+            });
           },
-          showConfirmationModal: settings => {
-            return new Promise((resolve, reject) => {
+          showConfirmationModal: (settings) => {
+            return new Promise<void>((resolve, reject) => {
+              this.modalResolver = { resolve, reject };
               this.containerService.dispatch(
                 Events.SHOW_CONFIRMATION_MODAL_REQUEST,
                 this.thisComponent,
                 settings,
-                data => {
-                  if (data) {
-                    resolve(data);
+                (confirmed) => {
+                  if (confirmed) {
+                    resolve();
                   } else {
-                    reject(new Error('No data'));
+                    reject();
                   }
-                },
-                'callback'
+                }
               );
             });
           },
@@ -258,11 +327,22 @@ export class WebComponentService {
           getDocumentTitle: () => {
             return this.thisComponent.documentTitle;
           },
-          setDocumentTitle: title => {
+          setDocumentTitle: (title) => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
+          },
+          setDirtyStatus: (isDirty: boolean) => {
+            this.dispatchLuigiEvent(Events.SET_DIRTY_STATUS_REQUEST, { dirty: isDirty });
+          },
+          setCurrentLocale: (locale: string) => {
+            if (locale) {
+              this.dispatchLuigiEvent(Events.SET_CURRENT_LOCALE_REQUEST, { currentLocale: locale });
+            }
           },
           removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
+          },
+          addBackdrop: () => {
+            this.dispatchLuigiEvent(Events.ADD_BACKDROP_REQUEST, {});
           },
           hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
@@ -275,8 +355,9 @@ export class WebComponentService {
       getActiveFeatureToggles: (): string[] => {
         return this.thisComponent.activeFeatureToggleList || [];
       },
-      publishEvent: ev => {
+      publishEvent: (ev) => {
         if (eventBusElement && eventBusElement.eventBus) {
+          // compound component use case only
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
         const payload = {
@@ -299,10 +380,11 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, {
           params,
+          data: params,
           keepBrowserHistory
         });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object => {
+      getNodeParams: (shouldDesanitise: boolean): object => {
         if (isCompoundChild) {
           return {};
         }
@@ -311,7 +393,7 @@ export class WebComponentService {
         }
         return this.thisComponent.nodeParams || {};
       },
-      setAnchor: anchor => {
+      setAnchor: (anchor) => {
         if (isCompoundChild) {
           return;
         }
@@ -320,19 +402,22 @@ export class WebComponentService {
       getAnchor: (): string => {
         return this.thisComponent.anchor || '';
       },
-      getCoreSearchParams: (): Object => {
+      getCoreSearchParams: (): object => {
         return this.thisComponent.searchParams || {};
       },
-      getPathParams: (): Object => {
+      getPathParams: (): object => {
         return this.thisComponent.pathParams || {};
       },
-      getClientPermissions: (): Object => {
+      getClientPermissions: (): object => {
         return this.thisComponent.clientPermissions || {};
       },
-      getUserSettings: (): Object => {
+      addCoreSearchParams: (searchParams = {}, keepBrowserHistory = true) => {
+        this.dispatchLuigiEvent(Events.ADD_SEARCH_PARAMS_REQUEST, { data: searchParams, keepBrowserHistory });
+      },
+      getUserSettings: (): object => {
         return this.thisComponent.userSettings || {};
       },
-      setViewGroupData: data => {
+      setViewGroupData: (data) => {
         this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }
     };
@@ -352,11 +437,11 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    */
   initWC(
-    wc: HTMLElement | any,
-    wc_id,
-    eventBusElement,
+    wc: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    wc_id: string,
+    eventBusElement: ContainerElement,
     viewUrl: string,
-    ctx,
+    ctx: object,
     nodeId: string,
     isCompoundChild?: boolean
   ) {
@@ -379,7 +464,7 @@ export class WebComponentService {
    * returns a string that can be used as part of a tagname, only alphanumeric
    * characters and no whitespaces.
    */
-  generateWCId(viewUrl: string) {
+  generateWCId(viewUrl: string): string {
     let charRep = '';
     const normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
@@ -396,12 +481,12 @@ export class WebComponentService {
    * @param wc_id a tagname that is used when creating the web component element
    * @returns a promise that gets resolved after successfull import
    */
-  registerWCFromUrl(viewUrl: string, wc_id: string) {
+  registerWCFromUrl(viewUrl: string, wc_id: string): Promise<unknown> {
     const i18nViewUrl = this.processViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
         this.dynamicImport(i18nViewUrl)
-          .then(module => {
+          .then((module) => {
             try {
               if (!window.customElements.get(wc_id)) {
                 let cmpClazz = module.default;
@@ -421,7 +506,7 @@ export class WebComponentService {
               reject(err);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       } else {
@@ -439,7 +524,7 @@ export class WebComponentService {
    * @param {*} viewUrl the source of the wc bundle
    * @param {*} onload callback function executed after script attached and loaded
    */
-  includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
+  includeSelfRegisteredWCFromUrl(node: WebComponentNode, viewUrl: string, onload: () => void) {
     if (this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!this.containerService.getContainerManager()._registerWebcomponent) {
@@ -448,11 +533,11 @@ export class WebComponentService {
         };
       }
       // @ts-ignore
-      if (!window.Luigi) {
+      if (!window['Luigi']) {
         // @ts-ignore
         window.Luigi = {};
         // @ts-ignore
-        if (!window.Luigi._registerWebcomponent) {
+        if (!window['Luigi']['_registerWebcomponent']) {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
             this.containerService.getContainerManager()._registerWebcomponent(src, element);
@@ -480,7 +565,7 @@ export class WebComponentService {
    *
    * @param {*} url the url string to check
    */
-  checkWCUrl(url: string) {
+  checkWCUrl(url: string): boolean {
     // if (url.indexOf('://') > 0 || url.trim().indexOf('//') === 0) {
     //   const ur = new URL(url);
     //   if (ur.host === window.location.host) {
@@ -521,10 +606,10 @@ export class WebComponentService {
    */
   renderWebComponent(
     viewUrl: string,
-    wc_container: HTMLElement | any,
-    context: any,
-    node: any,
-    nodeId?: any,
+    wc_container: HTMLElement | any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    context: object,
+    node: WebComponentNode,
+    nodeId?: string,
     isCompoundChild?: boolean
   ) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
@@ -537,11 +622,13 @@ export class WebComponentService {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).luigiWCFn) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
-      } else if (node.webcomponent && node.webcomponent.selfRegistered) {
+      } else if (node?.webcomponent?.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
@@ -550,7 +637,7 @@ export class WebComponentService {
           .then(() => {
             this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
           })
-          .catch(error => {
+          .catch((error) => {
             console.warn('ERROR =>', error);
             // dispatch an error event to be handled core side
             this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
@@ -565,15 +652,19 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer: any, ctx: any, navNode: any): Promise<HTMLElement> {
+  createCompoundContainerAsync(
+    renderer: WebComponentRenderer,
+    ctx: object,
+    navNode: WebComponentNode
+  ): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
           const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
-          if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
+          if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               const wc = document.createElement(wc_id);
-              wc.setAttribute('lui_web_component', true);
+              wc.setAttribute('lui_web_component', 'true');
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
@@ -581,11 +672,11 @@ export class WebComponentService {
             this.registerWCFromUrl(renderer.viewUrl, wc_id)
               .then(() => {
                 const wc = document.createElement(wc_id);
-                wc.setAttribute('lui_web_component', true);
+                wc.setAttribute('lui_web_component', 'true');
                 this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
                 resolve(wc);
               })
-              .catch(error => {
+              .catch((error) => {
                 console.warn('Error: ', error);
                 // dispatch an error event to be handled core side
                 this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
@@ -605,17 +696,21 @@ export class WebComponentService {
    * micro frontend.
    *
    * @param {*} navNode the navigation node defining the compound
-   * @param {HTMLElement} wc_container the web component container dom element
+   * @param {ContainerElement} wc_container the web component container dom element
    * @param {*} context the luigi node context
    */
-  renderWebComponentCompound(navNode, wc_container: HTMLElement, context) {
+  renderWebComponentCompound(
+    navNode: WebComponentNode,
+    wc_container: ContainerElement,
+    context: object
+  ): Promise<ContainerElement> {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = this.processViewUrl(navNode.viewUrl, { context });
-      renderer.createCompoundItemContainer = layoutConfig => {
+      renderer.createCompoundItemContainer = (layoutConfig: LayoutConfig) => {
         const cnt = document.createElement('div');
-        if (layoutConfig && layoutConfig.slot) {
+        if (layoutConfig?.slot) {
           cnt.setAttribute('slot', layoutConfig.slot);
         }
         return cnt;
@@ -625,19 +720,19 @@ export class WebComponentService {
     }
 
     renderer = renderer || new DefaultCompoundRenderer();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.createCompoundContainerAsync(renderer, context, navNode)
-        .then((compoundCnt: HTMLElement) => {
-          (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
-          (wc_container as any)._luigi_node = navNode;
+        .then((compoundCnt: ContainerElement) => {
+          wc_container._luigi_mfe_webcomponent = compoundCnt;
+          wc_container._luigi_node = navNode;
           const ebListeners = {};
-          (compoundCnt as any).eventBus = {
+          compoundCnt.eventBus = {
             listeners: ebListeners,
             onPublishEvent: (event, srcNodeId, wcId) => {
               const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
               listeners.push(...(ebListeners['*.' + event.type] || []));
 
-              listeners.forEach(listenerInfo => {
+              listeners.forEach((listenerInfo) => {
                 const target =
                   listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
                 if (target) {
@@ -652,11 +747,11 @@ export class WebComponentService {
               });
             }
           };
-          navNode.compound?.children.forEach((wc, index) => {
+          navNode.compound?.children?.forEach((wc, index) => {
             const ctx = { ...context, ...wc.context };
             const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
 
-            compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
+            compoundItemCnt.eventBus = compoundCnt.eventBus;
             renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
             const nodeId = wc.id || 'gen_' + index;
@@ -668,11 +763,51 @@ export class WebComponentService {
           registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
           resolve(compoundCnt);
         })
-        .catch(error => {
+        .catch((error) => {
           // dispatch an error event to be handled core sid
           console.warn('Error: ', error);
           this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
         });
     });
+  }
+
+  /**
+   * Resolves an alert by invoking the corresponding resolver function for the given alert ID.
+   * This method attempts to resolve an alert associated with the specified `id` by calling its resolver function,
+   * if one exists in the `alertResolvers` object. If the resolver exists, it is invoked with `dismissKey` as its argument,
+   * and then the resolver is removed from the `alertResolvers` object to avoid future invocations. If no resolver is found
+   * for the provided `id`, a message is logged to the console indicating that no matching promise is in the list.
+   * @param {string} id - The unique identifier for the alert to resolve.
+   * @param {boolean|string} dismissKey - An optional key or value passed to the resolver. Defaults to `true` if not provided.
+   *
+   * @returns {void}
+   *
+   */
+  resolveAlert(id: string, dismissKey?: boolean | string) {
+    if (this.alertResolvers[id]) {
+      this.alertResolvers[id](dismissKey === undefined ? true : dismissKey);
+      this.alertResolvers[id] = undefined;
+    } else {
+      console.log('Promise is not in the list.');
+    }
+  }
+
+  /**
+   * Resolves a confirmation modal by invoking the corresponding resolver function.
+   *
+   * @param {boolean} confirmed the result of the modal being closed
+   *
+   */
+  notifyConfirmationModalClosed(confirmed: boolean) {
+    if (this.modalResolver) {
+      if (confirmed) {
+        this.modalResolver.resolve();
+      } else {
+        this.modalResolver.reject();
+      }
+      this.modalResolver = undefined;
+    } else {
+      console.log('Modal promise is not listed.');
+    }
   }
 }

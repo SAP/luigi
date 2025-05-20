@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -15,14 +15,37 @@
     <div style="display: contents">%sveltekit.body%</div>
 
     <script type="text/javascript">
+      const sanitizeString = function (input) {
+        return input ? input.replace(/[^a-z0-9-/]/gim, '').toLowerCase() : '';
+      };
+      const locationPath = sanitizeString(location.pathname);
+      const pathNameIndex = locationPath.lastIndexOf('/') + 1;
+
       // Import LuigiClient into each microfrontend
       let script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = '/luigi-client/luigi-client.js';
       document.getElementsByTagName('body')[0].appendChild(script);
-      document.body.classList.add(
-        'page-' + location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
-      );
+      document.body.classList.add('page-' + locationPath.substring(pathNameIndex));
+
+      // Modify WC API docu labels manually for added clarity through title attribute
+      document.addEventListener('DOMContentLoaded', function () {
+        var allLabels = document.querySelectorAll('.label-success');
+
+        allLabels.forEach((label) => {
+          if (label.innerHTML === 'Web App API only') {
+            label.setAttribute(
+              'title',
+              'This API function is not available on Luigi Container and WC based microfrontends',
+            );
+          } else if (label.innerHTML === 'Web Component API only') {
+            label.setAttribute(
+              'title',
+              'This API function is ONLY available for Web Component based Microfrontend.',
+            );
+          }
+        });
+      });
     </script>
   </body>
 </html>

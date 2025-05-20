@@ -17,9 +17,9 @@ import color from 'cli-color';
 /**
  * COLORS
  */
-const logHeadline = str => console.log(color.bold.cyan(str));
-const logWarning = str => console.log(color.yellow.bold(str));
-const logError = str => console.log(color.redBright.bold(str));
+const logHeadline = (str) => console.log(color.bold.cyan(str));
+const logWarning = (str) => console.log(color.yellow.bold(str));
+const logError = (str) => console.log(color.redBright.bold(str));
 const logStep = (s1, s2, s3) => {
   if (s3) {
     console.log(color.cyan(s1), color.cyan(s2), color.cyan(s3));
@@ -59,7 +59,6 @@ const pkgJsonPaths = {
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json'),
   testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json')
 };
-
 const installPaths = {
   core: path.resolve(base, 'core'),
   client: path.resolve(base, 'client'),
@@ -67,6 +66,11 @@ const installPaths = {
   client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
+
+if (process.env.NIGHTLY === 'true' && !process.env.NIGHTLY_VERSION) {
+  pkgJsonPaths.container = path.resolve(base, 'container', 'public', 'package.json');
+  installPaths.container = path.resolve(base, 'container');
+}
 
 /**
  * FNS
@@ -78,7 +82,7 @@ async function getReleases() {
     }
   });
   return JSON.parse(input.body)
-    .map(r => r.tag_name)
+    .map((r) => r.tag_name)
     .filter((t, i) => i <= 8);
 }
 
@@ -88,6 +92,26 @@ function getVersion(pkg) {
 
 function getNextVersion() {
   return semver.inc(getVersion('core'), 'patch');
+}
+
+/**
+ * getVersionSuffix generates version suffix to make it unique
+ * @returns {string} Unique version suffix
+ */
+function getVersionSuffix() {
+  const padLeft = (str, inp) => {
+    return str.substring(0, str.length - inp.toString().length) + inp.toString();
+  };
+  const currentDatetime = new Date();
+  const formattedDate = `${currentDatetime.getFullYear()}${padLeft(
+    '00',
+    currentDatetime.getMonth() + 1
+  )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
+    '00',
+    currentDatetime.getMinutes()
+  )}`;
+
+  return '-dev.' + formattedDate;
 }
 
 function writeVersion(packagePath, version) {
@@ -135,18 +159,8 @@ function addToChangelog(versionText, changelog, lastline) {
       logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
       prompts.inject([process.env.NIGHTLY_VERSION, false]);
     } else {
-      const padLeft = (str, inp) => {
-        return str.substring(0, str.length - inp.toString().length) + inp.toString();
-      };
-      const currentDatetime = new Date();
-      let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
-        '00',
-        currentDatetime.getMonth() + 1
-      )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
-        '00',
-        currentDatetime.getMinutes()
-      )}`;
-      prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+      const versionSuffix = getVersionSuffix();
+      prompts.inject([nextVersion + versionSuffix, false]);
     }
   }
 
@@ -155,7 +169,7 @@ function addToChangelog(versionText, changelog, lastline) {
       type: 'text',
       name: 'version',
       message: 'Version you want to release (current: ' + getVersion('core') + ')?',
-      validate: str => (semver.valid(str) ? true : 'Invalid version (no valid semver)'),
+      validate: (str) => (semver.valid(str) ? true : 'Invalid version (no valid semver)'),
       initial: nextVersion
     },
     {
@@ -165,7 +179,7 @@ function addToChangelog(versionText, changelog, lastline) {
       initial: true
     },
     {
-      type: prev => (prev == true ? 'select' : null),
+      type: (prev) => (prev == true ? 'select' : null),
       name: 'prevVersion',
       message: 'Previous version to generate from?',
       choices: releases
@@ -178,7 +192,18 @@ function addToChangelog(versionText, changelog, lastline) {
    * PACKAGE VERSIONS
    */
   for (const name of Object.keys(pkgJsonPaths)) {
-    writeVersion(pkgJsonPaths[name], input.version);
+    let inputVersion = input.version;
+
+    // handle custom container version for nightly release
+    if (name === 'container' && process.env.NIGHTLY === 'true') {
+      const containerNightlyVersion = getVersion('container');
+      const versionSuffix = getVersionSuffix();
+
+      inputVersion = containerNightlyVersion + versionSuffix;
+      logHeadline('\nContainer updated to v' + inputVersion + ':');
+    }
+
+    writeVersion(pkgJsonPaths[name], inputVersion);
   }
   logHeadline('\nPackages updated to v' + input.version + ':');
   logStep(Object.keys(pkgJsonPaths).join(', '));
@@ -224,7 +249,7 @@ function addToChangelog(versionText, changelog, lastline) {
    * UPDATE PACKAGE-LOCKS
    * Skip when running in ci for nightly.
    */
-  if (process.env.NIGHTLY !== true) {
+  if (process.env.NIGHTLY !== 'true') {
     logHeadline('\nInstalling packages to update package-lock.json');
     for (const key in installPaths) {
       logStep(`Installing ${key}`);
@@ -235,7 +260,7 @@ function addToChangelog(versionText, changelog, lastline) {
 
   logHeadline('\nRelease prepared!');
 
-  if (process.env.NIGHTLY === true) {
+  if (process.env.NIGHTLY === 'true') {
     console.log(color.bold(`\nNow execute: npm run release:nightly`));
   } else {
     console.log(

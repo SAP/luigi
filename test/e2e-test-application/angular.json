@@ -43,6 +43,11 @@
                 "glob": "luigi-client*.js",
                 "input": "node_modules/@luigi-project/client",
                 "output": "/luigi-client"
+              },
+              {
+                "glob": "luigi-element*.js",
+                "input": "node_modules/@luigi-project/client",
+                "output": "/luigi-client"
               }
             ],
             "styles": [
@@ -84,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "luigisample:build"
+            "buildTarget": "luigisample:build"
           }
         },
         "test": {

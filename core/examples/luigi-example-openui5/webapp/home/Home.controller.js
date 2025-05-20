@@ -4,7 +4,7 @@ sap.ui.define(
     'sap/ui/core/UIComponent',
     'luigi/demo/libs/luigi-client/luigi-client'
   ],
-  function(Controller, UIComponent) {
+  (Controller, UIComponent) => {
     'use strict';
 
     return Controller.extend('luigi.demo.home.Home', {

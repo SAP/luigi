@@ -11,9 +11,11 @@
     </h3>
     <button id="btn-1">Send Custom Message to iFrame Container</button>
     <button id="update-ctx">Update Ctx</button>
+    <span id="container-ctx" style="display: none"></span>
+    <button id="update-view-url" type="button">Update viewUrl</button>
     <button id="update-token">Update Access Token</button>
 
-    <div style="border:solid 1px blue; height: 400px">
+    <div style="border: solid 1px blue; height: 400px">
       <!-- Luigi Container to test general functionality-->
       <luigi-container
         data-test-id="iframe-based-container-test"
@@ -27,55 +29,86 @@
       import Events from '../bundle.js';
 
       const luigiContainer = document.querySelector(
-        '[data-test-id="iframe-based-container-test"]'
+        '[data-test-id="iframe-based-container-test"]',
       );
-      luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
+
+      luigiContainer.searchParams = { search: 'param' };
+      luigiContainer.pathParams = { path: 'param' };
+      luigiContainer.nodeParams = { node: 'params' };
+
+      luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
+        if (confirm('Do you want to leave this page?')) {
+          window.location = event.detail.link;
+        }
       });
 
-      luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, event => {
+      luigiContainer.addEventListener(Events.GO_BACK_REQUEST, (event) => {
+        console.log(event.detail);
+        alert(event.detail.goBackValue);
+      });
+
+      luigiContainer.addEventListener(Events.UPDATE_TOP_NAVIGATION_REQUEST, (event) => {
+        alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
+      });
+
+      luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, (event) => {
         alert('Custom message received: ' + JSON.stringify(event.detail));
       });
 
       var alertSettings;
+
       // Some glue code
       const sendCustomMessageBtn = document.getElementById('btn-1');
       const updateContextButton = document.getElementById('update-ctx');
+      const updateViewUrlButton = document.getElementById('update-view-url');
       const updateAccessTokenButton = document.getElementById('update-token');
 
       // for testing send Custom message functionality
       sendCustomMessageBtn.addEventListener('click', () => {
-        luigiContainer.sendCustomMessage('update', {dataToSend: 'some data'});
+        luigiContainer.sendCustomMessage('update', { dataToSend: 'some data' });
       });
 
       updateContextButton.addEventListener('click', () => {
         luigiContainer.updateContext({ myContext: 'some context data' });
+        document.querySelector('#container-ctx').innerHTML = JSON.stringify(
+          luigiContainer.context,
+        );
+      });
+
+      updateViewUrlButton.addEventListener('click', () => {
+        luigiContainer.updateViewUrl('/');
       });
 
       updateAccessTokenButton.addEventListener('click', () => {
         luigiContainer.setAttribute('auth-data', '{"accessToken": "updated token"}');
       });
 
-      luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
-        if (confirm('Do you want to leave this page?')) {
-          window.location = event.detail.link;
-        }
-      });
-
-      const showAnAlert = alertSettings => {
+      const showAnAlert = (alertSettings) => {
         var popup = document.createElement('div');
         var text = document.createTextNode(alertSettings.settings.text);
         popup.appendChild(text);
 
         var dismissButton = document.createElement('BUTTON');
-        var buttonText = document.createTextNode('Close Alert');
+        if (alertSettings.settings.notifyAlertClosed) {
+          var buttonText = document.createTextNode('Close Alert using notifyAlertClosed');
+        } else {
+          var buttonText = document.createTextNode('Close Alert');
+        }
         dismissButton.addEventListener('click', () => {
           console.log(
             'Dismiss clicked core side. Sending close message to mf of id =',
-            alertSettings.settings.id
+            alertSettings.settings.id,
           );
-          luigiContainer.closeAlert(alertSettings.settings.id, 'neverShowItAgain');
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(
+              alertSettings.settings.id,
+              'neverShowItAgain',
+            );
+          } else {
+            luigiContainer.closeAlert(alertSettings.settings.id, 'neverShowItAgain');
+          }
           popup.style.display = 'none';
         });
         dismissButton.appendChild(buttonText);
@@ -87,147 +120,160 @@
         return dismissButton;
       };
 
-      luigiContainer.addEventListener(Events.ALERT_REQUEST, event => {
+      luigiContainer.addEventListener(Events.ALERT_REQUEST, (event) => {
         console.log('params:', Events.ALERT_REQUEST, event);
+        console.log('payload', event.payload);
         alert('show-alert-request message received: ' + JSON.stringify(event.detail));
         console.log(event.detail.data.data);
         alertSettings = event.detail.data.data;
-        showAnAlert(alertSettings);
+
+        if (alertSettings?.settings?.text !== 'Callback Test') {
+          showAnAlert(alertSettings);
+        } else {
+          event.callback(true);
+        }
       });
 
-      luigiContainer.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
+      luigiContainer.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, (event) => {
         console.log('params:', Events.ADD_SEARCH_PARAMS_REQUEST, event);
         alert(
-          'add-search-params-request message received: ' + JSON.stringify(event.detail)
+          'add-search-params-request message received: ' + JSON.stringify(event.detail),
         );
       });
 
-      luigiContainer.addEventListener(Events.ADD_NODE_PARAMS_REQUEST, event => {
+      luigiContainer.addEventListener(Events.ADD_NODE_PARAMS_REQUEST, (event) => {
         console.log(Events.ADD_NODE_PARAMS_REQUEST, event);
         alert(
-          'add-node-params-request message received: ' + JSON.stringify(event.detail)
+          'add-node-params-request message received: ' + JSON.stringify(event.detail),
         );
       });
 
-      luigiContainer.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, (event) => {
         console.log(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event);
-        alert(
-          'show-confirmation-modal message received: ' + JSON.stringify(event.detail)
-        );
+        const data = event.detail;
+        const val = confirm(data.body);
+        alert('show-confirmation-modal message received: ' + JSON.stringify(data));
+
+        if (data?.data?.data?.settings?.header !== 'Callback Test') {
+          luigiContainer.notifyConfirmationModalClosed(val);
+        } else {
+          event.callback(true);
+        }
       });
 
-      luigiContainer.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, (event) => {
         console.log(Events.SHOW_LOADING_INDICATOR_REQUEST, event);
         alert(
           'show-loading-indicator-request message received: ' +
-            JSON.stringify(event.detail.data)
+            JSON.stringify(event.detail.data),
         );
       });
 
-      luigiContainer.addEventListener(Events.HIDE_LOADING_INDICATOR_REQUEST, event => {
+      luigiContainer.addEventListener(Events.HIDE_LOADING_INDICATOR_REQUEST, (event) => {
         console.log(Events.HIDE_LOADING_INDICATOR_REQUEST, event);
         alert(
           'hide-loading-indicator-request message received: ' +
-            JSON.stringify(event.detail.data)
+            JSON.stringify(event.detail.data),
         );
       });
 
       // SET_CURRENT_LOCALE_REQUEST
-      luigiContainer.addEventListener(Events.SET_CURRENT_LOCALE_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SET_CURRENT_LOCALE_REQUEST, (event) => {
         console.log(Events.SET_CURRENT_LOCALE_REQUEST, event);
         alert(
           Events.SET_CURRENT_LOCALE_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // LOCAL_STORAGE_SET_REQUEST
-      luigiContainer.addEventListener(Events.LOCAL_STORAGE_SET_REQUEST, event => {
+      luigiContainer.addEventListener(Events.LOCAL_STORAGE_SET_REQUEST, (event) => {
         console.log(Events.LOCAL_STORAGE_SET_REQUEST, event);
         alert(
           Events.LOCAL_STORAGE_SET_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // RUNTIME_ERROR_HANDLING_REQUEST
-      luigiContainer.addEventListener(Events.RUNTIME_ERROR_HANDLING_REQUEST, event => {
+      luigiContainer.addEventListener(Events.RUNTIME_ERROR_HANDLING_REQUEST, (event) => {
         console.log(Events.RUNTIME_ERROR_HANDLING_REQUEST, event);
         alert(
           Events.RUNTIME_ERROR_HANDLING_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // SET_ANCHOR_LINK_REQUEST
-      luigiContainer.addEventListener(Events.SET_ANCHOR_LINK_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SET_ANCHOR_LINK_REQUEST, (event) => {
         console.log(Events.SET_ANCHOR_LINK_REQUEST, event);
         alert(
           Events.SET_ANCHOR_LINK_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // SET_THIRD_PARTY_COOKIES_REQUEST - called on microfrontend startup
-      luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, (event) => {
         console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
         alert(
           Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data.data)
+          'message received: ' + JSON.stringify(event.detail.data.data),
         );
       });
 
       // BACK_NAVIGATION_REQUEST
-      luigiContainer.addEventListener(Events.BACK_NAVIGATION_REQUEST, event => {
+      luigiContainer.addEventListener(Events.BACK_NAVIGATION_REQUEST, (event) => {
         console.log(Events.BACK_NAVIGATION_REQUEST, event);
         alert(
           Events.BACK_NAVIGATION_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // GET_CURRENT_ROUTE_REQUEST
-      luigiContainer.addEventListener(Events.GET_CURRENT_ROUTE_REQUEST, event => {
+      luigiContainer.addEventListener(Events.GET_CURRENT_ROUTE_REQUEST, (event) => {
         console.log(Events.GET_CURRENT_ROUTE_REQUEST, event);
         alert(
           Events.GET_CURRENT_ROUTE_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
+        event.callback('/test/route');
       });
 
       // NAVIGATION_COMPLETED_REPORT
-      luigiContainer.addEventListener(Events.NAVIGATION_COMPLETED_REPORT, event => {
+      luigiContainer.addEventListener(Events.NAVIGATION_COMPLETED_REPORT, (event) => {
         console.log(Events.NAVIGATION_COMPLETED_REPORT, event);
         alert(
           Events.NAVIGATION_COMPLETED_REPORT,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
 
       // UPDATE_MODAL_PATH_DATA_REQUEST
-      luigiContainer.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event => {
+      luigiContainer.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, (event) => {
         console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
         alert(
-          Events.UPDATE_MODAL_PATH_DATA_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.payload.link}")`,
         );
       });
 
       // CHECK_PATH_EXISTS_REQUEST
-      luigiContainer.addEventListener(Events.CHECK_PATH_EXISTS_REQUEST, event => {
+      luigiContainer.addEventListener(Events.CHECK_PATH_EXISTS_REQUEST, (event) => {
         console.log(Events.CHECK_PATH_EXISTS_REQUEST, event);
         alert(
           Events.CHECK_PATH_EXISTS_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
+        event.callback(true);
       });
 
       // SET_DIRTY_STATUS_REQUEST
-      luigiContainer.addEventListener(Events.SET_DIRTY_STATUS_REQUEST, event => {
+      luigiContainer.addEventListener(Events.SET_DIRTY_STATUS_REQUEST, (event) => {
         console.log(Events.SET_DIRTY_STATUS_REQUEST, event);
         alert(
           Events.SET_DIRTY_STATUS_REQUEST,
-          'message received: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data),
         );
       });
     </script>

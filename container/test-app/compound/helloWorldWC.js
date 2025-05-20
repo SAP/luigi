@@ -13,8 +13,17 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const showAlertBtn = document.createElement('template');
+    showAlertBtn.innerHTML = '<button id="showAlert">showAlert</button>';
+
+    const current_locale = document.createElement('template');
+    current_locale.innerHTML = '<button id="current_locale">getCurrentLocale</button>';
+
+    const setLocaleBtn = document.createElement('template');
+    setLocaleBtn.innerHTML = '<button id="setCurrentLocale">setCurrentLocale</button>';
+
     const templateBtn2 = document.createElement('template');
-    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+    templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
@@ -27,6 +36,9 @@ export default class extends HTMLElement {
 
     const getCoreSearchParamsBtn = document.createElement('template');
     getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+
+    const addCoreSearchParamsBtn = document.createElement('template');
+    addCoreSearchParamsBtn.innerHTML = '<button id="addCoreSearchParams">addCoreSearchParams</button>';
 
     const getPathParamsBtn = document.createElement('template');
     getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
@@ -43,11 +55,20 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
+    const getFeatureToggleListBtn = document.createElement('template');
+    getFeatureToggleListBtn.innerHTML = '<button id="getFeatureToggleList">getFeatureToggleList</button>';
+
+    const getThemeBtn = document.createElement('template');
+    getThemeBtn.innerHTML = '<button id="getTheme">getTheme</button>';
+
     const setViewGroupDataBtn = document.createElement('template');
     setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
 
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
+
+    const setDirtyStatusBtn = document.createElement('template');
+    setDirtyStatusBtn.innerHTML = '<button id="setDirtyStatus">setDirtyStatus</button>';
 
     const retrieveContextValueBtn = document.createElement('template');
     retrieveContextValueBtn.innerHTML = '<button id="retrieveContextValue">retrieveContextValue</button>';
@@ -70,17 +91,38 @@ export default class extends HTMLElement {
     withParams().navigate()
     </button>`;
 
+    const updateModalPathBtn = document.createElement('template');
+    updateModalPathBtn.innerHTML = '<button id="updateModalPathBtn">updateModalPathInternalNavigation</button>';
+
+    /*
     const linkManagerOpenAsRequestsBtn = document.createElement('template');
     linkManagerOpenAsRequestsBtn.innerHTML = `<button id="linkManagerOpenAsRequests">linkManager().
     openAsDrawer,
     openAsModal,
     openAsSplitView,
     </button>`;
+    */
+    const openAsModalBtn = document.createElement('template');
+    openAsModalBtn.innerHTML = '<button id="openAsModalBtn">lm.openAsModal</button>';
+
+    const openAsDrawerBtn = document.createElement('template');
+    openAsDrawerBtn.innerHTML = '<button id="openAsDrawerBtn">lm.openAsDrawer</button>';
+
+    const openAsSplitviewBtn = document.createElement('template');
+    openAsSplitviewBtn.innerHTML = '<button id="openAsSplitviewBtn">lm.openAsSplitview</button>';
 
     const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
     linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
+
+    const confirmationModalBtn = document.createElement('template');
+    confirmationModalBtn.innerHTML = '<button id="confirmationModal">showConfirmationModal</button>';
+
+    const closeAlertResponseDiv = document.createElement('div');
+    closeAlertResponseDiv.innerHTML = '<div id="closeAlertResponse"></div>';
+    const confirmationModalResponseDiv = document.createElement('div');
+    confirmationModalResponseDiv.innerHTML = '<div id="confirmationModalResponse"></div>';
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -89,25 +131,58 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
+    this._shadowRoot.appendChild(showAlertBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(addCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateModalPathBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsDrawerBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(openAsSplitviewBtn.content.cloneNode(true));
+    // this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(current_locale.content.cloneNode(true));
+    this._shadowRoot.appendChild(setLocaleBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(closeAlertResponseDiv.cloneNode(true));
+    this._shadowRoot.appendChild(confirmationModalResponseDiv.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
+    this.$currentLocaleButton = this._shadowRoot.querySelector('#current_locale');
+    this.$currentLocaleButton.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          type: 'info'
+        });
+      }
+    });
+
+    this.$setLocaleBtn = this._shadowRoot.querySelector('#setCurrentLocale');
+    this.$setLocaleBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.uxManager().setCurrentLocale('de');
+      }
+    });
+
     this.$paragraph = this._shadowRoot.querySelector('p');
+
     this.$button = this._shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -128,20 +203,50 @@ export default class extends HTMLElement {
         });
       }
     });
-    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+
+    this.$showAlert = this._shadowRoot.querySelector('#showAlert');
+    this.$showAlert.addEventListener('click', () => {
+      const settings = {
+        text: 'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}',
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: {
+            text: "Don't show this again",
+            dismissKey: 'neverShowItAgain'
+          }
+        }
+        // closeAfter: 300000
+      };
+      this.LuigiClient.uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          document
+            .querySelector('luigi-compound-container')
+            .shadowRoot.querySelector(
+              'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
+            )
+            .shadowRoot.querySelector('#closeAlertResponse').innerHTML = 'Callback called on wc ' + param;
+        });
+    });
+
+    this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
+    this.$publishEventBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own event data' }));
       }
     });
 
-    this.$button2 = this._shadowRoot.querySelector('#addNodeParams');
-    this.$button2.addEventListener('click', () => {
+    this.$addNodeParamsBtn = this._shadowRoot.querySelector('#addNodeParams');
+    this.$addNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.addNodeParams({ Luigi: 'rocks' }, true);
       }
     });
-    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
-    this.$button3.addEventListener('click', () => {
+    this.$getNodeParamsBtn = this._shadowRoot.querySelector('#getNodeParams');
+    this.$getNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
@@ -161,6 +266,13 @@ export default class extends HTMLElement {
     this.$coreSearchParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
+      }
+    });
+
+    this.$addCoreSearchParamsBtn = this._shadowRoot.querySelector('#addCoreSearchParams');
+    this.$addCoreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.addCoreSearchParams({ luigi: 'rocks' });
       }
     });
 
@@ -188,11 +300,32 @@ export default class extends HTMLElement {
         });
       }
     });
+
     this.$getAnchorBtn = this._shadowRoot.querySelector('#getAnchor');
     this.$getAnchorBtn.addEventListener('click', () => {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getFeatureToggleListBtn = this._shadowRoot.querySelector('#getFeatureToggleList');
+    this.$getFeatureToggleListBtn.addEventListener('click', () => {
+      const activeFeatureToggleList = this.LuigiClient.getActiveFeatureToggles();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getActiveFeatureToggles()=' + JSON.stringify(activeFeatureToggleList),
+        type: 'info'
+      });
+    });
+
+    this.$getThemeBtn = this._shadowRoot.querySelector('#getTheme');
+    this.$getThemeBtn.addEventListener('click', () => {
+      const currentTheme = this.LuigiClient.uxManager().getCurrentTheme();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getCurrentTheme()=' + JSON.stringify(currentTheme),
         type: 'info'
       });
     });
@@ -207,6 +340,11 @@ export default class extends HTMLElement {
       });
     });
 
+    this.$setDirtyStatusBtn = this._shadowRoot.querySelector('#setDirtyStatus');
+    this.$setDirtyStatusBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().setDirtyStatus(true);
+    });
+
     this.$retrieveContextValueBtn = this._shadowRoot.querySelector('#retrieveContextValue');
     this.$retrieveContextValueBtn.addEventListener('click', () => {
       this.LuigiClient.uxManager().showAlert({
@@ -217,12 +355,12 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
-      this.LuigiClient.uxManager().collapseLeftSideNav();
-      this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().removeBackdrop();
+      this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
+      this.LuigiClient.uxManager().setDocumentTitle('my-title');
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
         type: 'info'
@@ -231,25 +369,50 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager()
-        .fromContext({ ctx: 123 })
-        .navigate('hello-world-wc');
-      this.LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate('hello-world-wc');
-      this.LuigiClient.linkManager()
-        .fromVirtualTreeRoot()
-        .navigate('hello-world-wc');
-      this.LuigiClient.linkManager()
-        .withParams('my-params')
-        .navigate('hello-world-wc');
+      const path = 'hello-world-wc';
+      const ctx = { ctx: 123 };
+
+      this.LuigiClient.linkManager().fromContext(ctx).navigate();
+      this.LuigiClient.linkManager().fromClosestContext().navigate(path);
+      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate(path);
+      this.LuigiClient.linkManager().fromParent(ctx).navigate(path);
+      this.LuigiClient.linkManager().withParams('my-params').navigate(path);
+      this.LuigiClient.linkManager().navigate(path);
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.linkManager().navigate()',
+        type: 'info'
+      });
     });
 
-    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
-    this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', { size: 's' });
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
+    this.$updateModalPathBtn = this._shadowRoot.querySelector('#updateModalPathBtn');
+    this.$updateModalPathBtn.addEventListener('click', () => {
+      const history = true;
+      const link = '/test/route';
+      const modal = { title: 'Some modal' };
+
+      if (this.LuigiClient) {
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(link, modal, history);
+      }
+    });
+
+    this.$openAsModalBtn = this._shadowRoot.querySelector('#openAsModalBtn');
+    this.$openAsModalBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsModal('openAsModal-wc', {
+        title: 'Modal Title',
+        size: 'm'
+      });
+    });
+    this.$openAsDrawerBtn = this._shadowRoot.querySelector('#openAsDrawerBtn');
+    this.$openAsDrawerBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsDrawer('openAsDrawer-wc', {
+        size: 's'
+      });
+    });
+    this.$openAsSplitviewBtn = this._shadowRoot.querySelector('#openAsSplitviewBtn');
+    this.$openAsSplitviewBtn.addEventListener('click', () => {
+      this.LuigiClient.linkManager().openAsSplitView('openAsSplitview-wc', {
+        size: 'l'
+      });
     });
 
     this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
@@ -257,7 +420,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().updateTopNavigation();
       this.LuigiClient.linkManager()
         .pathExists()
-        .then(result => {
+        .then((result) => {
           console.log('PATH EXISTS');
           this.LuigiClient.uxManager().showAlert({
             text:
@@ -268,12 +431,41 @@ export default class extends HTMLElement {
             type: 'info'
           });
         });
-      this.LuigiClient.linkManager().goBack();
+      this.LuigiClient.linkManager().goBack({ goBackValue: 'some goBackValue' });
     });
 
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
+    });
+
+    this.$confirmationModalBtn = this._shadowRoot.querySelector('#confirmationModal');
+    this.$confirmationModalBtn.addEventListener('click', () => {
+      const settings = {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      };
+      this.LuigiClient.uxManager()
+        .showConfirmationModal(settings)
+        .then(() => {
+          document
+            .querySelector('luigi-compound-container')
+            .shadowRoot.querySelector(
+              'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
+            )
+            .shadowRoot.querySelector('#confirmationModalResponse').innerHTML = 'Modal confirmed';
+        })
+        .catch(() => {
+          document
+            .querySelector('luigi-compound-container')
+            .shadowRoot.querySelector(
+              'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f636f6d706f756e642f636f6d706f756e642f68656c6c6f576f726c6457432e6a73'
+            )
+            .shadowRoot.querySelector('#confirmationModalResponse').innerHTML = 'Modal dismissed';
+        });
     });
   }
 
@@ -283,6 +475,8 @@ export default class extends HTMLElement {
 
   set context(ctx) {
     this.ctx = ctx;
-    this.$paragraph.innerHTML = ctx.title;
+    if (this.$paragraph && ctx.title) {
+      this.$paragraph.innerHTML = ctx.title;
+    }
   }
 }

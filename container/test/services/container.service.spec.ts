@@ -1,22 +1,23 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
-import { Events } from '../../src/constants/communication';
+import { Events, LuigiEvent } from '../../src/constants/communication';
+import type { IframeHandle, ContainerElement } from '../../src/constants/container.model';
 import { ContainerService } from '../../src/services/container.service';
 
 describe('getContainerManager messageListener', () => {
   let service: ContainerService;
   let gtcSpy;
-  let cw : any  = {};
-  let cm ;
+  let cw: any = {};
+  let cm;
   let dispatchedEvent;
   service = new ContainerService();
-  cm = service.getContainerManager();    
+  cm = service.getContainerManager();
 
   beforeEach(() => {
     // only get context scenario relies on postMessage, so we need special case handling for it
     const testName = expect.getState().currentTestName;
-    if (testName === 'test get context message'){
-      cw = {  postMessage: () => {}}
-    }   
+    if (testName === 'test get context message') {
+      cw = { postMessage: () => {} };
+    }
 
     gtcSpy = jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
       return {
@@ -25,33 +26,47 @@ describe('getContainerManager messageListener', () => {
             contentWindow: cw
           }
         },
-        dispatchEvent: customEvent => {
+        dispatchEvent: (customEvent) => {
           dispatchedEvent = customEvent;
         }
-      };
+      } as ContainerElement;
     });
   });
 
-  afterEach(()=>{
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it('test alert request', () => {    
+  it('test alert request', () => {
     const event = {
       source: cw,
       data: {
         msg: LuigiInternalMessageID.ALERT_REQUEST,
         data: {
-          id: 'navRequest',
+          settings: {
+            id: 'navRequest',
+            text: 'Some alert text',
+            type: 'info'
+          }
         }
       }
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.ALERT_REQUEST);
-    expect(dispatchedEvent.detail).toEqual({data: {data: {id: "navRequest"}, msg: "luigi.ux.alert.show"}, source: {}});
-   });
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
+    expect(dispatchedEvent.detail.data).toEqual({
+      msg: 'luigi.ux.alert.show',
+      data: {
+        settings: {
+          id: 'navRequest',
+          text: 'Some alert text',
+          type: 'info'
+        }
+      }
+    });
+  });
 
-  it('test custom message', () => {    
+  it('test custom message', () => {
     const event = {
       source: cw,
       data: {
@@ -68,8 +83,9 @@ describe('getContainerManager messageListener', () => {
     gtcSpy.mockRestore();
   });
 
-  it('test get context message', () => {    
+  it('test get context message', () => {
     const event = {
+      origin: '*',
       source: cw,
       data: {
         msg: LuigiInternalMessageID.GET_CONTEXT,
@@ -84,11 +100,23 @@ describe('getContainerManager messageListener', () => {
     const postMessageMock = jest.fn();
 
     // Replace the real postMessage with the mock
-     cw.postMessage = postMessageMock;
+    cw.postMessage = postMessageMock;
 
     // Define the message to send and target Origin
-    const message = {"context": {}, "internal": {}, "msg": "luigi.init", "authData":{}};
-    const targetOrigin = "*";
+    const message = {
+      authData: {},
+      searchParams: {},
+      pathParams: {},
+      nodeParams: {},
+      context: {},
+      internal: {
+        thirdPartyCookieCheck: {
+          disabled: false
+        }
+      },
+      msg: 'luigi.init'
+    };
+    const targetOrigin = '*';
 
     // Call the method that should trigger postMessage
     cm.messageListener(event);
@@ -97,9 +125,9 @@ describe('getContainerManager messageListener', () => {
     expect(postMessageMock).toHaveBeenCalledWith(message, targetOrigin);
 
     // Clean up by restoring the original postMessage function
-    cw.postMessage = () => {}
+    cw.postMessage = () => {};
+    cw.origin = undefined;
   });
-
 
   it('test initialized request', () => {
     const event = {
@@ -125,7 +153,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.ADD_SEARCH_PARAMS_REQUEST);
-    expect(dispatchedEvent.detail).toEqual({data: 'some-data', keepBrowserHistory:true});
+    expect(dispatchedEvent.detail).toEqual({ data: 'some-data', keepBrowserHistory: true });
   });
 
   it('test add node params request', () => {
@@ -139,20 +167,40 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.ADD_NODE_PARAMS_REQUEST);
-    expect(dispatchedEvent.detail).toEqual({data: 'some-data', keepBrowserHistory:false});
+    expect(dispatchedEvent.detail).toEqual({ data: 'some-data', keepBrowserHistory: false });
   });
-
 
   it('test confirmationModal show request', () => {
     const event = {
       source: cw,
       data: {
         msg: LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST,
-        params: 'modal-show'
+        data: {
+          settings: {
+            type: 'confirmation',
+            header: 'Confirmation',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No'
+          }
+        }
       }
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.SHOW_CONFIRMATION_MODAL_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
+    expect(dispatchedEvent.detail.data).toEqual({
+      msg: 'luigi.ux.confirmationModal.show',
+      data: {
+        settings: {
+          type: 'confirmation',
+          header: 'Confirmation',
+          body: 'Are you sure you want to do this?',
+          buttonConfirm: 'Yes',
+          buttonDismiss: 'No'
+        }
+      }
+    });
   });
 
   it('test loading indicator show request', () => {
@@ -273,18 +321,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
-  });
-
-  it('test getCurrentRoute request', () => {
-    const event = {
-      source: cw,
-      data: {
-        msg: LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST,
-        params: 'get-currentroute-request'
-      }
-    };
-    cm.messageListener(event);
-    expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test navigation completed request', () => {
@@ -321,6 +358,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.CHECK_PATH_EXISTS_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test set dirty status request', () => {
@@ -335,34 +373,31 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
   });
 
-
   it('test default', () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
     const event = {
       source: cw,
       data: {
-        msg: 'no-func',
+        msg: 'no-func'
       }
     };
     cm.messageListener(event);
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
-
 });
-
 
 describe('isVisible', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
-  afterEach(()=>{
+
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
   it('should return true for a visible element', () => {
     // Arrange
     const visibleElement = document.createElement('div');
-    jest.spyOn(visibleElement, 'offsetWidth', 'get').mockImplementation(() => 200)
+    jest.spyOn(visibleElement, 'offsetWidth', 'get').mockImplementation(() => 200);
     document.body.appendChild(visibleElement);
 
     // Act
@@ -400,27 +435,26 @@ describe('isVisible', () => {
   });
 });
 
-
 describe('sendCustomMessageToIframe', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
-  afterEach(()=>{
+
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
   it('should send a custom message to the iframe', () => {
     // Arrange
-    const iframeHandle = {
+    const iframeHandle: IframeHandle = {
       iframe: {
         contentWindow: {
-          postMessage: jest.fn(),
+          postMessage: jest.fn()
         },
-        src: 'https://example.com',
-      },
+        src: 'https://example.com'
+      } as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
-    
+
     // Act
     service.sendCustomMessageToIframe(iframeHandle, message);
 
@@ -433,16 +467,16 @@ describe('sendCustomMessageToIframe', () => {
 
   it('should send a named message to the iframe', () => {
     // Arrange
-    const iframeHandle = {
+    const iframeHandle: IframeHandle = {
       iframe: {
         contentWindow: {
-          postMessage: jest.fn(),
+          postMessage: jest.fn()
         },
-        src: 'https://example.com',
-      },
+        src: 'https://example.com'
+      } as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
-    
+
     // Act
     service.sendCustomMessageToIframe(iframeHandle, message, 'namedMessage');
 
@@ -455,11 +489,11 @@ describe('sendCustomMessageToIframe', () => {
 
   it('should log an error if contentWindow is not available', () => {
     // Arrange
-    const iframeHandle = {
-      iframe: {},
+    const iframeHandle: IframeHandle = {
+      iframe: {} as unknown as HTMLIFrameElement
     };
     const message = { key: 'value' };
-    
+
     // Spy on console.error to capture the log message
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -477,32 +511,32 @@ describe('sendCustomMessageToIframe', () => {
 describe('dispatch', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
-  afterEach(()=>{
+
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it('should dispatch a custom event to the target container, no Callback', () => {
+  it('should dispatch a Luigi event to the target container, no Callback', () => {
     // Arrange
     const targetContainer = document.createElement('div');
     const eventName = 'customEvent';
     const eventData = { key: 'value' };
-    targetContainer.dispatchEvent = jest.fn()
+    targetContainer.dispatchEvent = jest.fn();
 
     // Act
     service.dispatch(eventName, targetContainer, eventData);
 
     // Assert
-    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    const dispatchedEvent = new LuigiEvent(eventName, eventData);
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
   });
 
   it('should execute the callback when provided', () => {
     // Arrange
-    const targetContainer = document.createElement('div');
+    const targetContainer = document.createElement('div') as unknown as ContainerElement;
     const eventName = 'customEvent';
     const eventData = { key: 'value' };
-    targetContainer.dispatchEvent = jest.fn()
+    targetContainer.dispatchEvent = jest.fn();
 
     // Define a callback function
     const callbackFunction = (data) => {
@@ -510,21 +544,23 @@ describe('dispatch', () => {
     };
 
     // Act
-    service. dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
-  
-    // Assert
-    globalThis.CustomEvent = jest.fn().mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+    service.dispatch(eventName, targetContainer, eventData, callbackFunction);
 
-    const dispatchedEventMock = {"isTrusted": false, "onCallback": expect.any(Function)};
-    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith( expect.objectContaining(dispatchedEventMock));
+    // Assert
+    globalThis.CustomEvent = jest
+      .fn()
+      .mockImplementation((type, eventInit) => ({ isTrusted: false, callback: callbackFunction }));
+
+    const dispatchedEventMock = { isTrusted: false, callback: expect.any(Function) };
+    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(expect.objectContaining(dispatchedEventMock));
   });
 });
 
 describe('getTargetContainer', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
-  afterEach(()=>{
+
+  afterEach(() => {
     jest.resetAllMocks();
   });
 
@@ -533,24 +569,24 @@ describe('getTargetContainer', () => {
     const mockContainer1 = {
       iframeHandle: {
         iframe: {
-          contentWindow: 'source1',
-        },
-      },
+          contentWindow: 'source1'
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
     const mockContainer2 = {
       iframeHandle: {
         iframe: {
-          contentWindow: 'source2',
-        },
-      },
+          contentWindow: 'source2'
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
 
     globalThis.__luigi_container_manager = {
-      container: [mockContainer1, mockContainer2],
+      container: [mockContainer1, mockContainer2]
     };
 
     const mockEvent = {
-      source: 'source2', // Matched with mockContainer2
+      source: 'source2' // Matched with mockContainer2
     };
 
     // Act
@@ -565,24 +601,24 @@ describe('getTargetContainer', () => {
     const mockContainer1 = {
       iframeHandle: {
         iframe: {
-          contentWindow: 'source1',
-        },
-      },
+          contentWindow: 'source1'
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
     const mockContainer2 = {
       iframeHandle: {
         iframe: {
-          contentWindow: 'source2',
-        },
-      },
+          contentWindow: 'source2'
+        } as unknown as HTMLIFrameElement
+      } as IframeHandle
     };
 
     globalThis.__luigi_container_manager = {
-      container: [mockContainer1, mockContainer2],
+      container: [mockContainer1, mockContainer2]
     };
 
     const mockEvent = {
-      source: 'source3', // No matching container
+      source: 'source3' // No matching container
     };
 
     // Act
@@ -596,7 +632,7 @@ describe('getTargetContainer', () => {
 describe('getContainerManager branch', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   beforeEach(() => {
     globalThis.__luigi_container_manager = undefined;
     jest.resetAllMocks();
@@ -618,7 +654,7 @@ describe('getContainerManager branch', () => {
   it('should return the existing container manager if it has been initialized', () => {
     const existingManager = {
       container: ['existingData'],
-      messageListener: jest.fn(),
+      messageListener: jest.fn()
     };
     globalThis.__luigi_container_manager = existingManager;
 
@@ -635,14 +671,14 @@ describe('getContainerManager branch', () => {
     // Verify that addEventListener was called with 'message' event type
     expect(containerManager).toBeDefined();
     expect(containerManager.container).toEqual([]);
-    expect(spy).toHaveBeenCalledWith('message', expect.any(Function))
+    expect(spy).toHaveBeenCalledWith('message', expect.any(Function));
   });
 });
 
 describe('registerContainer', () => {
   let service: ContainerService;
   service = new ContainerService();
-  
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -650,10 +686,10 @@ describe('registerContainer', () => {
   it('should add an HTMLElement to the container', () => {
     // Arrange
     const containerManager = {
-      container: [],
+      container: []
     };
     const container = document.createElement('div');
-    service.getContainerManager =  jest.fn().mockReturnValue(containerManager);
+    service.getContainerManager = jest.fn().mockReturnValue(containerManager);
 
     // Act
     service.registerContainer(container);
@@ -661,6 +697,5 @@ describe('registerContainer', () => {
     // Assert
     expect(containerManager.container).toContain(container);
     expect(service.getContainerManager).toHaveBeenCalled();
-
   });
 });

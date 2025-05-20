@@ -1,19 +1,18 @@
 const { resolve } = require('node:path');
 const { pathToFileURL } = require('node:url');
-const preprocess = require('svelte-preprocess');
+const sveltePreprocess = require('svelte-preprocess');
 
 const variablePath = resolve(__dirname, 'src/styles', 'variables');
 const mixinPath = resolve(__dirname, 'src/styles', 'mixins');
 
 const config = {
   extensions: ['.svelte'],
-  compilerOptions: {
-  },
+  compilerOptions: {},
   name: 'Luigi',
   preprocess: [
-    preprocess({
+    sveltePreprocess({
       scss: {
-        prependData: `@import "${pathToFileURL(variablePath)}", "${pathToFileURL(mixinPath)}";`
+        prependData: `@use "${pathToFileURL(variablePath)}" as *; @use "${pathToFileURL(mixinPath)}" as *;`
       }
     })
   ]

@@ -1,11 +1,19 @@
+import type {
+  LayoutConfig,
+  RendererConfig,
+  RendererLayout,
+  RendererObject,
+  RendererUseProps
+} from '../constants/container.model';
+
 /**
  * Default compound renderer.
  */
 export class DefaultCompoundRenderer {
-  rendererObject: any;
-  config: any;
+  rendererObject: RendererObject;
+  config: RendererConfig;
 
-  constructor(rendererObj?: any) {
+  constructor(rendererObj?: RendererObject) {
     if (rendererObj) {
       this.rendererObject = rendererObj;
       this.config = rendererObj.config || {};
@@ -14,15 +22,15 @@ export class DefaultCompoundRenderer {
     }
   }
 
-  createCompoundContainer() {
+  createCompoundContainer(): HTMLDivElement {
     return document.createElement('div');
   }
 
-  createCompoundItemContainer(layoutConfig?: any): HTMLDivElement {
+  createCompoundItemContainer(layoutConfig?: object): HTMLDivElement {
     return document.createElement('div');
   }
 
-  attachCompoundItem(compoundCnt, compoundItemCnt): void {
+  attachCompoundItem(compoundCnt: HTMLElement, compoundItemCnt: HTMLElement): void {
     compoundCnt.appendChild(compoundItemCnt);
   }
 }
@@ -33,19 +41,19 @@ export class DefaultCompoundRenderer {
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   superRenderer: DefaultCompoundRenderer;
 
-  constructor(rendererObj) {
+  constructor(rendererObj: RendererObject) {
     super(rendererObj || { use: {} });
-    if (rendererObj && rendererObj.use && rendererObj.use.extends) {
+    if (rendererObj && rendererObj.use && (rendererObj.use as RendererUseProps).extends) {
       this.superRenderer = resolveRenderer({
-        use: rendererObj.use.extends,
+        use: (rendererObj.use as RendererUseProps).extends,
         config: rendererObj.config
       });
     }
   }
 
   createCompoundContainer(): HTMLDivElement {
-    if (this.rendererObject.use.createCompoundContainer) {
-      return this.rendererObject.use.createCompoundContainer(this.config, this.superRenderer);
+    if ((this.rendererObject.use as RendererUseProps).createCompoundContainer) {
+      return (this.rendererObject.use as RendererUseProps).createCompoundContainer(this.config, this.superRenderer);
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundContainer();
     }
@@ -53,8 +61,12 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 
   createCompoundItemContainer(layoutConfig): HTMLDivElement {
-    if (this.rendererObject.use.createCompoundItemContainer) {
-      return this.rendererObject.use.createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
+    if ((this.rendererObject.use as RendererUseProps).createCompoundItemContainer) {
+      return (this.rendererObject.use as RendererUseProps).createCompoundItemContainer(
+        layoutConfig,
+        this.config,
+        this.superRenderer
+      );
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundItemContainer(layoutConfig);
     }
@@ -62,8 +74,12 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 
   attachCompoundItem(compoundCnt, compoundItemCnt): void {
-    if (this.rendererObject.use.attachCompoundItem) {
-      this.rendererObject.use.attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
+    if ((this.rendererObject.use as RendererUseProps).attachCompoundItem) {
+      (this.rendererObject.use as RendererUseProps).attachCompoundItem(
+        compoundCnt,
+        compoundItemCnt,
+        this.superRenderer
+      );
     } else if (this.superRenderer) {
       this.superRenderer.attachCompoundItem(compoundCnt, compoundItemCnt);
     } else {
@@ -76,14 +92,14 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
  * Compound Renderer for a css grid compound view.
  */
 export class GridCompoundRenderer extends DefaultCompoundRenderer {
-  createCompoundContainer() {
+  createCompoundContainer(): HTMLDivElement {
     const containerClass = '__lui_compound_' + new Date().getTime();
     const compoundCnt = document.createElement('div');
     compoundCnt.classList.add(containerClass);
     let mediaQueries = '';
 
     if (this.config.layouts) {
-      this.config.layouts.forEach(el => {
+      this.config.layouts.forEach((el: RendererLayout) => {
         if (el.minWidth || el.maxWidth) {
           let mq = '@media only screen ';
           if (el.minWidth != null) {
@@ -121,7 +137,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     return compoundCnt;
   }
 
-  createCompoundItemContainer(layoutConfig): HTMLDivElement {
+  createCompoundItemContainer(layoutConfig: LayoutConfig): HTMLDivElement {
     const config = layoutConfig || {};
     const compoundItemCnt = document.createElement('div');
     compoundItemCnt.setAttribute('style', `grid-row: ${config.row || 'auto'}; grid-column: ${config.column || 'auto'}`);
@@ -136,16 +152,16 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
  *
  * @param {*} rendererConfig the renderer config object defined in luigi config
  */
-export const resolveRenderer = rendererConfig => {
-  const rendererDef = rendererConfig.use;
+export const resolveRenderer = (rendererConfig: RendererObject) => {
+  const rendererDef: RendererUseProps | string = rendererConfig.use;
   if (!rendererDef) {
     return new DefaultCompoundRenderer(rendererConfig);
   } else if (rendererDef === 'grid') {
     return new GridCompoundRenderer(rendererConfig);
   } else if (
-    rendererDef.createCompoundContainer ||
-    rendererDef.createCompoundItemContainer ||
-    rendererDef.attachCompoundItem
+    (rendererDef as RendererUseProps).createCompoundContainer ||
+    (rendererDef as RendererUseProps).createCompoundItemContainer ||
+    (rendererDef as RendererUseProps).attachCompoundItem
   ) {
     return new CustomCompoundRenderer(rendererConfig);
   }
@@ -162,7 +178,7 @@ export const resolveRenderer = rendererConfig => {
  */
 export const registerEventListeners = (eventbusListeners, navNode, nodeId: string, wcElement?) => {
   if (navNode?.eventListeners) {
-    navNode.eventListeners.forEach(el => {
+    navNode.eventListeners.forEach((el) => {
       const evID = el.source + '.' + el.name;
       const listenerList = eventbusListeners[evID];
       const listenerInfo = {
@@ -186,15 +202,16 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId: strin
  * @param {Object} paramsMap
  * @returns
  */
-export const deSanitizeParamsMap = paramsMap => {
+export const deSanitizeParamsMap = (paramsMap) => {
   return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
     sanitizedMap[deSanitizeParam(paramPair[0])] = deSanitizeParam(paramPair[1]);
     return sanitizedMap;
   }, {});
 };
 
-function deSanitizeParam(param: any) {
-  const desani = (String as any)(param)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function deSanitizeParam(value: any): string {
+  const desani = String(value)
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')
     .replaceAll('&quot;', '"')

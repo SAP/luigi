@@ -1,10 +1,10 @@
 <!-- This microfrontend HTML file is used to test a variety of functionality -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title></title>
     <meta charset="utf-8" />
-    <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
+    <script src="./luigi-client.js"></script>
     <style>
       html,
       body {
@@ -32,20 +32,27 @@
     </style>
   </head>
 
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <body style="-webkit-font-smoothing: antialiased; color: #515559">
     <div id="imgCnt"></div>
     <div id="textCnt">
-      <h1 id="title">Multi purpose demo page</h1>
+      <h1 id="title">iFrame based Container</h1>
       <p id="content">Some content</p>
       <button onclick="testNav()">test navigate</button>
       <button onclick="testCustom()">test custom message</button>
       <button onclick="testAddSearchParams()">Test add search params</button>
       <button onclick="testAddNodeParams()">Test add node params</button>
+      <button onclick="testGetNodeParams()">Test get node params</button>
       <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
+      <button onclick="testConfirmationModalCallback()">
+        test confirmation modal callback
+      </button>
       <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
       <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
+      <button onclick="testGetHistoryState()">test history state</button>
       <button onclick="testGetContext()">Get Context</button>
-
+      <button onclick="testUpdateModalPathInternalNavigation()">
+        test update modal path internal navigation
+      </button>
       <button onclick="testSetCurrentLocale()">test set current locale</button>
       <button onclick="testSetLocalStorage()">test set local storage</button>
       <button onclick="testRuntimeErrorRequest()">
@@ -59,10 +66,55 @@
       <button onclick="testCheckPathExists()">test check path exists</button>
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
+      <button onclick="testGetPathParams()">test get path params</button>
+      <button onclick="testGetCoreSearchParams()">test get core search params</button>
       <button onclick="testGetToken()">test get token</button>
+      <button onclick="testAlertCallback()">test alert callback</button>
+      <button onclick="testShowAlertWithNotifyAlertClosed()">
+        test showAlert with notifyAlertClosed
+      </button>
+      <button onclick="goBack()">test goBack()</button>
+      <button onclick="openAsModal()">test openAsModal()</button>
+      <button onclick="openAsDrawer()">test openAsDrawer()</button>
+      <button onclick="openAsSplitview()">test openAsSplitview()</button>
+      <button onclick="updateModalSettings()">test updateModalSettings</button>
+      <br /><br />
+      <span id="result"></span>
     </div>
+
     <script>
       // List of onclick handlers for client calls
+
+      function openAsModal() {
+        LuigiClient.linkManager().openAsModal('openAsModal-iframe', {
+          title: 'Modal Title',
+          size: 'm',
+        });
+      }
+
+      function updateModalSettings() {
+        LuigiClient.linkManager().updateModalSettings({
+          title: 'Updated modal title',
+          size: 'l',
+        });
+      }
+
+      function openAsDrawer() {
+        LuigiClient.linkManager().openAsDrawer('openAsDrawer-iframe', {
+          size: 's',
+        });
+      }
+
+      function openAsSplitview() {
+        LuigiClient.linkManager().openAsDrawer('openAsSplitview-iframe', {
+          size: 'l',
+        });
+      }
+
+      function goBack() {
+        LuigiClient.linkManager().goBack();
+      }
+
       function testNav() {
         LuigiClient.linkManager().navigate('/');
       }
@@ -76,7 +128,13 @@
       }
 
       function testAddNodeParams() {
-        LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
+        LuigiClient.addNodeParams({ luigi: 'nodeParams' }, true);
+      }
+
+      function testGetNodeParams() {
+        const nodeParams = LuigiClient.getNodeParams();
+        document.querySelector('#result').innerHTML =
+          `nodeParams: ${JSON.stringify(nodeParams)}`;
       }
 
       function testShowConfirmationModal() {
@@ -85,9 +143,27 @@
           header: 'Confirmation',
           body: 'Are you sure you want to do this?',
           buttonConfirm: 'Yes',
-          buttonDismiss: 'No'
+          buttonDismiss: 'No',
         };
-        LuigiClient.uxManager().showConfirmationModal(settings);
+
+        LuigiClient.uxManager()
+          .showConfirmationModal(settings)
+          .then(() => console.log('Modal confirmed'))
+          .catch(() => console.log('Modal dissmissed'));
+      }
+
+      function testConfirmationModalCallback() {
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            type: 'confirmation',
+            header: 'Callback Test',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No',
+          })
+          .then(() => {
+            document.querySelector('#result').innerHTML = 'showConfirmationModal: true';
+          });
       }
 
       function testShowLoadingIndicator() {
@@ -98,11 +174,30 @@
         LuigiClient.uxManager().hideLoadingIndicator();
       }
 
+      function testGetHistoryState() {
+        LuigiClient.sendCustomMessage({
+          id: 'my.historyMessage',
+          ...{ state: window.history.state },
+        });
+      }
+
       function testGetContext() {
         LuigiClient.sendCustomMessage({
           id: 'my.contextMessage',
-          ...LuigiClient.getContext()
+          ...LuigiClient.getContext(),
         });
+      }
+
+      function testUpdateModalPathInternalNavigation() {
+        const history = true;
+        const link = '/test/route';
+        const modal = { title: 'Some modal' };
+
+        this.LuigiClient.linkManager().updateModalPathInternalNavigation(
+          link,
+          modal,
+          history,
+        );
       }
 
       function testSetCurrentLocale() {
@@ -110,9 +205,7 @@
       }
 
       function testSetLocalStorage() {
-        LuigiClient.storageManager()
-          .setItem('keyExample', 'valueExample')
-          .then();
+        LuigiClient.storageManager().setItem('keyExample', 'valueExample').then();
       }
 
       // this is ran only when client is initialized and an error has occurred
@@ -132,7 +225,11 @@
       }
 
       function testGetCurrentRoute() {
-        LuigiClient.linkManager().getCurrentRoute();
+        LuigiClient.linkManager()
+          .getCurrentRoute()
+          .then((result) => {
+            document.querySelector('#result').innerHTML = `getCurrentRoute: ${result}`;
+          });
       }
 
       function testNavigationFinished() {
@@ -144,18 +241,35 @@
       }
 
       function testCheckPathExists() {
-        LuigiClient.linkManager().pathExists('/projects/pr2');
+        LuigiClient.linkManager()
+          .pathExists('/projects/pr2')
+          .then((result) => {
+            document.querySelector('#result').innerHTML = `pathExists: ${result}`;
+          });
       }
 
       function testSetDirtyStatus() {
         LuigiClient.uxManager().setDirtyStatus(true);
       }
 
+      function testGetPathParams() {
+        const pathParams = LuigiClient.getPathParams();
+        document.querySelector('#result').innerHTML =
+          `pathParams: ${JSON.stringify(pathParams)}`;
+      }
+
+      function testGetCoreSearchParams() {
+        const searchParams = LuigiClient.getCoreSearchParams();
+        console.log('searchParmas', searchParams);
+        document.querySelector('#result').innerHTML =
+          `searchParams: ${JSON.stringify(searchParams)}`;
+      }
+
       function testGetToken() {
         // send back message with get Token value
         LuigiClient.sendCustomMessage({
           id: 'token.updated',
-          value: LuigiClient.getToken()
+          value: LuigiClient.getToken(),
         });
       }
 
@@ -174,14 +288,57 @@
             relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
             neverShowItAgain: {
               text: "Don't show this again",
-              dismissKey: 'neverShowItAgain'
-            }
+              dismissKey: 'neverShowItAgain',
+            },
           },
-          closeAfter: 300000
+          closeAfter: 300000,
         };
         LuigiClient.uxManager()
           .showAlert(settings)
-          .then(param => {
+          .then((param) => {
+            console.log('Callback called on microfrontend', param);
+          });
+      }
+
+      function testAlertCallback() {
+        LuigiClient.uxManager()
+          .showAlert({
+            text: 'Callback Test',
+            type: 'info',
+          })
+          .then((result) => {
+            document.querySelector('#result').innerHTML = `showAlert: ${result}`;
+          });
+      }
+
+      function testShowAlertWithNotifyAlertClosed() {
+        let dt = new Date();
+        let time = dt.getMilliseconds() + '';
+        time = time.substr(time.length - 3);
+        const settings = {
+          text:
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
+            time,
+          type: 'info',
+          links: {
+            goToHome: { text: 'homepage', url: '/overview' },
+            goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+            relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+            neverShowItAgain: {
+              text: "Don't show this again",
+              dismissKey: 'neverShowItAgain',
+            },
+          },
+          notifyAlertClosed: true,
+          closeAfter: 300000,
+        };
+        LuigiClient.uxManager()
+          .showAlert(settings)
+          .then((param) => {
+            const span = document.createElement('span');
+            // span.setAttribute('id', 'callbackCloseAlert');
+            span.innerHTML = 'Callback called on iframe ' + param;
+            document.body.appendChild(span);
             console.log('Callback called on microfrontend', param);
           });
       }
@@ -189,7 +346,6 @@
       function updateFn(context) {
         // report-navigation-completed-request will be detected since
         // context update is tied to navigation being completed
-        console.log('context updated', context);
         if (context.title) {
           document.getElementById('title').innerHTML = context.title;
         }
@@ -213,14 +369,14 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
-      LuigiClient.addCustomMessageListener('update', msg => {
+      LuigiClient.addCustomMessageListener('update', (msg) => {
         console.log('Custom Message Received inside iframe Container', msg);
         document.getElementById('content').innerHTML =
           'Received Custom Message: ' + msg.dataToSend;
       });
 
       // fallback visibility if no initlistener called for 3 seconds
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
     </script>

@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "Luigi"
+SPDX-PackageSupplier = "Philipp Pracht <philipp.pracht@sap.com>"
+SPDX-PackageDownloadLocation = "https://github.com/SAP/luigi"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2020 SAP SE or an SAP affiliate company and Luigi contributors"
+SPDX-License-Identifier = "Apache-2.0"

@@ -17,4 +17,5 @@ vite.config.ts.timestamp-*
 /src/assets
 /src/images
 /src/lib/data/docs.json
+/test-results
 sitemap.xml

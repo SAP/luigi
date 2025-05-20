@@ -21,7 +21,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 > **NOTE:** You should always add [*unit tests*](https://github.com/SAP/luigi/tree/main/core/test) if you are adding code to our repository.
 
- If you've added code that is exposed as an API or configuration, additionally add e2e tests to [js-test-app](https://github.com/SAP/luigi/tree/main/test/e2e-test-application/cypress/e2e/tests/0-js-test-app).
+If you've added code that is exposed as an API or configuration, additionally add e2e tests to [js-test-app](https://github.com/SAP/luigi/tree/main/test/e2e-test-application/cypress/e2e/tests/0-js-test-app).
 
 To let tests run locally, run `cd test/e2e-js-test-application && npm run dev` and `cd test/e2e-test-application && npm run e2e:open` and click on the test in the *js-test-application* category.
 
@@ -29,6 +29,10 @@ To let tests run locally, run `cd test/e2e-js-test-application && npm run dev` a
 We use GitHub issues to track bugs. Please ensure your description is
 clear and includes sufficient instructions to reproduce the issue.
 
+## Contributing with AI-generated code
+As artificial intelligence evolves, AI-generated code is becoming valuable for many software projects, including open-source initiatives. While we recognize the potential benefits of incorporating AI-generated content into our open-source projects there a certain requirements that need to be reflected and adhered to when making contributions.
+
+Please see our [guideline for AI-generated code contributions to SAP Open Source Software Projects](https://github.com/SAP/.github/blob/main/CONTRIBUTING_USING_GENAI.md) for these requirements.
+
 ## License
-By contributing to Luigi, you agree that your contributions will be licensed
-under its [Apache-2.0 license](LICENSE).
+By contributing to Luigi, you agree that your contributions will be licensed under its [Apache-2.0 license](LICENSE).

@@ -18,7 +18,7 @@
   };
 
   function closeAllCombos(self) {
-    document.querySelectorAll('.lui-usersettings-content .fd-popover__control').forEach(elem => {
+    document.querySelectorAll('.lui-usersettings-content .fd-popover__control').forEach((elem) => {
       setExpandedState(elem, false);
     });
   }
@@ -58,7 +58,7 @@
   }
 
   function updateEnumButton(key, option) {
-    document.querySelectorAll('.enum-buttons-container-' + key + ' button').forEach(button => {
+    document.querySelectorAll('.enum-buttons-container-' + key + ' button').forEach((button) => {
       const buttonId = button.getAttribute('id');
       const optionId = `lui-us-enum_button_${key}_option`;
       buttonId === optionId
@@ -213,6 +213,7 @@
                   <div class="fd-form-item">
                     <div class="fd-popover">
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-no-static-element-interactions -->
                       <div
                         class="fd-popover__control"
                         aria-expanded="false"
@@ -228,13 +229,13 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-{schemaItem.type}-{index}"
                             id="fd-form-input-{index}"
-                            on:keydown={event => handleKeyListDropdown(event, key, index, schemaItem)}
+                            on:keydown={(event) => handleKeyListDropdown(event, key, index, schemaItem)}
                           >
                             <span
                               class="fd-select__text-content"
                               data-testid="lui-us-input{index}"
                               disabled={schemaItem.isEditable === undefined || schemaItem.isEditable ? false : true}
-                            >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}
+                              >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}
                             </span>
                             <span class="fd-button fd-button--transparent fd-select__button lui-activate-dropdown">
                               <i class="sap-icon--slim-arrow-down" />
@@ -261,7 +262,7 @@
                                 data-testid="lui-us-option{index}_{optionIndex}"
                                 aria-selected={selectedLanguageLabel === optionIndex}
                                 on:click={() => updateComboBox(key, option, optionIndex)}
-                                on:keydown={event => keyPressDropdownNode(event)}
+                                on:keydown={(event) => keyPressDropdownNode(event)}
                                 tabindex="0"
                               >
                                 <span class="fd-list__title">{getLabel(option)}</span>
@@ -278,7 +279,11 @@
                     <div class="fd-segmented-button enum-buttons-container-{key}" role="group" aria-label="Group label">
                       {#each schemaItem.options as option, optionIndex}
                         <button
-                          class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === (option.value || option) ? 'is-selected' : ''}"
+                          class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[
+                            userSettingGroup[0]
+                          ][key] === (option.value || option)
+                            ? 'is-selected'
+                            : ''}"
                           on:click={() => updateEnumButton(key, option)}
                           id={getEnumButtonId('lui-us-enum_button', key, option)}
                           data-testid={getEnumButtonId('lui-us-enum_button', key, option)}

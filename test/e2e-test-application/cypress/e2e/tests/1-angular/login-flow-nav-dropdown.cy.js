@@ -16,9 +16,7 @@ describe('Login Flow', () => {
 
     cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.get('[data-testid="luigi-topnav-profile-item"]').contains('Project One');
-    cy.get('[data-testid="luigi-topnav-profile-item"]')
-      .eq(1)
-      .click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]').eq(1).click();
 
     cy.expectPathToBe('/projects/pr1');
 
@@ -55,7 +53,7 @@ describe('Login Flow', () => {
     cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Luigi Demo');
     cy.get('[data-testid="luigi-topnav-title"]').should('not.have.attr', 'src', testLogo);
 
-    cy.window().then(win => {
+    cy.window().then((win) => {
       const config = win.Luigi.getConfig();
       config.settings.header.title = testTitle;
       config.settings.header.logo = testLogo;
@@ -78,7 +76,7 @@ describe('Login Flow', () => {
 
     //login again
     cy.contains('Re-Login').click();
-    cy.expectPathToBe('/assets/auth-mock/login-mock.html', 5000);
+    cy.expectPathToBe('/assets/auth-mock/login-mock.html');
     cy.get('body').should('contain', 'Login to Luigi sample app');
     cy.login('tets@email.com', 'tets');
   });
@@ -101,9 +99,7 @@ describe('TopNavDropDown', () => {
 
       cy.get('[data-testid="opengoogleinthistab"]').contains('Open Google in this tab');
 
-      cy.get('[data-testid="all-users_visibleforallusers"]')
-        .contains('Visible for all users')
-        .click();
+      cy.get('[data-testid="all-users_visibleforallusers"]').contains('Visible for all users').click();
 
       cy.expectPathToBe('/all-users');
     });
@@ -120,9 +116,7 @@ describe('TopNavDropDown', () => {
       //open mobile topnav dropdown
       cy.get('[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]').click();
 
-      cy.get('[data-e2e="mobile-topnav-item"]')
-        .contains('Visible for all users')
-        .click();
+      cy.get('[data-e2e="mobile-topnav-item"]').contains('Visible for all users').click();
 
       cy.expectPathToBe('/all-users');
     });

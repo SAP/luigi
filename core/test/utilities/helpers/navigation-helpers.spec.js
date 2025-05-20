@@ -10,12 +10,14 @@ const sinon = require('sinon');
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
     let permissionCheckerFn;
+
     beforeEach(() => {
       permissionCheckerFn = sinon.spy();
       sinon.stub(LuigiAuth, 'isAuthorizationEnabled');
       sinon.stub(AuthHelpers, 'isLoggedIn');
       sinon.stub(LuigiConfig, 'getConfigValue');
     });
+
     afterEach(() => {
       permissionCheckerFn = undefined;
       sinon.restore();
@@ -100,6 +102,7 @@ describe('Navigation-helpers', () => {
       );
     });
   });
+
   describe('isOpenUIiconName', () => {
     it('should return true for valid icon names', async () => {
       assert.equal(NavigationHelpers.isOpenUIiconName('settings'), true);
@@ -118,9 +121,11 @@ describe('Navigation-helpers', () => {
     beforeEach(() => {
       sinon.stub(LuigiConfig, 'getConfigValue');
     });
+
     afterEach(() => {
       sinon.restore();
     });
+
     it('should return number from config file if columns are defined', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
@@ -133,6 +138,7 @@ describe('Navigation-helpers', () => {
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 3);
     });
+
     it('should return number from config file even if columns are not defined', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
@@ -397,7 +403,6 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.getPropertyChainValue(undefined, 'some.nested.value2', 'fallback'), 'fallback');
       assert.equal(NavigationHelpers.getPropertyChainValue(object, undefined, 'fallback'), 'fallback');
       assert.equal(NavigationHelpers.getPropertyChainValue(undefined, undefined, 'fallback'), 'fallback');
-
       assert.equal(NavigationHelpers.getPropertyChainValue(object, 'some'), object.some);
       assert.equal(NavigationHelpers.getPropertyChainValue(object, '', 'fallback'), 'fallback');
     });
@@ -450,7 +455,7 @@ describe('Navigation-helpers', () => {
         }
       };
 
-      it('should reject if no titleResolver set', done => {
+      it('should reject if no titleResolver set', (done) => {
         NavigationHelpers.fetchNodeTitleData({ titleResolver: undefined }, {})
           .then(() => {
             assert.fail('Should not be here');
@@ -461,7 +466,7 @@ describe('Navigation-helpers', () => {
           });
       });
 
-      it('should get data from cache', done => {
+      it('should get data from cache', (done) => {
         const node = {
           titleResolver: {
             url: 'http://localhost'
@@ -477,13 +482,13 @@ describe('Navigation-helpers', () => {
           value: value
         };
 
-        NavigationHelpers.fetchNodeTitleData(node, node.context).then(data => {
+        NavigationHelpers.fetchNodeTitleData(node, node.context).then((data) => {
           assert.equal(data, value);
           done();
         });
       });
 
-      it('should use correct request data and properly process response data', done => {
+      it('should use correct request data and properly process response data', (done) => {
         const node = JSON.parse(JSON.stringify(samplenode));
 
         let fetchUrl, fetchOptions;
@@ -511,7 +516,7 @@ describe('Navigation-helpers', () => {
             assertRequestData();
             done();
           })
-          .catch(e => {
+          .catch((e) => {
             assertRequestData();
             done();
           });
@@ -545,6 +550,7 @@ describe('Navigation-helpers', () => {
 
     describe('groupNodesBy', () => {
       let nodes;
+
       beforeEach(() => {
         nodes = [
           {
@@ -573,6 +579,7 @@ describe('Navigation-helpers', () => {
           }
         ];
       });
+
       it('group nodes by category id', () => {
         nodes[1].category.id = '1';
         nodes[1].category.collapsible = true;
@@ -587,12 +594,14 @@ describe('Navigation-helpers', () => {
           categoryUid: '1'
         });
       });
+
       it('group nodes by category label', () => {
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
         assert.deepEqual(Object.keys(result), ['1', 'test', 'luigi']);
         assert.deepEqual(result.test['metaInfo'], { categoryUid: 'test', label: 'test', collapsible: true, order: 1 });
       });
+
       it('first category object counts', () => {
         const node = {
           pathSegment: 'someNode',
@@ -608,6 +617,7 @@ describe('Navigation-helpers', () => {
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
         assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2, categoryUid: 'luigi' });
       });
+
       it('first category object counts - part 2', () => {
         const node = {
           pathSegment: 'someNode',
@@ -635,60 +645,75 @@ describe('Navigation-helpers', () => {
       });
     });
   });
+
   describe('generate tooltip text', () => {
     let node;
+
     beforeEach(() => {
       node = {
         label: 'LuigiNode'
       };
       sinon.stub(LuigiConfig, 'getConfigValue');
     });
+
     afterEach(() => {
       sinon.restore();
     });
+
     it('tooltip text on node', () => {
       node.tooltipText = 'MarioNode';
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'MarioNode');
     });
+
     it('tooltip turned off', () => {
       node.tooltipText = false;
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
     });
+
     it('tooltip not defined', () => {
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'LuigiNode');
     });
+
     it('tooltip turned off used defaults', () => {
       LuigiConfig.getConfigValue.returns(false);
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
     });
   });
+
   describe('check visible for feature toggles', () => {
     let nodeToCheckPermission;
+
     beforeEach(() => {
       nodeToCheckPermission = {
         visibleForFeatureToggles: ['testFt']
       };
       sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList');
     });
+
     afterEach(() => {
       sinon.restore();
     });
+
     it('Node is visible with Ft "testFT"', async () => {
       LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), true);
     });
+
     it('Node is NOT visible with Ft "testFT2"', async () => {
       nodeToCheckPermission.visibleForFeatureToggles = ['!testFt2'];
       LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt', 'testFt2']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
     });
+
     it('Node is NOT visible with Ft "testFT"', async () => {
       LuigiFeatureToggles.getActiveFeatureToggleList.returns(['test']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
     });
   });
+
   describe('generate top nav nodes', () => {
     let pathData;
+
     beforeEach(() => {
       pathData = [
         {
@@ -732,6 +757,7 @@ describe('Navigation-helpers', () => {
         }
       ];
     });
+
     it('check visible nodes and children of top nav', async () => {
       let tnd = await NavigationHelpers.generateTopNavNodes(pathData);
       assert.equal(tnd.visibleNodeCount, 3);
@@ -742,6 +768,7 @@ describe('Navigation-helpers', () => {
       assert.equal(tnd.children[2].visibleChildren[0].pathSegment, 'user_management');
     });
   });
+
   describe('prepare for test id if no testId is configured', () => {
     it('prepare test id', () => {
       assert.equal(NavigationHelpers.prepareForTests('Te st'), 'test');
@@ -751,8 +778,10 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.prepareForTests('Das', 'ist', 'ein', 'Test'), 'das_ist_ein_test');
     });
   });
+
   describe('load and store expanded categories', () => {
     let localStorageSpy;
+
     beforeEach(() => {
       const storageMock = {
         getItem: sinon.stub(),
@@ -763,19 +792,23 @@ describe('Navigation-helpers', () => {
         return storageMock;
       });
     });
+
     afterEach(() => {
       sinon.restore();
       sinon.reset();
       localStorageSpy.mockRestore();
     });
+
     it('load expanded category', () => {
       localStorage.getItem.returns('["home:cat"]');
       assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat']);
     });
+
     it('load expanded categories', () => {
       localStorage.getItem.returns('["home:cat1", "home:cat2"]');
       assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat1', 'home:cat2']);
     });
+
     it('store expanded state with empty expanded cat', () => {
       const expandedList = NavigationHelpers.storeExpandedState('home:cat', true);
       sinon.assert.calledWithExactly(
@@ -785,6 +818,7 @@ describe('Navigation-helpers', () => {
       );
       assert.deepEqual(expandedList, ['home:cat']);
     });
+
     it('store expanded state with stored cat', () => {
       sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
       assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', true), ['home:cat', 'home:cat2']);
@@ -794,6 +828,7 @@ describe('Navigation-helpers', () => {
         JSON.stringify(['home:cat', 'home:cat2'])
       );
     });
+
     it('store expanded state with stored cat', () => {
       sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
       assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', false), ['home:cat']);
@@ -804,25 +839,31 @@ describe('Navigation-helpers', () => {
       );
     });
   });
+
   describe('renderIconClassName', () => {
     it('should render sap-icon to standard icon suite', () => {
       assert.equal(NavigationHelpers.renderIconClassName('home'), 'sap-icon--home');
     });
+
     it('should render sap-icon to TNT suite', () => {
       assert.equal(NavigationHelpers.renderIconClassName('TNT--home'), 'sap-icon-TNT--home');
     });
+
     it('should render sap-icon to businessSuiteInAppSymbols suite', () => {
       assert.equal(
         NavigationHelpers.renderIconClassName('businessSuiteInAppSymbols--home'),
         'sap-icon-businessSuiteInAppSymbols--home'
       );
     });
+
     it('render icon class name without name', () => {
       assert.equal(NavigationHelpers.renderIconClassName(''), '');
     });
   });
+
   describe('handleNavAnchorClickedWithoutMetaKey', () => {
     let event;
+
     beforeEach(() => {
       event = new Event('click');
       event.preventDefault = sinon.spy();
@@ -855,18 +896,22 @@ describe('Navigation-helpers', () => {
       viewUrl: 'test.html',
       viewGroup: 'vg1'
     };
+
     beforeEach(() => {
       sinon.stub(LuigiI18N, 'getTranslation').returns('myNode {viewGroupData.foo}');
       sinon.stub(NavigationHelpers, 'getViewGroupSettings').returns({ _liveCustomData: { foo: 'Luigi rocks!' } });
     });
+
     afterEach(() => {
       sinon.restore();
       sinon.reset();
     });
+
     it('get correct node label', () => {
       assert.notEqual(NavigationHelpers.getNodeLabel(node), 'myNode {viewGroupData.foo}');
       assert.equal(NavigationHelpers.getNodeLabel(node), 'myNode Luigi rocks!');
     });
+
     it('getNodeLabel w/o vg', () => {
       delete node.viewGroup;
       assert.notEqual(NavigationHelpers.getNodeLabel(node), 'myNode Luigi rocks!');
@@ -876,6 +921,7 @@ describe('Navigation-helpers', () => {
 
   describe('getViewGroupSettings', () => {
     let viewGroupSettings;
+
     beforeEach(() => {
       viewGroupSettings = {
         ham: {
@@ -892,14 +938,17 @@ describe('Navigation-helpers', () => {
         return viewGroupSettings;
       });
     });
+
     afterEach(() => {
       sinon.restore();
     });
+
     it('return viewgroup from viewgroup settings', () => {
       assert.deepEqual(NavigationHelpers.getViewGroupSettings('ananas'), {
         preloadUrl: 'ananas.html'
       });
     });
+
     it('no view group found in viewgroup settings', () => {
       assert.deepEqual(NavigationHelpers.getViewGroupSettings(''), {});
       assert.deepEqual(NavigationHelpers.getViewGroupSettings('somethingElse'), {});
@@ -983,10 +1032,12 @@ describe('Navigation-helpers', () => {
     beforeEach(() => {
       sinon.stub(LuigiConfig, 'getConfigBooleanValue').returns(true);
     });
+
     afterEach(() => {
       sinon.restore();
       sinon.reset();
     });
+
     it('sideNavAccordionMode defined on selectedNode', () => {
       let selectedNode = {
         pathSegement: 'mf1',
@@ -996,6 +1047,7 @@ describe('Navigation-helpers', () => {
       sinon.assert.notCalled(LuigiConfig.getConfigBooleanValue);
       assert.equal(sideNavAccordionMode, true);
     });
+
     it('sideNavAccordionMode defined on parent', () => {
       let selectedNode = {
         pathSegement: 'mf1',
@@ -1007,6 +1059,7 @@ describe('Navigation-helpers', () => {
       sinon.assert.notCalled(LuigiConfig.getConfigBooleanValue);
       assert.equal(sideNavAccordionMode, true);
     });
+
     it('sideNavAccordionMode defined by default', () => {
       let selectedNode = {
         pathSegement: 'mf1'
@@ -1140,6 +1193,83 @@ describe('Navigation-helpers', () => {
       const result = NavigationHelpers.getTestId(mockedNode);
 
       assert.equal(result, 'ab_cd');
+    });
+  });
+
+  describe('storeCollapsedSuperCategoriesState', () => {
+    const COLLAPSED_SUPER_CATEGORIES_KEY = NavigationHelpers.COLLAPSED_SUPER_CATEGORIES_KEY;
+    let getItemSpy, setItemSpy;
+
+    beforeEach(() => {
+      getItemSpy = jest.spyOn(Storage.prototype, 'getItem');
+      setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+    });
+
+    afterAll(() => {
+      jest.restoreAllMocks();
+    });
+
+    describe('when key exists in the localStorage', () => {
+      beforeEach(() => {
+        getItemSpy.mockReturnValueOnce(JSON.stringify(['category1', 'category2']));
+      });
+
+      it('when value is false: should not update the list', () => {
+        NavigationHelpers.storeCollapsedSuperCategoriesState('category2', false);
+        expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
+        expect(setItemSpy).toHaveBeenCalledWith(
+          COLLAPSED_SUPER_CATEGORIES_KEY,
+          JSON.stringify(['category1', 'category2'])
+        );
+      });
+
+      it('when value is true: should: should remove key from the list ', () => {
+        NavigationHelpers.storeCollapsedSuperCategoriesState('category2', true);
+        expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
+        expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(['category1']));
+      });
+    });
+
+    describe('when key does not exists in the localStorage', () => {
+      beforeEach(() => {
+        getItemSpy.mockReturnValueOnce(JSON.stringify([]));
+      });
+
+      it('when value is false: should add key to the list', () => {
+        NavigationHelpers.storeCollapsedSuperCategoriesState('category2', false);
+        expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
+        expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(['category2']));
+      });
+
+      it('when value is true: should not update the list', () => {
+        NavigationHelpers.storeCollapsedSuperCategoriesState('category2', true);
+        expect(getItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY);
+        expect(setItemSpy).toHaveBeenCalledWith(COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify([]));
+      });
+    });
+  });
+
+  describe('isCollapsedSuperCategory', () => {
+    let getItemSpy;
+
+    beforeEach(() => {
+      getItemSpy = jest.spyOn(Storage.prototype, 'getItem');
+    });
+
+    afterAll(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('when category key is present in the localStorage, should return true ', () => {
+      getItemSpy.mockReturnValueOnce(JSON.stringify(['category1', 'category2']));
+      const result = NavigationHelpers.isCollapsedSuperCategory('category2');
+      expect(result).toBe(true);
+    });
+
+    it('when category key is not in the localStorage, should return false ', () => {
+      getItemSpy.mockReturnValueOnce(JSON.stringify(['category1']));
+      const result = NavigationHelpers.isCollapsedSuperCategory('category2');
+      expect(result).toBe(false);
     });
   });
 });

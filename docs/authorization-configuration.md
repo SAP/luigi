@@ -157,6 +157,18 @@ When Luigi fails to renew the token and then logs the user out, it adds the `?re
 
 Use these parameters to set a logout page.
 
+<!-- add-attribute:class:success -->
+>**TIP:** There's an option to disable third party cookie check declaratively - in your micro frontend HTML that serves as entry file, you must add the `disable-tpc-check` attribute into the `<head>` element as follows:
+
+```html
+  <html>
+    <head disable-tpc-check>
+    ....
+    </head>
+    .....
+  </html>
+```
+
 ## OAuth2 Implicit Grant configuration
 
 This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi. Note that you must install the [OAuth2 Plugin](auth-oauth2.md) first.

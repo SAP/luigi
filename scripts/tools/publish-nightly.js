@@ -15,9 +15,9 @@ import color from 'cli-color';
 /**
  * COLORS
  */
-const logHeadline = str => console.log(color.bold.cyan(str));
-const logWarning = str => console.log(color.yellow.bold(str));
-const logError = str => console.log(color.redBright.bold(str));
+const logHeadline = (str) => console.log(color.bold.cyan(str));
+const logWarning = (str) => console.log(color.yellow.bold(str));
+const logError = (str) => console.log(color.redBright.bold(str));
 const logStep = (s1, s2, s3) => {
   if (s3) {
     console.log(color.cyan(s1), color.cyan(s2), color.cyan(s3));
@@ -51,11 +51,14 @@ const publishPaths = {
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
 
+if (!process.env.NIGHTLY_VERSION) {
+  logHeadline('Added container path to publish nightly release steps');
+  packagePaths.container = ['container'];
+  publishPaths.container = ['container', 'public'];
+}
+
 function execTrim(cmd) {
-  return require('child_process')
-    .execSync(cmd)
-    .toString()
-    .trim();
+  return require('child_process').execSync(cmd).toString().trim();
 }
 
 let LATEST_TAG = execTrim('git tag -l | tail -1');
@@ -76,10 +79,10 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
    * Checks if files have been changed since last git tag.
    * @returns changed, a list of packagePaths keys
    */
-  const changed = Object.entries(packagePaths).filter(val => {
+  const changed = Object.entries(packagePaths).filter((val) => {
     return (
       forcedRelease ||
-      FILES_CHANGED.split('\n').some(file => {
+      FILES_CHANGED.split('\n').some((file) => {
         return file.indexOf(val[1].join('/')) !== -1;
       })
     );
@@ -89,11 +92,11 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
     logHeadline('\nNothing to publish.');
   } else {
     logHeadline('\nPackages to publish:\n');
-    const packagesToUpdate = Object.entries(packagePaths).map(c => c[0]);
+    const packagesToUpdate = Object.entries(packagePaths).map((c) => c[0]);
     logStep(packagesToUpdate.join(', '));
     logStep('\n');
 
-    packagesToUpdate.forEach(pkg => {
+    packagesToUpdate.forEach((pkg) => {
       const publicPath = `${base}/${publishPaths[pkg].join('/')}`;
       const pkgJson = require(publicPath + '/package.json');
       logStep(`Publishing ${pkgJson.name}@${pkgJson.version}`);

@@ -45,15 +45,19 @@
             {#each nodes as node}
               {#if node.label}
                 <li
-                  class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : ''} {node.selected ? 'selected' : ''}"
+                  class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : ''} {node.selected
+                    ? 'selected'
+                    : ''}"
                   on:click={() => onActionClick(node)}
                   data-e2e="mobile-topnav-item"
                   data-testid={NavigationHelpers.getTestId(node)}
                 >
-                  <div class="lui-product-switch__icon">
+                  <div class="lui-product-switch__icon fd-product-switch__icon sap-icon">
                     {#if hasOpenUIicon(node)}
                       <i class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}" />
-                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                    {:else}
+                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
+                    {/if}
                     <BadgeCounter {node} />
                   </div>
                   <div class="fd-product-switch__text">

@@ -137,10 +137,7 @@ class RoutingClass {
     }
     const params = window.location.search ? window.location.search : '';
     const path = (window.history.state && window.history.state.path) || window.location.pathname + params;
-    return path
-      .split('/')
-      .slice(1)
-      .join('/');
+    return path.split('/').slice(1).join('/');
   }
 
   getCurrentPath() {
@@ -159,8 +156,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -180,7 +177,7 @@ class RoutingClass {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
 
-    return patterns.filter(p => location.href.match(p)).length !== 0;
+    return patterns.filter((p) => location.href.match(p)).length !== 0;
   }
 
   /**
@@ -404,19 +401,17 @@ class RoutingClass {
       }
 
       let cNode2 = currentNode;
+      let hideGlobalSearchInherited = nodeObject.hideGlobalSearch;
+      if (hideGlobalSearchInherited === undefined) {
+        hideGlobalSearchInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideGlobalSearch', () => {
+          cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
+        });
+      }
       let hideSideNavInherited = nodeObject.hideSideNav;
       if (hideSideNavInherited === undefined) {
-        while (cNode2) {
-          if (cNode2.tabNav && cNode2.hideSideNav === true) {
-            hideSideNavInherited = true;
-            break;
-          }
-          if (cNode2.hideSideNav === false) {
-            hideSideNavInherited = false;
-            break;
-          }
+        hideSideNavInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideSideNav', () => {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
-        }
+        });
       }
 
       const ctx = RoutingHelpers.substituteDynamicParamsInObject(
@@ -434,6 +429,7 @@ class RoutingClass {
         navigationPath: pathData.navigationPath,
         context: ctx,
         pathParams: pathData.pathParams,
+        hideGlobalSearch: hideGlobalSearchInherited || false,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
@@ -689,7 +685,7 @@ class RoutingClass {
     this.removeLastChildFromWCContainer();
 
     if (compound && compound.children) {
-      compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
+      compound.children = compound.children.filter((c) => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData);
     wc_container._luigi_pathParams = componentData.pathParams;
@@ -823,7 +819,7 @@ class RoutingClass {
       searchParams.delete(modalParamName);
       searchParams.delete(`${modalParamName}Params`);
       let finalUrl = '';
-      Array.from(searchParams.keys()).forEach(searchParamKey => {
+      Array.from(searchParams.keys()).forEach((searchParamKey) => {
         finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey);
       });
       url.search = finalUrl;
@@ -835,7 +831,7 @@ class RoutingClass {
       let isModalHistoryHigherThanHistoryLength = false;
       window.addEventListener(
         'popstate',
-        e => {
+        (e) => {
           if (isModalHistoryHigherThanHistoryLength) {
             //replace the url with saved path and get rid of modal data in url
             history.replaceState({}, '', path);

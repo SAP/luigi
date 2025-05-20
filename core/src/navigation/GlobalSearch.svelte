@@ -70,7 +70,7 @@
           <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
-            on:keyup={event => onKeyUp(event)}
+            on:keyup={(event) => onKeyUp(event)}
             class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
             data-testid="luigi-search-input"
             autofocus
@@ -91,14 +91,16 @@
               <ul class="fd-menu__list fd-menu__list--top" bind:this={customSearchItemRendererSlotContainer}>
                 {#each searchResult as result, index}
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={event => globalSearchHelper.onSearchResultItemSelected(result, event)}
-                    on:keyup={event => handleKeydown(result, event)}
+                    on:click={(event) => globalSearchHelper.onSearchResultItemSelected(result, event)}
+                    on:keyup={(event) => handleKeydown(result, event)}
                     tabindex="0"
                   >
                     {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-no-static-element-interactions -->
                       <!-- svelte-ignore a11y-missing-attribute -->
                       <a class="fd-menu__link" on:click|preventDefault={() => {}}>
                         <div class="fd-product-switch__text">
@@ -107,7 +109,11 @@
                         </div>
                       </a>
                     {:else}
-                      {@html globalSearchHelper.renderCustomSearchItem(result, customSearchItemRendererSlotContainer, index)}
+                      {@html globalSearchHelper.renderCustomSearchItem(
+                        result,
+                        customSearchItemRendererSlotContainer,
+                        index
+                      )}
                     {/if}
                   </li>
                 {/each}
@@ -123,6 +129,7 @@
 </div>
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div on:click|stopPropagation={() => {}}>
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
@@ -180,6 +187,10 @@
 
   //remove arrow from the search popover
   @media screen and (max-width: 1024px) {
+    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field) {
+      margin-bottom: 0;
+    }
+
     .luigi-search-shell__mobile {
       position: relative;
       height: calc(2.25rem + 2px);
@@ -196,9 +207,17 @@
         background: var(--sapShellColor);
         z-index: 2;
       }
+
       .fd-menu {
         max-width: 12rem;
       }
+    }
+  }
+
+  @media (max-width: 599px) {
+    :global(.lui-shellbar_group--actions .fd-shellbar__input-group.fd-shellbar__search-field) {
+      max-width: 11rem;
+      min-width: 0;
     }
   }
 </style>

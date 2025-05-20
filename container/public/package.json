@@ -8,6 +8,7 @@
         "type": "git",
         "url": "ssh://github.com/SAP/luigi.git"
     },
+    "customElements": "./dist/custom-elements.json",
     "publishConfig": {
         "tag": "luigi-container"
     },
@@ -19,5 +20,5 @@
         "micro-frontends",
         "microfrontends"
     ],
-    "version": "1.3.0"
+    "version": "1.7.0"
 }

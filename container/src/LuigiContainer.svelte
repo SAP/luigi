@@ -3,38 +3,43 @@
     tag: null,
     shadow: 'none',
     props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      label: { type: 'String', reflect: false, attribute: 'label' },
-      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
-      locale: { type: 'String', reflect: false, attribute: 'locale' },
-      theme: { type: 'String', reflect: false, attribute: 'theme' },
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
-      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
-      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
       allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      authData: { type: 'Object', reflect: false, attribute: 'auth-data' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
+      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
+      label: { type: 'String', reflect: false, attribute: 'label' },
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' },
-      authData: { type: 'Object', reflect: false, attribute: 'auth-data' }
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      skipCookieCheck: { type: 'String', reflect: false, attribute: 'skip-cookie-check' },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
+      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }
     },
-    extend: customElementConstructor => {
-      let notInitFn = name => {
-        return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
+    extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
+        return () =>
+          console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
 
       return class extends customElementConstructor {
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
+        updateViewUrl = notInitFn('updateViewUrl');
         closeAlert = notInitFn('closeAlert');
+        notifyAlertClosed = notInitFn('notifyAlertClosed');
+        notifyConfirmationModalClosed = notInitFn('notifyConfirmationModalClosed');
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized) {
             if (name === 'context') {
@@ -45,8 +50,9 @@
             }
           }
         }
-        getNoShadow(){
-          return this.hasAttribute('no-shadow') || this.noShadow
+
+        getNoShadow() {
+          return this.hasAttribute('no-shadow') || this.noShadow;
         }
       };
     }
@@ -55,44 +61,42 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { containerService } from './services/container.service';
-  import { WebComponentService } from './services/webcomponents.service';
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
-  import { GenericHelperFunctions } from './utilities/helpers';
+  import type { IframeHandle, ContainerElement } from './constants/container.model';
+  import { containerService } from './services/container.service';
   import { getAllowRules } from './services/iframe-helpers';
+  import { WebComponentService } from './services/webcomponents.service';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
-  export let viewurl: string;
-  export let context: string;
-  export let label: string;
-  export let webcomponent: any;
-  export let deferInit: boolean;
-  export let noShadow: Boolean;
-  export let locale: string;
-  export let theme: string;
+  /* eslint-disable */
   export let activeFeatureToggleList: string[];
-  export let skipInitCheck: boolean;
-  export let nodeParams: any;
-  export let searchParams: any;
-  export let pathParams: any;
-  export let clientPermissions: any;
-  export let dirtyStatus: boolean;
-  export let hasBack: boolean;
-  export let documentTitle: string;
   export let allowRules: string[];
-  export let sandboxRules: string[];
-
-  export let userSettings: any;
   export let anchor: string;
   export let authData: any;
+  export let clientPermissions: any;
+  export let context: string;
+  export let deferInit: boolean;
+  export let dirtyStatus: boolean;
+  export let documentTitle: string;
+  export let hasBack: boolean;
+  export let label: string;
+  export let locale: string;
+  export let noShadow: boolean;
+  export let nodeParams: any;
+  export let pathParams: any;
+  export let sandboxRules: string[];
+  export let searchParams: any;
+  export let skipCookieCheck: 'false' | 'true';
+  export let skipInitCheck: boolean;
+  export let theme: string;
+  export let userSettings: any;
+  export let viewurl: string;
+  export let webcomponent: any;
+  /* eslint-enable */
 
-  const iframeHandle:
-    | {
-        iframe: HTMLIFrameElement;
-      }
-    | any = {};
-  let mainComponent: HTMLElement;
-
+  const iframeHandle: IframeHandle = {};
+  let mainComponent: ContainerElement;
   let containerInitialized = false;
 
   const webcomponentService = new WebComponentService();
@@ -100,28 +104,31 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
-      locale &&
-      theme &&
       activeFeatureToggleList &&
-      nodeParams &&
-      searchParams &&
-      pathParams &&
-      clientPermissions &&
-      userSettings &&
+      allowRules &&
       anchor &&
       authData &&
+      clientPermissions &&
       dirtyStatus &&
-      hasBack &&
       documentTitle &&
-      allowRules &&
+      hasBack &&
+      locale &&
+      noShadow &&
+      nodeParams &&
+      pathParams &&
       sandboxRules &&
-      noShadow
+      searchParams &&
+      skipCookieCheck &&
+      skipInitCheck &&
+      theme &&
+      userSettings
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialize = (thisComponent: any) => {
     if (!containerInitialized) {
-      thisComponent.sendCustomMessage = (id: string, data?: any) => {
+      thisComponent.sendCustomMessage = (id: string, data?: object) => {
         ContainerAPI.sendCustomMessage(
           id,
           thisComponent.getNoShadow() ? thisComponent : mainComponent,
@@ -131,29 +138,59 @@
         );
       };
 
-      thisComponent.updateContext = (contextObj: any, internal?: any) => {
-         if (webcomponent) {
+      thisComponent.updateContext = (contextObj: object, internal?: object) => {
+        context = contextObj;
+        if (webcomponent) {
           (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
       };
 
-      thisComponent.closeAlert = (id: any, dismissKey: any) => {
-        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+      thisComponent.closeAlert = (id: string, dismissKey?: string) => {
+        thisComponent.notifyAlertClosed(id, dismissKey);
       };
+
+      thisComponent.notifyAlertClosed = (id: string, dismissKey?: string) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.resolveAlert(id, dismissKey);
+          } else {
+            ContainerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
+          }
+        }
+      }
+
+      thisComponent.notifyConfirmationModalClosed = (result) => {
+        // check if thisComponent is in dom
+        if (thisComponent.isConnected) {
+          if (webcomponent) {
+            webcomponentService.notifyConfirmationModalClosed(!!result);
+          } else {
+            ContainerAPI.notifyConfirmationModalClosed(!!result, iframeHandle);
+          }
+        }
+      }
 
       containerService.registerContainer(thisComponent);
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
+
+      thisComponent.updateViewUrl = (viewUrl: string, internal?: object) => {
+        if (viewUrl?.length) {
+          ContainerAPI.updateViewUrl(viewUrl, GenericHelperFunctions.resolveContext(context), internal, iframeHandle);
+        }
+      };
+
       if (webcomponent && webcomponent != 'false') {
-        if(!thisComponent.getNoShadow()){
-          mainComponent.innerHTML=''
-          const shadow = thisComponent.attachShadow({ mode: "open"});
+        if (!thisComponent.getNoShadow()) {
+          mainComponent.innerHTML = '';
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
-        }else{
-          //removing mainComponent
+        } else {
+          // removing mainComponent
           thisComponent.innerHTML = '';
         }
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
@@ -163,11 +200,11 @@
           ctx,
           typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
-      }else{
-        if(!thisComponent.getNoShadow()){
-          //removeing mainComponent
-          thisComponent.innerHTML='';
-          const shadow = thisComponent.attachShadow({ mode: "open"});
+      } else {
+        if (!thisComponent.getNoShadow()) {
+          // removeing mainComponent
+          thisComponent.innerHTML = '';
+          const shadow = thisComponent.attachShadow({ mode: 'open' });
           shadow.append(mainComponent);
         }
       }
@@ -178,7 +215,9 @@
         });
       } else if (webcomponent) {
         (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+          if (
+            !(thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.deferLuigiClientWCInit
+          ) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
@@ -190,6 +229,7 @@
   };
 
   onMount(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const thisComponent: any = mainComponent.parentNode;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
@@ -206,18 +246,18 @@
 <main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}
-    <style>
-      main.lui-isolated,
-      .lui-isolated iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-    
-      main.lui-isolated {
-        line-height: 0;
-      }
-    </style>
+      <style>
+        main.lui-isolated,
+        .lui-isolated iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+
+        main.lui-isolated {
+          line-height: 0;
+        }
+      </style>
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}

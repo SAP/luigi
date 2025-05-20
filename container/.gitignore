@@ -9,7 +9,13 @@
 /test-app/bundle.js
 /test-app/bundle.js.map
 /test-app/compound/luigi-element.js
+/test-app/iframe/luigi-client.js
 /public/**/*.ts
+/public/constants/events.js
 
 /coverage
+/e2e-coverage
+/instrumented
+/.nyc_output
+/coverage-summary/index.html
 .DS_Store
