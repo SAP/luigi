@@ -141,7 +141,7 @@
    */
   const clearTabNav = () => {
     // Check if tabs container header exists
-    if (tabsContainerHeader !== undefined) {
+    if (tabsContainerHeader) {
       // Get all tab elements
       const tabs = [...tabsContainerHeader.children];
 
