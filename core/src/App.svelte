@@ -102,8 +102,9 @@
   let btpToolLayout =
     LuigiConfig.getConfigValue('settings.btpToolLayout') &&
     GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
-  let vegaLayout = LuigiConfig.getConfigValue('settings.sideNav.style') === 'vega'
-    || LuigiConfig.getConfigValue('settings.userSettings.style') === 'vega';
+  let vegaLayout =
+    LuigiConfig.getConfigValue('settings.sideNav.style') === 'vega' ||
+    LuigiConfig.getConfigValue('settings.userSettings.style') === 'vega';
 
   export let isSearchFieldVisible;
   export let inputElem;

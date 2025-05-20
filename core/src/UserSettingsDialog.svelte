@@ -356,21 +356,14 @@
             <div class="fd-bar fd-bar--subheader">
               <div class="fd-bar__left">
                 <div class="fd-bar__element">
-                  <h5
-                    class="fd-title fd-title--h5"
-                    id="dialog-title-2"
-                    aria-label="text"
-                  >
+                  <h5 class="fd-title fd-title--h5" id="dialog-title-2" aria-label="text">
                     {$getTranslation(dialogHeader)}
                   </h5>
                 </div>
               </div>
             </div>
             <div class="fd-settings__list-container">
-              <ul
-                class="fd-list fd-list--byline fd-list--navigation fd-settings__list lui-us-list"
-                role="list"
-              >
+              <ul class="fd-list fd-list--byline fd-list--navigation fd-settings__list lui-us-list" role="list">
                 {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                   {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
                     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -387,21 +380,26 @@
                         {#if userSettingsGroupProperty[1].icon}
                           <div class="fd-list__avatar">
                             {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                              <span class="fd-list__icon fd-list__thumbnail {userSettingsGroupProperty[1].iconClassAttribute || ''}">
-                                <i role="presentation" class="{getSapIconStr(userSettingsGroupProperty[1].icon)}" />
+                              <span
+                                class="fd-list__icon fd-list__thumbnail {userSettingsGroupProperty[1]
+                                  .iconClassAttribute || ''}"
+                              >
+                                <i role="presentation" class={getSapIconStr(userSettingsGroupProperty[1].icon)} />
                               </span>
                             {:else}
                               <span
-                                class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}"
+                                class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute ||
+                                  'fd-image--s fd-list__thumbnail'}"
                                 aria-label={userSettingsGroupProperty[1].altText
                                   ? userSettingsGroupProperty[1].altText
                                   : ''}
-                                style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
+                                style="background-image:url('{userSettingsGroupProperty[1]
+                                  .icon}'); background-size:cover;"
                               />
                               {#if userSettingsGroupProperty[1].initials}
                                 <span
-                                  class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' ||
-                                    'fd-image--s fd-list__thumbnail'}"
+                                  class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute +
+                                    ' lui-profile-initials' || 'fd-image--s fd-list__thumbnail'}"
                                   aria-label={userSettingsGroupProperty[1].altText
                                     ? userSettingsGroupProperty[1].altText
                                     : ''}
@@ -524,20 +522,22 @@
                         {#if userSettingsGroupProperty[1].icon}
                           {#if hasOpenUIicon(userSettingsGroupProperty[1])}
                             <span class="fd-list__thumbnail {userSettingsGroupProperty[1].iconClassAttribute || ''}">
-                              <i role="presentation" class="{getSapIconStr(userSettingsGroupProperty[1].icon)}" />
+                              <i role="presentation" class={getSapIconStr(userSettingsGroupProperty[1].icon)} />
                             </span>
                           {:else}
                             <span
-                              class="{userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}"
+                              class={userSettingsGroupProperty[1].iconClassAttribute ||
+                                'fd-image--s fd-list__thumbnail'}
                               aria-label={userSettingsGroupProperty[1].altText
                                 ? userSettingsGroupProperty[1].altText
                                 : ''}
-                              style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
+                              style="background-image:url('{userSettingsGroupProperty[1]
+                                .icon}'); background-size:cover;"
                             />
                             {#if userSettingsGroupProperty[1].initials}
                               <span
-                                class="{userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' ||
-                                  'fd-image--s fd-list__thumbnail'}"
+                                class={userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' ||
+                                  'fd-image--s fd-list__thumbnail'}
                                 aria-label={userSettingsGroupProperty[1].altText
                                   ? userSettingsGroupProperty[1].altText
                                   : ''}
