@@ -361,7 +361,7 @@
               </div>
             </div>
           </div>
-          <div class="fd-settings__list-container">
+          <div class="fd-settings__list-container lui-fd-side-nav__main-navigation">
             <ul class="fd-list fd-list--byline fd-list--navigation fd-settings__list lui-us-list" role="list">
               {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
@@ -548,11 +548,7 @@
   }
 
   .lui-fd-side-nav__main-navigation {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
     overflow-y: auto;
-    top: var(--dialog-header-height);
     background-color: var(--sapBackgroundColor, #f7f7f7);
     border-right: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
   }
