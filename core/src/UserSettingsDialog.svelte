@@ -380,7 +380,8 @@
                         <div class="fd-list__avatar">
                           {#if hasOpenUIicon(userSettingsGroupProperty[1])}
                             <span
-                              class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute || ''} fd-list__thumbnail"
+                              class="fd-list__icon {userSettingsGroupProperty[1].iconClassAttribute ||
+                                ''} fd-list__thumbnail"
                             >
                               <i role="presentation" class={getSapIconStr(userSettingsGroupProperty[1].icon)} />
                             </span>
