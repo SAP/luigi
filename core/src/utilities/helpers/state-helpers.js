@@ -2,7 +2,7 @@ class StateHelpersClass {
   optimizeScope(scope) {
     let last = '';
     const result = [];
-    [...scope].sort().forEach(s => {
+    [...scope].sort().forEach((s) => {
       if (s && !result.includes(s)) {
         if (!last || s.indexOf(last) !== 0) {
           result.push(s);
@@ -15,9 +15,9 @@ class StateHelpersClass {
 
   expandScope(scope) {
     const result = [];
-    scope.forEach(s => {
+    scope.forEach((s) => {
       let subs = '';
-      s.split('.').forEach(spart => {
+      s.split('.').forEach((spart) => {
         subs = subs + (subs ? '.' : '') + spart;
         result.push(subs);
       });
@@ -28,11 +28,11 @@ class StateHelpersClass {
   doOnStoreChange(store, fn, scope = []) {
     let unSubscribeFn = [];
     unSubscribeFn.push(store.subscribe(fn));
-    this.expandScope(scope).forEach(s => {
+    this.expandScope(scope).forEach((s) => {
       unSubscribeFn.push(store.subscribeToScope(fn, s));
     });
     return () => {
-      unSubscribeFn.forEach(unSub => {
+      unSubscribeFn.forEach((unSub) => {
         unSub();
       });
     };
