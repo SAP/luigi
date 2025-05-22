@@ -26,10 +26,16 @@ class StateHelpersClass {
   }
 
   doOnStoreChange(store, fn, scope = []) {
-    store.subscribe(fn);
+    let unSubscribeFn = [];
+    unSubscribeFn.push(store.subscribe(fn));
     this.expandScope(scope).forEach(s => {
-      store.subscribeToScope(fn, s);
+      unSubscribeFn.push(store.subscribeToScope(fn, s));
     });
+    return () => {
+      unSubscribeFn.forEach(unSub => {
+        unSub();
+      });
+    };
   }
 }
 

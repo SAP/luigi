@@ -11,7 +11,9 @@ const createConfigStore = () => {
   return {
     subscribe: (fn) => {
       //subscribe fn returns unsubscription fn
-      unSubscriptions.push(subscribe(fn));
+      const unSubscription = subscribe(fn);
+      unSubscriptions.push(unSubscription);
+      return unSubscription;       
     },
     update,
     reset,
@@ -22,6 +24,9 @@ const createConfigStore = () => {
         scopeSubscribers[scope] = subscribers;
       }
       subscribers.add(fn);
+      return () => { 
+        subscribers.delete(fn);
+      }
     },
     fire: (scope, data) => {
       let subscribers = scopeSubscribers[scope];
