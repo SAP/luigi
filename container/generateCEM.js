@@ -108,7 +108,8 @@ function parseContainerEvents(fileContent) {
                   return line.trim();
                 })
                 .join(' ')
-                .replace('<br><br>', '')
+                .replace('@returns {void}', '')
+                .replaceAll('<br>', '')
                 .trim();
               if (cleanedComment && cleanedComment.indexOf('@deprecated') > 0) {
                 console.log('IGNORING', name, ': marked as deprecated');

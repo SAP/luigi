@@ -12,7 +12,11 @@ function writeFile(content) {
     throw new Error('Invalid content - cannot write file!');
   }
 
-  const parsedContent = content.replaceAll('Type: unspecified', '');
+  const parsedContent = content
+    .replace(/\s*Type: .*?Payload\s*/g, '\n\n')
+    .replaceAll('Type: unspecified', '')
+    .replaceAll('Type:', 'Payload:')
+    .replaceAll('Returns **void**', '');
 
   fs.writeFile(path.join(__dirname, luigiContainerEventsPath), parsedContent, 'utf8', (error) => {
     if (error) {
