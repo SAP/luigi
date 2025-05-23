@@ -24,7 +24,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const CUSTOM_MESSAGE = 'custom-message';
 
@@ -32,13 +32,11 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const GET_CONTEXT_REQUEST = 'get-context-request';
 
   /**
-   * Event fired when a navigation has been requested by the micro frontend. <br>
+   * Event fired when a navigation has been requested by the micro frontend. <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|NavigationRequestPayload}
    * @type {NavigationRequestPayload}
    * @example
@@ -52,13 +50,13 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const NAVIGATION_REQUEST = 'navigation-request';
 
   /**
    * Event fired when the micro frontend requests to show an alert. <br>
-   * Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). <br>
+   * Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|AlertRequestPayload}
    * @type {AlertRequestPayload}
    * @example
@@ -75,7 +73,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const ALERT_REQUEST = 'show-alert-request';
 
@@ -83,8 +81,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const ALERT_CLOSED = 'close-alert-request';
 
@@ -93,12 +89,12 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const INITIALIZED = 'initialized';
 
   /**
-   * Event fired when the micro frontend requests the addition of search parameters to the URL. <br>
+   * Event fired when the micro frontend requests the addition of search parameters to the URL. <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload}
    * @type {ParamsRequestPayload}
    * @example
@@ -108,12 +104,12 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const ADD_SEARCH_PARAMS_REQUEST = 'add-search-params-request';
 
   /**
-   * Event fired when the micro frontend requests the addition of node parameters to the URL. <br>
+   * Event fired when the micro frontend requests the addition of node parameters to the URL. <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ParamsRequestPayload}
    * @type {ParamsRequestPayload}
    * @example
@@ -123,13 +119,13 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const ADD_NODE_PARAMS_REQUEST = 'add-node-params-request';
 
   /**
    * Event fired when the micro frontend requests to show a confirmation modal. <br>
-   * Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). <br>
+   * Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ConfirmationModalRequestPayload}
    * @type {ConfirmationModalRequestPayload}
    * @example
@@ -141,7 +137,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'show-confirmation-modal-request';
 
@@ -150,7 +146,7 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'show-loading-indicator-request';
 
@@ -159,7 +155,7 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const HIDE_LOADING_INDICATOR_REQUEST = 'hide-loading-indicator-request';
 
@@ -172,7 +168,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SET_CURRENT_LOCALE_REQUEST = 'set-current-locale-request';
 
@@ -186,7 +182,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const LOCAL_STORAGE_SET_REQUEST = 'set-storage-request';
 
@@ -195,7 +191,7 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const RUNTIME_ERROR_HANDLING_REQUEST = 'runtime-error-handling-request';
 
@@ -205,7 +201,7 @@ export namespace Events {
    * @example 'some-anchor'
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
@@ -214,7 +210,7 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SET_THIRD_PARTY_COOKIES_REQUEST = 'set-third-party-cookies-request';
 
@@ -222,13 +218,11 @@ export namespace Events {
    * Event left due to historical reasons - use 'GO_BACK_REQUEST' instead.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
 
   /**
-   * Event fired when the micro frontend requests the current app route. <br>
+   * Event fired when the micro frontend requests the current app route. <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|CurrentRouteRequestPayload}
    * @type {CurrentRouteRequestPayload}
    * @example
@@ -241,7 +235,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
@@ -250,12 +244,12 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
 
   /**
-   * Event fired when the micro frontend requests to update the modal path parameters. <br>
+   * Event fired when the micro frontend requests to update the modal path parameters. <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalPathDataRequestPayload}
    * @type {ModalPathDataRequestPayload}
    * @example
@@ -271,13 +265,13 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
   /**
    * Event fired when the micro frontend requests to update the modal settings. <br>
-   * Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). <br>
+   * Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). <br><br>
    * Payload: {@link https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts|ModalSettingsRequestPayload}
    * @type {ModalSettingsRequestPayload}
    * @example
@@ -287,7 +281,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const UPDATE_MODAL_SETTINGS_REQUEST = 'update-modal-settings-request';
 
@@ -300,7 +294,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'check-path-exists-request';
 
@@ -313,7 +307,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
@@ -326,7 +320,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
 
@@ -334,8 +328,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
@@ -343,8 +335,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
 
@@ -352,8 +342,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
 
@@ -361,8 +349,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
 
@@ -370,8 +356,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
 
@@ -379,8 +363,6 @@ export namespace Events {
    * Event left due to historical reasons - use 'CHECK_PATH_EXISTS_REQUEST' instead.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
@@ -393,7 +375,7 @@ export namespace Events {
    * }
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const GO_BACK_REQUEST = 'go-back-request';
 
@@ -401,8 +383,6 @@ export namespace Events {
    * Event left due to historical reasons - do not use.
    * @deprecated
    * @ignore
-   *
-   * <br><br>
    */
   export const HAS_BACK_REQUEST = 'has-back-request';
 
@@ -411,7 +391,7 @@ export namespace Events {
    * @type {unspecified} (type is not relevant in this case)
    * @returns {void}
    *
-   * <br><br>
+   * <br>
    */
   export const ADD_BACKDROP_REQUEST = 'add-backdrop-request';
 

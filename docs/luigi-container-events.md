@@ -44,11 +44,11 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### NAVIGATION_REQUEST
 
-Event fired when a navigation has been requested by the micro frontend. <br>
+Event fired when a navigation has been requested by the micro frontend. <br><br>
 Payload: [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -64,12 +64,12 @@ Payload: [NavigationRequestPayload](https://github.com/SAP/luigi/blob/main/conta
 }
 ```
 
- <br><br>
+ <br>
 
 ### ALERT_REQUEST
 
 Event fired when the micro frontend requests to show an alert. <br>
-Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). <br>
+Read more about `showAlert` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showalert). <br><br>
 Payload: [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -88,7 +88,7 @@ Payload: [AlertRequestPayload](https://github.com/SAP/luigi/blob/main/container/
 }
 ```
 
- <br><br>
+ <br>
 
 ### INITIALIZED
 
@@ -96,11 +96,11 @@ Event fired when the micro frontend has been initialized.
 
 
 
- <br><br>
+ <br>
 
 ### ADD_SEARCH_PARAMS_REQUEST
 
-Event fired when the micro frontend requests the addition of search parameters to the URL. <br>
+Event fired when the micro frontend requests the addition of search parameters to the URL. <br><br>
 Payload: [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -112,11 +112,11 @@ Payload: [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container
 }
 ```
 
- <br><br>
+ <br>
 
 ### ADD_NODE_PARAMS_REQUEST
 
-Event fired when the micro frontend requests the addition of node parameters to the URL. <br>
+Event fired when the micro frontend requests the addition of node parameters to the URL. <br><br>
 Payload: [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -128,12 +128,12 @@ Payload: [ParamsRequestPayload](https://github.com/SAP/luigi/blob/main/container
 }
 ```
 
- <br><br>
+ <br>
 
 ### SHOW_CONFIRMATION_MODAL_REQUEST
 
 Event fired when the micro frontend requests to show a confirmation modal. <br>
-Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). <br>
+Read more about `showConfirmationModal` params [here](https://docs.luigi-project.io/docs/luigi-core-api?section=showconfirmationmodal). <br><br>
 Payload: [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -147,7 +147,7 @@ Payload: [ConfirmationModalRequestPayload](https://github.com/SAP/luigi/blob/mai
 }
 ```
 
- <br><br>
+ <br>
 
 ### SHOW_LOADING_INDICATOR_REQUEST
 
@@ -155,7 +155,7 @@ Event fired when the micro frontend requests to show a loading indicator.
 
 
 
- <br><br>
+ <br>
 
 ### HIDE_LOADING_INDICATOR_REQUEST
 
@@ -163,7 +163,7 @@ Event fired when the micro frontend requests to hide the loading indicator.
 
 
 
- <br><br>
+ <br>
 
 ### SET_CURRENT_LOCALE_REQUEST
 
@@ -179,7 +179,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### LOCAL_STORAGE_SET_REQUEST
 
@@ -196,7 +196,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### RUNTIME_ERROR_HANDLING_REQUEST
 
@@ -204,7 +204,7 @@ Event fired when the micro frontend requests to handle errors that might happen 
 
 
 
- <br><br>
+ <br>
 
 ### SET_ANCHOR_LINK_REQUEST
 
@@ -218,7 +218,7 @@ Payload: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 'some-anchor'
 ```
 
- <br><br>
+ <br>
 
 ### SET_THIRD_PARTY_COOKIES_REQUEST
 
@@ -226,11 +226,11 @@ Event fired when the micro frontend requests to set third-party cookies.
 
 
 
- <br><br>
+ <br>
 
 ### GET_CURRENT_ROUTE_REQUEST
 
-Event fired when the micro frontend requests the current app route. <br>
+Event fired when the micro frontend requests the current app route. <br><br>
 Payload: [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -245,7 +245,7 @@ Payload: [CurrentRouteRequestPayload](https://github.com/SAP/luigi/blob/main/con
 }
 ```
 
- <br><br>
+ <br>
 
 ### NAVIGATION_COMPLETED_REPORT
 
@@ -253,11 +253,11 @@ Event fired to report that the micro frontend's navigation has completed.
 
 
 
- <br><br>
+ <br>
 
 ### UPDATE_MODAL_PATH_DATA_REQUEST
 
-Event fired when the micro frontend requests to update the modal path parameters. <br>
+Event fired when the micro frontend requests to update the modal path parameters. <br><br>
 Payload: [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -275,12 +275,12 @@ Payload: [ModalPathDataRequestPayload](https://github.com/SAP/luigi/blob/main/co
 }
 ```
 
- <br><br>
+ <br>
 
 ### UPDATE_MODAL_SETTINGS_REQUEST
 
 Event fired when the micro frontend requests to update the modal settings. <br>
-Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). <br>
+Read more about `updateModalSettings` params [here](https://docs.luigi-project.io/docs/luigi-client-api?section=updatemodalsettings). <br><br>
 Payload: [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts)
 
 #### Examples
@@ -292,7 +292,7 @@ Payload: [ModalSettingsRequestPayload](https://github.com/SAP/luigi/blob/main/co
 }
 ```
 
- <br><br>
+ <br>
 
 ### CHECK_PATH_EXISTS_REQUEST
 
@@ -308,7 +308,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### SET_DIRTY_STATUS_REQUEST
 
@@ -324,7 +324,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### SET_VIEW_GROUP_DATA_REQUEST
 
@@ -340,7 +340,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### GO_BACK_REQUEST
 
@@ -356,7 +356,7 @@ Payload: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 }
 ```
 
- <br><br>
+ <br>
 
 ### ADD_BACKDROP_REQUEST
 
@@ -364,7 +364,7 @@ Event fired when the micro frontend requests to display the backdrop.
 
 
 
- <br><br>
+ <br>
 
 ### REMOVE_BACKDROP_REQUEST
 
