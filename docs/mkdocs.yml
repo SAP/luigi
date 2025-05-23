@@ -28,7 +28,7 @@ nav:
     - Advanced configuration options: advanced-options-luigi-client.md
   - Luigi Container: 
     - Luigi Container: luigi-container.md
-    - Luigi Compound Container: luigi-compound -container.md
+    - Luigi Compound Container: luigi-compound-container.md
     - Luigi Container Events: luigi-container-events.md
   - API Reference: 
     - Luigi Core API: luigi-core-api.md
