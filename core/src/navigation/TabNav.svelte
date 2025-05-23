@@ -27,6 +27,7 @@
   let moreButton;
   let moreLink;
   let isBtpToolLayoutActive;
+  let unSubscribeFn;
 
   //TODO refactor
   const __this = {
@@ -188,7 +189,7 @@
       LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') &&
       LuigiConfig.getConfigBooleanValue('settings.experimental.btpToolLayout');
     handleHorizontalNavHeightChange();
-    StateHelpers.doOnStoreChange(store, () => {
+    unSubscribeFn = StateHelpers.doOnStoreChange(store, () => {
       setTabNavData();
     }, ['navigation.viewgroupdata']);
   });
@@ -196,6 +197,7 @@
   onDestroy(() => {
     resetResizeObserver();
     document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
+    unSubscribeFn();
   });
 
   // [svelte-upgrade warning]
