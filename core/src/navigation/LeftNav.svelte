@@ -1097,6 +1097,11 @@
                                   </span>
                                   <span class="fd-navigation-list__text">{getNodeLabel(node)}</span>
                                 </div>
+                                {#if node.externalLink && node.externalLink.url}
+                                <div class="fd-navigation-list__indication-arrow" role="presentation" aria-hidden="true">
+                                    <i class="sap-icon--arrow-right" role="presentation"></i>
+                                </div>
+                                {/if}
                               </a>
                             </li>
                             <!-- <li class="fd-navigation__list-item lui-nav-entry">
