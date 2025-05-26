@@ -25,6 +25,25 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.22.1] (2025-05-23)
+
+#### :bug: Fixed
+* [#4293](https://github.com/SAP/luigi/pull/4293) Fix potential memory leak ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#4291](https://github.com/SAP/luigi/pull/4291) Fix runtime error in tab nav ([@robertIsaac](https://github.com/robertIsaac))
+
+
+
+
+
+
+## [v2.22.0] (2025-05-20)
+
+#### :rocket: Added
+* [#4266](https://github.com/SAP/luigi/pull/4266) Preserve non client viewgroup iframes ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
 ## [v2.21.3] (2025-04-23)
 
 #### :bug: Fixed
@@ -2014,3 +2033,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.21.1]: https://github.com/SAP/luigi/compare/v2.21.0...v2.21.1
 [v2.21.2]: https://github.com/SAP/luigi/compare/v2.21.1...v2.21.2
 [v2.21.3]: https://github.com/SAP/luigi/compare/v2.21.2...v2.21.3
+[v2.22.0]: https://github.com/SAP/luigi/compare/v2.21.3...v2.22.0
+[v2.22.1]: https://github.com/SAP/luigi/compare/v2.22.0...v2.22.1

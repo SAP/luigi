@@ -2270,10 +2270,12 @@
     outline-style: var(--sapContent_FocusStyle);
   }
 
-  .fd-side-nav--condensed .fd-nested-list__button,
-  .fd-side-nav--condensed .fd-nested-list__group-header,
-  .fd-side-nav--condensed .fd-nested-list__title {
-    display: none;
+  .fd-side-nav--condensed .lui-fd-side-nav-wrapper > .fd-nested-list {
+    & > .fd-nested-list__button,
+    & > .fd-nested-list__group-header,
+    & > .fd-nested-list__title {
+      display: none;
+    }
   }
 
   .fd-navigation-list__content {
