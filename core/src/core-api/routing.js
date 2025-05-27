@@ -20,21 +20,18 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
+    const url = new URL(location.href);
 
-    if (location && Object.prototype.hasOwnProperty.call(location, 'href') && typeof location.href === 'string') {
-      let validatedHref = location.href;
-      const url = new URL(validatedHref);
-      if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-        for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-          queryParams[key] = value;
-        }
-      } else {
-        for (const [key, value] of url.searchParams.entries()) {
-          queryParams[key] = value;
-        }
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
+        queryParams[key] = value;
       }
-      return queryParams;
+    } else {
+      for (const [key, value] of url.searchParams.entries()) {
+        queryParams[key] = value;
+      }
     }
+    return queryParams;
   }
 
   /**
@@ -53,6 +50,15 @@ class LuigiRouting {
       console.log('Params argument must be an object');
       return;
     }
+
+    // Prevent prototype pollution by validating keys
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
+        console.warn(`Invalid key detected: ${key}`);
+        return;
+      }
+    }
+
     const url = new URL(location.href);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
@@ -68,6 +74,14 @@ class LuigiRouting {
     if (!GenericHelpers.isObject(params)) {
       console.log('Params argument must be an object');
       return;
+    }
+
+    // Prevent prototype pollution by validating keys
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
+        console.warn(`Invalid key detected: ${key}`);
+        return;
+      }
     }
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
