@@ -20,17 +20,25 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
-    const url = new URL(location.href);
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-        queryParams[key] = value;
+    
+    if (
+      location &&
+      Object.prototype.hasOwnProperty.call(location, 'href') &&
+      typeof location.href === 'string'
+    ) {
+      const url = new URL(location.href);
+      if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+        for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
+          queryParams[key] = value;
+        }
+      } else {
+        for (const [key, value] of url.searchParams.entries()) {
+          queryParams[key] = value;
+        }
       }
-    } else {
-      for (const [key, value] of url.searchParams.entries()) {
-        queryParams[key] = value;
-      }
+      return queryParams;
     }
-    return queryParams;
+    
   }
 
   /**
