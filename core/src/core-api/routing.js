@@ -20,6 +20,14 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
+    // Prevent prototype pollution by validating keys
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
+        console.warn(`Invalid key detected: ${key}`);
+        return;
+      }
+    }
+
     const url = new URL(location.href);
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
