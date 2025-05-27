@@ -41,8 +41,6 @@
     });
     AuthLayerSvc.getUserInfoStore().subscribe((uInfo) => {
       userInfo = uInfo;
-      console.log("userInfo2:");
-      console.log(userInfo);
       dispatch('userInfoUpdated', userInfo);
     });
   });
@@ -238,8 +236,6 @@
                 </a>
               </li>
             {/each}
-
-
             <!-- example from Fiori Website-->
             <li class="fd-menu__item" role="presentation">
               <a
@@ -253,34 +249,25 @@
                 <span class="fd-menu__title">About</span>
               </a>
             </li>
-
-        </ul>
-      </nav>  
-    </div>
-
-    <!-- der body beinhaltet alles bis auf den footer -->
-    </div>
-
-  </div>
-
-
-  <div class="fd-bar fd-bar--footer">
-      <div class="fd-bar__right">
-          <div class="fd-bar__element">
-              <button 
-              aria-label="button"
-              class="fd-button fd-button--transparent"
-              on:click={onLogoutClick}
-              >
-                <i class="sap-icon--log"></i>
-                <span class="fd-button__text"> Sign Out</span>
-              </button>
-          </div>
+          </ul>
+        </nav>  
       </div>
+    </div>
   </div>
-    
-
-
+  <div class="fd-bar fd-bar--footer">
+    <div class="fd-bar__right">
+      <div class="fd-bar__element">
+        <button 
+        aria-label="button"
+        class="fd-button fd-button--transparent"
+        on:click={onLogoutClick}
+        >
+          <i class="sap-icon--log"></i>
+          <span class="fd-button__text"> Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </div>
 {/if}
 
 <style lang="scss">

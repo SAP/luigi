@@ -644,7 +644,6 @@
                 />
               </div>
             </div>
-
           {:else if profileTypeSettings === 'Vega'}
             <div class="fd-user-menu">
               <div class="fd-popover">
