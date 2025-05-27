@@ -20,12 +20,8 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
-    
-    if (
-      location &&
-      Object.prototype.hasOwnProperty.call(location, 'href') &&
-      typeof location.href === 'string'
-    ) {
+
+    if (location && Object.prototype.hasOwnProperty.call(location, 'href') && typeof location.href === 'string') {
       const url = new URL(location.href);
       if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
         for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
@@ -38,7 +34,6 @@ class LuigiRouting {
       }
       return queryParams;
     }
-    
   }
 
   /**
