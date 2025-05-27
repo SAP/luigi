@@ -22,7 +22,8 @@ class LuigiRouting {
     const queryParams = {};
 
     if (location && Object.prototype.hasOwnProperty.call(location, 'href') && typeof location.href === 'string') {
-      const url = new URL(location.href);
+      let validatedHref = location.href;
+      const url = new URL(validatedHref);
       if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
         for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
           queryParams[key] = value;
