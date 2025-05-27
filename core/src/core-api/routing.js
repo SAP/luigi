@@ -49,7 +49,7 @@ class LuigiRouting {
       console.log('Params argument must be an object');
       return;
     }
-    const url = new URL(location);
+    const url = new URL(location.href);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
     } else {
@@ -67,7 +67,7 @@ class LuigiRouting {
     }
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
-    const url = new URL(location);
+    const url = new URL(location.href);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
     } else {
@@ -98,7 +98,7 @@ class LuigiRouting {
   }
 
   getAnchor() {
-    const { hash } = new URL(location);
+    const { hash } = new URL(location.href);
     const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
 
     return useHashRouting && hash.split('#').length === 2 ? '' : hash.split('#').pop();
@@ -106,7 +106,7 @@ class LuigiRouting {
 
   setAnchor(value) {
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      const { hash } = new URL(location);
+      const { hash } = new URL(location.href);
       const hashArray = hash.split('#');
       const hasExistingHash = hashArray.length > 2;
       const newHashArray = hasExistingHash ? hashArray.slice(0, -1) : hashArray;
