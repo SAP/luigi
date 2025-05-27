@@ -171,12 +171,8 @@
 </script>
 
 {#if !isHidden}
-
-  <!-- wenn ich diese classe hinzufüge wird der Vega style angenommen!-->
   <div class="fd-popover__wrapper fd-user-menu__popover-wrapper">
-    
     <div class="fd-user-menu__body">
-
       <div class="fd-user-menu__header">
         <span
           class="fd-avatar fd-avatar--lg fd-avatar--circle fd-avatar--thumbnail"
@@ -186,82 +182,81 @@
         </span>
         <div class="fd-user-menu__header-container">
           {#if showUserInfo}
-            <div class="fd-user-menu__user-name">
+            <div class="fd-user-menu__user-name" data-testid="luigi-topnav-profile-username">
                 {userInfo.name}
             </div>
             <div class="fd-user-menu__subline">
               {userInfo.email}
             </div>
-            <div class="fd-user-menu__subline">
+            <div class="fd-user-menu__subline" data-testid="luigi-topnav-profile-description">
               {userInfo.description}
             </div>
                 {/if}
           </div>
       </div>
       <div class="fd-user-menu__content-container">
-          <nav class="fd-menu fd-menu--icons fd-user-menu__menu">
-              <ul class="fd-menu__list fd-user-menu__menu-list" role="menu">
-                  <li class="fd-menu__item"
-                  role="presentation"
-                  on:click|preventDefault={onUserSettingsClick}
-                  on:keyup={(event) => handleKeyUp(event)}
-                  data-testid={getTestId(profileNav.settings)}
-                  >
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    <a class="fd-menu__link" role="menuitem">
-                        <span class="fd-menu__addon-before">
-                          <!-- <i class="sap-icon--action-settings" role="presentation"></i> -->
-                          {#if profileNav.settings.icon}
-                            {#if hasOpenUIicon(profileNav.settings)}
-                              <i class="fd-top-nav__icon {getSapIconStr(profileNav.settings.icon)}" />
-                            {:else}
-                              <img
-                                class="fd-top-nav__icon nav-icon"
-                                src={profileNav.settings.icon}
-                                alt={profileNav.settings.altText ? profileNav.settings.altText : ''}
-                              />
-                            {/if}
-                          {/if}
-                        </span>
-                        <span class="fd-menu__title">Settings</span>
-                    </a>
-                  </li>
+        <nav class="fd-menu fd-menu--icons fd-user-menu__menu">
+          <ul class="fd-menu__list fd-user-menu__menu-list" role="menu">
+            <li class="fd-menu__item"
+            role="presentation"
+            on:click|preventDefault={onUserSettingsClick}
+            on:keyup={(event) => handleKeyUp(event)}
+            data-testid={getTestId(profileNav.settings)}
+            >
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a class="fd-menu__link" role="menuitem" data-testid="settings-link">
+                  <span class="fd-menu__addon-before">
+                    <!-- <i class="sap-icon--action-settings" role="presentation"></i> -->
+                    {#if profileNav.settings.icon}
+                      {#if hasOpenUIicon(profileNav.settings)}
+                        <i class="fd-top-nav__icon {getSapIconStr(profileNav.settings.icon)}" />
+                      {:else}
+                        <img
+                          class="fd-top-nav__icon nav-icon"
+                          src={profileNav.settings.icon}
+                          alt={profileNav.settings.altText ? profileNav.settings.altText : ''}
+                        />
+                      {/if}
+                    {/if}
+                  </span>
+                  <span class="fd-menu__title">Settings</span>
+              </a>
+            </li>
+            {#each profileNav.items as profileItem}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+              <li class="fd-menu__item" on:click={() => onActionClick(profileItem)} data-testid={getTestId(profileItem)}>
+                <a
+                  class="fd-menu__link"
+                  data-testid="luigi-topnav-profile-item"
+                  href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
+                  on:click={(event) => {
+                    NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                  }}
+                >
+                  <span class="fd-menu__title">{$getTranslation(profileItem.label)}</span>
+                </a>
+              </li>
+            {/each}
 
-                  {#each profileNav.items as profileItem}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                    <li class="fd-menu__item" on:click={() => onActionClick(profileItem)} data-testid={getTestId(profileItem)}>
-                      <a
-                        class="fd-menu__link"
-                        data-testid="luigi-topnav-profile-item"
-                        href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
-                        on:click={(event) => {
-                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
-                        }}
-                      >
-                        <span class="fd-menu__title">{$getTranslation(profileItem.label)}</span>
-                      </a>
-                    </li>
-                  {/each}
 
+            <!-- example from Fiori Website-->
+            <li class="fd-menu__item" role="presentation">
+              <a
+              class="fd-menu__link"
+              href="https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-user-menu--docs"
+              role="menuitem"
+              >
+                <span class="fd-menu__addon-before">
+                    <i class="sap-icon--message-information" role="presentation"></i>
+                </span>
+                <span class="fd-menu__title">About</span>
+              </a>
+            </li>
 
-                  <!-- example from Fiori Website-->
-                  <li class="fd-menu__item" role="presentation">
-                    <a
-                    class="fd-menu__link"
-                    href="https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-user-menu--docs"
-                    role="menuitem"
-                    >
-                      <span class="fd-menu__addon-before">
-                          <i class="sap-icon--message-information" role="presentation"></i>
-                      </span>
-                      <span class="fd-menu__title">About</span>
-                    </a>
-                  </li>
-
-              </ul>
-          </nav>  
-      </div>
+        </ul>
+      </nav>  
+    </div>
 
     <!-- der body beinhaltet alles bis auf den footer -->
     </div>
