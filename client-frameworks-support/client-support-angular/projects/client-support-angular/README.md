@@ -12,13 +12,20 @@ If you want to know more about Luigi, please have a look at the [Luigi homepage]
 npm install @luigi-project/client-support-angular -s
 ```
 
-2. Once the library is imported and saved in your Angular project, you need to import the module `LuigiAngularSupportModule`:
+2. Once the library is imported and saved in your Angular project, provide the module `LuigiAngularSupportModule` in your app configuration:
+
+```javascript
+providers: [
+  importProvidersFrom(LuigiAngularSupportModule)
+]
+```
+
+> **NOTE:** For legacy Angular apps where **bootstrapModule** function is still in use, you need to import the module `LuigiAngularSupportModule` in your root NgModule:
 
 ```javascript
 imports: [
-  ........
-  ,LuigiAngularSupportModule
-],
+  LuigiAngularSupportModule
+]
 ```
 
 ## Features
