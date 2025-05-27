@@ -10,6 +10,19 @@ class LuigiRouting {
    */
   constructor() {}
 
+  isSafeLocationObject(loc) {
+    if (typeof loc !== 'object' || loc === null) return false;
+
+    for (const key in loc) {
+      if (!Object.prototype.hasOwnProperty.call(loc, key) || ['__proto__', 'constructor', 'prototype'].includes(key)) {
+        console.warn(`Unsafe key detected in location: ${key}`);
+        return false;
+      }
+    }
+
+    return typeof loc.href === 'string';
+  }
+
   /**
    * Get search parameter from URL as an object.
    * @memberof Routing
@@ -21,25 +34,22 @@ class LuigiRouting {
   getSearchParams() {
     const queryParams = {};
     // Prevent prototype pollution by validating keys
-    for (const key in params) {
-      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
-        console.warn(`Invalid key detected: ${key}`);
-        return;
-      }
-    }
+    if (isSafeLocationObject(location)) {
+      const url = new URL(location.href);
 
-    const url = new URL(location.href);
-
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-        queryParams[key] = value;
+      if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+        for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
+          queryParams[key] = value;
+        }
+      } else {
+        for (const [key, value] of url.searchParams.entries()) {
+          queryParams[key] = value;
+        }
       }
+      return queryParams;
     } else {
-      for (const [key, value] of url.searchParams.entries()) {
-        queryParams[key] = value;
-      }
+      return {};
     }
-    return queryParams;
   }
 
   /**
@@ -57,14 +67,6 @@ class LuigiRouting {
     if (!GenericHelpers.isObject(params)) {
       console.log('Params argument must be an object');
       return;
-    }
-
-    // Prevent prototype pollution by validating keys
-    for (const key in params) {
-      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
-        console.warn(`Invalid key detected: ${key}`);
-        return;
-      }
     }
 
     const url = new URL(location.href);
