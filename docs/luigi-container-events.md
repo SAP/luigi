@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Luigi Container Events",
+    "label": "Events",
     "category": {
       "label": "Luigi Container",
       "collapsible": true
