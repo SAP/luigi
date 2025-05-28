@@ -8,7 +8,7 @@
     },
     "metaData": {
       "categoryPosition": 6,
-      "position": 2
+      "position": 1
     }
   }
 }
@@ -17,6 +17,7 @@ meta -->
 # Luigi Compound Container
 
 ## Overview
+
 The Luigi Compound Container works similarly to Luigi's compound web components [feature](web-component.md#compound-web-components) and allows you to insert multiple micro frontends on the same page.
 
 ## Installation
