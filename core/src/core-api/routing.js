@@ -10,21 +10,6 @@ class LuigiRouting {
    */
   constructor() {}
 
-  DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype'];
-
-  merge(target, source) {
-    for (let key in source) {
-      if (DANGEROUS_KEYS.includes(key)) {
-        continue;
-      }
-      if (key in source && key in target && typeof target[key] === 'object' && typeof source[key] === 'object') {
-        merge(target[key], source[key]);
-      } else {
-        target[key] = source[key];
-      }
-    }
-  }
-
   /**
    * Get search parameter from URL as an object.
    * @memberof Routing
@@ -35,7 +20,7 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
-    const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype'];
+    const BLACKLIST = ['__proto__', 'constructor', 'prototype'];
 
     const url = new URL(location.href);
     let entries;
@@ -48,8 +33,8 @@ class LuigiRouting {
     }
 
     for (const [key, value] of entries) {
-      if (DANGEROUS_KEYS.includes(key)) {
-        console.warn(`Blocked potentially dangerous query param: ${key}`);
+      if (BLACKLIST.includes(key)) {
+        console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
       queryParams[key] = value;
