@@ -77,14 +77,6 @@ class LuigiRouting {
       return;
     }
 
-    // Prevent prototype pollution by validating keys
-    for (const key in params) {
-      if (Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
-        console.warn(`Invalid key detected: ${key}`);
-        return;
-      }
-    }
-
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
     const url = new URL(location.href);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
@@ -117,7 +109,7 @@ class LuigiRouting {
   }
 
   getAnchor() {
-    const { hash } = new URL(location.href);
+    const { hash } = new URL(location);
     const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
 
     return useHashRouting && hash.split('#').length === 2 ? '' : hash.split('#').pop();
@@ -125,7 +117,7 @@ class LuigiRouting {
 
   setAnchor(value) {
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      const { hash } = new URL(location.href);
+      const { hash } = new URL(location);
       const hashArray = hash.split('#');
       const hasExistingHash = hashArray.length > 2;
       const newHashArray = hasExistingHash ? hashArray.slice(0, -1) : hashArray;
