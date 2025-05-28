@@ -10,17 +10,19 @@ class LuigiRouting {
    */
   constructor() {}
 
-  isSafeLocationObject(loc) {
-    if (typeof loc !== 'object' || loc === null) return false;
+  DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype'];
 
-    for (const key in loc) {
-      if (!Object.prototype.hasOwnProperty.call(loc, key) || ['__proto__', 'constructor', 'prototype'].includes(key)) {
-        console.warn(`Unsafe key detected in location: ${key}`);
-        return false;
+  merge(target, source) {
+    for (let key in source) {
+      if (DANGEROUS_KEYS.includes(key)) {
+        continue;
+      }
+      if (key in source && key in target && typeof target[key] === 'object' && typeof source[key] === 'object') {
+        merge(target[key], source[key]);
+      } else {
+        target[key] = source[key];
       }
     }
-
-    return typeof loc.href === 'string';
   }
 
   /**
@@ -33,23 +35,27 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
-    // Prevent prototype pollution by validating keys
-    if (isSafeLocationObject(location)) {
-      const url = new URL(location.href);
+    const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype'];
 
-      if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-        for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-          queryParams[key] = value;
-        }
-      } else {
-        for (const [key, value] of url.searchParams.entries()) {
-          queryParams[key] = value;
-        }
-      }
-      return queryParams;
+    const url = new URL(location.href);
+    let entries;
+
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      const hashQuery = url.hash.split('?')[1];
+      entries = hashQuery ? new URLSearchParams(hashQuery).entries() : [];
     } else {
-      return {};
+      entries = url.searchParams.entries();
     }
+
+    for (const [key, value] of entries) {
+      if (DANGEROUS_KEYS.includes(key)) {
+        console.warn(`Blocked potentially dangerous query param: ${key}`);
+        continue;
+      }
+      queryParams[key] = value;
+    }
+
+    return queryParams;
   }
 
   /**
