@@ -39,7 +39,6 @@ class LuigiRouting {
       }
       queryParams[key] = value;
     }
-
     return queryParams;
   }
 
@@ -59,7 +58,6 @@ class LuigiRouting {
       console.log('Params argument must be an object');
       return;
     }
-
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
