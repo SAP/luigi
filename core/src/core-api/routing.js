@@ -20,7 +20,7 @@ class LuigiRouting {
    */
   getSearchParams() {
     const queryParams = {};
-    const DENYLIST = /(__proto__|constructor|prototype)/;
+    const DENYLIST = ['__proto__', 'constructor', 'prototype'];
 
     const url = new URL(location.href);
     let entries;
@@ -33,7 +33,7 @@ class LuigiRouting {
     }
 
     for (const [key, value] of entries) {
-      if (DENYLIST.test(key)) {
+      if (DENYLIST.some((denied) => key.includes(denied))) {
         console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
