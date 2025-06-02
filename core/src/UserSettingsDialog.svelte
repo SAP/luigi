@@ -597,6 +597,12 @@
     border-bottom: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
   }
 
+  #app:not(.vega) .fd-settings .fd-settings__header {
+    --fdBar_Padding_Bottom: .25rem;
+    --fdSettings_Header_Margin_Top: .5px;
+    --fdBar_Height: 3rem;
+  }
+
   /*customization of FD Styles to align with Fiori 3*/
   #app:not(.vega) h5.fd-title {
     font-size: var(--sapFontHeader3Size, 20px);
