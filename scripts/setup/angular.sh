@@ -20,7 +20,7 @@ sed 's/"scripts": {/"scripts": {\
 mkdir public/assets
 
 # the following steps can be copy and pasted to the terminal at once
-mv src/index.html src/angular.html
+cp src/index.html src/angular.html
 
 # download assets
 curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > public/index.html
