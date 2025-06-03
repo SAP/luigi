@@ -19,7 +19,7 @@ class LuigiRouting {
    * Luigi.routing().getSearchParams();
    */
   getSearchParams() {
-    const queryParams = Object.create(null);
+    const queryParams = {__proto__:null};
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
