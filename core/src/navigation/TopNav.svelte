@@ -644,7 +644,7 @@
                 />
               </div>
             </div>
-          {:else if profileTypeSettings === 'Vega'}
+          {:else if profileTypeSettings === 'Vega' && GenericHelpers.requestExperimentalFeature('profileMenuVega', true)}
             <div class="fd-user-menu">
               <div class="fd-popover">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
