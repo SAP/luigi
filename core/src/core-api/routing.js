@@ -19,16 +19,26 @@ class LuigiRouting {
    * Luigi.routing().getSearchParams();
    */
   getSearchParams() {
-    const queryParams = Object.create(null); // Recommended approach according to OWASP guidelines
-    const url = new URL(location);
+    const queryParams = {};
+    const DENYLIST = ['__proto__', 'constructor', 'prototype'];
+
+    const url = new URL(location.href);
+    let entries;
+
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-        queryParams[key] = value;
-      }
+      const hashQuery = url.hash.split('?')[1];
+      entries = hashQuery ? new URLSearchParams(hashQuery).entries() : [];
     } else {
-      for (const [key, value] of url.searchParams.entries()) {
-        queryParams[key] = value;
+      entries = url.searchParams.entries();
+    }
+
+    for (const [key, value] of entries) {
+      if (DENYLIST.some((denied) => key === denied)) {
+        console.warn(`Blocked because of potentially dangerous query param: ${key}`);
+        continue;
       }
+      if (key.includes('constructor[')) continue;
+      queryParams[key] = value;
     }
     return queryParams;
   }
