@@ -37,7 +37,6 @@ class LuigiRouting {
         console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
-      if (key.startsWith('constructor') && key.includes('constructor[')) continue;
       queryParams[key] = value;
     }
     return queryParams;

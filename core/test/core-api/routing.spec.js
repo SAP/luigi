@@ -120,7 +120,7 @@ describe('Luigi routing', function () {
     });
     it('get searchparams avoiding prototype pollution', () => {
       locationSpy.mockImplementation(() => {
-        return new URL('http://some.url.de/#/?test=tets&luigi=rocks&constructor[prototype][logInjected]=true');
+        return new URL('http://some.url.de/#/?test=tets&luigi=rocks&__proto__=polluted');
       });
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
