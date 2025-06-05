@@ -1,0 +1,10 @@
+Lots of links were broken already:
+
+z.B.
+github.com/SAP/luigi/blob/main/container/typings/constants/event-payloads.ts%7CModalPathDataRequestPayload
+
+container/public/dist/custom-elements.json
+
+container/src/constants/communication.ts
+
+container/typings/constants
