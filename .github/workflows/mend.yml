@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'main'
+      - '4300-nodejs-pipeline-update'
 
 name: Whitesource Scan
 
