@@ -47,11 +47,14 @@
     <button id="luigi-client-init-button" style="margin: 25px 0 10px">
       this.LuigiClient.luigiClientInit();
     </button>
-    <div style="border: solid 1px red; height: 100px">
+    <div style="border: solid 1px red; height: 150px">
       <luigi-compound-container
         id="luigi-client-init-test"
         webcomponent="true"
         context='{"content":" -- luigi-client-init-test --"}'
+        anchor="testAnchorCompound"
+        user-settings='{"language":"it", "date":""}'
+        theme="sap_fiori_3"
         defer-init="false"
       ></luigi-compound-container>
     </div>
@@ -79,6 +82,9 @@
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (e) => {
         console.debug('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        if (event.detail.id !== 'timer') {
+          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
+        }
       });
 
       compoundContainer.compoundConfig = {
@@ -119,7 +125,7 @@
                 name: 'sendInput',
                 action: 'update',
                 dataConverter: (data) => {
-                  console.log(
+                  console.info(
                     'dataConverter(): Received Custom Message from "input1" MF ' + data,
                   );
                   return 'new text: ' + data;
@@ -167,6 +173,52 @@
         ],
       };
 
+      var alertSettings = {};
+
+      const showAnAlert = (alertSettings, luigiContainer) => {
+        var popup = document.createElement('div');
+        var text = document.createTextNode(alertSettings.settings.text);
+        popup.appendChild(text);
+
+        var dismissButton = document.createElement('BUTTON');
+        dismissButton.setAttribute('id', 'dismissAlert');
+        var buttonText = document.createTextNode('Dismiss Alert');
+        dismissButton.addEventListener('click', () => {
+          console.log(
+            'Dismiss clicked core side. Sending close message to mf of id =',
+            alertSettings.settings.id,
+          );
+          luigiContainer.notifyAlertClosed(
+            alertSettings.settings.id,
+            'neverShowItAgain from wc',
+          );
+          popup.style.display = 'none';
+        });
+        dismissButton.appendChild(buttonText);
+        const closeButton = document.createElement('button');
+        if (alertSettings.settings.notifyAlertClosed) {
+          closeButton.innerHTML = 'Close Alert using notifyAlertClosed';
+        } else {
+          closeButton.innerHTML = 'Close Alert';
+        }
+        closeButton.setAttribute('id', 'closeAlert');
+        closeButton.addEventListener('click', () => {
+          if (alertSettings.settings.notifyAlertClosed) {
+            luigiContainer.notifyAlertClosed(alertSettings.settings.id);
+          } else {
+            luigiContainer.notifyAlertClosed(alertSettings.settings.id);
+          }
+          popup.style.display = 'none';
+        });
+        popup.appendChild(dismissButton);
+        popup.appendChild(closeButton);
+
+        popup.style.visibility = 'visible';
+        popup.id = 'pop';
+        document.getElementsByTagName('body')[0].appendChild(popup);
+        return dismissButton;
+      };
+
       compoundContainer.init();
       compoundContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, (event) => {
         console.log(event.detail);
@@ -182,29 +234,22 @@
           alert('UPDATE_TOP_NAVIGATION_REQUEST event received');
         },
       );
-      compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
-        console.log(event.detail);
-        alert(event.detail.text);
-      });
+      compoundContainer.addEventListener(
+        MFEventID.UPDATE_MODAL_PATH_DATA_REQUEST,
+        (event) => {
+          alert(
+            `LuigiClient.linkManager().updateModalPathInternalNavigation("${event.detail.link}")`,
+          );
+        },
+      );
       compoundContainer.addEventListener(
         MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
         (event) => {
           const data = event.detail;
-          console.log(data);
           const val = confirm(data.body);
-          // send back to mf alert.answer with data
-          window.postMessage('alert.answer', data);
-          if (event.callback) {
-            event.callback(val);
-          }
+          compoundContainer.notifyConfirmationModalClosed(val);
         },
       );
-      compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, (event) => {
-        if (event.detail.id !== 'timer') {
-          alert(MFEventID.CUSTOM_MESSAGE + ': ' + event.detail.id);
-        }
-      });
-
       compoundContainer.addEventListener(
         MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
         (event) => {
@@ -218,6 +263,19 @@
       compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, (event) => {
         console.log('anchor', event.detail);
       });
+      compoundContainer.addEventListener(MFEventID.SET_DIRTY_STATUS_REQUEST, (event) => {
+        console.log('dirty', event.detail);
+        alert('LuigiClient.uxManager().setDirtyStatus()=' + event.detail.dirty);
+      });
+      compoundContainer.addEventListener(
+        MFEventID.SET_CURRENT_LOCALE_REQUEST,
+        (event) => {
+          console.log('locale', event.detail);
+          alert(
+            'LuigiClient.uxManager().setCurrentLocale()=' + event.detail.currentLocale,
+          );
+        },
+      );
       compoundContainer.addEventListener(
         MFEventID.OPEN_USER_SETTINGS_REQUEST,
         (event) => {
@@ -254,6 +312,18 @@
           alert('LuigiClient.uxManager().hideAppLoadingIndicator()');
         },
       );
+
+      compoundContainer.addEventListener(MFEventID.ALERT_REQUEST, (event) => {
+        console.log('event', event.detail);
+        alert(event.detail.text);
+        const settings = event.detail;
+        alertSettings.settings = settings;
+        showAnAlert(alertSettings, compoundContainer);
+      });
+
+      compoundContainer.addEventListener(MFEventID.ADD_SEARCH_PARAMS_REQUEST, (event) => {
+        if (event) console.log(event.detail);
+      });
 
       // linkManager listeners:
       // path exists
@@ -314,6 +384,10 @@
         children: [
           {
             viewUrl: './compound/luigi-client-init-wc/luigi-client-init-wc.js',
+            layoutConfig: {
+              row: '1',
+              column: '1 / -1',
+            },
           },
         ],
       };

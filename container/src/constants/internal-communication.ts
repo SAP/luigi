@@ -45,6 +45,10 @@ export namespace LuigiInternalMessageID {
    */
   export const SHOW_CONFIRMATION_MODAL_REQUEST = 'luigi.ux.confirmationModal.show';
   /**
+   * A message sent to the microfrontend to notify closing of a particular confirmation modal
+   */
+  export const CONFIRMATION_MODAL_CLOSED = 'luigi.ux.confirmationModal.hide';
+  /**
    * A message emmitted from the Microfrontend when a request to show loading indicator is sent
    */
   export const SHOW_LOADING_INDICATOR_REQUEST = 'luigi.show-loading-indicator';
@@ -89,6 +93,11 @@ export namespace LuigiInternalMessageID {
   export const GET_CURRENT_ROUTE_REQUEST = 'luigi.navigation.currentRoute';
 
   /**
+   * A message sent to the microfrontend from parent with the current app route
+   */
+  export const SEND_CURRENT_ROUTE_ANSWER = 'luigi.navigation.currentRoute.answer';
+
+  /**
    * A message sent to the Microfrontend with the payload being the context being sent
    */
   export const SEND_CONTEXT_OBJECT = 'luigi.navigate';
@@ -104,9 +113,19 @@ export namespace LuigiInternalMessageID {
   export const UPDATE_MODAL_PATH_DATA_REQUEST = 'luigi.navigation.updateModalDataPath';
 
   /**
+   * A message emmitted from the Microfrontend when a request to update the modal settings is sent
+   */
+  export const UPDATE_MODAL_SETTINGS = 'luigi.navigation.updateModalSettings';
+
+  /**
    * A message emmitted from the Microfrontend when a request to check on the validity of a path is sent
    */
   export const CHECK_PATH_EXISTS_REQUEST = 'luigi.navigation.pathExists';
+
+  /**
+   * A message sent to the microfrontend from parent with the result of checking validity of a path
+   */
+  export const SEND_PATH_EXISTS_ANSWER = 'luigi.navigation.pathExists.answer';
 
   /**
    * A message emmitted from the Microfrontend when a request to set the 'dirty status' (ex: avoid closing if usaved changes) is sent
@@ -117,4 +136,19 @@ export namespace LuigiInternalMessageID {
    * A message emmitted from the Microfrontend when a request to set the 'token auth' is sent
    */
   export const AUTH_SET_TOKEN = 'luigi.auth.tokenIssued';
+
+  /**
+   * A message emmitted from the Microfrontend when a request to set backdrop is sent
+   */
+  export const ADD_BACKDROP_REQUEST = 'luigi.add-backdrop';
+
+  /**
+   * A message emmitted from the Microfrontend when a request to remove backdrop is sent
+   */
+  export const REMOVE_BACKDROP_REQUEST = 'luigi.remove-backdrop';
+
+  /**
+   * A message emmitted from the Microfrontend when a request to set the viewgroup data is sent
+   */
+  export const SET_VIEW_GROUP_DATA_REQUEST = 'luigi.setVGData';
 }

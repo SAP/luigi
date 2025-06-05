@@ -161,12 +161,20 @@
   let btpNavTopCnt;
   let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
   let navHeaderContainer;
+  let updateTimeout;
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
   };
 
   const setLeftNavData = async () => {
+    if (window.Luigi.__btpNavTopCntRszObs) {
+      window.Luigi.__btpNavTopCntRszObs.disconnect();
+      delete window.Luigi.__btpNavTopCntRszObs;
+    }
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
     const componentData = __this.get();
     const leftNavData = await Navigation.getLeftNavData({ ...componentData }, componentData);
     if (!leftNavData) {
@@ -224,18 +232,20 @@
   };
 
   const calculateNavEntries = () => {
-    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
-    const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
-    const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
+    if (btpNavTopCnt) {
+      const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+      const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
+      const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
 
-    if (spacer.clientHeight === 0 && entries.length > 1) {
-      btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
-      for (let i = entries.length - 1; i > 0; i--) {
-        lastNode = entries[i - 1];
-        entries[i].navGroupId = entries[i].parentNode.getAttribute('navGroupId');
-        moreUL.insertBefore(entries[i], moreUL.firstChild);
-        if (spacer.clientHeight > 0) {
-          break;
+      if (spacer.clientHeight === 0 && entries.length > 1) {
+        btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
+        for (let i = entries.length - 1; i > 0; i--) {
+          lastNode = entries[i - 1];
+          entries[i].navGroupId = entries[i].parentNode.getAttribute('navGroupId');
+          moreUL.insertBefore(entries[i], moreUL.firstChild);
+          if (spacer.clientHeight > 0) {
+            break;
+          }
         }
       }
     }
@@ -253,13 +263,12 @@
         navHeaderContainer.innerHTML = '';
       }
 
-      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler);
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler, { ...navHeader, context: pathData._context });
     }
   };
 
   afterUpdate(() => {
     if (!window.Luigi.__btpNavTopCntRszObs) {
-      let updateTimeout;
       window.Luigi.__btpNavTopCntRszObs = new ResizeObserver((entries, observer) => {
         if (updateTimeout) {
           clearTimeout(updateTimeout);
@@ -338,7 +347,17 @@
           potentialSuperCat.entries.push(entry);
         }
       });
-      return converted;
+      return converted.filter((group) => {
+        if (group.entries && group.entries.length > 0) {
+          for (let index = 0; index < group.entries.length; index++) {
+            const [key, nodes] = group.entries[index];
+            if (nodes.filter((node) => !node.hideFromNav && node.label).length > 0) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
     } else {
       return entries;
     }
@@ -596,10 +615,11 @@
 />
 {#if btpToolLayout}
   <div
-    class="fd-navigation fd-navigation--vertical {hideNavComponent ? 'hideNavComponent' : ''} {footerText ||
-    semiCollapsibleButton
-      ? 'hasFooter'
-      : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}
+    class="fd-navigation fd-navigation--vertical {sideNavCompactMode ? 'is-compact' : ''} {hideNavComponent
+      ? 'hideNavComponent'
+      : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton
+      ? 'hasOnlyFooterText'
+      : ''}
         {isSemiCollapsed ? 'fd-navigation--snapped' : ''}"
     role="navigation"
     style="width: var(--luigi__left-sidenav--width); height: 100%;"
@@ -672,6 +692,9 @@
                               on:keyup={!addNavHrefForAnchor ? (event) => handleEnterPressed(event, node) : undefined}
                               role={!addNavHrefForAnchor ? 'button' : undefined}
                               data-testid={NavigationHelpers.getTestId(node)}
+                              on:mouseup={(event) => {
+                                isSemiCollapsed && event.target.blur();
+                              }}
                             >
                               {#if node.icon}
                                 {#if isOpenUIiconName(node.icon)}
@@ -1005,6 +1028,7 @@
         {/if}
       </div>
     {/if}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <nav
       class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
       on:keyup={handleKey}
@@ -1075,6 +1099,7 @@
                   <!-- Collapsible nodes -->
                   {#if nodes.metaInfo.collapsible}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
                     <li
                       class="fd-nested-list__item lui-collapsible-item"
                       class:lui-item-expanded={isExpanded(nodes, expandedCategories)}
@@ -1082,6 +1107,7 @@
                       data-testid={getTestIdForCat(nodes.metaInfo, key)}
                     >
                       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                      <!-- svelte-ignore a11y-no-static-element-interactions -->
                       <div
                         class="fd-nested-list__content has-child"
                         on:keypress={(event) => handleExpandCollapseCategories(event, nodes)}
@@ -1337,6 +1363,7 @@
                 </button>
               {:else}
                 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <i
                   class="lui-side-nav__footer--icon {isSemiCollapsed
                     ? 'sap-icon--open-command-field'
@@ -1457,6 +1484,10 @@
     .fd-side-nav {
       height: 100%;
       width: var(--luigi__left-sidenav--width);
+      //workaround fd v39
+      border-right: var(--sapList_BorderWidth) solid;
+      border-right-color: var(--sapGroup_ContentBorderColor);
+      //workaround end
       &.fd-side-nav--condensed {
         width: $leftNavWidthCollapsed;
       }
@@ -1802,5 +1833,13 @@
     outline-width: var(--sapContent_FocusWidth);
     outline-color: var(--sapContent_FocusColor);
     outline-style: var(--sapContent_FocusStyle);
+  }
+
+  .fd-side-nav--condensed .lui-fd-side-nav-wrapper > .fd-nested-list {
+    & > .fd-nested-list__button,
+    & > .fd-nested-list__group-header,
+    & > .fd-nested-list__title {
+      display: none;
+    }
   }
 </style>

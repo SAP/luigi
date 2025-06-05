@@ -34,7 +34,7 @@ describe('Iframe Container Test', () => {
       });
   });
 
-  it('showAlert', () => {
+  it('updateModalPathInternalNavigation', () => {
     cy.on('window:alert', stub);
 
     cy.get(containerSelector)
@@ -43,11 +43,82 @@ describe('Iframe Container Test', () => {
       .then((iframe) => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
-          .contains('test showAlert')
+          .contains('test update modal path internal navigation')
+          .click()
+          .then(() => {
+            expect(stub.getCall(1)).to.be.calledWith(
+              'LuigiClient.linkManager().updateModalPathInternalNavigation("/test/route")'
+            );
+          });
+      });
+  });
+
+  it('showConfirmationModal callback', () => {
+    cy.get(containerSelector).then((targetCnt) => {
+      cy.spy(targetCnt[0], 'notifyConfirmationModalClosed').as('notifyConfirmationModalClosed');
+
+      cy.get(targetCnt)
+        .shadow()
+        .get('iframe')
+        .then((iframe) => {
+          const $body = iframe.contents().find('body');
+
+          cy.wrap($body)
+            .contains('test confirmation modal callback')
+            .click()
+            .then(() => {
+              cy.get('@notifyConfirmationModalClosed').should('have.been.called');
+              cy.wrap($body).contains('showConfirmationModal: true');
+            });
+        });
+    });
+  });
+
+  it('showAlert callback', () => {
+    cy.get(containerSelector).then((targetCnt) => {
+      cy.spy(targetCnt[0], 'notifyAlertClosed').as('notifyAlertClosed');
+
+      cy.get(targetCnt)
+        .shadow()
+        .get('iframe')
+        .then((iframe) => {
+          const $body = iframe.contents().find('body');
+
+          cy.wrap($body)
+            .contains('test alert callback')
+            .click()
+            .then(() => {
+              cy.get('@notifyAlertClosed').should('have.been.called');
+              cy.wrap($body).contains('showAlert: true');
+            });
+        });
+    });
+  });
+
+  it('showAlert with notifyAlertClosed', () => {
+    cy.on('window:alert', stub);
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test showAlert with notifyAlertClosed')
           .click()
           .then(() => {
             cy.wrap(stub).should('have.been.calledWith', 'show-alert-request message received: {"isTrusted":true}');
           });
+      });
+
+    cy.contains('Close Alert using notifyAlertClosed').click();
+    cy.wait(500);
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body).contains('Callback called on iframe neverShowItAgain');
       });
   });
 
@@ -223,6 +294,107 @@ describe('Iframe Container Test', () => {
 
         cy.location().should((loc) => {
           expect(loc.hash).to.eq('#openAsSplitview-iframe');
+        });
+      });
+  });
+
+  it('getNodeParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('Test get node params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('nodeParams: {"node":"params"}');
+          });
+      });
+  });
+
+  it('getPathParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get path params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('pathParams: {"path":"param"}');
+          });
+      });
+  });
+
+  it('getCoreSearchParams', () => {
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get core search params')
+          .click()
+          .then(() => {
+            cy.wrap($body).contains('searchParams: {"search":"param"}');
+          });
+      });
+  });
+
+  it('getCurrentRoute', () => {
+    const getIframeWindow = (iframe) => {
+      return cy.get(iframe).its('0.contentWindow').should('exist');
+    };
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+
+        getIframeWindow(iframe).then((win) => {
+          cy.spy(win, 'postMessage').as('postMessage');
+
+          cy.wrap($body)
+            .contains('test get current route')
+            .click()
+            .then(() => {
+              cy.get('@postMessage')
+                .should('be.calledWith', Cypress.sinon.match.object, 'http://localhost:8080')
+                .its('firstCall.args.0')
+                .should('deep.include', { msg: 'luigi.navigation.currentRoute.answer' });
+              cy.wrap($body).contains('getCurrentRoute: /test/route');
+            });
+        });
+      });
+  });
+
+  it('getPathExists', () => {
+    const getIframeWindow = (iframe) => {
+      return cy.get(iframe).its('0.contentWindow').should('exist');
+    };
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then((iframe) => {
+        const $body = iframe.contents().find('body');
+
+        getIframeWindow(iframe).then((win) => {
+          cy.spy(win, 'postMessage').as('postMessage');
+
+          cy.wrap($body)
+            .contains('test check path exists')
+            .click()
+            .then(() => {
+              cy.get('@postMessage')
+                .should('be.calledWith', Cypress.sinon.match.object, 'http://localhost:8080')
+                .its('firstCall.args.0')
+                .should('deep.include', { msg: 'luigi.navigation.pathExists.answer' });
+              cy.wrap($body).contains('pathExists: true');
+            });
         });
       });
   });

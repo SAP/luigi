@@ -204,7 +204,7 @@ describe('Container Service', () => {
   describe('closeAlert', () => {
     const containerAPI = new ContainerAPIFunctions();
 
-    it('internal method properly called', () => {
+    it('notifyAlertClosed method properly called', () => {
       // mock and spy
       const id = 'some-id';
       const dismissKey = 'key';
@@ -214,12 +214,12 @@ describe('Container Service', () => {
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
-      containerAPI.closeAlert(id, dismissKey, iframeHandle);
+      containerAPI.notifyAlertClosed(id, dismissKey, iframeHandle);
 
       expect(spy).toHaveBeenCalledWith(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
     });
 
-    it('internal method properly called if no dismisskey', () => {
+    it('notifyAlertClosed method properly called if no dismisskey', () => {
       // mock and spy
       const id = 'some-id';
       const iframeHandle = {
@@ -228,9 +228,30 @@ describe('Container Service', () => {
       containerService.sendCustomMessageToIframe = jest.fn();
       const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
-      containerAPI.closeAlert(id, undefined, iframeHandle);
+      containerAPI.notifyAlertClosed(id, undefined, iframeHandle);
 
       expect(spy).toHaveBeenCalledWith(iframeHandle, { id }, LuigiInternalMessageID.ALERT_CLOSED);
+    });
+  });
+
+  describe('notifyConfirmationModalClosed', () => {
+    const containerAPI = new ContainerAPIFunctions();
+
+    it.each([true, false])('notifyConfirmationModalClosed method properly called', (result) => {
+      // mock and spy
+      const iframeHandle = {
+        data: 'test'
+      } as unknown as IframeHandle;
+      containerService.sendCustomMessageToIframe = jest.fn();
+      const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+
+      containerAPI.notifyConfirmationModalClosed(result, iframeHandle);
+
+      expect(spy).toHaveBeenCalledWith(
+        iframeHandle,
+        { data: { confirmed: result } },
+        LuigiInternalMessageID.CONFIRMATION_MODAL_CLOSED
+      );
     });
   });
 

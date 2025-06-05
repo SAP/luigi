@@ -7,8 +7,8 @@
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 6,
-      "position": 4
+      "categoryPosition": 7,
+      "position": 3
     }
   }
 }
@@ -17,7 +17,7 @@ meta -->
 # Luigi Compound Container API
 
 This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container.<br/>
-In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://github.com/SAP/luigi/blob/main/container/src/constants/communication.ts).
+In addition you can use standard `addEventListener` function to react on events emmitted by the Luigi Compound Container. The list of events and their meaning can be found [here](https://docs.luigi-project.io/docs/luigi-event-payloads).
 
 ## API Reference
 
@@ -428,6 +428,48 @@ Returns **void**
 **Meta**
 
 *   **since**: 1.0.0
+
+### notifyAlertClosed
+
+A function that notifies the microfrontend that the opened alert has been closed.
+
+#### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the key specifying which dismiss link was clicked on the alert message (optional)
+
+#### Examples
+
+```javascript
+containerElement.notifyAlertClosed('my-alert-id', 'my-dismiss-key')
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: 1.7.0
+
+### notifyConfirmationModalClosed
+
+A function that notifies the microfrontend if the confirmation modal was confirmed or declined.
+
+#### Parameters
+
+*   `confirmed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+*   `value` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if the confirmation modal was confirmed or declined.
+
+#### Examples
+
+```javascript
+containerElement.notifyAlertClosed(true)
+```
+
+Returns **void** 
+
+**Meta**
+
+*   **since**: 1.7.0
 
 ### init
 

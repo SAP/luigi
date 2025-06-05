@@ -1,5 +1,5 @@
 import { LuigiInternalMessageID } from '../../src/constants/internal-communication';
-import { Events } from '../../src/constants/communication';
+import { Events, LuigiEvent } from '../../src/constants/communication';
 import type { IframeHandle, ContainerElement } from '../../src/constants/container.model';
 import { ContainerService } from '../../src/services/container.service';
 
@@ -43,15 +43,26 @@ describe('getContainerManager messageListener', () => {
       data: {
         msg: LuigiInternalMessageID.ALERT_REQUEST,
         data: {
-          id: 'navRequest'
+          settings: {
+            id: 'navRequest',
+            text: 'Some alert text',
+            type: 'info'
+          }
         }
       }
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.ALERT_REQUEST);
-    expect(dispatchedEvent.detail).toEqual({
-      data: { data: { id: 'navRequest' }, msg: 'luigi.ux.alert.show' },
-      source: {}
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
+    expect(dispatchedEvent.detail.data).toEqual({
+      msg: 'luigi.ux.alert.show',
+      data: {
+        settings: {
+          id: 'navRequest',
+          text: 'Some alert text',
+          type: 'info'
+        }
+      }
     });
   });
 
@@ -94,6 +105,9 @@ describe('getContainerManager messageListener', () => {
     // Define the message to send and target Origin
     const message = {
       authData: {},
+      searchParams: {},
+      pathParams: {},
+      nodeParams: {},
       context: {},
       internal: {
         thirdPartyCookieCheck: {
@@ -161,11 +175,29 @@ describe('getContainerManager messageListener', () => {
       source: cw,
       data: {
         msg: LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST,
-        params: 'modal-show'
+        data: {
+          settings: {
+            type: 'confirmation',
+            header: 'Confirmation',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No'
+          }
+        }
       }
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.SHOW_CONFIRMATION_MODAL_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
+    expect(dispatchedEvent.detail).toEqual({
+      settings: {
+        type: 'confirmation',
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
+      }
+    });
   });
 
   it('test loading indicator show request', () => {
@@ -286,18 +318,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
-  });
-
-  it('test getCurrentRoute request', () => {
-    const event = {
-      source: cw,
-      data: {
-        msg: LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST,
-        params: 'get-currentroute-request'
-      }
-    };
-    cm.messageListener(event);
-    expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test navigation completed request', () => {
@@ -334,6 +355,7 @@ describe('getContainerManager messageListener', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.CHECK_PATH_EXISTS_REQUEST);
+    expect(typeof dispatchedEvent?.callback).toEqual('function');
   });
 
   it('test set dirty status request', () => {
@@ -491,7 +513,7 @@ describe('dispatch', () => {
     jest.resetAllMocks();
   });
 
-  it('should dispatch a custom event to the target container, no Callback', () => {
+  it('should dispatch a Luigi event to the target container, no Callback', () => {
     // Arrange
     const targetContainer = document.createElement('div');
     const eventName = 'customEvent';
@@ -502,7 +524,7 @@ describe('dispatch', () => {
     service.dispatch(eventName, targetContainer, eventData);
 
     // Assert
-    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    const dispatchedEvent = new LuigiEvent(eventName, eventData);
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
   });
 
@@ -519,14 +541,14 @@ describe('dispatch', () => {
     };
 
     // Act
-    service.dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
+    service.dispatch(eventName, targetContainer, eventData, callbackFunction);
 
     // Assert
     globalThis.CustomEvent = jest
       .fn()
-      .mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+      .mockImplementation((type, eventInit) => ({ isTrusted: false, callback: callbackFunction }));
 
-    const dispatchedEventMock = { isTrusted: false, onCallback: expect.any(Function) };
+    const dispatchedEventMock = { isTrusted: false, callback: expect.any(Function) };
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(expect.objectContaining(dispatchedEventMock));
   });
 });
