@@ -59,7 +59,7 @@
   :global(.fd-navigation-list__content-container) {
     .fd-counter--notification {
       transform: translate(0px, 0px) !important;
-      margin-left: .3rem;;
+      margin-left: 0.3rem;
       min-width: 1.3rem;
       margin-right: 0;
     }

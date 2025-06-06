@@ -1097,19 +1097,19 @@
                                     {/if}
                                   </span>
                                   <span
-                                    class="fd-navigation-list__text badge-align-{node.statusBadge && !isSemiCollapsed &&
-                                    node.statusBadge.align === 'right' 
+                                    class="fd-navigation-list__text badge-align-{node.statusBadge &&
+                                    !isSemiCollapsed &&
+                                    node.statusBadge.align === 'right'
                                       ? 'right'
                                       : 'left'}"
                                   >
                                     {getNodeLabel(node)}
                                     <StatusBadge {node} />
-                                    
+
                                     {#if node.badgeCounter}
                                       <BadgeCounter {node} />
                                     {/if}
                                   </span>
-
                                 </div>
                                 {#if node.externalLink && node.externalLink.url}
                                   <div
@@ -1199,30 +1199,35 @@
                         {/if}
                       {/each}
                     {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
-                    <!-- Category Nodes-->
+                      <!-- Category Nodes-->
                       <li
                         class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
                         data-testid={getTestIdForCat(nodes.metaInfo, key)}
                       >
                         <!-- svelte-ignore a11y-missing-attribute -->
-                        <a class="fd-navigation-list__content" role="treeitem" tabindex="0" 
+                        <a
+                          class="fd-navigation-list__content"
+                          role="treeitem"
+                          tabindex="0"
                           aria-expanded={isSemiCollapsed
                             ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory
                             : isExpanded(nodes, expandedCategories)}
                           aria-selected={isSemiCollapsed && nodes.indexOf(selectedNode) >= 0}
-                            on:click|preventDefault={() =>
-                              setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
-                            on:keypress|preventDefault={() =>
-                              setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
-                            on:keypress|preventDefault={(event) => handleExpandCollapseCategories(event, nodes)}>
-
+                          on:click|preventDefault={() =>
+                            setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                          on:keypress|preventDefault={() =>
+                            setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}
+                          on:keypress|preventDefault={(event) => handleExpandCollapseCategories(event, nodes)}
+                        >
                           <div class="fd-navigation-list__content-container">
                             {#if isOpenUIiconName(nodes.metaInfo.icon)}
                               <span class="fd-navigation-list__icon">
-                                <i class="{getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed &&
-                                !nodes.metaInfo.icon
-                                  ? 'sap-icon--rhombus-milestone-2'
-                                  : ''}" role="presentation"></i>
+                                <i
+                                  class="{getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon
+                                    ? 'sap-icon--rhombus-milestone-2'
+                                    : ''}"
+                                  role="presentation"
+                                ></i>
                               </span>
                             {:else}
                               <span class="fd-navigation__icon" role="presentation" aria-hidden="true">
@@ -1235,12 +1240,10 @@
                             <span class="fd-navigation-list__text">{$getTranslation(key)}</span>
                           </div>
                           <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                            {#if isSemiCollapsed
-                            ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory
-                            : isExpanded(nodes, expandedCategories)}
-                            <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
+                            {#if isSemiCollapsed ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory : isExpanded(nodes, expandedCategories)}
+                              <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
                             {:else}
-                            <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
+                              <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
                             {/if}
                           </div>
                         </a>
