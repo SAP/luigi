@@ -222,7 +222,7 @@ describe('Navigation', () => {
       });
 
       it('ResponsiveNavigation Semicollapsed', () => {
-        cy.viewport(850, 600);
+        cy.viewport(880, 600);
         cy.window().then(win => {
           const config = win.Luigi.getConfig();
           config.settings.responsiveNavigation = 'semiCollapsible';
