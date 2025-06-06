@@ -15,6 +15,7 @@
   import BadgeCounter from './BadgeCounter.svelte';
   import StatusBadge from './StatusBadge.svelte';
   import LeftNavGroup from './LeftNavGroup.svelte';
+  import LeftNavCollapsedWrapper from './LeftNavCollapsedWrapper.svelte';
   import { KEYCODE_ENTER } from '../utilities/keycode';
 
   //TODO refactor
@@ -440,7 +441,7 @@
 
       selectedCategory = selectedCat;
 
-      if (sideBar) {
+      if (sideBar && !vegaSideNav) {
         calculateFlyoutPosition(el);
       } else if (btpToolLayout) {
         calculateBTPNavFlyoutPosition(el);
@@ -448,6 +449,15 @@
           closeMorePopup();
         }
       }
+      // else if (vegaSideNav) {
+      //   const item = el.closest('.fd-navigation-list__item');
+      //   if (item) {
+      //     const popover = item.querySelector('.fd-navigation-list__popover-body');
+      //     if (popover) {
+      //       popover.setAttribute('aria-hidden', false)
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -1200,9 +1210,11 @@
                       {/each}
                     {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
                       <!-- Category Nodes-->
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <li
-                        class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry"
+                        class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover__control' : ''} lui-nav-entry"
                         data-testid={getTestIdForCat(nodes.metaInfo, key)}
+                        on:click|stopPropagation={(event) => handleIconClick(nodes, event.currentTarget)}
                       >
                         <!-- svelte-ignore a11y-missing-attribute -->
                         <a
@@ -1240,13 +1252,131 @@
                             <span class="fd-navigation-list__text">{$getTranslation(key)}</span>
                           </div>
                           <div class="fd-navigation-list__navigation-indicator" role="presentation" aria-hidden="true">
-                            {#if isSemiCollapsed ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory : isExpanded(nodes, expandedCategories)}
+                            {#if !isSemiCollapsed && isExpanded(nodes, expandedCategories)}
                               <i class="sap-icon--navigation-down-arrow" role="presentation"></i>
                             {:else}
                               <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
                             {/if}
                           </div>
                         </a>
+                        {#if isSemiCollapsed || isExpanded(nodes, expandedCategories)}
+                          <LeftNavCollapsedWrapper
+                            label={$getTranslation(key)}
+                            icon={nodes.metaInfo.icon}
+                            collapsedMode={isSemiCollapsed}
+                            expanded={isSemiCollapsed
+                              ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory
+                              : isExpanded(nodes, expandedCategories)}
+                          >
+                            <ul class="fd-navigation-list level-2" role="group" tabindex="-1">
+                              {#each nodes as node}
+                                {#if !node.hideFromNav}
+                                  {#if node.label}
+                                    <li class="fd-navigation-list__item lui-nav-entry" role="none">
+                                      <!-- svelte-ignore a11y-role-has-required-aria-props -->
+                                      <a
+                                        class="fd-navigation-list__content {node === selectedNode ? 'is-selected' : ''}"
+                                        role="treeitem"
+                                        tabindex="0"
+                                        href={getRouteLink(node)}
+                                        title={resolveTooltipText(node, getNodeLabel(node))}
+                                        on:click={(event) => {
+                                          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                            handleClick(node);
+                                        }}
+                                        on:keyup={!addNavHrefForAnchor
+                                          ? (event) => handleEnterPressed(event, node)
+                                          : undefined}
+                                        data-testid={NavigationHelpers.getTestId(node)}
+                                        on:mouseup={(event) => {
+                                          isSemiCollapsed && event.target.blur();
+                                        }}
+                                      >
+                                        <div class="fd-navigation-list__content-container">
+                                          <span
+                                            class="fd-navigation-list__text badge-align-{node.statusBadge &&
+                                            !isSemiCollapsed &&
+                                            node.statusBadge.align === 'right'
+                                              ? 'right'
+                                              : 'left'}"
+                                          >
+                                            {getNodeLabel(node)}
+                                            <StatusBadge {node} />
+
+                                            {#if node.badgeCounter}
+                                              <BadgeCounter {node} />
+                                            {/if}
+                                          </span>
+                                        </div>
+                                        {#if node.externalLink && node.externalLink.url}
+                                          <div
+                                            class="fd-navigation-list__indication-arrow"
+                                            role="presentation"
+                                            aria-hidden="true"
+                                          >
+                                            <i class="sap-icon--arrow-right" role="presentation"></i>
+                                          </div>
+                                        {/if}
+                                      </a>
+                                    </li>
+                                    <!-- <li class="fd-navigation-list__item">
+                                      <div
+                                        class="fd-navigation__item fd-navigation__item--child"
+                                        aria-level="3"
+                                        role="treeitem"
+                                        title={resolveTooltipText(node, getNodeLabel(node))}
+                                        aria-expanded="false"
+                                        aria-selected={node === selectedNode}
+                                        data-testid={NavigationHelpers.getTestId(node)}
+                                      >
+                                        <a
+                                          class="fd-navigation__link"
+                                          tabindex="0"
+                                          href={getRouteLink(node)}
+                                          on:click={(event) => {
+                                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+                                              handleClick(node);
+                                          }}
+                                          on:keyup={!addNavHrefForAnchor
+                                            ? (event) => handleEnterPressed(event, node)
+                                            : undefined}
+                                        >
+                                          <span
+                                            class="fd-navigation__text badge-align-{node.statusBadge &&
+                                            node.statusBadge.align === 'right'
+                                              ? 'right'
+                                              : 'left'}"
+                                          >
+                                            {getNodeLabel(node)}
+                                            <StatusBadge {node} />
+                                          </span>
+                                          <span
+                                            class="fd-navigation__selection-indicator"
+                                            role="presentation"
+                                            aria-hidden="true"
+                                            aria-label="selection indicator"
+                                          />
+                                          {#if node.externalLink && node.externalLink.url}
+                                            <span
+                                              class="fd-navigation__external-link-indicator"
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              aria-label="external link indicator"
+                                            />
+                                          {/if}
+                                          {#if node.badgeCounter}
+                                            <BadgeCounter {node} />
+                                          {/if}
+                                        </a>
+                                      </div>
+                                    </li> -->
+                                  {/if}
+                                {/if}
+                              {/each}
+                            </ul>
+                          </LeftNavCollapsedWrapper>
+                        {/if}
+
                         <!-- <div
                           class="fd-navigation__item {isSemiCollapsed ? 'fd-popover__control' : ''}"
                           role="treeitem"
@@ -1300,7 +1430,7 @@
                           </a>
                         </div> -->
                         {#if !isSemiCollapsed || (nodes.metaInfo && nodes.metaInfo.label === selectedCategory)}
-                          <div
+                          <!-- <div
                             class="fd-navigation__list-container
                             {isSemiCollapsed
                               ? 'fd-popover__body fd-popover__body--after fd-popover__body--arrow-left'
@@ -1344,7 +1474,7 @@
                               {/if}
 
                               <ul
-                                class="fd-navigation__list fd-navigation__list--child-items"
+                                class="fd-navigation__list level-2"
                                 role="tree"
                                 tabindex="-1"
                               >
@@ -1446,7 +1576,7 @@
                                 {/each}
                               </ul>
                             </div>
-                          </div>
+                          </div> -->
                         {/if}
                       </li>
                     {/if}
@@ -2197,7 +2327,7 @@
   }
 
   :global(.semiCollapsed) {
-    .level-2 {
+    .fd-nested-list.level-2 {
       display: none;
     }
 
