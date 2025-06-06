@@ -104,6 +104,7 @@
     GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
   let vegaLayout = LuigiConfig.getConfigValue('settings.sideNav.style') === 'vega';
 
+
   export let isSearchFieldVisible;
   export let inputElem;
   export let customSearchItemRendererSlot;
