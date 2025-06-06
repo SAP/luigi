@@ -203,7 +203,8 @@
     --fdNavigation_List_Parent_Items_Display: flex;
   }
 
-  .lui-expanded-false {
+  :global(.vega-nav):not(.is-collapsed) .lui-expanded-false,
+  :global(.fd-side-nav):not(.vega-nav) {
     & > ul {
       display: none;
     }
