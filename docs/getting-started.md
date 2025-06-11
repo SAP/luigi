@@ -175,7 +175,7 @@ Our [tutorial](https://developers.sap.com/group.luigi-app.html) on how to create
 - how to create a micro frontend
 - how to add localization to your app and display it in multiple languages
 
-Alternatively, the tutorial app can be installed directly by following the `README` file of [this GitHub repository](https://github.com/SAP-samples/luigi-micro-frontend-application).
+Alternatively, the tutorial app can be installed directly by following the `README` file of [this GitHub repository](https://github.com/luigi-project-samples/luigi-micro-frontend-application).
 
 ### e2e example
 

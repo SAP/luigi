@@ -9,7 +9,7 @@
   "devDependencies": {
     "@luigi-project/core": "^2.22.1",
     "@luigi-project/client": "^2.22.1",
-    "@luigi-project/plugin-auth-oauth2": "^2.7.0",
+    "@luigi-project/plugin-auth-oauth2": "^2.22.1",
     "@sap-theming/theming-base-content": "~11.1.35",
     "fundamental-styles": "0.23.0",
     "live-server": "^1.2.2"

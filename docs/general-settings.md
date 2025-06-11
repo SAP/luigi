@@ -266,7 +266,7 @@ You can set the following values:
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
     * **useFioriScrollbars** (optional) if set to `true`, Fiori theming variables are applied to all scrollbars in luigi core app.
-    * **variables** (optional) can either be a string set to `fiori` to get all CSS variables from the `fiori` theme, or an object with a property called `file` where you can declare your own CSS variables. The variables should be defined in a JSON file which starts with a `root` key. An example of how a CSS variables file should look like can be found [here](https://github.com/SAP/theming-base-content/blob/master/content/Base/baseLib/sap_horizon/variables.json).
+    * **variables** (optional) can either be a string set to `fiori` to get all CSS variables from the `fiori` theme, or an object with a property called `file` where you can declare your own CSS variables. The variables should be defined in a JSON file which starts with a `root` key. An example of how a CSS variables file should look like can be found [here](https://github.com/luigi-project/theming-base-content/blob/master/content/Base/baseLib/sap_horizon/variables.json).
 - **example**:
 ```javascript
 theming: {
