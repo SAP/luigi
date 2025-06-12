@@ -45,12 +45,6 @@ export default defineConfig({
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 650,
-    minify: 'terser', 
-    terserOptions: {
-      mangle: {
-        reserved: ['$']
-      }
-    },
     rollupOptions: {
       input: ['src/main.js', 'src/styles/fd_horizon.scss', 'src/styles/fd_fiori.scss'],
       output: {
