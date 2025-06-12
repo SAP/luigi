@@ -38,7 +38,7 @@ const luigiPlugin = () => {
     }
   };
 };
-
+// config for Vite
 export default defineConfig({
   assetsInclude: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
   base: '',
