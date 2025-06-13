@@ -16,7 +16,7 @@ With this release, we added an `itemRenderer` to the app switcher which allows y
 
 #### Responsive padding for the Shellbar Component
 
-We added a way to make the Shellbar padding responsive by using the `header.responsiveShellbarPaddings` parameter. This means the top navigation will be adapted automatically for different devices. This feature became available with the latest Fundamental Styles [release](https://github.com/luigi-project/fundamental-styles/releases/tag/v0.24.1).
+We added a way to make the Shellbar padding responsive by using the `header.responsiveShellbarPaddings` parameter. This means the top navigation will be adapted automatically for different devices. This feature became available with the latest Fundamental Styles [release](https://github.com/SAP/fundamental-styles/releases/tag/v0.24.1).
 
 #### Multiple modal dialogs
 
