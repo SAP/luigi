@@ -1426,6 +1426,7 @@ const connector = {
     const loadingIndicator = wrapper.querySelector('ui5-busy-indicator');
 
     if (loadingIndicator) {
+      loadingIndicator.delay = 300;
       loadingIndicator.active = true;
     }
   },
@@ -1435,9 +1436,7 @@ const connector = {
     const loadingIndicator = wrapper.querySelector('ui5-busy-indicator');
 
     if (loadingIndicator) {
-      setTimeout(() => {
-        loadingIndicator.active = false;
-      }, 2000);
+      loadingIndicator.active = false;
     }
   },
 
