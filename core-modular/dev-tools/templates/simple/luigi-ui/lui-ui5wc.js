@@ -1282,7 +1282,15 @@ const connector = {
   },
 
   openUserSettings: async (settings, userSettingData, previousUserSettings, lc) => {
-    const storedUserSettings = previousUserSettings ? { ...previousUserSettings } : {};
+    // Core (core-modular) prefills every configured setting with a default and
+    // overlays the persisted values, so the stored object always contains the
+    // complete set of properties. Use that prepared object as the initial state;
+    // fall back to the persisted values only if core did not provide it.
+    const storedUserSettings = settings?.initialUserSettings
+      ? { ...settings.initialUserSettings }
+      : previousUserSettings
+        ? { ...previousUserSettings }
+        : {};
 
     function el(tag, attrs, children) {
       const node = document.createElement(tag);

@@ -255,9 +255,11 @@ export interface LuigiConnector {
    * when the dialog closes — the connector is responsible for calling both
    * at the appropriate moments.
    *
-   * @param dialogSettings dialog header, save/dismiss button labels, plus
-   *   the two core-installed hooks (`renderMicroFrontendContainer`,
-   *   `onCloseCallback`) the connector must invoke.
+   * @param dialogSettings dialog header, save/dismiss button labels, the two
+   *   core-installed hooks (`renderMicroFrontendContainer`, `onCloseCallback`)
+   *   the connector must invoke, and `initialUserSettings` — the complete
+   *   settings object (defaults for every configured setting, overlaid with the
+   *   persisted values) the connector should use as initial state.
    * @param userSettingData static schema describing the available
    *   user-settings groups (one entry per group).
    * @param previousUserSettings persisted user-settings state to prefill

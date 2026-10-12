@@ -152,6 +152,7 @@ export class UX {
 
     const previousUserSettings = await this.luigi.readUserSettings();
     const userSettingData = UserSettingsHelper.processUserSettingGroups(userSettings, storedSettings);
+    const initialUserSettings = UserSettingsHelper.prepareUserSettingsObj(userSettingData, previousUserSettings);
 
     const userSettingsDialog = userSettings.userSettingsDialog || {};
     const dialogHeader = userSettingsDialog.dialogHeader || TOP_NAV_DEFAULTS.userSettingsDialog.dialogHeader;
@@ -160,7 +161,8 @@ export class UX {
     const userSettingsDialogSettings: UserSettingsDialogSettings = {
       dialogHeader: this.luigi.i18n().getTranslation(dialogHeader),
       saveBtn: this.luigi.i18n().getTranslation(saveBtn),
-      dismissBtn: this.luigi.i18n().getTranslation(dismissBtn)
+      dismissBtn: this.luigi.i18n().getTranslation(dismissBtn),
+      initialUserSettings
     };
     this.luigi
       .getEngine()
