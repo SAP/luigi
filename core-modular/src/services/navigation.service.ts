@@ -1184,7 +1184,7 @@ export class NavigationService {
         ) as HTMLElement | undefined;
         if (activeContainer) {
           activeContainer.remove();
-          await UIModule.routingService.handleRouteChange({ path: currentPath, query: currentQuery });
+          UIModule.routingService.handleRouteChange({ path: currentPath, query: currentQuery });
         }
       }
       return;
