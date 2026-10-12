@@ -36,7 +36,10 @@ class UserSettingsHelperClass {
    * @param previousUserSettings persisted user-settings state, or `null`/`{}`
    * @returns a settings object keyed by group, each group prefilled with defaults
    */
-  prepareUserSettingsObj(userSettingData: any[], previousUserSettings: Record<string, any> | null): Record<string, any> {
+  prepareUserSettingsObj(
+    userSettingData: any[],
+    previousUserSettings: Record<string, any> | null
+  ): Record<string, any> {
     const result: Record<string, any> = {};
     const stored = previousUserSettings || {};
     (Array.isArray(userSettingData) ? userSettingData : []).forEach((groupObj: any) => {
