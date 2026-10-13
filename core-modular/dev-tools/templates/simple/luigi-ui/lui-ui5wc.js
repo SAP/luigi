@@ -56,7 +56,7 @@ function addShellbarItem(shellbar, item, navClickFn) {
     itemEl.setAttribute('category-uid', item.category.id);
     itemEl.setAttribute('tooltip', item.category.tooltip);
     shellbar.appendChild(itemEl);
-    renderCategoryPopover(item.category);
+    renderCategoryPopover(item.category, itemEl);
     itemEl.addEventListener('click', createCategoryClickHandler(item.category.id));
   }
 }
@@ -158,7 +158,7 @@ function onProductSwitcherClick(event) {
   }
 }
 
-function renderCategoryPopover(catObj) {
+function renderCategoryPopover(catObj, shellbarItem) {
   const catPopover = document.createElement('ui5-popover');
   catPopover.setAttribute('placement', 'Bottom');
   (catObj.id && catPopover.setAttribute('id', `luigi-${catObj.id}-popover`)) ||
@@ -168,7 +168,23 @@ function renderCategoryPopover(catObj) {
     const catLi = document.createElement('ui5-li');
     catLi.setAttribute('icon', item.icon);
     catLi.setAttribute('luigi-route', item.node.pathSegment);
-    catLi.setAttribute('text', item.label);
+    if (item.node.badgeCounter) {
+      item.node.badgeCounter.count().then((count) => {
+        const badge = document.createElement('ui5-button-badge');
+        badge.setAttribute('design', 'OverlayText');
+        badge.setAttribute('text', count);
+        catLi.setAttribute('count', count);
+        catLi.setAttribute('aria-label', item.node.badgeCounter.label);
+        catLi.appendChild(badge);
+        let totalCount = 0;
+        catList.childNodes.forEach((child) => {
+          const childCount = parseInt(child.getAttribute('count')) || 0;
+          totalCount += childCount;
+        });
+        shellbarItem.setAttribute('count', totalCount);
+      });
+    }
+
     catLi.innerText = item.label;
     catLi.addEventListener('click', () => {
       globalThis.Luigi.navigation().navigate(catLi.getAttribute('luigi-route'));
