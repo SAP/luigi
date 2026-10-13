@@ -13,7 +13,6 @@ export interface TopNavData {
   productSwitcher?: ProductSwitcher;
   profile?: ProfileSettings;
   topNodes: NavItem[];
-  totalBadgeNode?: BadgeCounter;
 }
 
 export interface AppSwitcher {
@@ -117,7 +116,6 @@ export interface LeftNavData {
   items: NavItem[];
   basePath: string;
   sideNavFooterText?: string;
-  totalBadgeNode?: BadgeCounter;
   navClick?: (item: NavItem) => Promise<void>;
 }
 
@@ -264,7 +262,6 @@ export interface TabNavData {
   navClick?: (item: NavItem) => Promise<void>;
   overflowLabel?: string;
   selectedNode?: any;
-  totalBadgeNode?: BadgeCounter;
 }
 
 export interface BreadcrumbData {
