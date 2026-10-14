@@ -4,7 +4,6 @@ import { UIModule } from '../modules/ui-module';
 import type {
   AppSwitcher,
   AppSwitcherItem,
-  BadgeCounter,
   BreadcrumbData,
   BreadcrumbItem,
   ContextSwitcher,
@@ -214,12 +213,13 @@ export class NavigationService {
     pathData: PathData
   ): Promise<{
     items: NavItem[];
-    totalBadgeNode: BadgeCounter | undefined;
   }> {
     const catMap: Record<string, NavItem> = {};
     const items: NavItem[] = [];
     const orphanItems: NavItem[] = [];
-    const badgeCountsToSumUp: number[] = [];
+    // Consumer badge counters are never invoked here — a slow/hanging count() must not block
+    // the nav build. The engine passes counters through structurally and heads resolve them
+    // (and aggregate category/overflow totals) when they render.
 
     for (const node of nodes) {
       if (
@@ -233,14 +233,8 @@ export class NavigationService {
         continue;
       }
 
-      const hasBadge = !!node.badgeCounter;
       const externalLink = node.externalLink ? { ...node.externalLink } : undefined;
       let nodeHref = RoutingHelpers.getNodeHref(node, pathData?.pathParams, this.luigi);
-      let badgeCount = 0;
-
-      if (node.badgeCounter) {
-        badgeCount = await (node.badgeCounter.count as any)();
-      }
 
       if (externalLink?.url) {
         const currentNode: Node = { ...node };
@@ -278,7 +272,8 @@ export class NavigationService {
 
         if (!catNode) {
           catNode = {
-            badgeCounter: hasBadge ? { count: () => Number(badgeCount), label: '' } : undefined,
+            // Badge counters are never invoked or aggregated by the engine. Heads that render a
+            // category badge sum the counters of catNode.category.nodes themselves.
             category: {
               altText: node.category.altText || '',
               icon: node.category.icon,
@@ -291,19 +286,6 @@ export class NavigationService {
           };
           catMap[catId] = catNode;
           items.push(catNode);
-        } else {
-          if (hasBadge) {
-            if (catNode.badgeCounter) {
-              const nodeBadgeCount = await (catNode.badgeCounter.count as any)();
-
-              catNode.badgeCounter.count = () => Number(nodeBadgeCount + badgeCount);
-            } else {
-              catNode.badgeCounter = {
-                count: () => Number(badgeCount),
-                label: ''
-              };
-            }
-          }
         }
 
         catNode.category?.nodes?.push({
@@ -335,17 +317,7 @@ export class NavigationService {
           items.push(navItem);
         }
       }
-
-      if (badgeCount) {
-        badgeCountsToSumUp.push(badgeCount);
-      }
     }
-
-    const badgeCountSum = badgeCountsToSumUp?.length ? badgeCountsToSumUp.reduce((a, b) => a + b) : 0;
-    const totalBadgeNode: BadgeCounter = {
-      count: () => badgeCountSum,
-      label: ''
-    };
 
     items.unshift(...orphanItems);
 
@@ -363,7 +335,7 @@ export class NavigationService {
       }
     });
 
-    return { items, totalBadgeNode };
+    return { items };
   }
 
   async getCurrentNode(path: string): Promise<Node | undefined> {
@@ -542,7 +514,6 @@ export class NavigationService {
       items: navItems,
       basePath: basePath.replace(/\/\/+/g, '/'),
       sideNavFooterText: this.luigi.getConfig().settings?.sideNavFooterText,
-      totalBadgeNode: navData.totalBadgeNode,
       navClick: (item: NavItem) => (item.node ? this.navItemClick(item.node, pathData) : Promise.resolve())
     };
   }
@@ -725,7 +696,6 @@ export class NavigationService {
       logo: cfg.settings?.header?.logo,
       logoAltText,
       topNodes: navData.items,
-      totalBadgeNode: navData.totalBadgeNode,
       contextSwitcher,
       productSwitcher,
       profile: this.luigi.auth().isAuthorizationEnabled() || cfg.navigation?.profile ? profileSettings : undefined,
@@ -809,7 +779,6 @@ export class NavigationService {
     const result: TabNavData = {
       selectedNode,
       items: navData.items,
-      totalBadgeNode: navData.totalBadgeNode,
       basePath: basePath.replace(/\/\/+/g, '/'),
       overflowLabel: this.luigi.i18n().getTranslation('luigi.navigation.tabNav.more'),
       navClick: (item: NavItem) => (item.node ? this.navItemClick(item.node, pathData) : Promise.resolve())

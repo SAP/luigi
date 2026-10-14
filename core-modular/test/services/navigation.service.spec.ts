@@ -1219,7 +1219,6 @@ describe('NavigationService', () => {
       };
       const data = await navigationService.buildNavItems([], undefined, pathData, true);
       expect(data.items).toEqual([]);
-      expect(data.totalBadgeNode).toBeTruthy();
     });
 
     it('should mark selected node as selected', async () => {
@@ -1294,8 +1293,10 @@ describe('NavigationService', () => {
       expect(data.items.length).toBe(1);
       expect(data.items[0].category?.id).toBe('cat1');
       expect(data.items[0].category?.nodes?.length).toBe(2);
-      expect(data.totalBadgeNode).toBeTruthy();
-      expect(data.totalBadgeNode.count()).toEqual(3);
+      // The engine no longer aggregates badge counters; it passes each node's
+      // counter through so heads can sum category/overflow totals themselves.
+      expect(data.items[0].category?.nodes?.[0].node?.badgeCounter?.count?.()).toBe(1);
+      expect(data.items[0].category?.nodes?.[1].node?.badgeCounter?.count?.()).toBe(2);
     });
 
     it('test translated category label', async () => {
@@ -1312,7 +1313,6 @@ describe('NavigationService', () => {
       const data = await navigationService.buildNavItems([node1], undefined, pathData, true);
       expect(data.items.length).toBe(1);
       expect(data.items[0].category?.label).toBe('Translated Category 1');
-      expect(data.totalBadgeNode).toBeTruthy();
     });
 
     it('translated node label and tooltip', async () => {
@@ -1329,7 +1329,6 @@ describe('NavigationService', () => {
       expect(data.items.length).toBe(1);
       expect(data.items[0].label).toBe('Translated Node 1');
       expect(data.items[0].tooltip).toBe('Translated Tooltip 1');
-      expect(data.totalBadgeNode).toBeTruthy();
     });
 
     it('should include href when addNavHrefs is true', async () => {
@@ -1346,7 +1345,6 @@ describe('NavigationService', () => {
       };
       const data = await navigationService.buildNavItems([node1], undefined, pathData, true);
       expect(data.items[0].href).toBe('#/projects');
-      expect(data.totalBadgeNode).toBeTruthy();
       expect(RoutingHelpers.getNodeHref).toHaveBeenCalledWith(node1, {}, luigiMock);
       jest.restoreAllMocks();
     });
@@ -1365,7 +1363,6 @@ describe('NavigationService', () => {
       };
       const data = await navigationService.buildNavItems([node1], undefined, pathData, true);
       expect(data.items[0].href).toBeUndefined();
-      expect(data.totalBadgeNode).toBeTruthy();
       jest.restoreAllMocks();
     });
 
@@ -1384,7 +1381,6 @@ describe('NavigationService', () => {
       };
       const data = await navigationService.buildNavItems([node1], undefined, pathData, true);
       expect(data.items[0].category?.nodes?.[0].href).toBe('/node1');
-      expect(data.totalBadgeNode).toBeTruthy();
       jest.restoreAllMocks();
     });
 
