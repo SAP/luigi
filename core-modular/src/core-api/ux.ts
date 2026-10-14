@@ -165,7 +165,13 @@ export class UX {
     };
     this.luigi
       .getEngine()
-      ._ui?.openUserSettings(userSettingsDialogSettings, userSettingData, previousUserSettings, initialUserSettings, this.luigi);
+      ._ui?.openUserSettings(
+        userSettingsDialogSettings,
+        userSettingData,
+        previousUserSettings,
+        initialUserSettings,
+        this.luigi
+      );
   };
 
   /**
