@@ -260,7 +260,7 @@ export interface LuigiConnector {
    *   `onCloseCallback`) the connector must invoke.
    * @param userSettingData static schema describing the available
    *   user-settings groups (one entry per group).
-   * @param previousUserSettings the complete settings object the connector
+   * @param initialUserSettings the complete settings object the connector
    *   should use as the dialog's initial state — defaults for every configured
    *   setting, overlaid with the persisted values. Core builds this, so the
    *   connector never has to prefill defaults itself.
@@ -268,7 +268,7 @@ export interface LuigiConnector {
   openUserSettings(
     dialogSettings: UserSettingsDialogSettings,
     userSettingData: Record<string, any>[],
-    previousUserSettings: Record<string, any>
+    initialUserSettings: Record<string, any>
   ): void;
 
   /**
