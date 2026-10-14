@@ -1282,15 +1282,10 @@ const connector = {
   },
 
   openUserSettings: async (settings, userSettingData, previousUserSettings, lc) => {
-    // Core (core-modular) prefills every configured setting with a default and
-    // overlays the persisted values, so the stored object always contains the
-    // complete set of properties. Use that prepared object as the initial state;
-    // fall back to the persisted values only if core did not provide it.
-    const storedUserSettings = settings?.initialUserSettings
-      ? { ...settings.initialUserSettings }
-      : previousUserSettings
-        ? { ...previousUserSettings }
-        : {};
+    // previousUserSettings is the complete object core hands us (defaults for
+    // every configured setting, overlaid with the persisted values). Copy it
+    // into a mutable working state so edits don't mutate the passed-in object.
+    const storedUserSettings = { ...previousUserSettings };
 
     function el(tag, attrs, children) {
       const node = document.createElement(tag);
@@ -1400,18 +1395,18 @@ const connector = {
       }
     }
 
-    // Assemble dialog
     const dialog = el(
       'ui5-user-settings-dialog',
       {
         id: 'luigi-user-settings',
-        'header-text': settings?.dialogHeader || 'Settings'
+        'header-text': settings?.dialogHeader || 'Settings',
+        'save-mode': true
       },
       settingsItems
     );
 
-    dialog.addEventListener('close', async () => {
-      settings.onCloseCallback(storedUserSettings, previousUserSettings);
+    const cleanup = () => {
+      dialog.open = false;
       if (dialog.parentElement) {
         document.body.removeChild(dialog);
       }
@@ -1419,6 +1414,19 @@ const connector = {
       if (profilePopover) {
         profilePopover.open = false;
       }
+    };
+
+    dialog.addEventListener('save', async () => {
+      settings.onCloseCallback(storedUserSettings);
+      cleanup();
+    });
+
+    dialog.addEventListener('cancel', () => {
+      cleanup();
+    });
+
+    dialog.addEventListener('close', () => {
+      cleanup();
     });
 
     document.body.appendChild(dialog);

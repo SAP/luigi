@@ -101,8 +101,7 @@ export interface UserSettingsDialogSettings {
   saveBtn?: string;
   dismissBtn?: string;
   renderMicroFrontendContainer?: (viewUrl: string, groupKey: string) => Promise<any>;
-  onCloseCallback?: (storedUserSettings: any, previousUserSettings: any) => void;
-  initialUserSettings?: Record<string, any>;
+  onCloseCallback?: (storedUserSettings: any) => void;
 }
 
 export interface UserInfo {
