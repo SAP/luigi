@@ -67,8 +67,10 @@ export class NavigationService {
     return this.nodeDataManagementService;
   }
 
-  private handleDialogContainer(goBackContext: Record<string, any>): boolean {
+  private handleDialogContainer(goBackContext: any): boolean {
     const allContainers = GenericHelpers.getNodeList('luigi-container[lui_container]', true);
+
+    this.goBackContext = { goBackContext };
 
     if (allContainers?.length > 1) {
       const dialogContainers = allContainers.filter(
@@ -87,9 +89,8 @@ export class NavigationService {
   }
 
   private prepareGoBackContextForNavigation(goBackContext: any): void {
-    if (goBackContext && Object.keys(goBackContext).length) {
+    if (typeof goBackContext === 'boolean' || (goBackContext && typeof goBackContext === 'object')) {
       this.handleDialogContainer(goBackContext);
-      this.goBackContext = { goBackContext };
     }
   }
 
@@ -146,7 +147,7 @@ export class NavigationService {
       }
     };
 
-    if (goBackContext && Object.keys(goBackContext).length) {
+    if (typeof goBackContext === 'boolean' || (goBackContext && typeof goBackContext === 'object')) {
       const dialogUpdated = this.handleDialogContainer(goBackContext);
 
       if (!dialogUpdated) {
@@ -1209,7 +1210,7 @@ export class NavigationService {
    * Deal with route changing scenario.
    * @param {NavigationRequestParams} params - the params to configure navigation request
    * @param {string} params.path - the path of the view to open
-   * @param {string} params.preserveView - preserve a view by setting it to specific value (optional)
+   * @param {boolean} params.preserveView - preserve a view by setting it to specific value (optional)
    * @param {any} params.modalSettings - settings to configure the modal's title and size (optional)
    * @param {boolean} params.newTab - open a view in new tab by setting it to `true` (optional)
    * @param {boolean} params.withoutSync - disables the navigation handling for a single navigation request (optional)

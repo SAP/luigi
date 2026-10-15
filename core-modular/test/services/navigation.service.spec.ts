@@ -3052,7 +3052,7 @@ describe('NavigationService', () => {
   });
 
   describe('NavigationService.processGoBackContext', () => {
-    it.each([undefined, {}])('should not handle dialog container when context is invalid', (ctx) => {
+    it.each([undefined, null])('should not handle dialog container when context is invalid', (ctx) => {
       const handleDialogContainerSpy = jest.spyOn(navigationService, 'handleDialogContainer');
 
       navigationService.processGoBackContext(ctx);
@@ -3060,8 +3060,7 @@ describe('NavigationService', () => {
       expect(handleDialogContainerSpy).not.toHaveBeenCalled();
     });
 
-    it('should handle dialog container when context is valid', () => {
-      const ctx = { foo: 'bar' };
+    it.each([{ foo: 'bar' }, {}, true, false])('should handle dialog container when context is valid', (ctx) => {
       const activeContainerSpy = jest.spyOn(activeContainer, 'updateContext');
       const handleDialogContainerSpy = jest.spyOn(navigationService, 'handleDialogContainer');
 
@@ -3212,7 +3211,7 @@ describe('NavigationService', () => {
       expect((navigationService as any).goBackContext).toEqual({ goBackContext: ctx });
     });
 
-    it.each([{}, undefined])('should not update local "go-back" context when it is invalid', (ctx) => {
+    it.each([undefined, null])('should not update local "go-back" context when it is invalid', (ctx) => {
       const handleDialogContainerSpy = jest.spyOn(navigationService, 'handleDialogContainer');
 
       (navigationService as any).prepareGoBackContextForNavigation(ctx);

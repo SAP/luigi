@@ -482,11 +482,11 @@ export const UIModule = {
           const newContext = { ...currentNode.context, ...goBackContext };
 
           if (hashChanged && !viewGroupContainer.virtualTree && !withoutSync) {
-            viewGroupContainer.context = newContext || {};
+            viewGroupContainer.context = newContext;
             viewGroupContainer.updateViewUrl(resolvedViewUrl);
           } else {
-            viewGroupContainer.updateContext(newContext || {}, { withoutSync: !!withoutSync });
-            await handleDialogContainers(newContext || {}, !!withoutSync, luigi);
+            viewGroupContainer.updateContext(newContext, { withoutSync: !!withoutSync });
+            await handleDialogContainers(newContext, !!withoutSync, luigi);
           }
         }
       } else {
@@ -507,8 +507,8 @@ export const UIModule = {
           currentContainer.viewStackSize = viewStackSize;
 
           if (!preventContextUpdate && currentContainer) {
-            currentContainer.updateContext(newContext || {}, { withoutSync });
-            await handleDialogContainers(newContext || {}, !!withoutSync, luigi);
+            currentContainer.updateContext(newContext, { withoutSync });
+            await handleDialogContainers(newContext, !!withoutSync, luigi);
           }
         }
       }
@@ -550,7 +550,7 @@ export const UIModule = {
           resolved = true;
           resolve();
           modalService.removeLastModalFromStack();
-          if (goBackValue) {
+          if (typeof goBackValue === 'boolean' || (goBackValue && typeof goBackValue === 'object')) {
             UIModule.navService.removeLastPreservedView();
             setTimeout(() => UIModule.navService.processGoBackContext(goBackValue));
           }
@@ -672,7 +672,7 @@ export const UIModule = {
         if (resolved) return;
         resolved = true;
         resolve();
-        if (goBackValue) {
+        if (typeof goBackValue === 'boolean' || (goBackValue && typeof goBackValue === 'object')) {
           UIModule.navService.removeLastPreservedView();
           setTimeout(() => UIModule.navService.processGoBackContext(goBackValue));
         }
