@@ -235,8 +235,7 @@ describe('Navigation', () => {
 
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path', {
         title: 'Modal Title',
-        size: 'l',
-        closebtn_data_testid: 'lui-modal-index-0'
+        size: 'l'
       });
     });
     it('should append nodeParams to modal path in URL', async () => {
@@ -254,8 +253,31 @@ describe('Navigation', () => {
 
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path?~test=true&~foo=bar', {
         title: 'Modal Title',
+        size: 'l'
+      });
+    });
+    it('should not write closebtn_data_testid to the URL but keep keepPrevious', async () => {
+      luigiMock.getConfigValue = jest.fn().mockImplementation((key: string) => {
+        if (key === 'routing.showModalPathInUrl') return true;
+        return null;
+      });
+      const appendModalDataToUrlSpy = jest.spyOn(routingServiceMock, 'appendModalDataToUrl');
+      mockNavService.getCurrentNode.mockReturnValue({ label: 'Node Label', children: [] });
+      navigation.routingService = routingServiceMock;
+      jest.spyOn(RoutingHelpers, 'pathExists').mockResolvedValue(true);
+
+      await navigation.openAsModal('/modal/path', {
+        title: 'Modal Title',
+        keepPrevious: true,
+        closebtn_data_testid: 'my-custom-testid'
+      });
+
+      // closebtn_data_testid is a rendering-only detail and must not be bookmarked,
+      // whereas keepPrevious is required to restore the modal stack from the URL.
+      expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path', {
+        title: 'Modal Title',
         size: 'l',
-        closebtn_data_testid: 'lui-modal-index-0'
+        keepPrevious: true
       });
     });
   });

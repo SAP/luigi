@@ -137,7 +137,7 @@ export class Navigation {
         .join('&');
       modalPathForUrl += (modalPathForUrl.includes('?') ? '&' : '?') + paramStr;
     }
-    const { nodeParams: _np, ...urlSettings } = settings;
+    const { nodeParams: _np, closebtn_data_testid: _cb, ...urlSettings } = settings;
     // Append modal data to URL only if configured and if no other modals are open
     if (this.luigi.getConfigValue('routing.showModalPathInUrl') && this.modalService.getModalStackLength() === 0) {
       this.routingService.appendModalDataToUrl(modalPathForUrl, urlSettings as ModalSettings);
