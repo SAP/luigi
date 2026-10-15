@@ -233,9 +233,11 @@ describe('Navigation', () => {
       jest.spyOn(RoutingHelpers, 'pathExists').mockResolvedValue(true);
       await navigation.openAsModal('/modal/path', { title: 'Modal Title' }); // await
 
+      // navigation passes the full settings; RoutingService strips non-bookmarkable keys before serialization
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path', {
         title: 'Modal Title',
-        size: 'l'
+        size: 'l',
+        closebtn_data_testid: 'lui-modal-index-0'
       });
     });
     it('should append nodeParams to modal path in URL', async () => {
@@ -251,33 +253,13 @@ describe('Navigation', () => {
 
       await navigation.openAsModal('/modal/path', { title: 'Modal Title', nodeParams: { test: 'true', foo: 'bar' } });
 
+      // nodeParams are appended to the modal path by navigation; the full settings
+      // are passed on and stripped later in RoutingService
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path?~test=true&~foo=bar', {
         title: 'Modal Title',
-        size: 'l'
-      });
-    });
-    it('should not write closebtn_data_testid to the URL but keep keepPrevious', async () => {
-      luigiMock.getConfigValue = jest.fn().mockImplementation((key: string) => {
-        if (key === 'routing.showModalPathInUrl') return true;
-        return null;
-      });
-      const appendModalDataToUrlSpy = jest.spyOn(routingServiceMock, 'appendModalDataToUrl');
-      mockNavService.getCurrentNode.mockReturnValue({ label: 'Node Label', children: [] });
-      navigation.routingService = routingServiceMock;
-      jest.spyOn(RoutingHelpers, 'pathExists').mockResolvedValue(true);
-
-      await navigation.openAsModal('/modal/path', {
-        title: 'Modal Title',
-        keepPrevious: true,
-        closebtn_data_testid: 'my-custom-testid'
-      });
-
-      // closebtn_data_testid is a rendering-only detail and must not be bookmarked,
-      // whereas keepPrevious is required to restore the modal stack from the URL.
-      expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path', {
-        title: 'Modal Title',
         size: 'l',
-        keepPrevious: true
+        closebtn_data_testid: 'lui-modal-index-0',
+        nodeParams: { test: 'true', foo: 'bar' }
       });
     });
   });

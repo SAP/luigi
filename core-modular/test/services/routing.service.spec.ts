@@ -733,6 +733,33 @@ describe('Routing Service', () => {
       );
     });
 
+    it('should not write closebtn_data_testid to the url (regression for #5508 modal update)', () => {
+      locationSpy.mockImplementation(() => {
+        return {
+          href: 'http://some.url.de/#/settings?mySpecialModal=%252Fproject-modal',
+          hash: '#/settings?mySpecialModal=%252Fproject-modal'
+        } as any;
+      });
+      window.state = {};
+      mockLuigi.getConfigValue = jest.fn().mockImplementation((key: string) => {
+        if (key === 'routing.useHashRouting') return true;
+        return null;
+      });
+
+      routingService.updateModalDataInUrl(
+        modalPath,
+        { title: 'world', closebtn_data_testid: 'lui-modal-index-0' } as any,
+        false
+      );
+
+      // the serialized modalParams must contain only the bookmarkable 'title', not closebtn_data_testid
+      expect(window.history.replaceState).toHaveBeenCalledWith(
+        {},
+        '',
+        'http://some.url.de/#/settings?mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22title%22%3A%22world%22%7D'
+      );
+    });
+
     it('should update modal data in url when path routing is active', () => {
       locationSpy.mockImplementation(() => {
         return {

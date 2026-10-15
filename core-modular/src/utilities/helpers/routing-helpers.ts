@@ -1,7 +1,7 @@
 import type { FeatureToggles } from '../../core-api/feature-toggles';
 import type { Luigi } from '../../core-api/luigi';
 import type { AlertSettings } from '../../types/ux';
-import type { Node, PathData, ViewGroupSettings } from '../../types/navigation';
+import type { Node, PathData, ViewGroupSettings, ModalSettings } from '../../types/navigation';
 import { AsyncHelpers } from './async-helpers';
 import { EscapingHelpers } from './escaping-helpers';
 import { GenericHelpers } from './generic-helpers';
@@ -549,6 +549,20 @@ export const RoutingHelpers = {
   getModalParamsFromPath(luigi: Luigi): any {
     const modalParamsStr = this.getQueryParam(`${this.getModalViewParamName(luigi)}Params`, luigi);
     return modalParamsStr && JSON.parse(modalParamsStr);
+  },
+
+  /**
+   * Strip modal settings that must not be persisted in the URL.
+   * `nodeParams` are already serialized onto the modal path, and
+   * `closebtn_data_testid` is a rendering-only detail; neither belongs in the
+   * bookmarkable `modalParams` query string. Returns a shallow copy; the input
+   * is left untouched.
+   * @param {ModalSettings} modalParams modal settings about to be written to the URL
+   * @returns {ModalSettings} a copy without the non-bookmarkable properties
+   */
+  getBookmarkableModalParams(modalParams: ModalSettings): ModalSettings {
+    const { nodeParams: _np, closebtn_data_testid: _cb, ...bookmarkable } = modalParams || {};
+    return bookmarkable;
   },
 
   /**

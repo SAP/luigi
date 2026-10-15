@@ -137,10 +137,11 @@ export class Navigation {
         .join('&');
       modalPathForUrl += (modalPathForUrl.includes('?') ? '&' : '?') + paramStr;
     }
-    const { nodeParams: _np, closebtn_data_testid: _cb, ...urlSettings } = settings;
-    // Append modal data to URL only if configured and if no other modals are open
+    // Append modal data to URL only if configured and if no other modals are open.
+    // Non-bookmarkable settings (nodeParams, closebtn_data_testid) are stripped centrally
+    // in RoutingService before serialization.
     if (this.luigi.getConfigValue('routing.showModalPathInUrl') && this.modalService.getModalStackLength() === 0) {
-      this.routingService.appendModalDataToUrl(modalPathForUrl, urlSettings as ModalSettings);
+      this.routingService.appendModalDataToUrl(modalPathForUrl, settings);
     }
     this.luigi
       .getEngine()

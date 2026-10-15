@@ -239,6 +239,29 @@ describe('Routing-helpers', () => {
     });
   });
 
+  describe('getBookmarkableModalParams', () => {
+    it('strips nodeParams and closebtn_data_testid but keeps bookmarkable settings', () => {
+      const result = RoutingHelpers.getBookmarkableModalParams({
+        title: 'My Modal',
+        size: 'l',
+        keepPrevious: true,
+        closebtn_data_testid: 'lui-modal-index-0',
+        nodeParams: { foo: 'bar' }
+      } as any);
+      expect(result).toEqual({ title: 'My Modal', size: 'l', keepPrevious: true });
+    });
+
+    it('returns an empty object for empty settings', () => {
+      expect(RoutingHelpers.getBookmarkableModalParams({})).toEqual({});
+    });
+
+    it('does not mutate the input object', () => {
+      const input: any = { title: 'My Modal', closebtn_data_testid: 'lui-modal-index-0' };
+      RoutingHelpers.getBookmarkableModalParams(input);
+      expect(input).toEqual({ title: 'My Modal', closebtn_data_testid: 'lui-modal-index-0' });
+    });
+  });
+
   describe('getModalViewParamName', () => {
     beforeEach(() => {
       jest.spyOn(luigi, 'getConfigValue');
