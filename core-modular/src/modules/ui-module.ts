@@ -409,7 +409,7 @@ export const UIModule = {
             element.viewGroup ||
             (element.virtualTree && currentVirtualTreeRootNode === element.virtualTreeRootNode)
           ) {
-            if (preserveView || (element as any)._luigiPreserved) {
+            if (preserveView || ((element as any)._luigiPreserved && viewStackSize)) {
               (element as any)._luigiPreserved = !hasBackContext;
               element.style.display = 'none';
             } else {
