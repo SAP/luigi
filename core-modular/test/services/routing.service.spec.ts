@@ -526,7 +526,7 @@ describe('Routing Service', () => {
       expect(historyPushSpy).toHaveBeenCalled();
     });
 
-    it('should not add modalPathParams if modalParams is empty', () => {
+    it('should add modalPathParams with the bookmarkable settings', () => {
       locationSpy.mockImplementation(
         () =>
           ({
@@ -537,10 +537,13 @@ describe('Routing Service', () => {
       jest.spyOn(mockLuigi, 'getConfigValue').mockReturnValue(true); // hashRoutingActive
       jest.spyOn(RoutingHelpers, 'getQueryParams').mockReturnValue({});
 
-      routingService.appendModalDataToUrl('newPath', {});
+      // openAsModal always sets at least title + size, so appendModalDataToUrl never
+      // receives empty modalParams in practice.
+      routingService.appendModalDataToUrl('newPath', { title: 'My Modal', size: 'l' });
 
       expect(RoutingHelpers.encodeParams).toHaveBeenCalledWith({
-        modalPath: 'newPath'
+        modalPath: 'newPath',
+        modalPathParams: JSON.stringify({ size: 'l', title: 'My Modal' })
       });
       expect(historyPushSpy).toHaveBeenCalled();
     });

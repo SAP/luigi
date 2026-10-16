@@ -565,12 +565,15 @@ export const RoutingHelpers = {
    * @returns {Partial<ModalSettings>} a copy containing only the bookmarkable properties
    */
   getBookmarkableModalParams(modalParams: ModalSettings): Partial<ModalSettings> {
-    const val: Partial<ModalSettings> = {};
-    if (modalParams.size !== undefined) val.size = modalParams.size;
-    if (modalParams.width !== undefined) val.width = modalParams.width;
-    if (modalParams.height !== undefined) val.height = modalParams.height;
-    if (modalParams.title !== undefined) val.title = modalParams.title;
-    if (modalParams.keepPrevious) val.keepPrevious = modalParams.keepPrevious;
+    const val = {
+      size: modalParams.size,
+      width: modalParams.width,
+      height: modalParams.height,
+      title: modalParams.title
+    } as Partial<ModalSettings>;
+    if (modalParams.keepPrevious) {
+      val.keepPrevious = modalParams.keepPrevious;
+    }
     return val;
   },
 
