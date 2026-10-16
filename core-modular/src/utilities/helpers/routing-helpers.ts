@@ -552,37 +552,26 @@ export const RoutingHelpers = {
   },
 
   /**
-   * Reduce modal settings to the properties that may be persisted in the bookmarkable
-   * `modalParams` query string (allowlist). Everything not explicitly allowed is dropped,
-   * so new non-bookmarkable settings never leak into the URL by accident:
+   * Returns only the modal settings that may be persisted in the bookmarkable
+   * `modalParams` query string. Everything else is dropped so non-bookmarkable
+   * settings never leak into the URL:
    * - `nodeParams` are already serialized onto the modal path
    * - `closebtn_data_testid` is a rendering-only detail
-   * - `keepPrevious` is only kept when explicitly `true` (its default/false state is noise)
    *
-   * The allowlist is typed as `Record<keyof ModalSettings, boolean>`, so adding a new
-   * field to `ModalSettings` fails the build until it is classified here.
-   *
-   * Returns a shallow copy; the input is left untouched.
+   * `keepPrevious` is only kept when truthy (its default/false state is noise).
+   * Properties are copied by explicit name (no computed property writes) to
+   * avoid remote property injection. Returns a shallow copy; the input is left untouched.
    * @param {ModalSettings} modalParams modal settings about to be written to the URL
    * @returns {Partial<ModalSettings>} a copy containing only the bookmarkable properties
    */
   getBookmarkableModalParams(modalParams: ModalSettings): Partial<ModalSettings> {
-    const allowlist: Record<keyof ModalSettings, boolean> = {
-      size: true,
-      width: true,
-      height: true,
-      title: true,
-      keepPrevious: true, // only serialized when explicitly true (see loop below)
-      closebtn_data_testid: false,
-      nodeParams: false
-    };
-    return Object.fromEntries(
-      Object.entries(modalParams).filter(([key, value]) => {
-        if (!allowlist[key as keyof ModalSettings]) return false;
-        if (key === 'keepPrevious') return value === true;
-        return true;
-      })
-    ) as Partial<ModalSettings>;
+    const val: Partial<ModalSettings> = {};
+    if (modalParams.size !== undefined) val.size = modalParams.size;
+    if (modalParams.width !== undefined) val.width = modalParams.width;
+    if (modalParams.height !== undefined) val.height = modalParams.height;
+    if (modalParams.title !== undefined) val.title = modalParams.title;
+    if (modalParams.keepPrevious) val.keepPrevious = modalParams.keepPrevious;
+    return val;
   },
 
   /**
