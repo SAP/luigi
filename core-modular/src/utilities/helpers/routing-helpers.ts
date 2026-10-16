@@ -576,13 +576,13 @@ export const RoutingHelpers = {
       closebtn_data_testid: false,
       nodeParams: false
     };
-    const result: Partial<ModalSettings> = {};
-    for (const key of Object.keys(modalParams || {}) as (keyof ModalSettings)[]) {
-      if (!allowlist[key]) continue;
-      if (key === 'keepPrevious' && modalParams[key] !== true) continue;
-      result[key] = modalParams[key] as any;
-    }
-    return result;
+    return Object.fromEntries(
+      Object.entries(modalParams).filter(([key, value]) => {
+        if (!allowlist[key as keyof ModalSettings]) return false;
+        if (key === 'keepPrevious') return value === true;
+        return true;
+      })
+    ) as Partial<ModalSettings>;
   },
 
   /**
