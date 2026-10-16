@@ -526,7 +526,7 @@ describe('Routing Service', () => {
       expect(historyPushSpy).toHaveBeenCalled();
     });
 
-    it('should not add modalPathParams if modalParams is empty', () => {
+    it('should add modalPathParams with the bookmarkable settings', () => {
       locationSpy.mockImplementation(
         () =>
           ({
@@ -537,10 +537,13 @@ describe('Routing Service', () => {
       jest.spyOn(mockLuigi, 'getConfigValue').mockReturnValue(true); // hashRoutingActive
       jest.spyOn(RoutingHelpers, 'getQueryParams').mockReturnValue({});
 
-      routingService.appendModalDataToUrl('newPath', {});
+      // openAsModal always sets at least title + size, so appendModalDataToUrl never
+      // receives empty modalParams in practice.
+      routingService.appendModalDataToUrl('newPath', { title: 'My Modal', size: 'l' });
 
       expect(RoutingHelpers.encodeParams).toHaveBeenCalledWith({
-        modalPath: 'newPath'
+        modalPath: 'newPath',
+        modalPathParams: JSON.stringify({ size: 'l', title: 'My Modal' })
       });
       expect(historyPushSpy).toHaveBeenCalled();
     });
@@ -726,6 +729,33 @@ describe('Routing Service', () => {
 
       routingService.updateModalDataInUrl(modalPath, modalParams, false);
 
+      expect(window.history.replaceState).toHaveBeenCalledWith(
+        {},
+        '',
+        'http://some.url.de/#/settings?mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22title%22%3A%22world%22%7D'
+      );
+    });
+
+    it('should not write closebtn_data_testid to the url (regression for #5508 modal update)', () => {
+      locationSpy.mockImplementation(() => {
+        return {
+          href: 'http://some.url.de/#/settings?mySpecialModal=%252Fproject-modal',
+          hash: '#/settings?mySpecialModal=%252Fproject-modal'
+        } as any;
+      });
+      window.state = {};
+      mockLuigi.getConfigValue = jest.fn().mockImplementation((key: string) => {
+        if (key === 'routing.useHashRouting') return true;
+        return null;
+      });
+
+      routingService.updateModalDataInUrl(
+        modalPath,
+        { title: 'world', closebtn_data_testid: 'lui-modal-index-0' } as any,
+        false
+      );
+
+      // the serialized modalParams must contain only the bookmarkable 'title', not closebtn_data_testid
       expect(window.history.replaceState).toHaveBeenCalledWith(
         {},
         '',
@@ -1074,7 +1104,13 @@ describe('Routing Service', () => {
 
   describe('handleRouteChange - nav re-rendering on blocked route', () => {
     it('should re-render left and tab nav when handleViewUrlMisconfigured blocks the route', async () => {
-      const emptyViewUrlNode = { pathSegment: 'emptyViewUrl', viewUrl: '', compound: undefined, children: undefined, intendToHaveEmptyViewUrl: false };
+      const emptyViewUrlNode = {
+        pathSegment: 'emptyViewUrl',
+        viewUrl: '',
+        compound: undefined,
+        children: undefined,
+        intendToHaveEmptyViewUrl: false
+      };
       const mockPathData = {
         nodesInPath: [{ pathSegment: 'home' }, emptyViewUrlNode],
         pathParams: {},
