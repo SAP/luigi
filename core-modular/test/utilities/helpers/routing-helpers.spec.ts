@@ -251,6 +251,36 @@ describe('Routing-helpers', () => {
       expect(result).toEqual({ title: 'My Modal', size: 'l', keepPrevious: true });
     });
 
+    it('keeps all allowlisted properties (size, width, height, title)', () => {
+      const result = RoutingHelpers.getBookmarkableModalParams({
+        size: 'm',
+        width: '400px',
+        height: '300px',
+        title: 'My Modal'
+      } as any);
+      expect(result).toEqual({ size: 'm', width: '400px', height: '300px', title: 'My Modal' });
+    });
+
+    it('drops unknown (non-allowlisted) properties', () => {
+      const result = RoutingHelpers.getBookmarkableModalParams({
+        title: 'My Modal',
+        foo: 'bar',
+        _reuseIframeOpener: true
+      } as any);
+      expect(result).toEqual({ title: 'My Modal' });
+    });
+
+    it('keeps keepPrevious only when it is explicitly true', () => {
+      expect(RoutingHelpers.getBookmarkableModalParams({ title: 'M', keepPrevious: true } as any)).toEqual({
+        title: 'M',
+        keepPrevious: true
+      });
+      expect(RoutingHelpers.getBookmarkableModalParams({ title: 'M', keepPrevious: false } as any)).toEqual({
+        title: 'M'
+      });
+      expect(RoutingHelpers.getBookmarkableModalParams({ title: 'M' } as any)).toEqual({ title: 'M' });
+    });
+
     it('returns an empty object for empty settings', () => {
       expect(RoutingHelpers.getBookmarkableModalParams({})).toEqual({});
     });

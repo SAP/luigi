@@ -552,17 +552,37 @@ export const RoutingHelpers = {
   },
 
   /**
-   * Strip modal settings that must not be persisted in the URL.
-   * `nodeParams` are already serialized onto the modal path, and
-   * `closebtn_data_testid` is a rendering-only detail; neither belongs in the
-   * bookmarkable `modalParams` query string. Returns a shallow copy; the input
-   * is left untouched.
+   * Reduce modal settings to the properties that may be persisted in the bookmarkable
+   * `modalParams` query string (allowlist). Everything not explicitly allowed is dropped,
+   * so new non-bookmarkable settings never leak into the URL by accident:
+   * - `nodeParams` are already serialized onto the modal path
+   * - `closebtn_data_testid` is a rendering-only detail
+   * - `keepPrevious` is only kept when explicitly `true` (its default/false state is noise)
+   *
+   * The allowlist is typed as `Record<keyof ModalSettings, boolean>`, so adding a new
+   * field to `ModalSettings` fails the build until it is classified here.
+   *
+   * Returns a shallow copy; the input is left untouched.
    * @param {ModalSettings} modalParams modal settings about to be written to the URL
-   * @returns {ModalSettings} a copy without the non-bookmarkable properties
+   * @returns {Partial<ModalSettings>} a copy containing only the bookmarkable properties
    */
-  getBookmarkableModalParams(modalParams: ModalSettings): ModalSettings {
-    const { nodeParams: _np, closebtn_data_testid: _cb, ...bookmarkable } = modalParams || {};
-    return bookmarkable;
+  getBookmarkableModalParams(modalParams: ModalSettings): Partial<ModalSettings> {
+    const allowlist: Record<keyof ModalSettings, boolean> = {
+      size: true,
+      width: true,
+      height: true,
+      title: true,
+      keepPrevious: true, // only serialized when explicitly true (see loop below)
+      closebtn_data_testid: false,
+      nodeParams: false
+    };
+    const result: Partial<ModalSettings> = {};
+    for (const key of Object.keys(modalParams || {}) as (keyof ModalSettings)[]) {
+      if (!allowlist[key]) continue;
+      if (key === 'keepPrevious' && modalParams[key] !== true) continue;
+      result[key] = modalParams[key] as any;
+    }
+    return result;
   },
 
   /**
