@@ -627,12 +627,14 @@ export class NavigationService {
           AuthLayerSvc.logout();
         }
       },
-      settings: userSettingsEnabled ? {
-        ...userSettingsProfileMenuEntry,
-        openUserSettings: () => {
-          this.luigi.ux().openUserSettings();
-        }
-      } : undefined,
+      settings: userSettingsEnabled
+        ? {
+            ...userSettingsProfileMenuEntry,
+            openUserSettings: () => {
+              this.luigi.ux().openUserSettings();
+            }
+          }
+        : undefined,
       onUserInfoUpdate: (fn) => {
         this.luigi.getConfigValueAsync('navigation.profile.staticUserInfoFn').then((userInfo) => {
           if (userInfo) {
