@@ -627,12 +627,12 @@ export class NavigationService {
           AuthLayerSvc.logout();
         }
       },
-      settings: {
+      settings: userSettingsEnabled ? {
         ...userSettingsProfileMenuEntry,
         openUserSettings: () => {
           this.luigi.ux().openUserSettings();
         }
-      },
+      } : undefined,
       onUserInfoUpdate: (fn) => {
         this.luigi.getConfigValueAsync('navigation.profile.staticUserInfoFn').then((userInfo) => {
           if (userInfo) {
@@ -645,6 +645,8 @@ export class NavigationService {
         });
       }
     };
+
+    console.log('profileSettings', profileSettings);
 
     const userGlobalSearch: GlobalSearch | undefined = cfg?.globalSearch;
     const selectedNode: Node | undefined = pathData.selectedNode;

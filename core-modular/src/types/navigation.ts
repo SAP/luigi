@@ -66,7 +66,7 @@ export interface ProfileSettings {
   items?: ProfileItem[];
   staticUserInfoFn?: () => Promise<UserInfo>;
   onUserInfoUpdate: (fn: (uInfo: UserInfo) => void) => void;
-  settings: UserSettingsProfileMenuEntry;
+  settings?: UserSettingsProfileMenuEntry;
   itemClick: (item: ProfileItem) => void;
 }
 
