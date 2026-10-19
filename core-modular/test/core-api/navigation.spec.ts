@@ -239,6 +239,7 @@ describe('Navigation', () => {
       jest.spyOn(RoutingHelpers, 'pathExists').mockResolvedValue(true);
       await navigation.openAsModal('/modal/path', { title: 'Modal Title' }); // await
 
+      // navigation passes the full settings; RoutingService strips non-bookmarkable keys before serialization
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path', {
         title: 'Modal Title',
         size: 'l',
@@ -258,10 +259,13 @@ describe('Navigation', () => {
 
       await navigation.openAsModal('/modal/path', { title: 'Modal Title', nodeParams: { test: 'true', foo: 'bar' } });
 
+      // nodeParams are appended to the modal path by navigation; the full settings
+      // are passed on and stripped later in RoutingService
       expect(appendModalDataToUrlSpy).toHaveBeenCalledWith('/modal/path?~test=true&~foo=bar', {
         title: 'Modal Title',
         size: 'l',
-        closebtn_data_testid: 'lui-modal-index-0'
+        closebtn_data_testid: 'lui-modal-index-0',
+        nodeParams: { test: 'true', foo: 'bar' }
       });
     });
   });

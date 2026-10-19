@@ -282,8 +282,9 @@ export class RoutingService {
     historyState = RoutingHelpers.handleHistoryState(historyState, pathWithoutModalData);
     if (prevModalPath !== modalPath) {
       params[modalParamName] = modalPath;
-      if (modalParams && Object.keys(modalParams).length) {
-        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+      const bookmarkableParams = RoutingHelpers.getBookmarkableModalParams(modalParams);
+      if (bookmarkableParams && Object.keys(bookmarkableParams).length) {
+        params[`${modalParamName}Params`] = JSON.stringify(bookmarkableParams);
       }
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
@@ -430,8 +431,9 @@ export class RoutingService {
     const modalParamName = RoutingHelpers.getModalViewParamName(this.luigi);
 
     params[modalParamName] = modalPath;
-    if (modalParams && Object.keys(modalParams).length) {
-      params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+    const bookmarkableParams = RoutingHelpers.getBookmarkableModalParams(modalParams);
+    if (bookmarkableParams && Object.keys(bookmarkableParams).length) {
+      params[`${modalParamName}Params`] = JSON.stringify(bookmarkableParams);
     }
     const url = new URL(location.href);
     const hashRoutingActive = this.luigi.getConfigValue('routing.useHashRouting');
