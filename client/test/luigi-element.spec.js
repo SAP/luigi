@@ -35,9 +35,7 @@ describe('LuigiElement', () => {
       delete window.Luigi;
 
       expect(() => registerWebComponent('my-src-string', MyComponent)).not.toThrow();
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Error registering web component, Luigi core app not present.'
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error registering web component, Luigi core app not present.');
     });
 
     it('returns undefined when Luigi core is not present', () => {
