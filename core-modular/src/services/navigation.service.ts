@@ -778,8 +778,6 @@ export class NavigationService {
       }
     };
 
-    console.log('profileSettings', profileSettings);
-
     const userGlobalSearch: GlobalSearch | undefined = cfg?.globalSearch;
     const selectedNode: Node | undefined = pathData.selectedNode;
     const activeNode: Node | undefined =

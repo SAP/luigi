@@ -58,10 +58,8 @@ class UserSettingsHelperClass {
     return result;
   }
 
-  getUserSettingsIframesInDom(): HTMLElement[] {
-    const iframeCtn = document.querySelector('.iframeUserSettingsCtn');
-
-    return (iframeCtn ? [...iframeCtn.children] : []) as HTMLElement[]; // convert htmlcollection to array because of foreach issue
+  getUserSettingsIframesInDom(): any[] {
+    return [...document.querySelectorAll('.iframeUserSettingsCtn')] as HTMLElement[];
   }
 
   hideUserSettingsIframe(): void {
