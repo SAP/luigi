@@ -24,7 +24,7 @@
     "@angular/forms": "22.2.0",
     "@angular/platform-browser": "22.2.0",
     "@angular/platform-browser-dynamic": "22.2.0",
-    "@angular/router": "22.2.0",
+    "@angular/router": "22.2.1",
     "@luigi-project/client": "^2.31.0",
     "@luigi-project/client-support-angular": "^22.1.0",
     "@luigi-project/core": "^2.31.0",
