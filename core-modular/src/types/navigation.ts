@@ -85,14 +85,19 @@ export interface ProfileLogout {
 }
 
 export interface ProfileItem {
+  altText?: string;
   children?: ProfileItem[];
-  label?: string;
-  link?: string;
   externalLink?: ExternalLink;
   icon?: string;
-  testId?: string;
-  altText?: string;
+  label?: string;
+  link?: string;
   openNodeInModal?: boolean | ModalSettings;
+  statusBadge?: {
+    align: 'left' | 'right';
+    label: string;
+    type: StatusBadgeType;
+  };
+  testId?: string;
 }
 
 export interface UserSettingsDialogSettings {

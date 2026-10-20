@@ -44,6 +44,14 @@ import { ModalService } from './modal.service';
 import { NodeDataManagementService } from './node-data-management.service';
 import { serviceRegistry } from './service-registry';
 
+const statusBadgeTypes: Record<StatusBadgeType, string> = {
+  critical: 'Critical',
+  informative: 'Information',
+  negative: 'Negative',
+  neutral: 'Neutral',
+  positive: 'Positive'
+};
+
 export class NavigationService {
   modalService?: ModalService;
   nodeDataManagementService?: NodeDataManagementService;
@@ -251,15 +259,7 @@ export class NavigationService {
       }
 
       if (node.statusBadge) {
-        const typeMap: Record<StatusBadgeType, string> = {
-          critical: 'Critical',
-          informative: 'Information',
-          negative: 'Negative',
-          neutral: 'Neutral',
-          positive: 'Positive'
-        };
-
-        node.statusBadge.type = (typeMap[node.statusBadge.type] || 'Neutral') as any;
+        node.statusBadge.type = (statusBadgeTypes[node.statusBadge.type] || 'Neutral') as any;
       }
 
       const isCategoryValid =
@@ -589,6 +589,9 @@ export class NavigationService {
           item.children.forEach((child: ProfileItem) => {
             child.label = this.luigi.i18n().getTranslation(child.label || '');
           });
+        }
+        if (item.statusBadge) {
+          item.statusBadge.type = (statusBadgeTypes[item.statusBadge.type] || 'Neutral') as any;
         }
       });
     }
