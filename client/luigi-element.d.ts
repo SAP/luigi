@@ -186,7 +186,7 @@ export declare interface UxManager {
    *     // Logic to execute when the confirmation modal is dismissed
    *  });
    */
-  showConfirmationModal: <T = unknown>(settings: ConfirmationModalSettings) => Promise<T>;
+  showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
 
   /**
    * Set the document title
@@ -300,11 +300,11 @@ export declare interface LinkManager {
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Function} onCloseCallback callback function called upon closing the opened modal
-   * * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
+   * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: <T = unknown>(nodepath: string, modalSettings?: ModalSettings, onCloseCallback?: Function) => Promise<T>;
+  openAsModal: <T = unknown>(nodepath: string, modalSettings?: ModalSettings, onCloseCallback?: Function) => Promise<{ goBackValue: T }>;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
