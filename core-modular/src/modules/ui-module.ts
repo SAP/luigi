@@ -740,7 +740,7 @@ export const UIModule = {
     const mfeStoredSettings: Record<string, any> = {};
     const userSettingsContainers: Record<string, LuigiContainer> = {};
 
-    const renderMicroFrontendContainer = async (groupConfig: any, groupKey: string) => {
+    const renderMicroFrontendContainer = async (groupConfig: any, groupKey: string): Promise<LuigiContainer> => {
       if (userSettingsContainers[groupKey]) {
         return userSettingsContainers[groupKey];
       }

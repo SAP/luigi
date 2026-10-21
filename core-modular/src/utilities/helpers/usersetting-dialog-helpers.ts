@@ -58,7 +58,7 @@ class UserSettingsHelperClass {
     return result;
   }
 
-  getUserSettingsIframesInDom(): any[] {
+  getUserSettingsIframesInDom(): HTMLElement[] {
     return [...document.querySelectorAll('.iframeUserSettingsCtn')] as HTMLElement[];
   }
 
