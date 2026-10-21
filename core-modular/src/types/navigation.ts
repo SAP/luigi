@@ -335,6 +335,7 @@ export interface NavigationOptions {
 }
 
 export interface NavigationRequestBase {
+  preserveView?: boolean;
   preventContextUpdate?: boolean;
   preventHistoryEntry?: boolean;
   withoutSync?: boolean;
@@ -347,7 +348,6 @@ export interface NavigationRequestParams extends NavigationRequestBase {
   modalSettings?: any;
   newTab?: boolean;
   path: string;
-  preserveView?: string;
 }
 
 export interface NavigationRequestEvent {
@@ -356,20 +356,20 @@ export interface NavigationRequestEvent {
 
 export interface NavigationRequestDetail {
   drawer: unknown;
-  link: string;
+  fromClosestContext: boolean;
+  fromContext: string | null;
+  fromParent: boolean;
+  fromVirtualTreeRoot: boolean;
   intent: boolean;
-  preserveView: string;
+  link: string;
   modal: unknown;
   newTab: boolean;
-  withoutSync: boolean;
+  nodeParams: Record<string, string>;
+  preserveView: boolean;
   preventContextUpdate: boolean;
   preventHistoryEntry: boolean;
-  fromVirtualTreeRoot: boolean;
-  fromContext: string | null;
-  fromClosestContext: boolean;
-  fromParent: boolean;
   relative: boolean;
-  nodeParams: Record<string, string>;
+  withoutSync: boolean;
 }
 
 /**
