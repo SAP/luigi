@@ -1396,6 +1396,7 @@
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } = params;
         let isSpecial = newTab || modal || splitView || drawer;
+        const specialMode = modal ? 'modal' : splitView ? 'splitView' : drawer ? 'drawer' : undefined;
 
         const resolveRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
@@ -1468,7 +1469,7 @@
           }
 
           const pathExist = await pathExists(path);
-          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(getComponentWrapper(), path, pathExist);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(getComponentWrapper(), path, pathExist, specialMode);
 
           if (!path) {
             rejectRemotePromise();
