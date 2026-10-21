@@ -1469,7 +1469,12 @@
           }
 
           const pathExist = await pathExists(path);
-          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(getComponentWrapper(), path, pathExist, specialMode);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist,
+            specialMode
+          );
 
           if (!path) {
             rejectRemotePromise();
