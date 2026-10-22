@@ -62,6 +62,21 @@ class EscapingHelpersClass {
       .replace(/\//g, '&sol;');
   }
 
+  sanitizeExternalNavigationUrl(url = '') {
+    try {
+      const parsedUrl = new URL(url, window.location.href);
+      const allowedProtocols = ['http:', 'https:'];
+
+      if (!allowedProtocols.includes(parsedUrl.protocol)) {
+        return undefined;
+      }
+
+      return parsedUrl.toString();
+    } catch (error) {
+      return undefined;
+    }
+  }
+
   escapeKeyForRegexp(str = '') {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }

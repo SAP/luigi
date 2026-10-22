@@ -646,11 +646,19 @@ class RoutingClass {
         ...(node?.externalLink || {})
       };
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
-      safeUrl = EscapingHelpers.sanitizeHtml(updatedExternalLink.url);
-      window.open(safeUrl, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+      safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(updatedExternalLink.url);
+      if (safeUrl) {
+        window.open(safeUrl, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+      } else {
+        console.warn(`Blocked unsafe external navigation URL: ${updatedExternalLink.url}`);
+      }
     } else if (GenericHelpers.isObject(externalLink)) {
-      safeUrl = EscapingHelpers.sanitizeHtml(externalLink.url);
-      window.open(safeUrl, externalLink.sameWindow ? '_self' : '_blank').focus();
+      safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(externalLink.url);
+      if (safeUrl) {
+        window.open(safeUrl, externalLink.sameWindow ? '_self' : '_blank').focus();
+      } else {
+        console.warn(`Blocked unsafe external navigation URL: ${externalLink.url}`);
+      }
     }
   }
 

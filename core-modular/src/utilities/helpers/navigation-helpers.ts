@@ -341,15 +341,19 @@ export const NavigationHelpers = {
     if (pathParams) {
       url = GenericHelpers.replaceVars(url, pathParams, ':', false);
     }
-    const safeUrl = EscapingHelpers.sanitizeHtml(url);
-    if (externalLink.sameWindow) {
-      window.location.href = safeUrl;
-    } else {
-      const newWindow = window.open(safeUrl, '_blank', 'noopener noreferrer');
-      if (newWindow) {
-        newWindow.opener = null;
-        newWindow.focus();
+    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(url);
+    if (safeUrl) {
+      if (externalLink.sameWindow) {
+        window.location.href = safeUrl;
+      } else {
+        const newWindow = window.open(safeUrl, '_blank', 'noopener noreferrer');
+        if (newWindow) {
+          newWindow.opener = null;
+          newWindow.focus();
+        }
       }
+    } else {
+      console.warn(`Blocked unsafe external navigation URL: ${url}`);
     }
   }
 };

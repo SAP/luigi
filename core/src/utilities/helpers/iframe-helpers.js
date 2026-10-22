@@ -211,7 +211,12 @@ class IframeHelpersClass {
     const iframeSrc = ViewUrlDecorator.hasDecorators()
       ? ViewUrlDecorator.applyDecorators(viewUrl, currentNode ? currentNode.decodeViewUrl : undefined)
       : viewUrl;
-    iframe.src = EscapingHelpers.sanitizeHtml(iframeSrc);
+    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(iframeSrc);
+    if (safeUrl) {
+      iframe.src = safeUrl;
+    } else {
+      console.warn(`Blocked unsafe external navigation URL: ${iframeSrc}`);
+    }
     if (allowRules) {
       allowRules.forEach((rule, index) => {
         allowRules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');

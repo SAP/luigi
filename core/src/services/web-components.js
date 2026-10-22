@@ -262,7 +262,8 @@ class WebComponentSvcClass {
    * @param {*} onload - callback function executed after script attached and loaded
    */
   includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
-    if (this.checkWCUrl(viewUrl)) {
+    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(viewUrl);
+    if (safeUrl && this.checkWCUrl(safeUrl)) {
       /** Append reg function to luigi object if not present */
       if (!window.Luigi._registerWebcomponent) {
         window.Luigi._registerWebcomponent = (srcString, el) => {
@@ -274,7 +275,6 @@ class WebComponentSvcClass {
       }
 
       const scriptTag = document.createElement('script');
-      const safeUrl = EscapingHelpers.sanitizeHtml(viewUrl);
       scriptTag.setAttribute('src', safeUrl);
       if (node.webcomponent.type === 'module') {
         scriptTag.setAttribute('type', 'module');
