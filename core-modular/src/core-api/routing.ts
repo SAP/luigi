@@ -1,3 +1,4 @@
+import { EscapingHelpers } from '../utilities/helpers/escaping-helpers';
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 import { RoutingHelpers } from '../utilities/helpers/routing-helpers';
 import type { Luigi } from './luigi';
@@ -68,7 +69,7 @@ export class Routing {
         console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
-      queryParams[key] = value;
+      queryParams[key] = EscapingHelpers.sanitizeParam(value);
     }
     return queryParams;
   }

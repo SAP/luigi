@@ -1,5 +1,5 @@
 import { LuigiConfig } from '.';
-import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
+import { EscapingHelpers, GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 
 /**
  * Use these functions for navigation-related features.
@@ -35,7 +35,7 @@ class LuigiRouting {
         console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
-      queryParams[key] = value;
+      queryParams[key] = EscapingHelpers.sanitizeParam(value);
     }
     return queryParams;
   }
