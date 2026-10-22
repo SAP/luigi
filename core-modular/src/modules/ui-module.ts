@@ -66,6 +66,9 @@ const createContainer = async (
     const lc: LuigiContainer = document.createElement('luigi-container') as LuigiContainer;
 
     lc.setAttribute('lui_container', 'true');
+    if (microFrontendType === 'usersettings') {
+      lc.classList.add('iframeUserSettingsCtn');
+    }
     lc.viewurl = node.viewUrl
       ? serviceRegistry
           .get(ViewUrlDecoratorSvc)
@@ -735,23 +738,33 @@ export const UIModule = {
     luigi: Luigi
   ) => {
     const mfeStoredSettings: Record<string, any> = {};
+    const userSettingsContainers: Record<string, LuigiContainer> = {};
 
-    const renderMicroFrontendContainer = async (groupConfig: any, groupKey: string) => {
+    const renderMicroFrontendContainer = async (groupConfig: any, groupKey: string): Promise<LuigiContainer> => {
+      if (userSettingsContainers[groupKey]) {
+        return userSettingsContainers[groupKey];
+      }
       const viewUrl = groupConfig.viewUrl;
       const isWebComponent = groupConfig.webcomponent ?? false;
       const userSettingsData = previousUserSettings?.[groupKey] || {};
       const context = { ...groupConfig.context, userSettingsData: userSettingsData };
-      const lc = await createContainer(
+      const lc = (await createContainer(
         { viewUrl, userSettingsGroup: groupKey, webcomponent: isWebComponent, context } as Node,
         luigi,
         undefined,
         'usersettings'
-      );
-
+      )) as LuigiContainer;
+      userSettingsContainers[groupKey] = lc;
       lc.addEventListener(Events.CUSTOM_MESSAGE, (event: any) => {
         const message = event.detail;
         if (message?.id === 'luigi.updateUserSettings') {
-          mfeStoredSettings[groupKey] = message.data?.data ?? message.data;
+          const data = message.data?.data ?? message.data;
+          mfeStoredSettings[groupKey] = data;
+
+          const target = userSettingsContainers[groupKey];
+          if (target?.updateContext) {
+            target.updateContext({ userSettingsData: data }, { withoutSync: false });
+          }
         }
       });
 
