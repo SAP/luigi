@@ -235,7 +235,7 @@ navigation: {
 
 ### validWebcomponentUrls
   - **type**: array
-  - **description**: a list of allowed web component URLs. They must be added as regular expressions to the array.
+  - **description**: a list of allowed web component URLs. They must be added as regular expressions to the array. This is the trust boundary for web component micro frontends: since web components run in the host page's context rather than in an isolated iframe, only add origins you trust.
   - **example**:
 ```javascript
 settings: {
