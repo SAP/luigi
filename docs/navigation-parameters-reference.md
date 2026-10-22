@@ -56,6 +56,7 @@ If you don't want Luigi to handle the page not found error, because you've imple
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
+  - **mode** (string): the special view mode the navigation was requested in. One of `'modal'`, `'splitView'` or `'drawer'`, or `undefined` for a regular navigation. This lets the handler react differently to a `404` depending on how the view was opened (for example, when the **ignoreLuigiErrorHandling** option is returned, Luigi removes the modal data from the URL unless **keepURL** is set). ( **since**: NEXTRELEASE )
 
 ### preserveQueryParams
 - **type**: boolean
@@ -234,7 +235,7 @@ navigation: {
 
 ### validWebcomponentUrls
   - **type**: array
-  - **description**: a list of allowed web component URLs. They must be added as regular expressions to the array.
+  - **description**: a list of allowed web component URLs. They must be added as regular expressions to the array. This is the trust boundary for web component micro frontends: since web components run in the host page's context rather than in an isolated iframe, only add origins you trust.
   - **example**:
 ```javascript
 settings: {
