@@ -62,7 +62,7 @@ class EscapingHelpersClass {
       .replace(/\//g, '&sol;');
   }
 
-  sanitizeExternalNavigationUrl(url = '') {
+  sanitizeExternalNavigationUrl(url = '', skipOrigin = true) {
     try {
       const parsedUrl = new URL(url, window?.location?.href ? window.location.href : undefined);
       const allowedProtocols = ['http:', 'https:'];
@@ -74,7 +74,7 @@ class EscapingHelpersClass {
       const partialUrl = parsedUrl.href.replace(parsedUrl.origin, '');
       let newUrl = parsedUrl.href;
 
-      if (partialUrl !== '/' && partialUrl !== '') {
+      if (skipOrigin && partialUrl !== '/' && partialUrl !== '') {
         newUrl = partialUrl;
       }
 
