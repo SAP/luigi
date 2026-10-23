@@ -211,9 +211,9 @@ class IframeHelpersClass {
     const iframeSrc = ViewUrlDecorator.hasDecorators()
       ? ViewUrlDecorator.applyDecorators(viewUrl, currentNode ? currentNode.decodeViewUrl : undefined)
       : viewUrl;
-    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(iframeSrc);
+    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(viewUrl);
     if (safeUrl) {
-      iframe.src = safeUrl;
+      iframe.src = iframeSrc;
     } else {
       console.warn(`Blocked unsafe external navigation URL: ${iframeSrc}`);
     }

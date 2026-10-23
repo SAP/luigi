@@ -1,4 +1,3 @@
-import { EscapingHelpers } from '../utilities/helpers/escaping-helpers';
 import { GenericHelpers } from '../utilities/helpers/generic-helpers';
 import { RoutingHelpers } from '../utilities/helpers/routing-helpers';
 import type { Luigi } from './luigi';
@@ -65,11 +64,12 @@ export class Routing {
     }
 
     for (const [key, value] of entries) {
-      if (DENYLIST.some((denied) => key === denied)) {
+      if (!DENYLIST.some((denied) => key === denied)) {
+        queryParams[key] = value;
+      } else {
         console.warn(`Blocked because of potentially dangerous query param: ${key}`);
         continue;
       }
-      queryParams[key] = EscapingHelpers.sanitizeParam(value);
     }
     return queryParams;
   }
