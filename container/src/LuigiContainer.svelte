@@ -73,6 +73,9 @@
       };
 
       return class extends customElementConstructor {
+        getInternalData = () => {
+          return this._luiInternalData;
+        };
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         updateViewUrl = notInitFn('updateViewUrl');
@@ -193,19 +196,7 @@
         } else {
           const internalObj = {
             ...(internal || {}),
-            ...{
-              activeFeatureToggleList: thisComponent.activeFeatureToggleList || [],
-              currentLocale: thisComponent.locale,
-              currentTheme: thisComponent.theme,
-              userSettings: thisComponent.userSettings || null,
-              cssVariables: thisComponent.cssVariables || {},
-              anchor: thisComponent.anchor || '',
-              drawer: thisComponent.drawer || false,
-              modal: thisComponent.modal || false,
-              viewStackSize: thisComponent.viewStackSize || 0,
-              isNavigateBack: thisComponent.isNavigateBack || false,
-              clientPermissions: thisComponent.clientPermissions || {}
-            }
+            ...GenericHelperFunctions.prepareInternalDataObject(thisComponent)
           };
           ContainerAPI.updateContext(contextObj, internalObj, iframeHandle, nodeParams, pathParams, searchParams);
         }
