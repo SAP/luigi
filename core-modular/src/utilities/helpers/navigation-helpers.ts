@@ -341,8 +341,11 @@ export const NavigationHelpers = {
     if (pathParams) {
       url = GenericHelpers.replaceVars(url, pathParams, ':', false);
     }
-    const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(url);
+    let safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(url);
     if (safeUrl) {
+      if (safeUrl.charAt(safeUrl.length - 1) === '/') {
+        safeUrl = safeUrl.slice(0, -1);
+      }
       if (externalLink.sameWindow) {
         window.location.href = safeUrl;
       } else {

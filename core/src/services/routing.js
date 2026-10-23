@@ -648,6 +648,9 @@ class RoutingClass {
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
       safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(updatedExternalLink.url);
       if (safeUrl) {
+        if (safeUrl.charAt(safeUrl.length - 1) === '/') {
+          safeUrl = safeUrl.slice(0, -1);
+        }
         window.open(safeUrl, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
       } else {
         console.warn(`Blocked unsafe external navigation URL: ${updatedExternalLink.url}`);
@@ -655,6 +658,9 @@ class RoutingClass {
     } else if (GenericHelpers.isObject(externalLink)) {
       safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(externalLink.url);
       if (safeUrl) {
+        if (safeUrl.charAt(safeUrl.length - 1) === '/') {
+          safeUrl = safeUrl.slice(0, -1);
+        }
         window.open(safeUrl, externalLink.sameWindow ? '_self' : '_blank').focus();
       } else {
         console.warn(`Blocked unsafe external navigation URL: ${externalLink.url}`);

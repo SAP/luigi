@@ -263,7 +263,7 @@ class WebComponentSvcClass {
    */
   includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
     const safeUrl = EscapingHelpers.sanitizeExternalNavigationUrl(viewUrl);
-    if (safeUrl && this.checkWCUrl(safeUrl)) {
+    if (safeUrl && this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!window.Luigi._registerWebcomponent) {
         window.Luigi._registerWebcomponent = (srcString, el) => {

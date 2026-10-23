@@ -64,14 +64,21 @@ class EscapingHelpersClass {
 
   sanitizeExternalNavigationUrl(url = '') {
     try {
-      const parsedUrl = new URL(url, window.location.href);
+      const parsedUrl = new URL(url, window?.location?.href ? window.location.href : undefined);
       const allowedProtocols = ['http:', 'https:'];
 
       if (!allowedProtocols.includes(parsedUrl.protocol)) {
         return undefined;
       }
 
-      return parsedUrl.toString();
+      const partialUrl = parsedUrl.href.replace(parsedUrl.origin, '');
+      let newUrl = parsedUrl.href;
+
+      if (partialUrl !== '/' && partialUrl !== '') {
+        newUrl = partialUrl;
+      }
+
+      return newUrl;
     } catch (error) {
       return undefined;
     }
