@@ -62,6 +62,28 @@ class EscapingHelpersClass {
       .replace(/\//g, '&sol;');
   }
 
+  sanitizeExternalNavigationUrl(url = '', skipOrigin = true) {
+    try {
+      const parsedUrl = new URL(url, window?.location?.href ? window.location.href : undefined);
+      const allowedProtocols = ['http:', 'https:'];
+
+      if (!allowedProtocols.includes(parsedUrl.protocol)) {
+        return undefined;
+      }
+
+      const partialUrl = parsedUrl.href.replace(parsedUrl.origin, '');
+      let newUrl = parsedUrl.href;
+
+      if (skipOrigin && partialUrl !== '/' && partialUrl !== '') {
+        newUrl = partialUrl;
+      }
+
+      return newUrl;
+    } catch (error) {
+      return undefined;
+    }
+  }
+
   escapeKeyForRegexp(str = '') {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }

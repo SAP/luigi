@@ -64,6 +64,21 @@ export const EscapingHelpers = {
       .replace(/\//g, '&sol;');
   },
 
+  sanitizeExternalNavigationUrl(url = ''): string | undefined {
+    try {
+      const parsedUrl = new URL(url, window?.location?.href ? window.location.href : undefined);
+      const allowedProtocols = ['http:', 'https:'];
+
+      if (!allowedProtocols.includes(parsedUrl.protocol)) {
+        return undefined;
+      }
+
+      return parsedUrl.href;
+    } catch (error) {
+      return undefined;
+    }
+  },
+
   escapeKeyForRegexp(str = '') {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   },
